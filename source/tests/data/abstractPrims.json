@@ -1,0 +1,21 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Meshes/Geo_0/mesh_0",
+            "/World/Meshes/Geo_0/mesh_1",
+            "/World/Meshes/Geo_0/mesh_3",
+            "/World/Meshes/Geo_0/mesh_2",
+            "/World/Classes/Geo_0/mesh_0",
+            "/World/Classes/Geo_0/mesh_1",
+            "/World/Classes/Geo_0/mesh_2",
+            "/World/Classes/Geo_0/mesh_3"
+        ],
+        "considerMaterials": true,
+        "materialAlbedoAsVertexColors": false,
+        "originalGeomOption": 1,
+        "mergePoint": 0,
+        "rootPath": "Geo_0/Group_0/MergedMesh",
+        "considerAllAttributes": false
+    }
+]

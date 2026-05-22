@@ -1,0 +1,182 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (0, 0, 50000)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (2072.037813893308, 1676.733706157866, 2056.1875979133915)
+                double3 target = (137.05142378887695, -258.25263776186443, 121.20120780896104)
+            }
+            dictionary Right = {
+                double3 position = (-50000, 0, 0)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 50000, 0)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./nested_instance_protos.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary renderSettings = {
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def Xform "PlaneXf"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Plane"
+        {
+            float3[] extent = [(-50, 0, -50), (50, 0, 50)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 2, 3, 1]
+            normal3f[] normals = [(0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, 0, -50), (50, 0, -50), (-50, 0, 50), (50, 0, 50)]
+            texCoord2f[] primvars:st = [(0, 1), (0, 0), (1, 0), (1, 1)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Xform "CubeXf"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, -178.88757746969108, 64.58772007646529)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Mesh "Cube"
+            {
+                float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 50, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def Xform "DiskXf"
+            {
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (106.59618519992951, 0, -103.67904125472032)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+                def Mesh "Disk"
+                {
+                    float3[] extent = [(-50, 0, -50), (50, 0, 50)]
+                    int[] faceVertexCounts = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+                    int[] faceVertexIndices = [0, 32, 1, 1, 32, 2, 2, 32, 3, 3, 32, 4, 4, 32, 5, 5, 32, 6, 6, 32, 7, 7, 32, 8, 8, 32, 9, 9, 32, 10, 10, 32, 11, 11, 32, 12, 12, 32, 13, 13, 32, 14, 14, 32, 15, 15, 32, 16, 16, 32, 17, 17, 32, 18, 18, 32, 19, 19, 32, 20, 20, 32, 21, 21, 32, 22, 22, 32, 23, 23, 32, 24, 24, 32, 25, 25, 32, 26, 26, 32, 27, 27, 32, 28, 28, 32, 29, 29, 32, 30, 30, 32, 31, 31, 32, 0]
+                    normal3f[] normals = [(0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)] (
+                        interpolation = "faceVarying"
+                    )
+                    point3f[] points = [(50, 0, 0), (49.03926, 0, 9.754517), (46.193974, 0, 19.13417), (41.57348, 0, 27.778513), (35.35534, 0, 35.35534), (27.778513, 0, 41.57348), (19.13417, 0, 46.193974), (9.754517, 0, 49.03926), (3.061617e-15, 0, 50), (-9.754517, 0, 49.03926), (-19.13417, 0, 46.193974), (-27.778513, 0, 41.57348), (-35.35534, 0, 35.35534), (-41.57348, 0, 27.778513), (-46.193974, 0, 19.13417), (-49.03926, 0, 9.754517), (-50, 0, 6.123234e-15), (-49.03926, 0, -9.754517), (-46.193974, 0, -19.13417), (-41.57348, 0, -27.778513), (-35.35534, 0, -35.35534), (-27.778513, 0, -41.57348), (-19.13417, 0, -46.193974), (-9.754517, 0, -49.03926), (-9.184851e-15, 0, -50), (9.754517, 0, -49.03926), (19.13417, 0, -46.193974), (27.778513, 0, -41.57348), (35.35534, 0, -35.35534), (41.57348, 0, -27.778513), (46.193974, 0, -19.13417), (49.03926, 0, -9.754517), (0, 0, 0)]
+                    texCoord2f[] primvars:st = [(1, 0.5), (0.5, 0.5), (0.99039257, 0.40245482), (0.99039257, 0.40245482), (0.5, 0.5), (0.9619397, 0.3086583), (0.9619397, 0.3086583), (0.5, 0.5), (0.91573477, 0.22221488), (0.91573477, 0.22221488), (0.5, 0.5), (0.8535534, 0.14644662), (0.8535534, 0.14644662), (0.5, 0.5), (0.7777851, 0.0842652), (0.7777851, 0.0842652), (0.5, 0.5), (0.6913417, 0.038060278), (0.6913417, 0.038060278), (0.5, 0.5), (0.59754515, 0.0096074045), (0.59754515, 0.0096074045), (0.5, 0.5), (0.5, 0), (0.5, 0), (0.5, 0.5), (0.40245485, 0.0096074045), (0.40245485, 0.0096074045), (0.5, 0.5), (0.3086583, 0.038060278), (0.3086583, 0.038060278), (0.5, 0.5), (0.22221488, 0.0842652), (0.22221488, 0.0842652), (0.5, 0.5), (0.14644659, 0.14644662), (0.14644659, 0.14644662), (0.5, 0.5), (0.08426523, 0.22221488), (0.08426523, 0.22221488), (0.5, 0.5), (0.038060308, 0.3086583), (0.038060308, 0.3086583), (0.5, 0.5), (0.009607434, 0.40245482), (0.009607434, 0.40245482), (0.5, 0.5), (0, 0.5), (0, 0.5), (0.5, 0.5), (0.009607434, 0.59754515), (0.009607434, 0.59754515), (0.5, 0.5), (0.038060308, 0.6913417), (0.038060308, 0.6913417), (0.5, 0.5), (0.08426523, 0.7777851), (0.08426523, 0.7777851), (0.5, 0.5), (0.14644659, 0.8535534), (0.14644659, 0.8535534), (0.5, 0.5), (0.22221488, 0.91573477), (0.22221488, 0.91573477), (0.5, 0.5), (0.3086583, 0.9619397), (0.3086583, 0.9619397), (0.5, 0.5), (0.40245485, 0.99039257), (0.40245485, 0.99039257), (0.5, 0.5), (0.5, 1), (0.5, 1), (0.5, 0.5), (0.59754515, 0.99039257), (0.59754515, 0.99039257), (0.5, 0.5), (0.6913417, 0.9619397), (0.6913417, 0.9619397), (0.5, 0.5), (0.7777851, 0.91573477), (0.7777851, 0.91573477), (0.5, 0.5), (0.8535534, 0.8535534), (0.8535534, 0.8535534), (0.5, 0.5), (0.91573477, 0.7777851), (0.91573477, 0.7777851), (0.5, 0.5), (0.9619397, 0.6913417), (0.9619397, 0.6913417), (0.5, 0.5), (0.99039257, 0.59754515), (0.99039257, 0.59754515), (0.5, 0.5), (1, 0.5)] (
+                        interpolation = "faceVarying"
+                    )
+                    uniform token subdivisionScheme = "none"
+                    double3 xformOp:rotateXYZ = (0, 0, 0)
+                    double3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (0, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+                }
+            }
+        }
+    }
+
+    def Xform "PlaneXf_01" (
+        instanceable = true
+        prepend references = </World/PlaneXf>
+    )
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 374.8436285374227)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Xform "CubeXf_01" (
+        instanceable = true
+        prepend references = </World/PlaneXf/CubeXf>
+    )
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, -178.88757746969108, 779.4149665358038)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Xform "DiskXf_01" (
+        instanceable = true
+        prepend references = </World/PlaneXf/CubeXf/DiskXf>
+    )
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (106.59618519992951, -178.88757746969108, 1072.2291311545985)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+
+def Xform "Environment"
+{
+    double3 xformOp:rotateXYZ = (0, 0, 0)
+    double3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+    def DistantLight "defaultLight" (
+        prepend apiSchemas = ["ShapingAPI"]
+    )
+    {
+        float inputs:angle = 1
+        float inputs:intensity = 3000
+        float inputs:shaping:cone:angle = 180
+        float inputs:shaping:cone:softness
+        float inputs:shaping:focus
+        color3f inputs:shaping:focusTint
+        asset inputs:shaping:ies:file
+        double3 xformOp:rotateXYZ = (315, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+

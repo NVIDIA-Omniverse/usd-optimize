@@ -1,0 +1,121 @@
+#usda 1.0
+(
+    doc = "Generated from Composed Stage of root layer"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+    uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+    def Xform "Geometry"
+    {
+        def Mesh "UnshadedMesh"
+        {
+            float3[] extent = [(-5, 0, 31), (5, 0, 41)]
+            int[] faceVertexCounts = [4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 31), (0, 0, 31), (5, 0, 31), (-5, 0, 36), (0, 0, 36), (5, 0, 36), (-5, 0, 41), (0, 0, 41), (5, 0, 41)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "BlueMesh" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-5, 0, 19), (5, 0, 29)]
+            int[] faceVertexCounts = [4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+            rel material:binding = </World/Materials/BlueMaterial>
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 19), (0, 0, 19), (5, 0, 19), (-5, 0, 24), (0, 0, 24), (5, 0, 24), (-5, 0, 29), (0, 0, 29), (5, 0, 29)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "GreenMesh" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-5, 0, -5), (5, 0, 5)]
+            int[] faceVertexCounts = [4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+            rel material:binding = </World/Materials/GreenMaterial>
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -5), (0, 0, -5), (5, 0, -5), (-5, 0, 0), (0, 0, 0), (5, 0, 0), (-5, 0, 5), (0, 0, 5), (5, 0, 5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "RedMesh" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+            int[] faceVertexCounts = [4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+            rel material:binding = </World/Materials/RedMaterial>
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 7), (0, 0, 7), (5, 0, 7), (-5, 0, 12), (0, 0, 12), (5, 0, 12), (-5, 0, 17), (0, 0, 17), (5, 0, 17)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Scope "Materials"
+    {
+        def Material "RedMaterial"
+        {
+            color3f inputs:diffuseColor = (1, 0, 0)
+            token outputs:surface.connect = </World/Materials/RedMaterial/RedShader.outputs:surface>
+
+            def Shader "RedShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor.connect = </World/Materials/RedMaterial.inputs:diffuseColor>
+                token outputs:surface
+            }
+        }
+
+        def Material "GreenMaterial"
+        {
+            token outputs:surface.connect = </World/Materials/GreenMaterial/GreenShader.outputs:surface>
+
+            def Shader "GreenShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 1, 0)
+                token outputs:surface
+            }
+        }
+
+        def Material "BlueMaterial"
+        {
+            color3f inputs:diffuseColor = (0, 0, 1)
+            token outputs:surface.connect = </World/Materials/BlueMaterial/BlueShader.outputs:surface>
+
+            def Shader "BlueShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 1)
+                color3f inputs:diffuseColor.connect = </World/Materials/BlueMaterial.inputs:diffuseColor>
+                token outputs:surface
+            }
+        }
+    }
+}
+

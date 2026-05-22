@@ -1,0 +1,21 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Geometry/UnshadedMesh",
+            "/World/Geometry/BlueMesh",
+            "/World/Geometry/GreenMesh",
+            "/World/Geometry/RedMesh"
+        ],
+        "considerMaterials": false,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": true,
+        "parentXform": false,
+        "originalGeomOption": 1,
+        "rootPath": "/World/Geometry/MergedMesh",
+        "meshMaterialPath": "",
+        "notes": ""
+    }
+]

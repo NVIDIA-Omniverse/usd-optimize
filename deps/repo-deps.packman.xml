@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project toolsVersion="5.0">
+  <!-- Core repo (omni.repo_*) tools for build, test, format, and packaging.
+       Optional NVIDIA-only tools are listed in repo-deps-nv.packman.xml (pulled when present). -->
+  <dependency name="repo_man" linkPath="../_repo/deps/repo_man">
+    <package name="repo_man" version="2.3.1" />
+  </dependency>
+  <dependency name="repo_build" linkPath="../_repo/deps/repo_build">
+    <package name="repo_build" version="1.27.2" />
+  </dependency>
+  <dependency name="repo_usd" linkPath="../_repo/deps/repo_usd">
+    <package name="repo_usd" version="5.0.26" />
+  </dependency>
+  <dependency name="repo_ci" linkPath="../_repo/deps/repo_ci">
+    <package name="repo_ci" version="0.9.3" />
+  </dependency>
+  <dependency name="repo_format" linkPath="../_repo/deps/repo_format">
+    <package name="repo_format" version="2.19.2" />
+  </dependency>
+  <dependency name="repo_package" linkPath="../_repo/deps/repo_package">
+    <package name="repo_package" version="6.3.1" />
+  </dependency>
+  <dependency name="repo_source" linkPath="../_repo/deps/repo_source" tags="non-redist">
+    <package name="repo_source" version="0.6.5" />
+  </dependency>
+  <dependency name="repo_test" linkPath="../_repo/deps/repo_test">
+    <package name="repo_test" version="2.46.1" />
+  </dependency>
+  <dependency name="repo_kit_tools" linkPath="../_repo/deps/repo_kit_tools">
+    <package name="repo_kit_tools" version="1.20.4" />
+  </dependency>
+</project>

@@ -1,0 +1,857 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (0, 0, 50000)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (1221.4228844109684, 801.2399822689306, 539.2659293227293)
+                double3 target = (294.6583731968607, -179.99438726426115, -117.13938215900032)
+            }
+            dictionary Right = {
+                double3 position = (-50000, 0, 0)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 50000, 0)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./optimizeMaterialsPrimvars.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary renderSettings = {
+            token "rtx:rendermode" = "PathTracing"
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def Xform "Cube1"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Cube1/MaterialA> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Material "MaterialA"
+        {
+            token outputs:mdl:displacement.connect = </World/Cube1/MaterialA/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Cube1/MaterialA/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Cube1/MaterialA/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.077551685, 0.11716807, 0.835443)
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+    }
+
+    def Xform "Cube2"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, -200)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Cube2/MaterialB> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Material "MaterialB"
+        {
+            token outputs:mdl:displacement.connect = </World/Cube2/MaterialB/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Cube2/MaterialB/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Cube2/MaterialB/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.7257384, 0.08267904, 0.08267904)
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+    }
+
+    def Xform "Cube3"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, -400)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Cube3/MaterialC> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Material "MaterialC"
+        {
+            token outputs:mdl:displacement.connect = </World/Cube3/MaterialC/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Cube3/MaterialC/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Cube3/MaterialC/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.18233301, 0.81856537, 0.113977455)
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+    }
+
+    def Xform "Cube4"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-200, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Cube4/MaterialBlueOpacity> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Material "MaterialBlueOpacity"
+        {
+            token outputs:mdl:displacement.connect = </World/Cube4/MaterialBlueOpacity/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Cube4/MaterialBlueOpacity/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Cube4/MaterialBlueOpacity/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.077551685, 0.11716807, 0.835443)
+                bool inputs:enable_opacity = 1
+                float inputs:opacity_constant = 0.5
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+    }
+
+    def Xform "Cube5"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-200, 0, -200)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Cube5/MaterialRedOpacity> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Material "MaterialRedOpacity"
+        {
+            token outputs:mdl:displacement.connect = </World/Cube5/MaterialRedOpacity/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Cube5/MaterialRedOpacity/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Cube5/MaterialRedOpacity/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.7257384, 0.08267904, 0.08267904)
+                bool inputs:enable_opacity = 1
+                float inputs:opacity_constant = 0.29999998
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+    }
+
+    def Xform "Cube6"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-400, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Cube6/MaterialYellowTint> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Material "MaterialYellowTint"
+        {
+            token outputs:mdl:displacement.connect = </World/Cube6/MaterialYellowTint/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Cube6/MaterialYellowTint/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Cube6/MaterialYellowTint/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.74104893, 0.89873415, 0.06825829)
+                color3f inputs:diffuse_tint = (0.9113924, 0.21919566, 0.21919566)
+                bool inputs:enable_opacity = 1
+                float inputs:opacity_constant = 0.5
+                float inputs:opacity_threshold = 0
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+    }
+
+    def Xform "Cube7" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = None (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 200)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Looks/MaterialReader1> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            color3f primvars:diffuse_color_constant = (0.9, 0.2, 0.2)
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+    }
+
+    def Xform "Cube8"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-200, 0, 200)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Looks/MaterialReader2> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            color3f primvars:diffuse_color_constant = (0.2, 0.6, 0.2)
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+    }
+
+    def Xform "InheritedCubes" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/InheritedCubes/MaterialGreen> (
+            bindMaterialAs = "strongerThanDescendants"
+        )
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (200, -50, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Cube1" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Looks/LooksMaterialA> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 50, -100)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Mesh "Cube2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+            rel material:binding = </World/Looks/LooksMaterialA> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+            texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 50, 100)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+
+        def Material "MaterialGreen"
+        {
+            token outputs:mdl:displacement.connect = </World/InheritedCubes/MaterialGreen/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/InheritedCubes/MaterialGreen/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/InheritedCubes/MaterialGreen/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.0, 1.0, 0.0)
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+    }
+
+    def Xform "Looks" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/Looks/LooksMaterialA> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+
+        def Material "LooksMaterialA"
+        {
+            token outputs:mdl:displacement.connect = </World/Looks/LooksMaterialA/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Looks/LooksMaterialA/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Looks/LooksMaterialA/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.09327208, 0.71308017, 0.70382935)
+                bool inputs:enable_emission = 1
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+
+        def Material "LooksMaterialB"
+        {
+            token outputs:mdl:displacement.connect = </World/Looks/LooksMaterialB/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Looks/LooksMaterialB/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Looks/LooksMaterialB/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0.79324895, 0.1338817, 0.71943945)
+                bool inputs:enable_emission = 0
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+        }
+
+        def Material "MaterialReader1"
+        {
+            token outputs:mdl:displacement.connect = </World/Looks/MaterialReader1/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Looks/MaterialReader1/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Looks/MaterialReader1/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                float inputs:albedo_add = 0.7
+                color3f inputs:diffuse_color_constant.connect = </World/Looks/MaterialReader1/PrimvarReader_diffuse.outputs:result>
+                bool inputs:enable_emission = 0
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+
+            def Shader "PrimvarReader_diffuse"
+            {
+                uniform token info:id = "UsdPrimvarReader_float3"
+                string inputs:varname = "diffuse_color_constant"
+                color3f outputs:result
+            }
+        }
+
+        def Material "MaterialReader2"
+        {
+            token outputs:mdl:displacement.connect = </World/Looks/MaterialReader2/Shader.outputs:out>
+            token outputs:mdl:surface.connect = </World/Looks/MaterialReader2/Shader.outputs:out>
+            token outputs:mdl:volume.connect = </World/Looks/MaterialReader2/Shader.outputs:out>
+
+            def Shader "Shader"
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                float inputs:albedo_add = 0.4
+                color3f inputs:diffuse_color_constant.connect = </World/Looks/MaterialReader2/PrimvarReader_diffuse.outputs:result>
+                bool inputs:enable_emission = 0
+                token outputs:out (
+                    renderType = "material"
+                )
+            }
+
+            def Shader "PrimvarReader_diffuse"
+            {
+                uniform token info:id = "UsdPrimvarReader_float3"
+                string inputs:varname = "diffuse_color_constant"
+                color3f outputs:result
+            }
+        }
+    }
+
+    over "Prototypes"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Xform "PrototypeCube" (
+            instanceable = false
+        )
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Mesh "Cube" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+                rel material:binding = </World/Prototypes/PrototypeCube/PrototypeMaterial1> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 50, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def Material "PrototypeMaterial1"
+            {
+                token outputs:mdl:displacement.connect = </World/Prototypes/PrototypeCube/PrototypeMaterial1/Shader.outputs:out>
+                token outputs:mdl:surface.connect = </World/Prototypes/PrototypeCube/PrototypeMaterial1/Shader.outputs:out>
+                token outputs:mdl:volume.connect = </World/Prototypes/PrototypeCube/PrototypeMaterial1/Shader.outputs:out>
+
+                def Shader "Shader"
+                {
+                    uniform token info:implementationSource = "sourceAsset"
+                    uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                    uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                    color3f inputs:diffuse_color_constant = (0.4972393, 0.09503462, 0.6624472)
+                    token outputs:out (
+                        renderType = "material"
+                    )
+                }
+            }
+        }
+
+        def Xform "PrototypeCone"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Mesh "Cone" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -50), (50, 49.9995, 50)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+                int[] faceVertexIndices = [0, 64, 65, 1, 1, 65, 66, 2, 2, 66, 67, 3, 3, 67, 68, 4, 4, 68, 69, 5, 5, 69, 70, 6, 6, 70, 71, 7, 7, 71, 72, 8, 8, 72, 73, 9, 9, 73, 74, 10, 10, 74, 75, 11, 11, 75, 76, 12, 12, 76, 77, 13, 13, 77, 78, 14, 14, 78, 79, 15, 15, 79, 80, 16, 16, 80, 81, 17, 17, 81, 82, 18, 18, 82, 83, 19, 19, 83, 84, 20, 20, 84, 85, 21, 21, 85, 86, 22, 22, 86, 87, 23, 23, 87, 88, 24, 24, 88, 89, 25, 25, 89, 90, 26, 26, 90, 91, 27, 27, 91, 92, 28, 28, 92, 93, 29, 29, 93, 94, 30, 30, 94, 95, 31, 31, 95, 96, 32, 32, 96, 97, 33, 33, 97, 98, 34, 34, 98, 99, 35, 35, 99, 100, 36, 36, 100, 101, 37, 37, 101, 102, 38, 38, 102, 103, 39, 39, 103, 104, 40, 40, 104, 105, 41, 41, 105, 106, 42, 42, 106, 107, 43, 43, 107, 108, 44, 44, 108, 109, 45, 45, 109, 110, 46, 46, 110, 111, 47, 47, 111, 112, 48, 48, 112, 113, 49, 49, 113, 114, 50, 50, 114, 115, 51, 51, 115, 116, 52, 52, 116, 117, 53, 53, 117, 118, 54, 54, 118, 119, 55, 55, 119, 120, 56, 56, 120, 121, 57, 57, 121, 122, 58, 58, 122, 123, 59, 59, 123, 124, 60, 60, 124, 125, 61, 61, 125, 126, 62, 62, 126, 127, 63, 63, 127, 64, 0, 64, 128, 129, 65, 65, 129, 130, 66, 66, 130, 131, 67, 67, 131, 132, 68, 68, 132, 133, 69, 69, 133, 134, 70, 70, 134, 135, 71, 71, 135, 136, 72, 72, 136, 137, 73, 73, 137, 138, 74, 74, 138, 139, 75, 75, 139, 140, 76, 76, 140, 141, 77, 77, 141, 142, 78, 78, 142, 143, 79, 79, 143, 144, 80, 80, 144, 145, 81, 81, 145, 146, 82, 82, 146, 147, 83, 83, 147, 148, 84, 84, 148, 149, 85, 85, 149, 150, 86, 86, 150, 151, 87, 87, 151, 152, 88, 88, 152, 153, 89, 89, 153, 154, 90, 90, 154, 155, 91, 91, 155, 156, 92, 92, 156, 157, 93, 93, 157, 158, 94, 94, 158, 159, 95, 95, 159, 160, 96, 96, 160, 161, 97, 97, 161, 162, 98, 98, 162, 163, 99, 99, 163, 164, 100, 100, 164, 165, 101, 101, 165, 166, 102, 102, 166, 167, 103, 103, 167, 168, 104, 104, 168, 169, 105, 105, 169, 170, 106, 106, 170, 171, 107, 107, 171, 172, 108, 108, 172, 173, 109, 109, 173, 174, 110, 110, 174, 175, 111, 111, 175, 176, 112, 112, 176, 177, 113, 113, 177, 178, 114, 114, 178, 179, 115, 115, 179, 180, 116, 116, 180, 181, 117, 117, 181, 182, 118, 118, 182, 183, 119, 119, 183, 184, 120, 120, 184, 185, 121, 121, 185, 186, 122, 122, 186, 187, 123, 123, 187, 188, 124, 124, 188, 189, 125, 125, 189, 190, 126, 126, 190, 191, 127, 127, 191, 128, 64, 128, 192, 193, 129, 129, 193, 194, 130, 130, 194, 195, 131, 131, 195, 196, 132, 132, 196, 197, 133, 133, 197, 198, 134, 134, 198, 199, 135, 135, 199, 200, 136, 136, 200, 201, 137, 137, 201, 202, 138, 138, 202, 203, 139, 139, 203, 204, 140, 140, 204, 205, 141, 141, 205, 206, 142, 142, 206, 207, 143, 143, 207, 208, 144, 144, 208, 209, 145, 145, 209, 210, 146, 146, 210, 211, 147, 147, 211, 212, 148, 148, 212, 213, 149, 149, 213, 214, 150, 150, 214, 215, 151, 151, 215, 216, 152, 152, 216, 217, 153, 153, 217, 218, 154, 154, 218, 219, 155, 155, 219, 220, 156, 156, 220, 221, 157, 157, 221, 222, 158, 158, 222, 223, 159, 159, 223, 224, 160, 160, 224, 225, 161, 161, 225, 226, 162, 162, 226, 227, 163, 163, 227, 228, 164, 164, 228, 229, 165, 165, 229, 230, 166, 166, 230, 231, 167, 167, 231, 232, 168, 168, 232, 233, 169, 169, 233, 234, 170, 170, 234, 235, 171, 171, 235, 236, 172, 172, 236, 237, 173, 173, 237, 238, 174, 174, 238, 239, 175, 175, 239, 240, 176, 176, 240, 241, 177, 177, 241, 242, 178, 178, 242, 243, 179, 179, 243, 244, 180, 180, 244, 245, 181, 181, 245, 246, 182, 182, 246, 247, 183, 183, 247, 248, 184, 184, 248, 249, 185, 185, 249, 250, 186, 186, 250, 251, 187, 187, 251, 252, 188, 188, 252, 253, 189, 189, 253, 254, 190, 190, 254, 255, 191, 191, 255, 192, 128, 192, 256, 193, 193, 256, 194, 194, 256, 195, 195, 256, 196, 196, 256, 197, 197, 256, 198, 198, 256, 199, 199, 256, 200, 200, 256, 201, 201, 256, 202, 202, 256, 203, 203, 256, 204, 204, 256, 205, 205, 256, 206, 206, 256, 207, 207, 256, 208, 208, 256, 209, 209, 256, 210, 210, 256, 211, 211, 256, 212, 212, 256, 213, 213, 256, 214, 214, 256, 215, 215, 256, 216, 216, 256, 217, 217, 256, 218, 218, 256, 219, 219, 256, 220, 220, 256, 221, 221, 256, 222, 222, 256, 223, 223, 256, 224, 224, 256, 225, 225, 256, 226, 226, 256, 227, 227, 256, 228, 228, 256, 229, 229, 256, 230, 230, 256, 231, 231, 256, 232, 232, 256, 233, 233, 256, 234, 234, 256, 235, 235, 256, 236, 236, 256, 237, 237, 256, 238, 238, 256, 239, 239, 256, 240, 240, 256, 241, 241, 256, 242, 242, 256, 243, 243, 256, 244, 244, 256, 245, 245, 256, 246, 246, 256, 247, 247, 256, 248, 248, 256, 249, 249, 256, 250, 250, 256, 251, 251, 256, 252, 252, 256, 253, 253, 256, 254, 254, 256, 255, 255, 256, 192, 0, 1, 257, 1, 2, 257, 2, 3, 257, 3, 4, 257, 4, 5, 257, 5, 6, 257, 6, 7, 257, 7, 8, 257, 8, 9, 257, 9, 10, 257, 10, 11, 257, 11, 12, 257, 12, 13, 257, 13, 14, 257, 14, 15, 257, 15, 16, 257, 16, 17, 257, 17, 18, 257, 18, 19, 257, 19, 20, 257, 20, 21, 257, 21, 22, 257, 22, 23, 257, 23, 24, 257, 24, 25, 257, 25, 26, 257, 26, 27, 257, 27, 28, 257, 28, 29, 257, 29, 30, 257, 30, 31, 257, 31, 32, 257, 32, 33, 257, 33, 34, 257, 34, 35, 257, 35, 36, 257, 36, 37, 257, 37, 38, 257, 38, 39, 257, 39, 40, 257, 40, 41, 257, 41, 42, 257, 42, 43, 257, 43, 44, 257, 44, 45, 257, 45, 46, 257, 46, 47, 257, 47, 48, 257, 48, 49, 257, 49, 50, 257, 50, 51, 257, 51, 52, 257, 52, 53, 257, 53, 54, 257, 54, 55, 257, 55, 56, 257, 56, 57, 257, 57, 58, 257, 58, 59, 257, 59, 60, 257, 60, 61, 257, 61, 62, 257, 62, 63, 257, 63, 0, 257]
+                rel material:binding = </World/Prototypes/PrototypeCone/PrototypeMaterial2> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+                normal3f[] normals = [(0.8944272, 0.4472136, 0), (0.8944271, 0.44721356, 0), (0.8901202, 0.44721356, 0.08766919), (0.89012027, 0.4472136, 0.087669194), (0.89012027, 0.4472136, 0.087669194), (0.8901202, 0.44721356, 0.08766919), (0.87724096, 0.44721356, 0.17449406), (0.8772411, 0.44721362, 0.1744941), (0.8772411, 0.44721362, 0.1744941), (0.87724096, 0.44721356, 0.17449406), (0.85591346, 0.44721362, 0.25963852), (0.85591346, 0.4472136, 0.25963852), (0.85591346, 0.4472136, 0.25963852), (0.85591346, 0.44721362, 0.25963852), (0.826343, 0.44721362, 0.34228247), (0.826343, 0.44721362, 0.34228247), (0.826343, 0.44721362, 0.34228247), (0.826343, 0.44721362, 0.34228247), (0.78881437, 0.44721362, 0.42163005), (0.78881437, 0.44721362, 0.42163005), (0.78881437, 0.44721362, 0.42163005), (0.78881437, 0.44721362, 0.42163005), (0.743689, 0.44721362, 0.4969171), (0.743689, 0.4472136, 0.49691713), (0.743689, 0.4472136, 0.49691713), (0.743689, 0.44721362, 0.4969171), (0.6914016, 0.44721362, 0.5674186), (0.6914016, 0.4472136, 0.56741863), (0.6914016, 0.4472136, 0.56741863), (0.6914016, 0.44721362, 0.5674186), (0.6324555, 0.44721356, 0.6324555), (0.6324555, 0.44721362, 0.6324555), (0.6324555, 0.44721362, 0.6324555), (0.6324555, 0.44721356, 0.6324555), (0.5674186, 0.44721362, 0.6914016), (0.56741863, 0.4472136, 0.6914016), (0.56741863, 0.4472136, 0.6914016), (0.5674186, 0.44721362, 0.6914016), (0.4969171, 0.44721362, 0.743689), (0.49691713, 0.4472136, 0.743689), (0.49691713, 0.4472136, 0.743689), (0.4969171, 0.44721362, 0.743689), (0.42163005, 0.44721362, 0.78881437), (0.42163005, 0.44721362, 0.78881437), (0.42163005, 0.44721362, 0.78881437), (0.42163005, 0.44721362, 0.78881437), (0.34228247, 0.44721362, 0.826343), (0.34228247, 0.44721362, 0.826343), (0.34228247, 0.44721362, 0.826343), (0.34228247, 0.44721362, 0.826343), (0.25963852, 0.44721362, 0.85591346), (0.25963852, 0.4472136, 0.85591346), (0.25963852, 0.4472136, 0.85591346), (0.25963852, 0.44721362, 0.85591346), (0.17449409, 0.44721362, 0.8772411), (0.17449409, 0.4472136, 0.877241), (0.17449409, 0.4472136, 0.877241), (0.17449409, 0.44721362, 0.8772411), (0.08766919, 0.44721356, 0.8901202), (0.0876692, 0.44721362, 0.8901203), (0.0876692, 0.44721362, 0.8901203), (0.08766919, 0.44721356, 0.8901202), (5.4767863e-17, 0.44721356, 0.8944271), (5.4767867e-17, 0.4472136, 0.8944272), (5.4767867e-17, 0.4472136, 0.8944272), (5.4767863e-17, 0.44721356, 0.8944271), (-0.08766919, 0.44721356, 0.8901202), (-0.0876692, 0.44721362, 0.8901203), (-0.0876692, 0.44721362, 0.8901203), (-0.08766919, 0.44721356, 0.8901202), (-0.17449409, 0.44721362, 0.8772411), (-0.17449409, 0.4472136, 0.877241), (-0.17449409, 0.4472136, 0.877241), (-0.17449409, 0.44721362, 0.8772411), (-0.25963852, 0.44721362, 0.85591346), (-0.25963852, 0.4472136, 0.85591346), (-0.25963852, 0.4472136, 0.85591346), (-0.25963852, 0.44721362, 0.85591346), (-0.34228247, 0.44721362, 0.826343), (-0.34228247, 0.44721362, 0.826343), (-0.34228247, 0.44721362, 0.826343), (-0.34228247, 0.44721362, 0.826343), (-0.42163005, 0.44721362, 0.78881437), (-0.42163005, 0.44721362, 0.78881437), (-0.42163005, 0.44721362, 0.78881437), (-0.42163005, 0.44721362, 0.78881437), (-0.4969171, 0.44721362, 0.743689), (-0.49691713, 0.4472136, 0.743689), (-0.49691713, 0.4472136, 0.743689), (-0.4969171, 0.44721362, 0.743689), (-0.5674186, 0.44721362, 0.6914016), (-0.56741863, 0.4472136, 0.6914016), (-0.56741863, 0.4472136, 0.6914016), (-0.5674186, 0.44721362, 0.6914016), (-0.6324555, 0.44721356, 0.6324555), (-0.6324555, 0.44721362, 0.6324555), (-0.6324555, 0.44721362, 0.6324555), (-0.6324555, 0.44721356, 0.6324555), (-0.6914016, 0.44721362, 0.5674186), (-0.6914016, 0.4472136, 0.56741863), (-0.6914016, 0.4472136, 0.56741863), (-0.6914016, 0.44721362, 0.5674186), (-0.743689, 0.44721362, 0.4969171), (-0.743689, 0.4472136, 0.49691713), (-0.743689, 0.4472136, 0.49691713), (-0.743689, 0.44721362, 0.4969171), (-0.78881437, 0.44721362, 0.42163005), (-0.78881437, 0.44721362, 0.42163005), (-0.78881437, 0.44721362, 0.42163005), (-0.78881437, 0.44721362, 0.42163005), (-0.826343, 0.44721362, 0.34228247), (-0.826343, 0.44721362, 0.34228247), (-0.826343, 0.44721362, 0.34228247), (-0.826343, 0.44721362, 0.34228247), (-0.85591346, 0.44721362, 0.25963852), (-0.85591346, 0.4472136, 0.25963852), (-0.85591346, 0.4472136, 0.25963852), (-0.85591346, 0.44721362, 0.25963852), (-0.87724096, 0.44721356, 0.17449406), (-0.8772411, 0.44721362, 0.1744941), (-0.8772411, 0.44721362, 0.1744941), (-0.87724096, 0.44721356, 0.17449406), (-0.8901202, 0.44721356, 0.08766919), (-0.89012027, 0.4472136, 0.087669194), (-0.89012027, 0.4472136, 0.087669194), (-0.8901202, 0.44721356, 0.08766919), (-0.8944271, 0.44721356, 1.09535727e-16), (-0.8944272, 0.4472136, 1.0953573e-16), (-0.8944272, 0.4472136, 1.0953573e-16), (-0.8944271, 0.44721356, 1.09535727e-16), (-0.8901202, 0.44721356, -0.08766919), (-0.89012027, 0.4472136, -0.087669194), (-0.89012027, 0.4472136, -0.087669194), (-0.8901202, 0.44721356, -0.08766919), (-0.87724096, 0.44721356, -0.17449406), (-0.8772411, 0.44721362, -0.1744941), (-0.8772411, 0.44721362, -0.1744941), (-0.87724096, 0.44721356, -0.17449406), (-0.85591346, 0.44721362, -0.25963852), (-0.85591346, 0.4472136, -0.25963852), (-0.85591346, 0.4472136, -0.25963852), (-0.85591346, 0.44721362, -0.25963852), (-0.826343, 0.44721362, -0.34228247), (-0.826343, 0.44721362, -0.34228247), (-0.826343, 0.44721362, -0.34228247), (-0.826343, 0.44721362, -0.34228247), (-0.78881437, 0.44721362, -0.42163005), (-0.78881437, 0.44721362, -0.42163005), (-0.78881437, 0.44721362, -0.42163005), (-0.78881437, 0.44721362, -0.42163005), (-0.743689, 0.44721362, -0.4969171), (-0.743689, 0.4472136, -0.49691713), (-0.743689, 0.4472136, -0.49691713), (-0.743689, 0.44721362, -0.4969171), (-0.6914016, 0.44721362, -0.5674186), (-0.6914016, 0.4472136, -0.56741863), (-0.6914016, 0.4472136, -0.56741863), (-0.6914016, 0.44721362, -0.5674186), (-0.6324555, 0.44721356, -0.6324555), (-0.6324555, 0.44721362, -0.6324555), (-0.6324555, 0.44721362, -0.6324555), (-0.6324555, 0.44721356, -0.6324555), (-0.5674186, 0.44721362, -0.6914016), (-0.56741863, 0.4472136, -0.6914016), (-0.56741863, 0.4472136, -0.6914016), (-0.5674186, 0.44721362, -0.6914016), (-0.4969171, 0.44721362, -0.743689), (-0.49691713, 0.4472136, -0.743689), (-0.49691713, 0.4472136, -0.743689), (-0.4969171, 0.44721362, -0.743689), (-0.42163005, 0.44721362, -0.78881437), (-0.42163005, 0.44721362, -0.78881437), (-0.42163005, 0.44721362, -0.78881437), (-0.42163005, 0.44721362, -0.78881437), (-0.34228247, 0.44721362, -0.826343), (-0.34228247, 0.44721362, -0.826343), (-0.34228247, 0.44721362, -0.826343), (-0.34228247, 0.44721362, -0.826343), (-0.25963852, 0.44721362, -0.85591346), (-0.25963852, 0.4472136, -0.85591346), (-0.25963852, 0.4472136, -0.85591346), (-0.25963852, 0.44721362, -0.85591346), (-0.17449409, 0.44721362, -0.8772411), (-0.17449409, 0.4472136, -0.877241), (-0.17449409, 0.4472136, -0.877241), (-0.17449409, 0.44721362, -0.8772411), (-0.08766919, 0.44721356, -0.8901202), (-0.0876692, 0.44721362, -0.8901203), (-0.0876692, 0.44721362, -0.8901203), (-0.08766919, 0.44721356, -0.8901202), (-1.6430359e-16, 0.44721356, -0.8944271), (-1.6430361e-16, 0.4472136, -0.8944272), (-1.6430361e-16, 0.4472136, -0.8944272), (-1.6430359e-16, 0.44721356, -0.8944271), (0.08766919, 0.44721356, -0.8901202), (0.0876692, 0.44721362, -0.8901203), (0.0876692, 0.44721362, -0.8901203), (0.08766919, 0.44721356, -0.8901202), (0.17449409, 0.44721362, -0.8772411), (0.17449409, 0.4472136, -0.877241), (0.17449409, 0.4472136, -0.877241), (0.17449409, 0.44721362, -0.8772411), (0.25963852, 0.44721362, -0.85591346), (0.25963852, 0.4472136, -0.85591346), (0.25963852, 0.4472136, -0.85591346), (0.25963852, 0.44721362, -0.85591346), (0.34228247, 0.44721362, -0.826343), (0.34228247, 0.44721362, -0.826343), (0.34228247, 0.44721362, -0.826343), (0.34228247, 0.44721362, -0.826343), (0.42163005, 0.44721362, -0.78881437), (0.42163005, 0.44721362, -0.78881437), (0.42163005, 0.44721362, -0.78881437), (0.42163005, 0.44721362, -0.78881437), (0.4969171, 0.44721362, -0.743689), (0.49691713, 0.4472136, -0.743689), (0.49691713, 0.4472136, -0.743689), (0.4969171, 0.44721362, -0.743689), (0.5674186, 0.44721362, -0.6914016), (0.56741863, 0.4472136, -0.6914016), (0.56741863, 0.4472136, -0.6914016), (0.5674186, 0.44721362, -0.6914016), (0.6324555, 0.44721356, -0.6324555), (0.6324555, 0.44721362, -0.6324555), (0.6324555, 0.44721362, -0.6324555), (0.6324555, 0.44721356, -0.6324555), (0.6914016, 0.44721362, -0.5674186), (0.6914016, 0.4472136, -0.56741863), (0.6914016, 0.4472136, -0.56741863), (0.6914016, 0.44721362, -0.5674186), (0.743689, 0.44721362, -0.4969171), (0.743689, 0.4472136, -0.49691713), (0.743689, 0.4472136, -0.49691713), (0.743689, 0.44721362, -0.4969171), (0.78881437, 0.44721362, -0.42163005), (0.78881437, 0.44721362, -0.42163005), (0.78881437, 0.44721362, -0.42163005), (0.78881437, 0.44721362, -0.42163005), (0.826343, 0.44721362, -0.34228247), (0.826343, 0.44721362, -0.34228247), (0.826343, 0.44721362, -0.34228247), (0.826343, 0.44721362, -0.34228247), (0.85591346, 0.44721362, -0.25963852), (0.85591346, 0.4472136, -0.25963852), (0.85591346, 0.4472136, -0.25963852), (0.85591346, 0.44721362, -0.25963852), (0.87724096, 0.44721356, -0.17449406), (0.8772411, 0.44721362, -0.1744941), (0.8772411, 0.44721362, -0.1744941), (0.87724096, 0.44721356, -0.17449406), (0.8901202, 0.44721356, -0.08766919), (0.89012027, 0.4472136, -0.087669194), (0.89012027, 0.4472136, -0.087669194), (0.8901202, 0.44721356, -0.08766919), (0.8944271, 0.44721356, 0), (0.8944272, 0.4472136, 0), (0.8944271, 0.44721356, 0), (0.8944272, 0.4472136, 0), (0.89012027, 0.4472136, 0.08766919), (0.8901202, 0.44721356, 0.08766919), (0.8901202, 0.44721356, 0.08766919), (0.89012027, 0.4472136, 0.08766919), (0.8772411, 0.4472136, 0.17449409), (0.87724096, 0.44721356, 0.17449406), (0.87724096, 0.44721356, 0.17449406), (0.8772411, 0.4472136, 0.17449409), (0.85591346, 0.4472136, 0.25963852), (0.85591346, 0.44721362, 0.25963852), (0.85591346, 0.44721362, 0.25963852), (0.85591346, 0.4472136, 0.25963852), (0.826343, 0.4472136, 0.34228247), (0.826343, 0.44721362, 0.34228247), (0.826343, 0.44721362, 0.34228247), (0.826343, 0.4472136, 0.34228247), (0.78881437, 0.44721365, 0.42163008), (0.78881437, 0.44721362, 0.42163005), (0.78881437, 0.44721362, 0.42163005), (0.78881437, 0.44721365, 0.42163008), (0.74368906, 0.4472136, 0.49691716), (0.743689, 0.44721362, 0.4969171), (0.743689, 0.44721362, 0.4969171), (0.74368906, 0.4472136, 0.49691716), (0.6914016, 0.4472136, 0.5674186), (0.6914016, 0.44721362, 0.5674186), (0.6914016, 0.44721362, 0.5674186), (0.6914016, 0.4472136, 0.5674186), (0.6324555, 0.4472136, 0.6324555), (0.6324555, 0.44721356, 0.6324555), (0.6324555, 0.44721356, 0.6324555), (0.6324555, 0.4472136, 0.6324555), (0.5674186, 0.4472136, 0.6914016), (0.5674186, 0.44721362, 0.6914016), (0.5674186, 0.44721362, 0.6914016), (0.5674186, 0.4472136, 0.6914016), (0.49691716, 0.4472136, 0.74368906), (0.4969171, 0.44721362, 0.743689), (0.4969171, 0.44721362, 0.743689), (0.49691716, 0.4472136, 0.74368906), (0.42163008, 0.44721365, 0.78881437), (0.42163005, 0.44721362, 0.78881437), (0.42163005, 0.44721362, 0.78881437), (0.42163008, 0.44721365, 0.78881437), (0.34228247, 0.4472136, 0.826343), (0.34228247, 0.44721362, 0.826343), (0.34228247, 0.44721362, 0.826343), (0.34228247, 0.4472136, 0.826343), (0.25963852, 0.4472136, 0.85591346), (0.25963852, 0.44721362, 0.85591346), (0.25963852, 0.44721362, 0.85591346), (0.25963852, 0.4472136, 0.85591346), (0.17449409, 0.4472136, 0.8772411), (0.17449409, 0.44721362, 0.8772411), (0.17449409, 0.44721362, 0.8772411), (0.17449409, 0.4472136, 0.8772411), (0.08766919, 0.4472136, 0.89012027), (0.08766919, 0.44721356, 0.8901202), (0.08766919, 0.44721356, 0.8901202), (0.08766919, 0.4472136, 0.89012027), (5.476787e-17, 0.4472136, 0.8944272), (5.4767863e-17, 0.44721356, 0.8944271), (5.4767863e-17, 0.44721356, 0.8944271), (5.476787e-17, 0.4472136, 0.8944272), (-0.08766919, 0.4472136, 0.89012027), (-0.08766919, 0.44721356, 0.8901202), (-0.08766919, 0.44721356, 0.8901202), (-0.08766919, 0.4472136, 0.89012027), (-0.17449409, 0.4472136, 0.8772411), (-0.17449409, 0.44721362, 0.8772411), (-0.17449409, 0.44721362, 0.8772411), (-0.17449409, 0.4472136, 0.8772411), (-0.25963852, 0.4472136, 0.85591346), (-0.25963852, 0.44721362, 0.85591346), (-0.25963852, 0.44721362, 0.85591346), (-0.25963852, 0.4472136, 0.85591346), (-0.34228247, 0.4472136, 0.826343), (-0.34228247, 0.44721362, 0.826343), (-0.34228247, 0.44721362, 0.826343), (-0.34228247, 0.4472136, 0.826343), (-0.42163008, 0.44721365, 0.78881437), (-0.42163005, 0.44721362, 0.78881437), (-0.42163005, 0.44721362, 0.78881437), (-0.42163008, 0.44721365, 0.78881437), (-0.49691716, 0.4472136, 0.74368906), (-0.4969171, 0.44721362, 0.743689), (-0.4969171, 0.44721362, 0.743689), (-0.49691716, 0.4472136, 0.74368906), (-0.5674186, 0.4472136, 0.6914016), (-0.5674186, 0.44721362, 0.6914016), (-0.5674186, 0.44721362, 0.6914016), (-0.5674186, 0.4472136, 0.6914016), (-0.6324555, 0.4472136, 0.6324555), (-0.6324555, 0.44721356, 0.6324555), (-0.6324555, 0.44721356, 0.6324555), (-0.6324555, 0.4472136, 0.6324555), (-0.6914016, 0.4472136, 0.5674186), (-0.6914016, 0.44721362, 0.5674186), (-0.6914016, 0.44721362, 0.5674186), (-0.6914016, 0.4472136, 0.5674186), (-0.74368906, 0.4472136, 0.49691716), (-0.743689, 0.44721362, 0.4969171), (-0.743689, 0.44721362, 0.4969171), (-0.74368906, 0.4472136, 0.49691716), (-0.78881437, 0.44721365, 0.42163008), (-0.78881437, 0.44721362, 0.42163005), (-0.78881437, 0.44721362, 0.42163005), (-0.78881437, 0.44721365, 0.42163008), (-0.826343, 0.4472136, 0.34228247), (-0.826343, 0.44721362, 0.34228247), (-0.826343, 0.44721362, 0.34228247), (-0.826343, 0.4472136, 0.34228247), (-0.85591346, 0.4472136, 0.25963852), (-0.85591346, 0.44721362, 0.25963852), (-0.85591346, 0.44721362, 0.25963852), (-0.85591346, 0.4472136, 0.25963852), (-0.8772411, 0.4472136, 0.17449409), (-0.87724096, 0.44721356, 0.17449406), (-0.87724096, 0.44721356, 0.17449406), (-0.8772411, 0.4472136, 0.17449409), (-0.89012027, 0.4472136, 0.08766919), (-0.8901202, 0.44721356, 0.08766919), (-0.8901202, 0.44721356, 0.08766919), (-0.89012027, 0.4472136, 0.08766919), (-0.8944272, 0.4472136, 1.0953574e-16), (-0.8944271, 0.44721356, 1.09535727e-16), (-0.8944271, 0.44721356, 1.09535727e-16), (-0.8944272, 0.4472136, 1.0953574e-16), (-0.89012027, 0.4472136, -0.08766919), (-0.8901202, 0.44721356, -0.08766919), (-0.8901202, 0.44721356, -0.08766919), (-0.89012027, 0.4472136, -0.08766919), (-0.8772411, 0.4472136, -0.17449409), (-0.87724096, 0.44721356, -0.17449406), (-0.87724096, 0.44721356, -0.17449406), (-0.8772411, 0.4472136, -0.17449409), (-0.85591346, 0.4472136, -0.25963852), (-0.85591346, 0.44721362, -0.25963852), (-0.85591346, 0.44721362, -0.25963852), (-0.85591346, 0.4472136, -0.25963852), (-0.826343, 0.4472136, -0.34228247), (-0.826343, 0.44721362, -0.34228247), (-0.826343, 0.44721362, -0.34228247), (-0.826343, 0.4472136, -0.34228247), (-0.78881437, 0.44721365, -0.42163008), (-0.78881437, 0.44721362, -0.42163005), (-0.78881437, 0.44721362, -0.42163005), (-0.78881437, 0.44721365, -0.42163008), (-0.74368906, 0.4472136, -0.49691716), (-0.743689, 0.44721362, -0.4969171), (-0.743689, 0.44721362, -0.4969171), (-0.74368906, 0.4472136, -0.49691716), (-0.6914016, 0.4472136, -0.5674186), (-0.6914016, 0.44721362, -0.5674186), (-0.6914016, 0.44721362, -0.5674186), (-0.6914016, 0.4472136, -0.5674186), (-0.6324555, 0.4472136, -0.6324555), (-0.6324555, 0.44721356, -0.6324555), (-0.6324555, 0.44721356, -0.6324555), (-0.6324555, 0.4472136, -0.6324555), (-0.5674186, 0.4472136, -0.6914016), (-0.5674186, 0.44721362, -0.6914016), (-0.5674186, 0.44721362, -0.6914016), (-0.5674186, 0.4472136, -0.6914016), (-0.49691716, 0.4472136, -0.74368906), (-0.4969171, 0.44721362, -0.743689), (-0.4969171, 0.44721362, -0.743689), (-0.49691716, 0.4472136, -0.74368906), (-0.42163008, 0.44721365, -0.78881437), (-0.42163005, 0.44721362, -0.78881437), (-0.42163005, 0.44721362, -0.78881437), (-0.42163008, 0.44721365, -0.78881437), (-0.34228247, 0.4472136, -0.826343), (-0.34228247, 0.44721362, -0.826343), (-0.34228247, 0.44721362, -0.826343), (-0.34228247, 0.4472136, -0.826343), (-0.25963852, 0.4472136, -0.85591346), (-0.25963852, 0.44721362, -0.85591346), (-0.25963852, 0.44721362, -0.85591346), (-0.25963852, 0.4472136, -0.85591346), (-0.17449409, 0.4472136, -0.8772411), (-0.17449409, 0.44721362, -0.8772411), (-0.17449409, 0.44721362, -0.8772411), (-0.17449409, 0.4472136, -0.8772411), (-0.08766919, 0.4472136, -0.89012027), (-0.08766919, 0.44721356, -0.8901202), (-0.08766919, 0.44721356, -0.8901202), (-0.08766919, 0.4472136, -0.89012027), (-1.6430361e-16, 0.4472136, -0.8944272), (-1.6430359e-16, 0.44721356, -0.8944271), (-1.6430359e-16, 0.44721356, -0.8944271), (-1.6430361e-16, 0.4472136, -0.8944272), (0.08766919, 0.4472136, -0.89012027), (0.08766919, 0.44721356, -0.8901202), (0.08766919, 0.44721356, -0.8901202), (0.08766919, 0.4472136, -0.89012027), (0.17449409, 0.4472136, -0.8772411), (0.17449409, 0.44721362, -0.8772411), (0.17449409, 0.44721362, -0.8772411), (0.17449409, 0.4472136, -0.8772411), (0.25963852, 0.4472136, -0.85591346), (0.25963852, 0.44721362, -0.85591346), (0.25963852, 0.44721362, -0.85591346), (0.25963852, 0.4472136, -0.85591346), (0.34228247, 0.4472136, -0.826343), (0.34228247, 0.44721362, -0.826343), (0.34228247, 0.44721362, -0.826343), (0.34228247, 0.4472136, -0.826343), (0.42163008, 0.44721365, -0.78881437), (0.42163005, 0.44721362, -0.78881437), (0.42163005, 0.44721362, -0.78881437), (0.42163008, 0.44721365, -0.78881437), (0.49691716, 0.4472136, -0.74368906), (0.4969171, 0.44721362, -0.743689), (0.4969171, 0.44721362, -0.743689), (0.49691716, 0.4472136, -0.74368906), (0.5674186, 0.4472136, -0.6914016), (0.5674186, 0.44721362, -0.6914016), (0.5674186, 0.44721362, -0.6914016), (0.5674186, 0.4472136, -0.6914016), (0.6324555, 0.4472136, -0.6324555), (0.6324555, 0.44721356, -0.6324555), (0.6324555, 0.44721356, -0.6324555), (0.6324555, 0.4472136, -0.6324555), (0.6914016, 0.4472136, -0.5674186), (0.6914016, 0.44721362, -0.5674186), (0.6914016, 0.44721362, -0.5674186), (0.6914016, 0.4472136, -0.5674186), (0.74368906, 0.4472136, -0.49691716), (0.743689, 0.44721362, -0.4969171), (0.743689, 0.44721362, -0.4969171), (0.74368906, 0.4472136, -0.49691716), (0.78881437, 0.44721365, -0.42163008), (0.78881437, 0.44721362, -0.42163005), (0.78881437, 0.44721362, -0.42163005), (0.78881437, 0.44721365, -0.42163008), (0.826343, 0.4472136, -0.34228247), (0.826343, 0.44721362, -0.34228247), (0.826343, 0.44721362, -0.34228247), (0.826343, 0.4472136, -0.34228247), (0.85591346, 0.4472136, -0.25963852), (0.85591346, 0.44721362, -0.25963852), (0.85591346, 0.44721362, -0.25963852), (0.85591346, 0.4472136, -0.25963852), (0.8772411, 0.4472136, -0.17449409), (0.87724096, 0.44721356, -0.17449406), (0.87724096, 0.44721356, -0.17449406), (0.8772411, 0.4472136, -0.17449409), (0.89012027, 0.4472136, -0.08766919), (0.8901202, 0.44721356, -0.08766919), (0.8901202, 0.44721356, -0.08766919), (0.89012027, 0.4472136, -0.08766919), (0.8944272, 0.4472136, 0), (0.8944271, 0.44721356, 0), (0.8944272, 0.4472136, 0), (0.8944272, 0.4472136, 0), (0.8901203, 0.44721362, 0.087669194), (0.89012027, 0.4472136, 0.08766919), (0.89012027, 0.4472136, 0.08766919), (0.8901203, 0.44721362, 0.087669194), (0.8772411, 0.4472136, 0.17449409), (0.8772411, 0.4472136, 0.17449409), (0.8772411, 0.4472136, 0.17449409), (0.8772411, 0.4472136, 0.17449409), (0.85591346, 0.4472136, 0.25963852), (0.85591346, 0.4472136, 0.25963852), (0.85591346, 0.4472136, 0.25963852), (0.85591346, 0.4472136, 0.25963852), (0.82634294, 0.4472136, 0.34228247), (0.826343, 0.4472136, 0.34228247), (0.826343, 0.4472136, 0.34228247), (0.82634294, 0.4472136, 0.34228247), (0.78881437, 0.4472136, 0.42163005), (0.78881437, 0.44721365, 0.42163008), (0.78881437, 0.44721365, 0.42163008), (0.78881437, 0.4472136, 0.42163005), (0.743689, 0.4472136, 0.49691713), (0.74368906, 0.4472136, 0.49691716), (0.74368906, 0.4472136, 0.49691716), (0.743689, 0.4472136, 0.49691713), (0.69140154, 0.4472136, 0.5674186), (0.6914016, 0.4472136, 0.5674186), (0.6914016, 0.4472136, 0.5674186), (0.69140154, 0.4472136, 0.5674186), (0.6324555, 0.4472136, 0.6324555), (0.6324555, 0.4472136, 0.6324555), (0.6324555, 0.4472136, 0.6324555), (0.6324555, 0.4472136, 0.6324555), (0.5674186, 0.4472136, 0.69140154), (0.5674186, 0.4472136, 0.6914016), (0.5674186, 0.4472136, 0.6914016), (0.5674186, 0.4472136, 0.69140154), (0.49691713, 0.4472136, 0.743689), (0.49691716, 0.4472136, 0.74368906), (0.49691716, 0.4472136, 0.74368906), (0.49691713, 0.4472136, 0.743689), (0.42163005, 0.4472136, 0.78881437), (0.42163008, 0.44721365, 0.78881437), (0.42163008, 0.44721365, 0.78881437), (0.42163005, 0.4472136, 0.78881437), (0.34228247, 0.4472136, 0.82634294), (0.34228247, 0.4472136, 0.826343), (0.34228247, 0.4472136, 0.826343), (0.34228247, 0.4472136, 0.82634294), (0.25963852, 0.4472136, 0.85591346), (0.25963852, 0.4472136, 0.85591346), (0.25963852, 0.4472136, 0.85591346), (0.25963852, 0.4472136, 0.85591346), (0.17449409, 0.4472136, 0.8772411), (0.17449409, 0.4472136, 0.8772411), (0.17449409, 0.4472136, 0.8772411), (0.17449409, 0.4472136, 0.8772411), (0.087669194, 0.44721362, 0.8901203), (0.08766919, 0.4472136, 0.89012027), (0.08766919, 0.4472136, 0.89012027), (0.087669194, 0.44721362, 0.8901203), (5.476787e-17, 0.4472136, 0.8944272), (5.476787e-17, 0.4472136, 0.8944272), (5.476787e-17, 0.4472136, 0.8944272), (5.476787e-17, 0.4472136, 0.8944272), (-0.087669194, 0.44721362, 0.8901203), (-0.08766919, 0.4472136, 0.89012027), (-0.08766919, 0.4472136, 0.89012027), (-0.087669194, 0.44721362, 0.8901203), (-0.17449409, 0.4472136, 0.8772411), (-0.17449409, 0.4472136, 0.8772411), (-0.17449409, 0.4472136, 0.8772411), (-0.17449409, 0.4472136, 0.8772411), (-0.25963852, 0.4472136, 0.85591346), (-0.25963852, 0.4472136, 0.85591346), (-0.25963852, 0.4472136, 0.85591346), (-0.25963852, 0.4472136, 0.85591346), (-0.34228247, 0.4472136, 0.82634294), (-0.34228247, 0.4472136, 0.826343), (-0.34228247, 0.4472136, 0.826343), (-0.34228247, 0.4472136, 0.82634294), (-0.42163005, 0.4472136, 0.78881437), (-0.42163008, 0.44721365, 0.78881437), (-0.42163008, 0.44721365, 0.78881437), (-0.42163005, 0.4472136, 0.78881437), (-0.49691713, 0.4472136, 0.743689), (-0.49691716, 0.4472136, 0.74368906), (-0.49691716, 0.4472136, 0.74368906), (-0.49691713, 0.4472136, 0.743689), (-0.5674186, 0.4472136, 0.69140154), (-0.5674186, 0.4472136, 0.6914016), (-0.5674186, 0.4472136, 0.6914016), (-0.5674186, 0.4472136, 0.69140154), (-0.6324555, 0.4472136, 0.6324555), (-0.6324555, 0.4472136, 0.6324555), (-0.6324555, 0.4472136, 0.6324555), (-0.6324555, 0.4472136, 0.6324555), (-0.69140154, 0.4472136, 0.5674186), (-0.6914016, 0.4472136, 0.5674186), (-0.6914016, 0.4472136, 0.5674186), (-0.69140154, 0.4472136, 0.5674186), (-0.743689, 0.4472136, 0.49691713), (-0.74368906, 0.4472136, 0.49691716), (-0.74368906, 0.4472136, 0.49691716), (-0.743689, 0.4472136, 0.49691713), (-0.78881437, 0.4472136, 0.42163005), (-0.78881437, 0.44721365, 0.42163008), (-0.78881437, 0.44721365, 0.42163008), (-0.78881437, 0.4472136, 0.42163005), (-0.82634294, 0.4472136, 0.34228247), (-0.826343, 0.4472136, 0.34228247), (-0.826343, 0.4472136, 0.34228247), (-0.82634294, 0.4472136, 0.34228247), (-0.85591346, 0.4472136, 0.25963852), (-0.85591346, 0.4472136, 0.25963852), (-0.85591346, 0.4472136, 0.25963852), (-0.85591346, 0.4472136, 0.25963852), (-0.8772411, 0.4472136, 0.17449409), (-0.8772411, 0.4472136, 0.17449409), (-0.8772411, 0.4472136, 0.17449409), (-0.8772411, 0.4472136, 0.17449409), (-0.8901203, 0.44721362, 0.087669194), (-0.89012027, 0.4472136, 0.08766919), (-0.89012027, 0.4472136, 0.08766919), (-0.8901203, 0.44721362, 0.087669194), (-0.8944272, 0.4472136, 1.0953574e-16), (-0.8944272, 0.4472136, 1.0953574e-16), (-0.8944272, 0.4472136, 1.0953574e-16), (-0.8944272, 0.4472136, 1.0953574e-16), (-0.8901203, 0.44721362, -0.087669194), (-0.89012027, 0.4472136, -0.08766919), (-0.89012027, 0.4472136, -0.08766919), (-0.8901203, 0.44721362, -0.087669194), (-0.8772411, 0.4472136, -0.17449409), (-0.8772411, 0.4472136, -0.17449409), (-0.8772411, 0.4472136, -0.17449409), (-0.8772411, 0.4472136, -0.17449409), (-0.85591346, 0.4472136, -0.25963852), (-0.85591346, 0.4472136, -0.25963852), (-0.85591346, 0.4472136, -0.25963852), (-0.85591346, 0.4472136, -0.25963852), (-0.82634294, 0.4472136, -0.34228247), (-0.826343, 0.4472136, -0.34228247), (-0.826343, 0.4472136, -0.34228247), (-0.82634294, 0.4472136, -0.34228247), (-0.78881437, 0.4472136, -0.42163005), (-0.78881437, 0.44721365, -0.42163008), (-0.78881437, 0.44721365, -0.42163008), (-0.78881437, 0.4472136, -0.42163005), (-0.743689, 0.4472136, -0.49691713), (-0.74368906, 0.4472136, -0.49691716), (-0.74368906, 0.4472136, -0.49691716), (-0.743689, 0.4472136, -0.49691713), (-0.69140154, 0.4472136, -0.5674186), (-0.6914016, 0.4472136, -0.5674186), (-0.6914016, 0.4472136, -0.5674186), (-0.69140154, 0.4472136, -0.5674186), (-0.6324555, 0.4472136, -0.6324555), (-0.6324555, 0.4472136, -0.6324555), (-0.6324555, 0.4472136, -0.6324555), (-0.6324555, 0.4472136, -0.6324555), (-0.5674186, 0.4472136, -0.69140154), (-0.5674186, 0.4472136, -0.6914016), (-0.5674186, 0.4472136, -0.6914016), (-0.5674186, 0.4472136, -0.69140154), (-0.49691713, 0.4472136, -0.743689), (-0.49691716, 0.4472136, -0.74368906), (-0.49691716, 0.4472136, -0.74368906), (-0.49691713, 0.4472136, -0.743689), (-0.42163005, 0.4472136, -0.78881437), (-0.42163008, 0.44721365, -0.78881437), (-0.42163008, 0.44721365, -0.78881437), (-0.42163005, 0.4472136, -0.78881437), (-0.34228247, 0.4472136, -0.82634294), (-0.34228247, 0.4472136, -0.826343), (-0.34228247, 0.4472136, -0.826343), (-0.34228247, 0.4472136, -0.82634294), (-0.25963852, 0.4472136, -0.85591346), (-0.25963852, 0.4472136, -0.85591346), (-0.25963852, 0.4472136, -0.85591346), (-0.25963852, 0.4472136, -0.85591346), (-0.17449409, 0.4472136, -0.8772411), (-0.17449409, 0.4472136, -0.8772411), (-0.17449409, 0.4472136, -0.8772411), (-0.17449409, 0.4472136, -0.8772411), (-0.087669194, 0.44721362, -0.8901203), (-0.08766919, 0.4472136, -0.89012027), (-0.08766919, 0.4472136, -0.89012027), (-0.087669194, 0.44721362, -0.8901203), (-1.6430361e-16, 0.4472136, -0.8944272), (-1.6430361e-16, 0.4472136, -0.8944272), (-1.6430361e-16, 0.4472136, -0.8944272), (-1.6430361e-16, 0.4472136, -0.8944272), (0.087669194, 0.44721362, -0.8901203), (0.08766919, 0.4472136, -0.89012027), (0.08766919, 0.4472136, -0.89012027), (0.087669194, 0.44721362, -0.8901203), (0.17449409, 0.4472136, -0.8772411), (0.17449409, 0.4472136, -0.8772411), (0.17449409, 0.4472136, -0.8772411), (0.17449409, 0.4472136, -0.8772411), (0.25963852, 0.4472136, -0.85591346), (0.25963852, 0.4472136, -0.85591346), (0.25963852, 0.4472136, -0.85591346), (0.25963852, 0.4472136, -0.85591346), (0.34228247, 0.4472136, -0.82634294), (0.34228247, 0.4472136, -0.826343), (0.34228247, 0.4472136, -0.826343), (0.34228247, 0.4472136, -0.82634294), (0.42163005, 0.4472136, -0.78881437), (0.42163008, 0.44721365, -0.78881437), (0.42163008, 0.44721365, -0.78881437), (0.42163005, 0.4472136, -0.78881437), (0.49691713, 0.4472136, -0.743689), (0.49691716, 0.4472136, -0.74368906), (0.49691716, 0.4472136, -0.74368906), (0.49691713, 0.4472136, -0.743689), (0.5674186, 0.4472136, -0.69140154), (0.5674186, 0.4472136, -0.6914016), (0.5674186, 0.4472136, -0.6914016), (0.5674186, 0.4472136, -0.69140154), (0.6324555, 0.4472136, -0.6324555), (0.6324555, 0.4472136, -0.6324555), (0.6324555, 0.4472136, -0.6324555), (0.6324555, 0.4472136, -0.6324555), (0.69140154, 0.4472136, -0.5674186), (0.6914016, 0.4472136, -0.5674186), (0.6914016, 0.4472136, -0.5674186), (0.69140154, 0.4472136, -0.5674186), (0.743689, 0.4472136, -0.49691713), (0.74368906, 0.4472136, -0.49691716), (0.74368906, 0.4472136, -0.49691716), (0.743689, 0.4472136, -0.49691713), (0.78881437, 0.4472136, -0.42163005), (0.78881437, 0.44721365, -0.42163008), (0.78881437, 0.44721365, -0.42163008), (0.78881437, 0.4472136, -0.42163005), (0.82634294, 0.4472136, -0.34228247), (0.826343, 0.4472136, -0.34228247), (0.826343, 0.4472136, -0.34228247), (0.82634294, 0.4472136, -0.34228247), (0.85591346, 0.4472136, -0.25963852), (0.85591346, 0.4472136, -0.25963852), (0.85591346, 0.4472136, -0.25963852), (0.85591346, 0.4472136, -0.25963852), (0.8772411, 0.4472136, -0.17449409), (0.8772411, 0.4472136, -0.17449409), (0.8772411, 0.4472136, -0.17449409), (0.8772411, 0.4472136, -0.17449409), (0.8901203, 0.44721362, -0.087669194), (0.89012027, 0.4472136, -0.08766919), (0.89012027, 0.4472136, -0.08766919), (0.8901203, 0.44721362, -0.087669194), (0.8944272, 0.4472136, 0), (0.8944272, 0.4472136, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, 0.99999, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(50, -50, 0), (49.759235, -50, 4.900857), (49.03926, -50, 9.754517), (47.84702, -50, 14.514234), (46.193974, -50, 19.13417), (44.096066, -50, 23.569838), (41.57348, -50, 27.778513), (38.65052, -50, 31.719664), (35.35534, -50, 35.35534), (31.719664, -50, 38.65052), (27.778513, -50, 41.57348), (23.569838, -50, 44.096066), (19.13417, -50, 46.193974), (14.514234, -50, 47.84702), (9.754517, -50, 49.03926), (4.900857, -50, 49.759235), (3.061617e-15, -50, 50), (-4.900857, -50, 49.759235), (-9.754517, -50, 49.03926), (-14.514234, -50, 47.84702), (-19.13417, -50, 46.193974), (-23.569838, -50, 44.096066), (-27.778513, -50, 41.57348), (-31.719664, -50, 38.65052), (-35.35534, -50, 35.35534), (-38.65052, -50, 31.719664), (-41.57348, -50, 27.778513), (-44.096066, -50, 23.569838), (-46.193974, -50, 19.13417), (-47.84702, -50, 14.514234), (-49.03926, -50, 9.754517), (-49.759235, -50, 4.900857), (-50, -50, 6.123234e-15), (-49.759235, -50, -4.900857), (-49.03926, -50, -9.754517), (-47.84702, -50, -14.514234), (-46.193974, -50, -19.13417), (-44.096066, -50, -23.569838), (-41.57348, -50, -27.778513), (-38.65052, -50, -31.719664), (-35.35534, -50, -35.35534), (-31.719664, -50, -38.65052), (-27.778513, -50, -41.57348), (-23.569838, -50, -44.096066), (-19.13417, -50, -46.193974), (-14.514234, -50, -47.84702), (-9.754517, -50, -49.03926), (-4.900857, -50, -49.759235), (-9.184851e-15, -50, -50), (4.900857, -50, -49.759235), (9.754517, -50, -49.03926), (14.514234, -50, -47.84702), (19.13417, -50, -46.193974), (23.569838, -50, -44.096066), (27.778513, -50, -41.57348), (31.719664, -50, -38.65052), (35.35534, -50, -35.35534), (38.65052, -50, -31.719664), (41.57348, -50, -27.778513), (44.096066, -50, -23.569838), (46.193974, -50, -19.13417), (47.84702, -50, -14.514234), (49.03926, -50, -9.754517), (49.759235, -50, -4.900857), (33.3335, -16.667, 0), (33.17299, -16.667, 3.2672544), (32.69301, -16.667, 6.503043), (31.89817, -16.667, 9.676205), (30.796137, -16.667, 12.756178), (29.397524, -16.667, 15.713303), (27.715794, -16.667, 18.5191), (25.767145, -16.667, 21.146547), (23.570343, -16.667, 23.570343), (21.146547, -16.667, 25.767145), (18.5191, -16.667, 27.715794), (15.713303, -16.667, 29.397524), (12.756178, -16.667, 30.796137), (9.676205, -16.667, 31.89817), (6.503043, -16.667, 32.69301), (3.2672544, -16.667, 33.17299), (2.041088e-15, -16.667, 33.3335), (-3.2672544, -16.667, 33.17299), (-6.503043, -16.667, 32.69301), (-9.676205, -16.667, 31.89817), (-12.756178, -16.667, 30.796137), (-15.713303, -16.667, 29.397524), (-18.5191, -16.667, 27.715794), (-21.146547, -16.667, 25.767145), (-23.570343, -16.667, 23.570343), (-25.767145, -16.667, 21.146547), (-27.715794, -16.667, 18.5191), (-29.397524, -16.667, 15.713303), (-30.796137, -16.667, 12.756178), (-31.89817, -16.667, 9.676205), (-32.69301, -16.667, 6.503043), (-33.17299, -16.667, 3.2672544), (-33.3335, -16.667, 4.082176e-15), (-33.17299, -16.667, -3.2672544), (-32.69301, -16.667, -6.503043), (-31.89817, -16.667, -9.676205), (-30.796137, -16.667, -12.756178), (-29.397524, -16.667, -15.713303), (-27.715794, -16.667, -18.5191), (-25.767145, -16.667, -21.146547), (-23.570343, -16.667, -23.570343), (-21.146547, -16.667, -25.767145), (-18.5191, -16.667, -27.715794), (-15.713303, -16.667, -29.397524), (-12.756178, -16.667, -30.796137), (-9.676205, -16.667, -31.89817), (-6.503043, -16.667, -32.69301), (-3.2672544, -16.667, -33.17299), (-6.1232647e-15, -16.667, -33.3335), (3.2672544, -16.667, -33.17299), (6.503043, -16.667, -32.69301), (9.676205, -16.667, -31.89817), (12.756178, -16.667, -30.796137), (15.713303, -16.667, -29.397524), (18.5191, -16.667, -27.715794), (21.146547, -16.667, -25.767145), (23.570343, -16.667, -23.570343), (25.767145, -16.667, -21.146547), (27.715794, -16.667, -18.5191), (29.397524, -16.667, -15.713303), (30.796137, -16.667, -12.756178), (31.89817, -16.667, -9.676205), (32.69301, -16.667, -6.503043), (33.17299, -16.667, -3.2672544), (16.667, 16.666, 0), (16.586742, 16.666, 1.6336517), (16.346748, 16.666, 3.2515705), (15.949326, 16.666, 4.838175), (15.3983, 16.666, 6.378185), (14.698982, 16.666, 7.856769), (13.858104, 16.666, 9.259689), (12.883764, 16.666, 10.573433), (11.785349, 16.666, 11.785349), (10.573433, 16.666, 12.883764), (9.259689, 16.666, 13.858104), (7.856769, 16.666, 14.698982), (6.378185, 16.666, 15.3983), (4.838175, 16.666, 15.949326), (3.2515705, 16.666, 16.346748), (1.6336517, 16.666, 16.586742), (1.0205594e-15, 16.666, 16.667), (-1.6336517, 16.666, 16.586742), (-3.2515705, 16.666, 16.346748), (-4.838175, 16.666, 15.949326), (-6.378185, 16.666, 15.3983), (-7.856769, 16.666, 14.698982), (-9.259689, 16.666, 13.858104), (-10.573433, 16.666, 12.883764), (-11.785349, 16.666, 11.785349), (-12.883764, 16.666, 10.573433), (-13.858104, 16.666, 9.259689), (-14.698982, 16.666, 7.856769), (-15.3983, 16.666, 6.378185), (-15.949326, 16.666, 4.838175), (-16.346748, 16.666, 3.2515705), (-16.586742, 16.666, 1.6336517), (-16.667, 16.666, 2.0411188e-15), (-16.586742, 16.666, -1.6336517), (-16.346748, 16.666, -3.2515705), (-15.949326, 16.666, -4.838175), (-15.3983, 16.666, -6.378185), (-14.698982, 16.666, -7.856769), (-13.858104, 16.666, -9.259689), (-12.883764, 16.666, -10.573433), (-11.785349, 16.666, -11.785349), (-10.573433, 16.666, -12.883764), (-9.259689, 16.666, -13.858104), (-7.856769, 16.666, -14.698982), (-6.378185, 16.666, -15.3983), (-4.838175, 16.666, -15.949326), (-3.2515705, 16.666, -16.346748), (-1.6336517, 16.666, -16.586742), (-3.0616783e-15, 16.666, -16.667), (1.6336517, 16.666, -16.586742), (3.2515705, 16.666, -16.346748), (4.838175, 16.666, -15.949326), (6.378185, 16.666, -15.3983), (7.856769, 16.666, -14.698982), (9.259689, 16.666, -13.858104), (10.573433, 16.666, -12.883764), (11.785349, 16.666, -11.785349), (12.883764, 16.666, -10.573433), (13.858104, 16.666, -9.259689), (14.698982, 16.666, -7.856769), (15.3983, 16.666, -6.378185), (15.949326, 16.666, -4.838175), (16.346748, 16.666, -3.2515705), (16.586742, 16.666, -1.6336517), (0.00049999997, 49.999, 0), (0.0004975924, 49.999, 0.00004900857), (0.0004903926, 49.999, 0.00009754516), (0.00047847015, 49.999, 0.00014514233), (0.00046193978, 49.999, 0.00019134172), (0.00044096063, 49.999, 0.00023569838), (0.0004157348, 49.999, 0.00027778512), (0.00038650524, 49.999, 0.00031719665), (0.0003535534, 49.999, 0.0003535534), (0.00031719665, 49.999, 0.00038650524), (0.00027778512, 49.999, 0.0004157348), (0.00023569838, 49.999, 0.00044096063), (0.00019134172, 49.999, 0.00046193978), (0.00014514233, 49.999, 0.00047847015), (0.00009754516, 49.999, 0.0004903926), (0.00004900857, 49.999, 0.0004975924), (3.0616168e-20, 49.999, 0.00049999997), (-0.00004900857, 49.999, 0.0004975924), (-0.00009754516, 49.999, 0.0004903926), (-0.00014514233, 49.999, 0.00047847015), (-0.00019134172, 49.999, 0.00046193978), (-0.00023569838, 49.999, 0.00044096063), (-0.00027778512, 49.999, 0.0004157348), (-0.00031719665, 49.999, 0.00038650524), (-0.0003535534, 49.999, 0.0003535534), (-0.00038650524, 49.999, 0.00031719665), (-0.0004157348, 49.999, 0.00027778512), (-0.00044096063, 49.999, 0.00023569838), (-0.00046193978, 49.999, 0.00019134172), (-0.00047847015, 49.999, 0.00014514233), (-0.0004903926, 49.999, 0.00009754516), (-0.0004975924, 49.999, 0.00004900857), (-0.00049999997, 49.999, 6.1232336e-20), (-0.0004975924, 49.999, -0.00004900857), (-0.0004903926, 49.999, -0.00009754516), (-0.00047847015, 49.999, -0.00014514233), (-0.00046193978, 49.999, -0.00019134172), (-0.00044096063, 49.999, -0.00023569838), (-0.0004157348, 49.999, -0.00027778512), (-0.00038650524, 49.999, -0.00031719665), (-0.0003535534, 49.999, -0.0003535534), (-0.00031719665, 49.999, -0.00038650524), (-0.00027778512, 49.999, -0.0004157348), (-0.00023569838, 49.999, -0.00044096063), (-0.00019134172, 49.999, -0.00046193978), (-0.00014514233, 49.999, -0.00047847015), (-0.00009754516, 49.999, -0.0004903926), (-0.00004900857, 49.999, -0.0004975924), (-9.184851e-20, 49.999, -0.00049999997), (0.00004900857, 49.999, -0.0004975924), (0.00009754516, 49.999, -0.0004903926), (0.00014514233, 49.999, -0.00047847015), (0.00019134172, 49.999, -0.00046193978), (0.00023569838, 49.999, -0.00044096063), (0.00027778512, 49.999, -0.0004157348), (0.00031719665, 49.999, -0.00038650524), (0.0003535534, 49.999, -0.0003535534), (0.00038650524, 49.999, -0.00031719665), (0.0004157348, 49.999, -0.00027778512), (0.00044096063, 49.999, -0.00023569838), (0.00046193978, 49.999, -0.00019134172), (0.00047847015, 49.999, -0.00014514233), (0.0004903926, 49.999, -0.00009754516), (0.0004975924, 49.999, -0.00004900857), (0, 49.9995, 0), (0, -50, 0)]
+                texCoord2f[] primvars:st = [(1, 0), (1, 0.33333), (0.984375, 0.33333), (0.984375, 0), (0.984375, 0), (0.984375, 0.33333), (0.96875, 0.33333), (0.96875, 0), (0.96875, 0), (0.96875, 0.33333), (0.953125, 0.33333), (0.953125, 0), (0.953125, 0), (0.953125, 0.33333), (0.9375, 0.33333), (0.9375, 0), (0.9375, 0), (0.9375, 0.33333), (0.921875, 0.33333), (0.921875, 0), (0.921875, 0), (0.921875, 0.33333), (0.90625, 0.33333), (0.90625, 0), (0.90625, 0), (0.90625, 0.33333), (0.890625, 0.33333), (0.890625, 0), (0.890625, 0), (0.890625, 0.33333), (0.875, 0.33333), (0.875, 0), (0.875, 0), (0.875, 0.33333), (0.859375, 0.33333), (0.859375, 0), (0.859375, 0), (0.859375, 0.33333), (0.84375, 0.33333), (0.84375, 0), (0.84375, 0), (0.84375, 0.33333), (0.828125, 0.33333), (0.828125, 0), (0.828125, 0), (0.828125, 0.33333), (0.8125, 0.33333), (0.8125, 0), (0.8125, 0), (0.8125, 0.33333), (0.796875, 0.33333), (0.796875, 0), (0.796875, 0), (0.796875, 0.33333), (0.78125, 0.33333), (0.78125, 0), (0.78125, 0), (0.78125, 0.33333), (0.765625, 0.33333), (0.765625, 0), (0.765625, 0), (0.765625, 0.33333), (0.75, 0.33333), (0.75, 0), (0.75, 0), (0.75, 0.33333), (0.734375, 0.33333), (0.734375, 0), (0.734375, 0), (0.734375, 0.33333), (0.71875, 0.33333), (0.71875, 0), (0.71875, 0), (0.71875, 0.33333), (0.703125, 0.33333), (0.703125, 0), (0.703125, 0), (0.703125, 0.33333), (0.6875, 0.33333), (0.6875, 0), (0.6875, 0), (0.6875, 0.33333), (0.671875, 0.33333), (0.671875, 0), (0.671875, 0), (0.671875, 0.33333), (0.65625, 0.33333), (0.65625, 0), (0.65625, 0), (0.65625, 0.33333), (0.640625, 0.33333), (0.640625, 0), (0.640625, 0), (0.640625, 0.33333), (0.625, 0.33333), (0.625, 0), (0.625, 0), (0.625, 0.33333), (0.609375, 0.33333), (0.609375, 0), (0.609375, 0), (0.609375, 0.33333), (0.59375, 0.33333), (0.59375, 0), (0.59375, 0), (0.59375, 0.33333), (0.578125, 0.33333), (0.578125, 0), (0.578125, 0), (0.578125, 0.33333), (0.5625, 0.33333), (0.5625, 0), (0.5625, 0), (0.5625, 0.33333), (0.546875, 0.33333), (0.546875, 0), (0.546875, 0), (0.546875, 0.33333), (0.53125, 0.33333), (0.53125, 0), (0.53125, 0), (0.53125, 0.33333), (0.515625, 0.33333), (0.515625, 0), (0.515625, 0), (0.515625, 0.33333), (0.5, 0.33333), (0.5, 0), (0.5, 0), (0.5, 0.33333), (0.484375, 0.33333), (0.484375, 0), (0.484375, 0), (0.484375, 0.33333), (0.46875, 0.33333), (0.46875, 0), (0.46875, 0), (0.46875, 0.33333), (0.453125, 0.33333), (0.453125, 0), (0.453125, 0), (0.453125, 0.33333), (0.4375, 0.33333), (0.4375, 0), (0.4375, 0), (0.4375, 0.33333), (0.421875, 0.33333), (0.421875, 0), (0.421875, 0), (0.421875, 0.33333), (0.40625, 0.33333), (0.40625, 0), (0.40625, 0), (0.40625, 0.33333), (0.390625, 0.33333), (0.390625, 0), (0.390625, 0), (0.390625, 0.33333), (0.375, 0.33333), (0.375, 0), (0.375, 0), (0.375, 0.33333), (0.359375, 0.33333), (0.359375, 0), (0.359375, 0), (0.359375, 0.33333), (0.34375, 0.33333), (0.34375, 0), (0.34375, 0), (0.34375, 0.33333), (0.328125, 0.33333), (0.328125, 0), (0.328125, 0), (0.328125, 0.33333), (0.3125, 0.33333), (0.3125, 0), (0.3125, 0), (0.3125, 0.33333), (0.296875, 0.33333), (0.296875, 0), (0.296875, 0), (0.296875, 0.33333), (0.28125, 0.33333), (0.28125, 0), (0.28125, 0), (0.28125, 0.33333), (0.265625, 0.33333), (0.265625, 0), (0.265625, 0), (0.265625, 0.33333), (0.25, 0.33333), (0.25, 0), (0.25, 0), (0.25, 0.33333), (0.234375, 0.33333), (0.234375, 0), (0.234375, 0), (0.234375, 0.33333), (0.21875, 0.33333), (0.21875, 0), (0.21875, 0), (0.21875, 0.33333), (0.203125, 0.33333), (0.203125, 0), (0.203125, 0), (0.203125, 0.33333), (0.1875, 0.33333), (0.1875, 0), (0.1875, 0), (0.1875, 0.33333), (0.171875, 0.33333), (0.171875, 0), (0.171875, 0), (0.171875, 0.33333), (0.15625, 0.33333), (0.15625, 0), (0.15625, 0), (0.15625, 0.33333), (0.140625, 0.33333), (0.140625, 0), (0.140625, 0), (0.140625, 0.33333), (0.125, 0.33333), (0.125, 0), (0.125, 0), (0.125, 0.33333), (0.109375, 0.33333), (0.109375, 0), (0.109375, 0), (0.109375, 0.33333), (0.09375, 0.33333), (0.09375, 0), (0.09375, 0), (0.09375, 0.33333), (0.078125, 0.33333), (0.078125, 0), (0.078125, 0), (0.078125, 0.33333), (0.0625, 0.33333), (0.0625, 0), (0.0625, 0), (0.0625, 0.33333), (0.046875, 0.33333), (0.046875, 0), (0.046875, 0), (0.046875, 0.33333), (0.03125, 0.33333), (0.03125, 0), (0.03125, 0), (0.03125, 0.33333), (0.015625, 0.33333), (0.015625, 0), (0.015625, 0), (0.015625, 0.33333), (0, 0.33333), (0, 0), (1, 0.33333), (1, 0.66666), (0.984375, 0.66666), (0.984375, 0.33333), (0.984375, 0.33333), (0.984375, 0.66666), (0.96875, 0.66666), (0.96875, 0.33333), (0.96875, 0.33333), (0.96875, 0.66666), (0.953125, 0.66666), (0.953125, 0.33333), (0.953125, 0.33333), (0.953125, 0.66666), (0.9375, 0.66666), (0.9375, 0.33333), (0.9375, 0.33333), (0.9375, 0.66666), (0.921875, 0.66666), (0.921875, 0.33333), (0.921875, 0.33333), (0.921875, 0.66666), (0.90625, 0.66666), (0.90625, 0.33333), (0.90625, 0.33333), (0.90625, 0.66666), (0.890625, 0.66666), (0.890625, 0.33333), (0.890625, 0.33333), (0.890625, 0.66666), (0.875, 0.66666), (0.875, 0.33333), (0.875, 0.33333), (0.875, 0.66666), (0.859375, 0.66666), (0.859375, 0.33333), (0.859375, 0.33333), (0.859375, 0.66666), (0.84375, 0.66666), (0.84375, 0.33333), (0.84375, 0.33333), (0.84375, 0.66666), (0.828125, 0.66666), (0.828125, 0.33333), (0.828125, 0.33333), (0.828125, 0.66666), (0.8125, 0.66666), (0.8125, 0.33333), (0.8125, 0.33333), (0.8125, 0.66666), (0.796875, 0.66666), (0.796875, 0.33333), (0.796875, 0.33333), (0.796875, 0.66666), (0.78125, 0.66666), (0.78125, 0.33333), (0.78125, 0.33333), (0.78125, 0.66666), (0.765625, 0.66666), (0.765625, 0.33333), (0.765625, 0.33333), (0.765625, 0.66666), (0.75, 0.66666), (0.75, 0.33333), (0.75, 0.33333), (0.75, 0.66666), (0.734375, 0.66666), (0.734375, 0.33333), (0.734375, 0.33333), (0.734375, 0.66666), (0.71875, 0.66666), (0.71875, 0.33333), (0.71875, 0.33333), (0.71875, 0.66666), (0.703125, 0.66666), (0.703125, 0.33333), (0.703125, 0.33333), (0.703125, 0.66666), (0.6875, 0.66666), (0.6875, 0.33333), (0.6875, 0.33333), (0.6875, 0.66666), (0.671875, 0.66666), (0.671875, 0.33333), (0.671875, 0.33333), (0.671875, 0.66666), (0.65625, 0.66666), (0.65625, 0.33333), (0.65625, 0.33333), (0.65625, 0.66666), (0.640625, 0.66666), (0.640625, 0.33333), (0.640625, 0.33333), (0.640625, 0.66666), (0.625, 0.66666), (0.625, 0.33333), (0.625, 0.33333), (0.625, 0.66666), (0.609375, 0.66666), (0.609375, 0.33333), (0.609375, 0.33333), (0.609375, 0.66666), (0.59375, 0.66666), (0.59375, 0.33333), (0.59375, 0.33333), (0.59375, 0.66666), (0.578125, 0.66666), (0.578125, 0.33333), (0.578125, 0.33333), (0.578125, 0.66666), (0.5625, 0.66666), (0.5625, 0.33333), (0.5625, 0.33333), (0.5625, 0.66666), (0.546875, 0.66666), (0.546875, 0.33333), (0.546875, 0.33333), (0.546875, 0.66666), (0.53125, 0.66666), (0.53125, 0.33333), (0.53125, 0.33333), (0.53125, 0.66666), (0.515625, 0.66666), (0.515625, 0.33333), (0.515625, 0.33333), (0.515625, 0.66666), (0.5, 0.66666), (0.5, 0.33333), (0.5, 0.33333), (0.5, 0.66666), (0.484375, 0.66666), (0.484375, 0.33333), (0.484375, 0.33333), (0.484375, 0.66666), (0.46875, 0.66666), (0.46875, 0.33333), (0.46875, 0.33333), (0.46875, 0.66666), (0.453125, 0.66666), (0.453125, 0.33333), (0.453125, 0.33333), (0.453125, 0.66666), (0.4375, 0.66666), (0.4375, 0.33333), (0.4375, 0.33333), (0.4375, 0.66666), (0.421875, 0.66666), (0.421875, 0.33333), (0.421875, 0.33333), (0.421875, 0.66666), (0.40625, 0.66666), (0.40625, 0.33333), (0.40625, 0.33333), (0.40625, 0.66666), (0.390625, 0.66666), (0.390625, 0.33333), (0.390625, 0.33333), (0.390625, 0.66666), (0.375, 0.66666), (0.375, 0.33333), (0.375, 0.33333), (0.375, 0.66666), (0.359375, 0.66666), (0.359375, 0.33333), (0.359375, 0.33333), (0.359375, 0.66666), (0.34375, 0.66666), (0.34375, 0.33333), (0.34375, 0.33333), (0.34375, 0.66666), (0.328125, 0.66666), (0.328125, 0.33333), (0.328125, 0.33333), (0.328125, 0.66666), (0.3125, 0.66666), (0.3125, 0.33333), (0.3125, 0.33333), (0.3125, 0.66666), (0.296875, 0.66666), (0.296875, 0.33333), (0.296875, 0.33333), (0.296875, 0.66666), (0.28125, 0.66666), (0.28125, 0.33333), (0.28125, 0.33333), (0.28125, 0.66666), (0.265625, 0.66666), (0.265625, 0.33333), (0.265625, 0.33333), (0.265625, 0.66666), (0.25, 0.66666), (0.25, 0.33333), (0.25, 0.33333), (0.25, 0.66666), (0.234375, 0.66666), (0.234375, 0.33333), (0.234375, 0.33333), (0.234375, 0.66666), (0.21875, 0.66666), (0.21875, 0.33333), (0.21875, 0.33333), (0.21875, 0.66666), (0.203125, 0.66666), (0.203125, 0.33333), (0.203125, 0.33333), (0.203125, 0.66666), (0.1875, 0.66666), (0.1875, 0.33333), (0.1875, 0.33333), (0.1875, 0.66666), (0.171875, 0.66666), (0.171875, 0.33333), (0.171875, 0.33333), (0.171875, 0.66666), (0.15625, 0.66666), (0.15625, 0.33333), (0.15625, 0.33333), (0.15625, 0.66666), (0.140625, 0.66666), (0.140625, 0.33333), (0.140625, 0.33333), (0.140625, 0.66666), (0.125, 0.66666), (0.125, 0.33333), (0.125, 0.33333), (0.125, 0.66666), (0.109375, 0.66666), (0.109375, 0.33333), (0.109375, 0.33333), (0.109375, 0.66666), (0.09375, 0.66666), (0.09375, 0.33333), (0.09375, 0.33333), (0.09375, 0.66666), (0.078125, 0.66666), (0.078125, 0.33333), (0.078125, 0.33333), (0.078125, 0.66666), (0.0625, 0.66666), (0.0625, 0.33333), (0.0625, 0.33333), (0.0625, 0.66666), (0.046875, 0.66666), (0.046875, 0.33333), (0.046875, 0.33333), (0.046875, 0.66666), (0.03125, 0.66666), (0.03125, 0.33333), (0.03125, 0.33333), (0.03125, 0.66666), (0.015625, 0.66666), (0.015625, 0.33333), (0.015625, 0.33333), (0.015625, 0.66666), (0, 0.66666), (0, 0.33333), (1, 0.66666), (1, 1), (0.984375, 1), (0.984375, 0.66666), (0.984375, 0.66666), (0.984375, 1), (0.96875, 1), (0.96875, 0.66666), (0.96875, 0.66666), (0.96875, 1), (0.953125, 1), (0.953125, 0.66666), (0.953125, 0.66666), (0.953125, 1), (0.9375, 1), (0.9375, 0.66666), (0.9375, 0.66666), (0.9375, 1), (0.921875, 1), (0.921875, 0.66666), (0.921875, 0.66666), (0.921875, 1), (0.90625, 1), (0.90625, 0.66666), (0.90625, 0.66666), (0.90625, 1), (0.890625, 1), (0.890625, 0.66666), (0.890625, 0.66666), (0.890625, 1), (0.875, 1), (0.875, 0.66666), (0.875, 0.66666), (0.875, 1), (0.859375, 1), (0.859375, 0.66666), (0.859375, 0.66666), (0.859375, 1), (0.84375, 1), (0.84375, 0.66666), (0.84375, 0.66666), (0.84375, 1), (0.828125, 1), (0.828125, 0.66666), (0.828125, 0.66666), (0.828125, 1), (0.8125, 1), (0.8125, 0.66666), (0.8125, 0.66666), (0.8125, 1), (0.796875, 1), (0.796875, 0.66666), (0.796875, 0.66666), (0.796875, 1), (0.78125, 1), (0.78125, 0.66666), (0.78125, 0.66666), (0.78125, 1), (0.765625, 1), (0.765625, 0.66666), (0.765625, 0.66666), (0.765625, 1), (0.75, 1), (0.75, 0.66666), (0.75, 0.66666), (0.75, 1), (0.734375, 1), (0.734375, 0.66666), (0.734375, 0.66666), (0.734375, 1), (0.71875, 1), (0.71875, 0.66666), (0.71875, 0.66666), (0.71875, 1), (0.703125, 1), (0.703125, 0.66666), (0.703125, 0.66666), (0.703125, 1), (0.6875, 1), (0.6875, 0.66666), (0.6875, 0.66666), (0.6875, 1), (0.671875, 1), (0.671875, 0.66666), (0.671875, 0.66666), (0.671875, 1), (0.65625, 1), (0.65625, 0.66666), (0.65625, 0.66666), (0.65625, 1), (0.640625, 1), (0.640625, 0.66666), (0.640625, 0.66666), (0.640625, 1), (0.625, 1), (0.625, 0.66666), (0.625, 0.66666), (0.625, 1), (0.609375, 1), (0.609375, 0.66666), (0.609375, 0.66666), (0.609375, 1), (0.59375, 1), (0.59375, 0.66666), (0.59375, 0.66666), (0.59375, 1), (0.578125, 1), (0.578125, 0.66666), (0.578125, 0.66666), (0.578125, 1), (0.5625, 1), (0.5625, 0.66666), (0.5625, 0.66666), (0.5625, 1), (0.546875, 1), (0.546875, 0.66666), (0.546875, 0.66666), (0.546875, 1), (0.53125, 1), (0.53125, 0.66666), (0.53125, 0.66666), (0.53125, 1), (0.515625, 1), (0.515625, 0.66666), (0.515625, 0.66666), (0.515625, 1), (0.5, 1), (0.5, 0.66666), (0.5, 0.66666), (0.5, 1), (0.484375, 1), (0.484375, 0.66666), (0.484375, 0.66666), (0.484375, 1), (0.46875, 1), (0.46875, 0.66666), (0.46875, 0.66666), (0.46875, 1), (0.453125, 1), (0.453125, 0.66666), (0.453125, 0.66666), (0.453125, 1), (0.4375, 1), (0.4375, 0.66666), (0.4375, 0.66666), (0.4375, 1), (0.421875, 1), (0.421875, 0.66666), (0.421875, 0.66666), (0.421875, 1), (0.40625, 1), (0.40625, 0.66666), (0.40625, 0.66666), (0.40625, 1), (0.390625, 1), (0.390625, 0.66666), (0.390625, 0.66666), (0.390625, 1), (0.375, 1), (0.375, 0.66666), (0.375, 0.66666), (0.375, 1), (0.359375, 1), (0.359375, 0.66666), (0.359375, 0.66666), (0.359375, 1), (0.34375, 1), (0.34375, 0.66666), (0.34375, 0.66666), (0.34375, 1), (0.328125, 1), (0.328125, 0.66666), (0.328125, 0.66666), (0.328125, 1), (0.3125, 1), (0.3125, 0.66666), (0.3125, 0.66666), (0.3125, 1), (0.296875, 1), (0.296875, 0.66666), (0.296875, 0.66666), (0.296875, 1), (0.28125, 1), (0.28125, 0.66666), (0.28125, 0.66666), (0.28125, 1), (0.265625, 1), (0.265625, 0.66666), (0.265625, 0.66666), (0.265625, 1), (0.25, 1), (0.25, 0.66666), (0.25, 0.66666), (0.25, 1), (0.234375, 1), (0.234375, 0.66666), (0.234375, 0.66666), (0.234375, 1), (0.21875, 1), (0.21875, 0.66666), (0.21875, 0.66666), (0.21875, 1), (0.203125, 1), (0.203125, 0.66666), (0.203125, 0.66666), (0.203125, 1), (0.1875, 1), (0.1875, 0.66666), (0.1875, 0.66666), (0.1875, 1), (0.171875, 1), (0.171875, 0.66666), (0.171875, 0.66666), (0.171875, 1), (0.15625, 1), (0.15625, 0.66666), (0.15625, 0.66666), (0.15625, 1), (0.140625, 1), (0.140625, 0.66666), (0.140625, 0.66666), (0.140625, 1), (0.125, 1), (0.125, 0.66666), (0.125, 0.66666), (0.125, 1), (0.109375, 1), (0.109375, 0.66666), (0.109375, 0.66666), (0.109375, 1), (0.09375, 1), (0.09375, 0.66666), (0.09375, 0.66666), (0.09375, 1), (0.078125, 1), (0.078125, 0.66666), (0.078125, 0.66666), (0.078125, 1), (0.0625, 1), (0.0625, 0.66666), (0.0625, 0.66666), (0.0625, 1), (0.046875, 1), (0.046875, 0.66666), (0.046875, 0.66666), (0.046875, 1), (0.03125, 1), (0.03125, 0.66666), (0.03125, 0.66666), (0.03125, 1), (0.015625, 1), (0.015625, 0.66666), (0.015625, 0.66666), (0.015625, 1), (0, 1), (0, 0.66666), (1, 0.5), (0.5, 0.5), (0.99759233, 0.45099142), (0.99759233, 0.45099142), (0.5, 0.5), (0.99039257, 0.40245482), (0.99039257, 0.40245482), (0.5, 0.5), (0.9784702, 0.35485768), (0.9784702, 0.35485768), (0.5, 0.5), (0.9619397, 0.3086583), (0.9619397, 0.3086583), (0.5, 0.5), (0.94096065, 0.26430163), (0.94096065, 0.26430163), (0.5, 0.5), (0.91573477, 0.22221488), (0.91573477, 0.22221488), (0.5, 0.5), (0.88650525, 0.18280336), (0.88650525, 0.18280336), (0.5, 0.5), (0.8535534, 0.14644662), (0.8535534, 0.14644662), (0.5, 0.5), (0.8171966, 0.11349478), (0.8171966, 0.11349478), (0.5, 0.5), (0.7777851, 0.0842652), (0.7777851, 0.0842652), (0.5, 0.5), (0.73569834, 0.059039354), (0.73569834, 0.059039354), (0.5, 0.5), (0.6913417, 0.038060278), (0.6913417, 0.038060278), (0.5, 0.5), (0.6451423, 0.021529794), (0.6451423, 0.021529794), (0.5, 0.5), (0.59754515, 0.0096074045), (0.59754515, 0.0096074045), (0.5, 0.5), (0.5490086, 0.0024076402), (0.5490086, 0.0024076402), (0.5, 0.5), (0.5, 0), (0.5, 0), (0.5, 0.5), (0.45099145, 0.0024076402), (0.45099145, 0.0024076402), (0.5, 0.5), (0.40245485, 0.0096074045), (0.40245485, 0.0096074045), (0.5, 0.5), (0.35485768, 0.021529794), (0.35485768, 0.021529794), (0.5, 0.5), (0.3086583, 0.038060278), (0.3086583, 0.038060278), (0.5, 0.5), (0.26430166, 0.059039354), (0.26430166, 0.059039354), (0.5, 0.5), (0.22221488, 0.0842652), (0.22221488, 0.0842652), (0.5, 0.5), (0.18280339, 0.11349478), (0.18280339, 0.11349478), (0.5, 0.5), (0.14644659, 0.14644662), (0.14644659, 0.14644662), (0.5, 0.5), (0.113494754, 0.18280336), (0.113494754, 0.18280336), (0.5, 0.5), (0.08426523, 0.22221488), (0.08426523, 0.22221488), (0.5, 0.5), (0.059039354, 0.26430163), (0.059039354, 0.26430163), (0.5, 0.5), (0.038060308, 0.3086583), (0.038060308, 0.3086583), (0.5, 0.5), (0.021529794, 0.35485768), (0.021529794, 0.35485768), (0.5, 0.5), (0.009607434, 0.40245482), (0.009607434, 0.40245482), (0.5, 0.5), (0.00240767, 0.45099142), (0.00240767, 0.45099142), (0.5, 0.5), (0, 0.5), (0, 0.5), (0.5, 0.5), (0.00240767, 0.54900855), (0.00240767, 0.54900855), (0.5, 0.5), (0.009607434, 0.59754515), (0.009607434, 0.59754515), (0.5, 0.5), (0.021529794, 0.6451423), (0.021529794, 0.6451423), (0.5, 0.5), (0.038060308, 0.6913417), (0.038060308, 0.6913417), (0.5, 0.5), (0.059039354, 0.73569834), (0.059039354, 0.73569834), (0.5, 0.5), (0.08426523, 0.7777851), (0.08426523, 0.7777851), (0.5, 0.5), (0.113494754, 0.8171966), (0.113494754, 0.8171966), (0.5, 0.5), (0.14644659, 0.8535534), (0.14644659, 0.8535534), (0.5, 0.5), (0.18280339, 0.88650525), (0.18280339, 0.88650525), (0.5, 0.5), (0.22221488, 0.91573477), (0.22221488, 0.91573477), (0.5, 0.5), (0.26430166, 0.94096065), (0.26430166, 0.94096065), (0.5, 0.5), (0.3086583, 0.9619397), (0.3086583, 0.9619397), (0.5, 0.5), (0.35485768, 0.9784702), (0.35485768, 0.9784702), (0.5, 0.5), (0.40245485, 0.99039257), (0.40245485, 0.99039257), (0.5, 0.5), (0.45099145, 0.99759233), (0.45099145, 0.99759233), (0.5, 0.5), (0.5, 1), (0.5, 1), (0.5, 0.5), (0.5490086, 0.99759233), (0.5490086, 0.99759233), (0.5, 0.5), (0.59754515, 0.99039257), (0.59754515, 0.99039257), (0.5, 0.5), (0.6451423, 0.9784702), (0.6451423, 0.9784702), (0.5, 0.5), (0.6913417, 0.9619397), (0.6913417, 0.9619397), (0.5, 0.5), (0.73569834, 0.94096065), (0.73569834, 0.94096065), (0.5, 0.5), (0.7777851, 0.91573477), (0.7777851, 0.91573477), (0.5, 0.5), (0.8171966, 0.88650525), (0.8171966, 0.88650525), (0.5, 0.5), (0.8535534, 0.8535534), (0.8535534, 0.8535534), (0.5, 0.5), (0.88650525, 0.8171966), (0.88650525, 0.8171966), (0.5, 0.5), (0.91573477, 0.7777851), (0.91573477, 0.7777851), (0.5, 0.5), (0.94096065, 0.73569834), (0.94096065, 0.73569834), (0.5, 0.5), (0.9619397, 0.6913417), (0.9619397, 0.6913417), (0.5, 0.5), (0.9784702, 0.6451423), (0.9784702, 0.6451423), (0.5, 0.5), (0.99039257, 0.59754515), (0.99039257, 0.59754515), (0.5, 0.5), (0.99759233, 0.54900855), (0.99759233, 0.54900855), (0.5, 0.5), (1, 0.5), (1, 0.5), (0.99759233, 0.5490086), (0.5, 0.5), (0.99759233, 0.5490086), (0.99039257, 0.59754515), (0.5, 0.5), (0.99039257, 0.59754515), (0.9784702, 0.6451423), (0.5, 0.5), (0.9784702, 0.6451423), (0.9619397, 0.6913417), (0.5, 0.5), (0.9619397, 0.6913417), (0.94096065, 0.73569834), (0.5, 0.5), (0.94096065, 0.73569834), (0.91573477, 0.7777851), (0.5, 0.5), (0.91573477, 0.7777851), (0.88650525, 0.8171966), (0.5, 0.5), (0.88650525, 0.8171966), (0.8535534, 0.8535534), (0.5, 0.5), (0.8535534, 0.8535534), (0.8171966, 0.88650525), (0.5, 0.5), (0.8171966, 0.88650525), (0.7777851, 0.91573477), (0.5, 0.5), (0.7777851, 0.91573477), (0.73569834, 0.94096065), (0.5, 0.5), (0.73569834, 0.94096065), (0.6913417, 0.9619397), (0.5, 0.5), (0.6913417, 0.9619397), (0.6451423, 0.9784702), (0.5, 0.5), (0.6451423, 0.9784702), (0.59754515, 0.99039257), (0.5, 0.5), (0.59754515, 0.99039257), (0.5490086, 0.99759233), (0.5, 0.5), (0.5490086, 0.99759233), (0.5, 1), (0.5, 0.5), (0.5, 1), (0.45099145, 0.99759233), (0.5, 0.5), (0.45099145, 0.99759233), (0.40245485, 0.99039257), (0.5, 0.5), (0.40245485, 0.99039257), (0.35485768, 0.9784702), (0.5, 0.5), (0.35485768, 0.9784702), (0.3086583, 0.9619397), (0.5, 0.5), (0.3086583, 0.9619397), (0.26430166, 0.94096065), (0.5, 0.5), (0.26430166, 0.94096065), (0.22221488, 0.91573477), (0.5, 0.5), (0.22221488, 0.91573477), (0.18280339, 0.88650525), (0.5, 0.5), (0.18280339, 0.88650525), (0.14644659, 0.8535534), (0.5, 0.5), (0.14644659, 0.8535534), (0.113494754, 0.8171966), (0.5, 0.5), (0.113494754, 0.8171966), (0.08426523, 0.7777851), (0.5, 0.5), (0.08426523, 0.7777851), (0.059039354, 0.73569834), (0.5, 0.5), (0.059039354, 0.73569834), (0.038060308, 0.6913417), (0.5, 0.5), (0.038060308, 0.6913417), (0.021529794, 0.6451423), (0.5, 0.5), (0.021529794, 0.6451423), (0.009607434, 0.59754515), (0.5, 0.5), (0.009607434, 0.59754515), (0.00240767, 0.5490086), (0.5, 0.5), (0.00240767, 0.5490086), (0, 0.5), (0.5, 0.5), (0, 0.5), (0.00240767, 0.45099145), (0.5, 0.5), (0.00240767, 0.45099145), (0.009607434, 0.40245485), (0.5, 0.5), (0.009607434, 0.40245485), (0.021529794, 0.35485768), (0.5, 0.5), (0.021529794, 0.35485768), (0.038060308, 0.3086583), (0.5, 0.5), (0.038060308, 0.3086583), (0.059039354, 0.26430166), (0.5, 0.5), (0.059039354, 0.26430166), (0.08426523, 0.22221488), (0.5, 0.5), (0.08426523, 0.22221488), (0.113494754, 0.18280339), (0.5, 0.5), (0.113494754, 0.18280339), (0.14644659, 0.14644659), (0.5, 0.5), (0.14644659, 0.14644659), (0.18280339, 0.113494754), (0.5, 0.5), (0.18280339, 0.113494754), (0.22221488, 0.08426523), (0.5, 0.5), (0.22221488, 0.08426523), (0.26430166, 0.059039354), (0.5, 0.5), (0.26430166, 0.059039354), (0.3086583, 0.038060308), (0.5, 0.5), (0.3086583, 0.038060308), (0.35485768, 0.021529794), (0.5, 0.5), (0.35485768, 0.021529794), (0.40245485, 0.009607434), (0.5, 0.5), (0.40245485, 0.009607434), (0.45099145, 0.00240767), (0.5, 0.5), (0.45099145, 0.00240767), (0.5, 0), (0.5, 0.5), (0.5, 0), (0.5490086, 0.00240767), (0.5, 0.5), (0.5490086, 0.00240767), (0.59754515, 0.009607434), (0.5, 0.5), (0.59754515, 0.009607434), (0.6451423, 0.021529794), (0.5, 0.5), (0.6451423, 0.021529794), (0.6913417, 0.038060308), (0.5, 0.5), (0.6913417, 0.038060308), (0.73569834, 0.059039354), (0.5, 0.5), (0.73569834, 0.059039354), (0.7777851, 0.08426523), (0.5, 0.5), (0.7777851, 0.08426523), (0.8171966, 0.113494754), (0.5, 0.5), (0.8171966, 0.113494754), (0.8535534, 0.14644659), (0.5, 0.5), (0.8535534, 0.14644659), (0.88650525, 0.18280339), (0.5, 0.5), (0.88650525, 0.18280339), (0.91573477, 0.22221488), (0.5, 0.5), (0.91573477, 0.22221488), (0.94096065, 0.26430166), (0.5, 0.5), (0.94096065, 0.26430166), (0.9619397, 0.3086583), (0.5, 0.5), (0.9619397, 0.3086583), (0.9784702, 0.35485768), (0.5, 0.5), (0.9784702, 0.35485768), (0.99039257, 0.40245485), (0.5, 0.5), (0.99039257, 0.40245485), (0.99759233, 0.45099145), (0.5, 0.5), (0.99759233, 0.45099145), (1, 0.5), (0.5, 0.5)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 50, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def Material "PrototypeMaterial2"
+            {
+                token outputs:mdl:displacement.connect = </World/Prototypes/PrototypeCone/PrototypeMaterial2/Shader.outputs:out>
+                token outputs:mdl:surface.connect = </World/Prototypes/PrototypeCone/PrototypeMaterial2/Shader.outputs:out>
+                token outputs:mdl:volume.connect = </World/Prototypes/PrototypeCone/PrototypeMaterial2/Shader.outputs:out>
+
+                def Shader "Shader"
+                {
+                    uniform token info:implementationSource = "sourceAsset"
+                    uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                    uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                    color3f inputs:diffuse_color_constant = (0.7001374, 0.8691983, 0.0880201)
+                    token outputs:out (
+                        renderType = "material"
+                    )
+                }
+            }
+        }
+
+        def Xform "PrototypeMulti"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Mesh "Cube1" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+                rel material:binding = </World/Prototypes/PrototypeMulti/MultiMaterial1> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 50, 100)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def Mesh "Cube2" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+                rel material:binding = </World/Prototypes/PrototypeMulti/MultiMaterial2> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 50, -100)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def Material "MultiMaterial1"
+            {
+                token outputs:mdl:displacement.connect = </World/Prototypes/PrototypeMulti/MultiMaterial1/Shader.outputs:out>
+                token outputs:mdl:surface.connect = </World/Prototypes/PrototypeMulti/MultiMaterial1/Shader.outputs:out>
+                token outputs:mdl:volume.connect = </World/Prototypes/PrototypeMulti/MultiMaterial1/Shader.outputs:out>
+
+                def Shader "Shader"
+                {
+                    uniform token info:implementationSource = "sourceAsset"
+                    uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                    uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                    color3f inputs:diffuse_color_constant = (0.22927237, 0.5780591, 0.26310986)
+                    token outputs:out (
+                        renderType = "material"
+                    )
+                }
+            }
+
+            def Material "MultiMaterial2"
+            {
+                token outputs:mdl:displacement.connect = </World/Prototypes/PrototypeMulti/MultiMaterial2/Shader.outputs:out>
+                token outputs:mdl:surface.connect = </World/Prototypes/PrototypeMulti/MultiMaterial2/Shader.outputs:out>
+                token outputs:mdl:volume.connect = </World/Prototypes/PrototypeMulti/MultiMaterial2/Shader.outputs:out>
+
+                def Shader "Shader"
+                {
+                    uniform token info:implementationSource = "sourceAsset"
+                    uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                    uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                    color3f inputs:diffuse_color_constant = (0.13676582, 0.29356852, 0.70464134)
+                    token outputs:out (
+                        renderType = "material"
+                    )
+                }
+            }
+        }
+    }
+
+    def Xform "Instances"
+    {
+        def Xform "Instance1" (
+            instanceable = true
+            references = </World/Prototypes/PrototypeCube>
+        )
+        {
+            double3 xformOp:translate = (500, -50, 100)
+        }
+
+        def Xform "Instance2" (
+            instanceable = true
+            references = </World/Prototypes/PrototypeCone>
+        )
+        {
+            double3 xformOp:translate = (500, -50, -100)
+        }
+
+        def Xform "InstanceMulti" (
+            instanceable = true
+            references = </World/Prototypes/PrototypeMulti>
+        )
+        {
+            double3 xformOp:translate = (700, -50, 0)
+        }
+    }
+}
+
+def Xform "Environment"
+{
+    double3 xformOp:rotateXYZ = (0, 0, 0)
+    double3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+    def DistantLight "defaultLight" (
+        prepend apiSchemas = ["ShapingAPI"]
+    )
+    {
+        float inputs:angle = 1
+        float inputs:intensity = 3000
+        float inputs:shaping:cone:angle = 180
+        float inputs:shaping:cone:softness
+        float inputs:shaping:focus
+        color3f inputs:shaping:focusTint
+        asset inputs:shaping:ies:file
+        double3 xformOp:rotateXYZ = (315, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+

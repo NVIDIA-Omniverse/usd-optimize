@@ -1,0 +1,46 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def Xform "Foo1"
+    {
+        def Xform "FooChild1"
+        {
+        }
+    }
+
+    def Xform "Foo2"
+    {
+        def Xform "FooChild2"
+        {
+        }
+    }
+
+    def Xform "Bar1"
+    {
+    }
+
+    def Xform "Bar2"
+    {
+    }
+
+    def Camera "Camera"
+    {
+        def Xform "Baz"
+        {
+        }
+    }
+}
+
+def "Render"
+{
+}
+

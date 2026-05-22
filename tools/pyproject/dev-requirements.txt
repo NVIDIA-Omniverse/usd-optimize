@@ -1,0 +1,4 @@
+poetry-core==2.1.2
+poetry==2.1.2
+auditwheel==6.3.0
+omniverse-asset-validator==1.15.1

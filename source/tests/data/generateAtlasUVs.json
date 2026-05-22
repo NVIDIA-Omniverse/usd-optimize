@@ -1,0 +1,10 @@
+[
+    {
+        "operation": "generateAtlasUVs",
+        "paths": [],
+        "distortionThreshold": 3.0,
+        "enableAtlasPacking": true,
+        "useWorldSpaceScales": true,
+        "scaleFactor": 0.01
+    }
+]

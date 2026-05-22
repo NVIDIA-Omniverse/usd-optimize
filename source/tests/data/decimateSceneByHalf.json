@@ -1,0 +1,9 @@
+[
+    {
+        "operation": "decimateMeshes",
+        "paths": [
+        ],
+        "reductionFactor": 50.0,
+        "maxMeanError": 0.0
+    }
+]

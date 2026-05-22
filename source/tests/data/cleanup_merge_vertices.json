@@ -1,0 +1,15 @@
+[
+    {
+        "operation": "meshCleanup",
+        "paths": [],
+        "mergeVertices": true,
+        "tolerance": 0.0,
+        "mergeBoundaries": true,
+        "mergeNeighbors": true,
+        "contractDegenerateEdges": true,
+        "removeDegenerateFaces": true,
+        "makeManifold": false,
+        "removeIsolatedVertices": false,
+        "removeDuplicateFaces": false
+    }
+]

@@ -1,0 +1,29 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+	over Xform "Cubes1" (
+		prepend references = @./optimizeMaterialsSpecializeRef.usda@
+	)
+	{
+	    float3 xformOp:translate:pivot = (0, 200, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+	}
+
+
+	over Xform "Cubes2" (
+		prepend references = @./optimizeMaterialsSpecializeRef.usda@
+	)
+	{
+	    float3 xformOp:translate = (0, -200, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+	}
+}

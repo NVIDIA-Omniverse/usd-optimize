@@ -1,0 +1,17 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "TestMesh",
+        "meshMaterialPath": "",
+        "notes": ""
+    }
+]

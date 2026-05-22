@@ -1,0 +1,206 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+
+    def Xform "Box"
+    {
+        def Mesh "Box"
+        {
+            uniform bool doubleSided = 1
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [23, 18, 6, 13, 14, 13, 6, 7, 16, 18, 4, 5, 20, 19, 3, 10, 19, 17, 2, 3, 8, 11, 0, 1, 12, 15, 11, 8, 22, 20, 10, 14, 3, 2, 9, 10, 17, 21, 9, 2, 16, 22, 14, 7, 5, 4, 15, 12, 10, 9, 13, 14, 21, 23, 13, 9, 11, 15, 23, 21, 5, 12, 22, 16, 0, 11, 21, 17, 12, 8, 20, 22, 1, 0, 17, 19, 8, 1, 19, 20, 7, 6, 18, 16, 15, 4, 18, 23]
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(1, 1, 1), (1, 1, -1), (1, -1, 1), (1, -1, -1), (-1, 1, 1), (-1, 1, -1), (-1, -1, 1), (-1, -1, -1), (0, 1, -1), (0, -1, 1), (0, -1, -1), (0, 1, 1), (-0.5, 1, -1), (-0.5, -1, 1), (-0.5, -1, -1), (-0.5, 1, 1), (-1, 0, -1), (1, 0, 1), (-1, 0, 1), (1, 0, -1), (0, 0, -1), (0, 0, 1), (-0.5, 0, -1), (-0.5, 0, 1)]
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-3.272951394692072, -2.4939484435683745, 0.08220969424315072)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+    }
+
+    def Xform "Box2" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-3.272951394692072, -2.4939484435683745, 0.08220969424315072)
+        }
+    }
+
+    def Xform "Box3"
+    {
+        def Mesh "Box"
+        {
+            uniform bool doubleSided = 1
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 4, 6, 2, 3, 2, 6, 7, 7, 6, 4, 5, 5, 1, 3, 7, 1, 0, 2, 3, 5, 4, 0, 1]
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)] (
+                interpolation = "faceVarying"
+            )
+            point3f[] points = [(1, 1, 1), (1, 1, -1), (1, -1, 1), (1, -1, -1), (-1, 1, 1), (-1, 1, -1), (-1, -1, 1), (-1, -1, -1)]
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-3.9006644422005583, -1.9820642883359045, -0.5102345932699044)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        }
+    }
+
+    def Xform "Box4" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (-40.08363544154699, 32.98209321547, 1.3923958126418938)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-3.977688419855796, -1.515075997729591, 0.4723554019848534)
+        }
+    }
+
+    def Xform "Box5" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (0.2, 0.2, 0.2)
+            double3 xformOp:translate = (-2.988925880991632, -2.944470391751296, 1.0503427065694608)
+        }
+    }
+
+    def Xform "Box6" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-3.977688419855796, -4.834129949001797, 0.4723554019848534)
+        }
+    }
+
+    def Xform "Box7" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            float3 xformOp:rotateXYZ = (0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (3, 0, 0)
+        }
+    }
+
+    def Xform "Box8" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (3, 4.178244139887446, 0)
+        }
+    }
+
+    def Xform "BoxScaleTest1" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (3, -8.469386899019321, 0)
+        }
+    }
+
+    def Xform "BoxScaleTest2" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (0.99999999999999, 1, 1)
+            double3 xformOp:translate = (3, -8.469386899019321, 0)
+        }
+    }
+
+    def Xform "BoxScaleTest3" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (0.9, 1, 1)
+            double3 xformOp:translate = (3, -8.469386899019321, 0)
+        }
+    }
+
+    def Xform "BoxSmall1" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (0.2, 0.2, 0.2)
+            double3 xformOp:translate = (3.6682016563330357, -4.796648851308623, -4.890365097806201e-16)
+        }
+    }
+
+    def Xform "BoxSmall2" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (22.40000033378601, -23.400000348687172, 13.800000205636024)
+            double3 xformOp:scale = (0.2, 0.2, 0.2)
+            double3 xformOp:translate = (3.668201656333021, -4.899190854630121, 0)
+        }
+    }
+
+    def Xform "BoxSmall3" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (0.2, 0.2, 0.2)
+            double3 xformOp:translate = (3.668201656333021, -4.041576581186616, 0)
+        }
+    }
+
+    def Xform "BoxSmall4" (
+        prepend references = </World/Box>
+    )
+    {
+        over "Box"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (0.2, 0.2, 0.2)
+            double3 xformOp:translate = (3.668201656333021, -5.081116418857328, 0)
+        }
+    }
+}

@@ -1,0 +1,89 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "assembly"
+)
+{
+    def Mesh "Mesh1"
+    {
+        float3[] extent = [(0.1, -0.5, -0.5), (1.1, 0.5, 0.5)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+        normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+            interpolation = "faceVarying"
+        )
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(1.1, -0.5, 0.5), (0.1, -0.5, 0.5), (1.1, 0.5, 0.5), (0.1, 0.5, 0.5), (0.1, -0.5, -0.5), (1.1, -0.5, -0.5), (0.1, 0.5, -0.5), (1.1, 0.5, -0.5)] (
+            interpolation = "vertex"
+        )
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (0, -0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 1.2)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "Mesh0"
+    {
+        float3[] extent = [(-1.1, -0.5, -0.5), (-0.1, 0.5, 0.5)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+        normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+            interpolation = "faceVarying"
+        )
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-0.1, -0.5, 0.5), (-1.1, -0.5, 0.5), (-0.1, 0.5, 0.5), (-1.1, 0.5, 0.5), (-1.1, -0.5, -0.5), (-0.1, -0.5, -0.5), (-1.1, 0.5, -0.5), (-0.1, 0.5, -0.5)] (
+            interpolation = "vertex"
+        )
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (0, -0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 1.2)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Xform "Component" (
+        kind = "component"
+    )
+    {
+        def Mesh "Mesh1"
+        {
+            float3[] extent = [(0.1, -0.5, -0.5), (1.1, 0.5, 0.5)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+            normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(1.1, -0.5, 0.5), (0.1, -0.5, 0.5), (1.1, 0.5, 0.5), (0.1, 0.5, 0.5), (0.1, -0.5, -0.5), (1.1, -0.5, -0.5), (0.1, 0.5, -0.5), (1.1, 0.5, -0.5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Mesh0"
+        {
+            float3[] extent = [(-1.1, -0.5, -0.5), (-0.1, 0.5, 0.5)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+            normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-0.1, -0.5, 0.5), (-1.1, -0.5, 0.5), (-0.1, 0.5, 0.5), (-1.1, 0.5, 0.5), (-1.1, -0.5, -0.5), (-0.1, -0.5, -0.5), (-1.1, 0.5, -0.5), (-0.1, 0.5, -0.5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+

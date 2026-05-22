@@ -1,0 +1,290 @@
+########################################################################################################################
+# Repo tool base settings
+########################################################################################################################
+
+[repo]
+logging = "warn"
+
+# Repository Name. It is used for solution name and final package name
+name = "scene-optimizer-core"
+
+# Default USD flavor tokens.
+# Override via: ./repo.sh --set-token usd_flavor:<flavor> --set-token usd_ver:<ver> --set-token python_ver:<py_ver> build
+# Supported flavors and versions are listed in deps/usd_flavors.json.
+[repo.tokens]
+usd_flavor = "usd"
+usd_ver = "25.11"
+python_ver = "3.12"
+
+"platform:linux-x86_64".abi = "2.35"
+"platform:linux-aarch64".abi = "2.35"
+"platform:windows-x86_64".abi = "v142"
+
+
+########################################################################################################################
+# CI jobs
+########################################################################################################################
+
+[repo_ci.jobs.format]
+script = "${config_root}/tools/ci/format.py"
+
+[repo_ci.jobs.build]
+script = "${config_root}/tools/ci/build.py"
+
+[repo_ci.jobs.test]
+script = "${config_root}/tools/ci/test.py"
+
+[repo_ci.jobs.publish]
+script = "${config_root}/tools/ci/publish.py"
+
+
+########################################################################################################################
+# Build tool setup
+########################################################################################################################
+
+[repo_build]
+# Public / local Linux builds: do not relaunch inside linbuild Docker (same default as usd-exchange).
+# Internal nested-docker builds may set true and configure docker.image_url + corpnet checking if required.
+docker.enabled = false
+
+# Windows: use the locally installed VS / MSVC / Windows SDK (same pattern as usd-exchange public).
+# Set vs_path or winsdk_path in this section if the toolchain is not found automatically.
+#
+# If CI fails with: missing VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt — the selected
+# Visual Studio does not have the MSVC toolset. Install the "Desktop development with C++" workload
+# (or Build Tools for Visual Studio with the C++ workload). Empty vs_version lets repo_build pick
+# a VS; if a broken/partial 2019 is chosen, pin to an install that has MSVC, e.g.:
+#   msbuild.vs_version = "vs2022"
+msbuild.link_host_toolchain = true
+msbuild.sln_file = "scene-optimizer-core.sln"
+msbuild.vs_version = ""  # "vs2019" | "vs2022" | "" (vswhere; prefer an install with MSVC + Win SDK)
+
+# Generate deps/usd-deps.packman.xml before pulling dependencies.
+# This selects the correct USD packages for the chosen flavor.
+fetch.before_pull_commands = [
+  [
+    "$root/repo${shell_ext}",
+    "usd",
+    "--generate-usd-deps",
+    "--usd-flavor", "${usd_flavor}",
+    "--usd-ver", "${usd_ver}",
+    "--python-ver", "${python_ver}",
+  ],
+]
+
+
+fetch.packman_host_files_to_pull = [
+  "${root}/deps/host-deps.packman.xml",
+]
+
+fetch.packman_target_files_to_pull = [
+  "${root}/deps/target-deps.packman.xml",
+]
+
+licensing.enabled = false
+
+# Pass in solution name to premake
+premake.extra_args = ["--solution-name=${conf:repo.name}"]
+premake.linux_x86_64_cxx_abi = true
+
+[[repo_build.argument]]
+name = "--enable-gcov"
+help = "Enable gcov (code coverage) instrumentation. This should only be used on a clean build."
+kwargs.required = false
+kwargs.nargs = 0
+extra_premake_args = ["--enable-gcov=1"]
+platforms = ["linux*"]
+
+[[repo_build.argument]]
+name = "usd_flavor"
+help = "Set the USD flavor to build against"
+extra_premake_args = ["--usd-flavor=${usd_flavor}"]
+
+[[repo_build.argument]]
+name = "usd_ver"
+help = "Set the USD version to build against"
+extra_premake_args = ["--usd-ver=${usd_ver}"]
+
+[[repo_build.argument]]
+name = "python_ver"
+help = "Set the python version to build against"
+extra_premake_args = ["--python-ver=${python_ver}"]
+
+
+[[repo_build.rc_file]]
+file_path = "${root}/_build/scene-optimizer.rc"
+product_name = "NVIDIA Omniverse Scene Optimizer"
+file_Description = "NVIDIA Omniverse Scene Optimizer Library"
+
+
+[repo_cxx_coverage]
+enabled = true
+object_dir = "${root}/_build/intermediate/"
+use_linbuild = false
+use_linbuild_on_gitlab = false
+
+exclude_paths = [
+    "${root}/_build/target-deps/**",
+]
+
+
+########################################################################################################################
+# Test Runner
+########################################################################################################################
+
+[repo_test]
+test_root = "${root}/_build/${platform}/${config}"
+default_suite = ["cpp", "python"]
+archive_pattern = "${root}/_build/packages/scene_optimizer_core_tests*.${config}.*"
+
+[repo_test.suites.cpp]
+kind = "catch2"
+executables = [
+    "${test_root}/test.cpp${shell_ext}"
+]
+
+[repo_test.suites.python]
+kind = "glob_and_exec"
+path = "${test_root}"
+
+include = [
+    "test.python${shell_ext}",
+]
+
+[repo_format]
+license_preamble = '''
+SPDX-FileCopyrightText: Copyright (c) {years} NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+SPDX-License-Identifier: Apache-2.0
+'''
+license_text = ""
+
+[repo_format.clang]
+maintain_legal_blurbs = true
+
+# The defaults here are from:
+# ./_repo/deps/repo_format/repo_tools.toml
+# They are replicated here so we can add ext/ to avoid formatting external code
+# that we don't control in this repository.
+[repo_format.python]
+maintain_legal_blurbs = true
+files.exclude = [
+    # Default
+    ".vscode/*",
+    "_build/*",
+    "_compiler/*",
+    "_repo/*",
+    ".git/*",
+    ".eggs/*",
+    ".venv/*",
+    # Custom
+    "*syntax_error*",
+    "docs/*",
+    "tools/*"
+]
+
+
+########################################################################################################################
+# Build Number
+########################################################################################################################
+
+[repo_build_number]
+enabled = true
+
+
+########################################################################################################################
+# Symbol storage
+########################################################################################################################
+
+[repo_symstore]
+enabled = true
+strip = true
+strip_nowarn = true
+extra_files = []
+paths = ["$root/_build/$platform/release"]
+
+
+########################################################################################################################
+# Packaging
+########################################################################################################################
+
+[repo_package.packages.scene_optimizer_core]
+ziponly = true
+omniverse_flow_version_scheme = true
+archive_name = "scene_optimizer_core_${usd_flavor}_${usd_ver}_py_${python_ver}"
+warn_if_not_exist = true
+package_per_config = true
+remove_pycache = true
+files = [
+    ["README.md", ""],
+    ["SECURITY.md", ""],
+    ["CHANGELOG.md", ""],
+    ["AGENTS.md", ""],
+    [".agents/**", ".agents"],
+    [".claude", ".claude"],
+    [".codex", ".codex"],
+    ["docs/**", "docs"],
+    ["_build/$platform/release/include/**", "include"],
+    ["_build/$platform/$config/python", "python"],
+    ["_build/$platform/$config/lib", "lib"],
+    ["_build/$platform/$config/extraLibs", "extraLibs"],
+    ["_build/target-deps/usd/$config/lib/python", "usdpy"],
+    ["_build/PACKAGE-LICENSES/**", "PACKAGE-LICENSES"],
+]
+files_exclude = [
+    ["**.pdb"],
+    ["**.exp"],
+    ["**.sym"],
+]
+
+# Test-only archive. Superset of the shipping package's runtime, plus the
+# catch2/python test wrappers, the test binary, and the test data tree.
+# Consumed by `repo_test` via `archive_pattern` above; not published.
+[repo_package.packages.scene_optimizer_core_tests]
+ziponly = true
+omniverse_flow_version_scheme = true
+archive_name = "scene_optimizer_core_tests_${usd_flavor}_${usd_ver}_py_${python_ver}"
+warn_if_not_exist = true
+package_per_config = true
+remove_pycache = true
+files = [
+    ["_build/$platform/$config/python", "python"],
+    ["_build/$platform/$config/lib", "lib"],
+    ["_build/$platform/$config/extraLibs", "extraLibs"],
+    ["_build/target-deps/usd/$config/lib/python", "usdpy"],
+    ["_build/$platform/$config/test.cpp*", ""],
+    ["_build/$platform/$config/test.python*", ""],
+    ["_build/$platform/$config/exts/omni.scene.optimizer.core/**", "exts/omni.scene.optimizer.core"],
+]
+files_exclude = [
+    ["**.pdb"],
+    ["**.exp"],
+    ["**.sym"],
+]
+
+[repo_codesign]
+enabled = true
+# note this folder would only exist during CI
+folder_input = "${root}/_build/unsignedpackages"
+folder_output = "${root}/_build/signedpackages"
+
+
+########################################################################################################################
+# Python Pip Package
+########################################################################################################################
+
+[repo_py_package]
+enabled = true
+staging_dir = "$root/_build/pyproject"
+install_dir = "$root/_build/packages"
+"platform:windows-x86_64".exclude       = ["*.pdb", "*.exp", "*.lib"]
+"platform:linux-x86_64".exclude         = []
+"platform:linux-aarch64".exclude        = []
+
+########################################################################################################################
+# Package publishing to packman
+########################################################################################################################
+
+[repo_publish]
+enabled = true
+packages = ["scene_optimizer_core"]
+

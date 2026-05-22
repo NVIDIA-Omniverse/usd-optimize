@@ -1,0 +1,767 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (50000, 0, 0)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (13.365920792619395, 13.365920792619606, 13.365932407713773)
+                double3 target = (-0.000003978038495944247, -0.000003978038279228713, 0.000007956076853332661)
+            }
+            dictionary Right = {
+                double3 position = (0, -50000, 0)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 0, 50000)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./groupingSceneWithSubsets.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary renderSettings = {
+            float3 "rtx:debugView:pixelDebug:textColor" = (0, 1e18, 0)
+            float3 "rtx:fog:fogColor" = (0.75, 0.75, 0.75)
+            float3 "rtx:index:backgroundColor" = (0, 0, 0)
+            float3 "rtx:index:regionOfInterestMax" = (0, 0, 0)
+            float3 "rtx:index:regionOfInterestMin" = (0, 0, 0)
+            float3 "rtx:post:backgroundZeroAlpha:backgroundDefaultColor" = (0, 0, 0)
+            float3 "rtx:post:colorcorr:contrast" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:gain" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:gamma" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:offset" = (0, 0, 0)
+            float3 "rtx:post:colorcorr:saturation" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:blackpoint" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:contrast" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:gain" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:gamma" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:lift" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:multiply" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:offset" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:whitepoint" = (1, 1, 1)
+            float3 "rtx:post:lensDistortion:lensFocalLengthArray" = (10, 30, 50)
+            float3 "rtx:post:lensFlares:anisoFlareFalloffX" = (450, 475, 500)
+            float3 "rtx:post:lensFlares:anisoFlareFalloffY" = (10, 10, 10)
+            float3 "rtx:post:lensFlares:cutoffPoint" = (2, 2, 2)
+            float3 "rtx:post:lensFlares:haloFlareFalloff" = (10, 10, 10)
+            float3 "rtx:post:lensFlares:haloFlareRadius" = (75, 75, 75)
+            float3 "rtx:post:lensFlares:isotropicFlareFalloff" = (50, 50, 50)
+            float3 "rtx:post:lensFlares:spectralBlurWavelengthRange" = (380, 550, 770)
+            float3 "rtx:post:tonemap:whitepoint" = (1, 1, 1)
+            float3 "rtx:raytracing:indexdirect:svoBrickSize" = (32, 32, 32)
+            float3 "rtx:raytracing:inscattering:singleScatteringAlbedo" = (0.9, 0.9, 0.9)
+            float3 "rtx:raytracing:inscattering:transmittanceColor" = (0.5, 0.5, 0.5)
+            float3 "rtx:sceneDb:ambientLightColor" = (0.1, 0.1, 0.1)
+        }
+    }
+    defaultPrim = "World"
+    metersPerUnit = 0.01
+    upAxis = "Z"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    def Xform "group3"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Xform "group3a"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-1.5, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Mesh "pPlane3" (
+                prepend apiSchemas = ["ShadowAPI"]
+            )
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                int[] faceVertexCounts = [4]
+                int[] faceVertexIndices = [0, 1, 3, 2]
+                rel material:binding = </World/Looks/lambert3>
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                color3f[] primvars:displayColor = [(0, 0, 0.8)] (
+                    customData = {
+                        dictionary Maya = {
+                            bool generated = 1
+                        }
+                    }
+                )
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                    customData = {
+                        dictionary Maya = {
+                            int UVSetIndex = 0
+                        }
+                    }
+                    interpolation = "faceVarying"
+                )
+                int[] primvars:st:indices = [0, 1, 3, 2]
+                bool shadow:enable = 1
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-1.4769675062401817, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def Mesh "pPlane4" (
+                prepend apiSchemas = ["ShadowAPI"]
+            )
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                int[] faceVertexCounts = [4]
+                int[] faceVertexIndices = [0, 1, 3, 2]
+                rel material:binding = </World/Looks/lambert2>
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                color3f[] primvars:displayColor = [(0.8, 0, 0)] (
+                    customData = {
+                        dictionary Maya = {
+                            bool generated = 1
+                        }
+                    }
+                )
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                    customData = {
+                        dictionary Maya = {
+                            int UVSetIndex = 0
+                        }
+                    }
+                    interpolation = "faceVarying"
+                )
+                int[] primvars:st:indices = [0, 1, 3, 2]
+                bool shadow:enable = 1
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-1.5, 1.5, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+        }
+    }
+
+    def Xform "group4"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.04762055083595573, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Xform "group4b"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-1.5, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Xform "group4c"
+            {
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-1.5, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+                def Mesh "pPlane3" (
+                    prepend apiSchemas = ["ShadowAPI"]
+                )
+                {
+                    uniform bool doubleSided = 1
+                    float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                    int[] faceVertexCounts = [4]
+                    int[] faceVertexIndices = [0, 1, 3, 2]
+                    rel material:binding = </World/Looks/lambert2>
+                    normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                        interpolation = "faceVarying"
+                    )
+                    point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                    color3f[] primvars:displayColor = [(0.8, 0, 0)] (
+                        customData = {
+                            dictionary Maya = {
+                                bool generated = 1
+                            }
+                        }
+                    )
+                    texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                        customData = {
+                            dictionary Maya = {
+                                int UVSetIndex = 0
+                            }
+                        }
+                        interpolation = "faceVarying"
+                    )
+                    int[] primvars:st:indices = [0, 1, 3, 2]
+                    bool shadow:enable = 1
+                    uniform token subdivisionScheme = "none"
+                    double3 xformOp:rotateXYZ = (0, 0, 0)
+                    double3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (-1.4769675062401817, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+                }
+
+                def Mesh "pPlane4" (
+                    prepend apiSchemas = ["ShadowAPI"]
+                )
+                {
+                    uniform bool doubleSided = 1
+                    float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                    int[] faceVertexCounts = [4]
+                    int[] faceVertexIndices = [0, 1, 3, 2]
+                    rel material:binding = </World/Looks/lambert2>
+                    normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                        interpolation = "faceVarying"
+                    )
+                    point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                    color3f[] primvars:displayColor = [(0.8, 0, 0)] (
+                        customData = {
+                            dictionary Maya = {
+                                bool generated = 1
+                            }
+                        }
+                    )
+                    texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                        customData = {
+                            dictionary Maya = {
+                                int UVSetIndex = 0
+                            }
+                        }
+                        interpolation = "faceVarying"
+                    )
+                    int[] primvars:st:indices = [0, 1, 3, 2]
+                    bool shadow:enable = 1
+                    uniform token subdivisionScheme = "none"
+                    double3 xformOp:rotateXYZ = (0, 0, 0)
+                    double3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (-1.5, 1.5, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+                }
+            }
+        }
+    }
+
+    def Xform "group5"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-1.3967965974209817, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Xform "group5b"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-1.5, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Xform "group5c"
+            {
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-1.5, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+                def Mesh "pPlane3" (
+                    prepend apiSchemas = ["ShadowAPI"]
+                )
+                {
+                    uniform bool doubleSided = 1
+                    float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                    int[] faceVertexCounts = [4]
+                    int[] faceVertexIndices = [0, 1, 3, 2]
+                    rel material:binding = </World/Looks/lambert3>
+                    normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                        interpolation = "faceVarying"
+                    )
+                    point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                    color3f[] primvars:displayColor = [(0, 0, 0.8)] (
+                        customData = {
+                            dictionary Maya = {
+                                bool generated = 1
+                            }
+                        }
+                    )
+                    texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                        customData = {
+                            dictionary Maya = {
+                                int UVSetIndex = 0
+                            }
+                        }
+                        interpolation = "faceVarying"
+                    )
+                    int[] primvars:st:indices = [0, 1, 3, 2]
+                    bool shadow:enable = 1
+                    uniform token subdivisionScheme = "none"
+                    double3 xformOp:rotateXYZ = (0, 0, 0)
+                    double3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (-1.4769675062401817, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+                }
+
+                def Mesh "pPlane4" (
+                    prepend apiSchemas = ["ShadowAPI"]
+                )
+                {
+                    uniform bool doubleSided = 1
+                    float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                    int[] faceVertexCounts = [4]
+                    int[] faceVertexIndices = [0, 1, 3, 2]
+                    rel material:binding = </World/Looks/lambert2>
+                    normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                        interpolation = "faceVarying"
+                    )
+                    point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                    color3f[] primvars:displayColor = [(0.8, 0, 0)] (
+                        customData = {
+                            dictionary Maya = {
+                                bool generated = 1
+                            }
+                        }
+                    )
+                    texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                        customData = {
+                            dictionary Maya = {
+                                int UVSetIndex = 0
+                            }
+                        }
+                        interpolation = "faceVarying"
+                    )
+                    int[] primvars:st:indices = [0, 1, 3, 2]
+                    bool shadow:enable = 1
+                    uniform token subdivisionScheme = "none"
+                    double3 xformOp:rotateXYZ = (0, 0, 0)
+                    double3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (-1.5, 1.5, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+                }
+            }
+        }
+    }
+
+    def Xform "group6"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-4.5, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Xform "group6a"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-1.5, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Mesh "pPlane3" (
+                prepend apiSchemas = ["ShadowAPI"]
+            )
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                int[] faceVertexCounts = [4]
+                int[] faceVertexIndices = [0, 1, 3, 2]
+                rel material:binding = </World/Looks/lambert3>
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                color3f[] primvars:displayColor = [(0, 0, 0.8)] (
+                    customData = {
+                        dictionary Maya = {
+                            bool generated = 1
+                        }
+                    }
+                )
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                    customData = {
+                        dictionary Maya = {
+                            int UVSetIndex = 0
+                        }
+                    }
+                    interpolation = "faceVarying"
+                )
+                int[] primvars:st:indices = [0, 1, 3, 2]
+                bool shadow:enable = 1
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-1.4769675062401817, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+
+            def Mesh "pPlane4" (
+                prepend apiSchemas = ["ShadowAPI"]
+            )
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                int[] faceVertexCounts = [4]
+                int[] faceVertexIndices = [0, 1, 3, 2]
+                rel material:binding = </World/Looks/lambert2>
+                normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                color3f[] primvars:displayColor = [(0.8, 0, 0)] (
+                    customData = {
+                        dictionary Maya = {
+                            bool generated = 1
+                        }
+                    }
+                )
+                texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                    customData = {
+                        dictionary Maya = {
+                            int UVSetIndex = 0
+                        }
+                    }
+                    interpolation = "faceVarying"
+                )
+                int[] primvars:st:indices = [0, 1, 3, 2]
+                bool shadow:enable = 1
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-1.5, 1.5, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+        }
+
+        def Xform "group6a2"
+        {
+            double3 xformOp:rotateXYZ = (0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+            def Xform "group7"
+            {
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (-1.5, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+                def Mesh "pPlane3" (
+                    prepend apiSchemas = ["ShadowAPI"]
+                )
+                {
+                    uniform bool doubleSided = 1
+                    float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                    int[] faceVertexCounts = [4]
+                    int[] faceVertexIndices = [0, 1, 3, 2]
+                    rel material:binding = </World/Looks/lambert3>
+                    normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                        interpolation = "faceVarying"
+                    )
+                    point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                    color3f[] primvars:displayColor = [(0, 0, 0.8)] (
+                        customData = {
+                            dictionary Maya = {
+                                bool generated = 1
+                            }
+                        }
+                    )
+                    texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                        customData = {
+                            dictionary Maya = {
+                                int UVSetIndex = 0
+                            }
+                        }
+                        interpolation = "faceVarying"
+                    )
+                    int[] primvars:st:indices = [0, 1, 3, 2]
+                    bool shadow:enable = 1
+                    uniform token subdivisionScheme = "none"
+                    double3 xformOp:rotateXYZ = (0, 0, 0)
+                    double3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (-1.4769675062401817, 0, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+                }
+
+                def Mesh "pPlane4" (
+                    prepend apiSchemas = ["ShadowAPI"]
+                )
+                {
+                    uniform bool doubleSided = 1
+                    float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+                    int[] faceVertexCounts = [4]
+                    int[] faceVertexIndices = [0, 1, 3, 2]
+                    rel material:binding = </World/Looks/lambert2>
+                    normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+                        interpolation = "faceVarying"
+                    )
+                    point3f[] points = [(-0.5, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0.5, 0), (0.5, 0.5, 0)]
+                    color3f[] primvars:displayColor = [(0.8, 0, 0)] (
+                        customData = {
+                            dictionary Maya = {
+                                bool generated = 1
+                            }
+                        }
+                    )
+                    texCoord2f[] primvars:st = [(0, 0), (1, 0), (0, 1), (1, 1)] (
+                        customData = {
+                            dictionary Maya = {
+                                int UVSetIndex = 0
+                            }
+                        }
+                        interpolation = "faceVarying"
+                    )
+                    int[] primvars:st:indices = [0, 1, 3, 2]
+                    bool shadow:enable = 1
+                    uniform token subdivisionScheme = "none"
+                    double3 xformOp:rotateXYZ = (0, 0, 0)
+                    double3 xformOp:scale = (1, 1, 1)
+                    double3 xformOp:translate = (-1.5, 1.5, 0)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+                }
+            }
+        }
+    }
+
+    def Scope "Looks"
+    {
+        def Material "lambert2"
+        {
+            token outputs:mdl:surface.connect = </World/Looks/lambert2/Shader.outputs:out>
+            token outputs:surface.connect = </World/Looks/lambert2/lambert2PreviewSurface.outputs:surface>
+
+            def Shader "lambert2PreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:surface
+            }
+
+            def Shader "Shader" (
+                kind = "Material"
+            )
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (1, 0, 0)
+                token outputs:out
+            }
+        }
+
+        def Material "lambert3"
+        {
+            token outputs:mdl:surface.connect = </World/Looks/lambert3/Shader.outputs:out>
+            token outputs:surface.connect = </World/Looks/lambert3/lambert3PreviewSurface.outputs:surface>
+
+            def Shader "lambert3PreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 0, 1)
+                token outputs:surface
+            }
+
+            def Shader "Shader" (
+                kind = "Material"
+            )
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0, 0, 1)
+                token outputs:out
+            }
+        }
+    }
+}
+
+def Mesh "merged" (
+    prepend apiSchemas = ["ShadowAPI"]
+)
+{
+    uniform bool doubleSided = 1
+    float3[] extent = [(-3.5, -0.5, 0), (2, 2, 0)]
+    token faceVaryingLinearInterpolation = "cornersPlus1"
+    int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+    int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22, 24, 25, 27, 26, 28, 29, 31, 30]
+    token interpolateBoundary = "edgeAndCorner"
+    uniform token orientation = "rightHanded"
+    point3f[] points = [(1, 1, 0), (2, 1, 0), (1, 2, 0), (2, 2, 0), (-3.5, 1, 0), (-2.5, 1, 0), (-3.5, 2, 0), (-2.5, 2, 0), (-0.5480459, 1, 0), (0.45195416, 1, 0), (-0.5480459, 2, 0), (0.45195416, 2, 0), (-2.059653, 1, 0), (-1.0596529, 1, 0), (-2.059653, 2, 0), (-1.0596529, 2, 0), (-0.5250133, -0.5, 0), (0.47498664, -0.5, 0), (-0.5250133, 0.5, 0), (0.47498664, 0.5, 0), (1, -0.5, 0), (2, -0.5, 0), (1, 0.5, 0), (2, 0.5, 0), (-2.0366204, -0.5, 0), (-1.0366205, -0.5, 0), (-2.0366204, 0.5, 0), (-1.0366205, 0.5, 0), (-3.4769676, -0.5, 0), (-2.4769676, -0.5, 0), (-3.4769676, 0.5, 0), (-2.4769676, 0.5, 0)]
+    color3f[] primvars:displayColor = [(0.8, 0, 0), (0, 0, 0.8)] (
+        interpolation = "uniform"
+    )
+    int[] primvars:displayColor:indices = [0, 0, 0, 0, 1, 1, 1, 1]
+    float3[] primvars:normals = [(0, 0, 1)] (
+        interpolation = "faceVarying"
+    )
+    int[] primvars:normals:indices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
+        interpolation = "faceVarying"
+    )
+    int[] primvars:st:indices = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]
+    uniform token purpose = "default"
+    uniform token subdivisionScheme = "none"
+    uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+    token triangleSubdivisionRule = "catmullClark"
+    token visibility = "inherited"
+    float3 xformOp:translate:pivot = (-0.75, 0.75, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+
+    def GeomSubset "lambert2"
+    {
+        uniform token elementType = "face"
+        uniform token familyName = "materialBind"
+        int[] indices = [0, 1, 2, 3]
+        custom rel material:binding = </World/Looks/lambert2>
+    }
+
+    def GeomSubset "lambert3"
+    {
+        uniform token elementType = "face"
+        uniform token familyName = "materialBind"
+        int[] indices = [4, 5, 6, 7]
+        custom rel material:binding = </World/Looks/lambert3>
+    }
+}
+
+def Scope "expected" (
+    active = false
+)
+{
+    def Mesh "clustered" (
+        apiSchemas = ["ShadowAPI", "MaterialBindingAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        vector3f[] extent = [(-7.9769673, -0.5, 0), (2, 0.5, 0)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22, 24, 25, 27, 26, 28, 29, 31, 30]
+        token interpolateBoundary = "edgeAndCorner"
+        add rel material:binding = </World/Looks/lambert3>
+        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+            interpolation = "faceVarying"
+        )
+        uniform token orientation = "rightHanded"
+        point3f[] points = [(-3.4769676, -0.5, 0), (-2.4769676, -0.5, 0), (-3.4769676, 0.5, 0), (-2.4769676, 0.5, 0), (-6.373764, -0.5, 0), (-5.373764, -0.5, 0), (-6.373764, 0.5, 0), (-5.373764, 0.5, 0), (-7.9769673, -0.5, 0), (-6.9769673, -0.5, 0), (-7.9769673, 0.5, 0), (-6.9769673, 0.5, 0), (-7.9769673, -0.5, 0), (-6.9769673, -0.5, 0), (-7.9769673, 0.5, 0), (-6.9769673, 0.5, 0), (-0.5250133, -0.5, 0), (0.47498664, -0.5, 0), (-0.5250133, 0.5, 0), (0.47498664, 0.5, 0), (1, -0.5, 0), (2, -0.5, 0), (1, 0.5, 0), (2, 0.5, 0), (-2.0366204, -0.5, 0), (-1.0366205, -0.5, 0), (-2.0366204, 0.5, 0), (-1.0366205, 0.5, 0), (-3.4769676, -0.5, 0), (-2.4769676, -0.5, 0), (-3.4769676, 0.5, 0), (-2.4769676, 0.5, 0)]
+        color3f[] primvars:displayColor = [(0, 0, 0.8)] (
+            interpolation = "uniform"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 0, 0, 0, 0, 0]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:st:indices = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]
+        uniform token purpose = "default"
+        bool shadow:enable = 1
+        uniform token subdivisionScheme = "none"
+        uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (-0.75, 0.75, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "clustered_1" (
+        apiSchemas = ["ShadowAPI", "MaterialBindingAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        vector3f[] extent = [(-8, -0.5, 0), (2, 2, 0)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22, 24, 25, 27, 26, 28, 29, 31, 30, 32, 33, 35, 34, 36, 37, 39, 38]
+        token interpolateBoundary = "edgeAndCorner"
+        add rel material:binding = </World/Looks/lambert2>
+        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+            interpolation = "faceVarying"
+        )
+        uniform token orientation = "rightHanded"
+        point3f[] points = [(-3.5, 1, 0), (-2.5, 1, 0), (-3.5, 2, 0), (-2.5, 2, 0), (-4.929347, -0.5, 0), (-3.929347, -0.5, 0), (-4.929347, 0.5, 0), (-3.929347, 0.5, 0), (-4.952379, 1, 0), (-3.9523795, 1, 0), (-4.952379, 2, 0), (-3.9523795, 2, 0), (-6.3967967, 1, 0), (-5.3967967, 1, 0), (-6.3967967, 2, 0), (-5.3967967, 2, 0), (-8, 1, 0), (-7, 1, 0), (-8, 2, 0), (-7, 2, 0), (-8, 1, 0), (-7, 1, 0), (-8, 2, 0), (-7, 2, 0), (1, 1, 0), (2, 1, 0), (1, 2, 0), (2, 2, 0), (-3.5, 1, 0), (-2.5, 1, 0), (-3.5, 2, 0), (-2.5, 2, 0), (-0.5480459, 1, 0), (0.45195416, 1, 0), (-0.5480459, 2, 0), (0.45195416, 2, 0), (-2.059653, 1, 0), (-1.0596529, 1, 0), (-2.059653, 2, 0), (-1.0596529, 2, 0)]
+        color3f[] primvars:displayColor = [(0.8, 0, 0)] (
+            interpolation = "uniform"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:st:indices = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]
+        uniform token purpose = "default"
+        bool shadow:enable = 1
+        uniform token subdivisionScheme = "none"
+        uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (-0.75, 0.75, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "clusteredWithSubsets" (
+        apiSchemas = ["ShadowAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        vector3f[] extent = [(-8, -0.5, 0), (2, 2, 0)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 8, 9, 11, 10, 12, 13, 15, 14, 16, 17, 19, 18, 20, 21, 23, 22, 24, 25, 27, 26, 28, 29, 31, 30, 32, 33, 35, 34, 36, 37, 39, 38, 40, 41, 43, 42, 44, 45, 47, 46, 48, 49, 51, 50, 52, 53, 55, 54, 56, 57, 59, 58, 60, 61, 63, 62, 64, 65, 67, 66, 68, 69, 71, 70]
+        token interpolateBoundary = "edgeAndCorner"
+        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+            interpolation = "faceVarying"
+        )
+        uniform token orientation = "rightHanded"
+        point3f[] points = [(-3.4769676, -0.5, 0), (-2.4769676, -0.5, 0), (-3.4769676, 0.5, 0), (-2.4769676, 0.5, 0), (-3.5, 1, 0), (-2.5, 1, 0), (-3.5, 2, 0), (-2.5, 2, 0), (-4.929347, -0.5, 0), (-3.929347, -0.5, 0), (-4.929347, 0.5, 0), (-3.929347, 0.5, 0), (-4.952379, 1, 0), (-3.9523795, 1, 0), (-4.952379, 2, 0), (-3.9523795, 2, 0), (-6.373764, -0.5, 0), (-5.373764, -0.5, 0), (-6.373764, 0.5, 0), (-5.373764, 0.5, 0), (-6.3967967, 1, 0), (-5.3967967, 1, 0), (-6.3967967, 2, 0), (-5.3967967, 2, 0), (-7.9769673, -0.5, 0), (-6.9769673, -0.5, 0), (-7.9769673, 0.5, 0), (-6.9769673, 0.5, 0), (-8, 1, 0), (-7, 1, 0), (-8, 2, 0), (-7, 2, 0), (-7.9769673, -0.5, 0), (-6.9769673, -0.5, 0), (-7.9769673, 0.5, 0), (-6.9769673, 0.5, 0), (-8, 1, 0), (-7, 1, 0), (-8, 2, 0), (-7, 2, 0), (1, 1, 0), (2, 1, 0), (1, 2, 0), (2, 2, 0), (-3.5, 1, 0), (-2.5, 1, 0), (-3.5, 2, 0), (-2.5, 2, 0), (-0.5480459, 1, 0), (0.45195416, 1, 0), (-0.5480459, 2, 0), (0.45195416, 2, 0), (-2.059653, 1, 0), (-1.0596529, 1, 0), (-2.059653, 2, 0), (-1.0596529, 2, 0), (-0.5250133, -0.5, 0), (0.47498664, -0.5, 0), (-0.5250133, 0.5, 0), (0.47498664, 0.5, 0), (1, -0.5, 0), (2, -0.5, 0), (1, 0.5, 0), (2, 0.5, 0), (-2.0366204, -0.5, 0), (-1.0366205, -0.5, 0), (-2.0366204, 0.5, 0), (-1.0366205, 0.5, 0), (-3.4769676, -0.5, 0), (-2.4769676, -0.5, 0), (-3.4769676, 0.5, 0), (-2.4769676, 0.5, 0)]
+        color3f[] primvars:displayColor = [(0, 0, 0.8), (0.8, 0, 0)] (
+            interpolation = "uniform"
+        )
+        int[] primvars:displayColor:indices = [0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:st:indices = [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]
+        uniform token purpose = "default"
+        bool shadow:enable = 1
+        uniform token subdivisionScheme = "none"
+        uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (-0.75, 0.75, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+
+        def GeomSubset "lambert2" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [1, 2, 3, 5, 7, 9, 10, 11, 12, 13]
+            custom rel material:binding
+            add rel material:binding = </World/Looks/lambert2>
+        }
+
+        def GeomSubset "lambert3" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0, 4, 6, 8, 14, 15, 16, 17]
+            custom rel material:binding
+            add rel material:binding = </World/Looks/lambert3>
+        }
+    }
+}

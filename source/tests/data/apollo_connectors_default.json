@@ -1,0 +1,31 @@
+[
+    {
+        "operation": "utilityFunction",
+        "paths": [],
+        "function": 3
+    },
+    {
+        "operation": "computeExtents",
+        "meshPrimPaths": []
+    },
+    {
+        "operation": "generateProjectionUVs",
+        "paths": [],
+        "projectionType": 4,
+        "useWorldSpaceScales": true,
+        "scaleFactor": 0.01,
+        "overwriteExisting": false
+    },
+    {
+        "operation": "optimizeTimeSamples",
+        "paths": [],
+        "removeInterpolated": true,
+        "epsilonD": 1e-12,
+        "epsilonF": 1e-06
+    },
+    {
+        "operation": "pruneLeaves",
+        "paths": [],
+        "pruneMode": 0
+    }
+]

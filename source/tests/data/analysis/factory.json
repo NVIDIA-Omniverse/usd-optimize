@@ -1,0 +1,78 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Lights//"
+        ],
+        "considerMaterials": false,
+        "materialAlbedoAsVertexColors": false,
+        "originalGeomOption": 1,
+        "mergePoint": 1,
+        "rootPath": "",
+        "considerAllAttributes": false,
+        "allowSingleMeshes": false,
+        "spatialMode": 0,
+        "spatialThreshold": 10.0,
+        "spatialMaxSize": 0.0,
+        "spatialVertexCount": 10000,
+        "spatialDebug": false
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Stack//"
+        ],
+        "considerMaterials": false,
+        "materialAlbedoAsVertexColors": false,
+        "originalGeomOption": 1,
+        "mergePoint": 1,
+        "rootPath": "",
+        "considerAllAttributes": false,
+        "allowSingleMeshes": false,
+        "spatialMode": 0,
+        "spatialThreshold": 10.0,
+        "spatialMaxSize": 0.0,
+        "spatialVertexCount": 10000,
+        "spatialDebug": false
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Wall/Cube*"
+        ],
+        "considerMaterials": false,
+        "materialAlbedoAsVertexColors": false,
+        "originalGeomOption": 1,
+        "mergePoint": 1,
+        "rootPath": "",
+        "considerAllAttributes": false,
+        "allowSingleMeshes": false,
+        "spatialMode": 0,
+        "spatialThreshold": 10.0,
+        "spatialMaxSize": 0.0,
+        "spatialVertexCount": 10000,
+        "spatialDebug": false
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Coinciding//"
+        ],
+        "considerMaterials": false,
+        "materialAlbedoAsVertexColors": false,
+        "originalGeomOption": 1,
+        "mergePoint": 1,
+        "rootPath": "",
+        "considerAllAttributes": false,
+        "allowSingleMeshes": false,
+        "spatialMode": 0,
+        "spatialThreshold": 10.0,
+        "spatialMaxSize": 0.0,
+        "spatialVertexCount": 10000,
+        "spatialDebug": false
+    },
+    {
+        "operation": "computeExtents",
+        "paths": []
+    }
+]

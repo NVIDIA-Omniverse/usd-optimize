@@ -1,0 +1,275 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+    uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+    def Mesh "FaceVaryingToUniform"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, -17), (17, 0, -7)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, -17), (12, 0, -17), (17, 0, -17), (7, 0, -12), (12, 0, -12), (17, 0, -12), (7, 0, -7), (12, 0, -7), (17, 0, -7)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "FaceVaryingToConstant"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, -17), (5, 0, -7)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, -17), (0, 0, -17), (5, 0, -17), (-5, 0, -12), (0, 0, -12), (5, 0, -12), (-5, 0, -7), (0, 0, -7), (5, 0, -7)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "FaceVaryingNoReduce"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, -5), (5, 0, 5)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, -5), (0, 0, -5), (5, 0, -5), (-5, 0, 0), (0, 0, 0), (5, 0, 0), (-5, 0, 5), (0, 0, 5), (5, 0, 5)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(1, 1, 1), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 1, 1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (1, 1, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (1, 1, 1), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (24, 0, -12)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "FaceVaryingIndexedToUniform"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, -5), (17, 0, 5)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, -5), (12, 0, -5), (17, 0, -5), (7, 0, 0), (12, 0, 0), (17, 0, 0), (7, 0, 5), (12, 0, 5), (17, 0, 5)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 0, 0, 0, 0]
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (24, 0, -12)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "FaceVaryingIndexedToConstant"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, -5), (17, 0, 5)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, -5), (12, 0, -5), (17, 0, -5), (7, 0, 0), (12, 0, 0), (17, 0, 0), (7, 0, 5), (12, 0, 5), (17, 0, 5)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(0, 1, 0)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (36, 0, -12)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "UniformNoReduce"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 7), (0, 0, 7), (5, 0, 7), (-5, 0, 12), (0, 0, 12), (5, 0, 12), (-5, 0, 17), (0, 0, 17), (5, 0, 17)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 0, 0)] (
+            interpolation = "uniform"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "UniformToConstant"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, 7), (17, 0, 17)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, 7), (12, 0, 7), (17, 0, 7), (7, 0, 12), (12, 0, 12), (17, 0, 12), (7, 0, 17), (12, 0, 17), (17, 0, 17)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)] (
+            interpolation = "uniform"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "ArbitraryPrimvars"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 7), (0, 0, 7), (5, 0, 7), (-5, 0, 12), (0, 0, 12), (5, 0, 12), (-5, 0, 17), (0, 0, 17), (5, 0, 17)] (
+            interpolation = "vertex"
+        )
+        float2[] primvars:float2indexed = [(1, 1)] (
+            interpolation = "uniform"
+        )
+        int[] primvars:float2indexed:indices = [0, 0, 0, 0]
+        float2[] primvars:float2nonindexed = [(1, 1), (1, 1), (1, 1), (1, 1), (2, 2), (2, 2), (2, 2), (2, 2), (3, 3), (3, 3), (3, 3), (3, 3), (4, 4), (4, 4), (4, 4), (4, 4)] (
+            interpolation = "faceVarying"
+        )
+        float[] primvars:floatindexed = [1] (
+            interpolation = "uniform"
+        )
+        int[] primvars:floatindexed:indices = [0, 0, 0, 0]
+        float[] primvars:floatnonindexed = [5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8] (
+            interpolation = "faceVarying"
+        )
+        float2[] primvars:elemsize = [(0, 1), (0, 2), (0, 1), (0, 2), (0, 1), (0, 2), (0, 1), (0, 2)] (
+            elementSize = 2
+            interpolation = "uniform"
+        )
+        float[] primvars:badindexing = [1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0] (
+            interpolation = "faceVarying"
+        )
+        string[] primvars:strings = ["foo", "bar", "baz", "etc"] (
+            interpolation = "uniform"
+        )
+        int[] primvars:badindexing:indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        float[] primvars:floatstayindexed = [1, 2] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:floatstayindexed:indices = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+        float2[] primvars:float2stayindexed = [(1, 1), (2, 2)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:float2stayindexed:indices = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 25)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Material "MaterialRed"
+    {
+        token outputs:displacement.connect = </World/MaterialRed/Shader.outputs:displacement>
+        token outputs:surface.connect = </World/MaterialRed/Shader.outputs:surface>
+
+        def Shader "Shader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (1, 0, 0)
+            token outputs:displacement
+            token outputs:surface
+        }
+    }
+
+    def Mesh "BoundWithColor" (
+        apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        rel material:binding = </World/MaterialRed>
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 7), (0, 0, 7), (5, 0, 7), (-5, 0, 12), (0, 0, 12), (5, 0, 12), (-5, 0, 17), (0, 0, 17), (5, 0, 17)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+            interpolation = "faceVarying"
+        ) 
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 50)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+
+    def Mesh "InvalidMesh"
+    {
+        float3[] extent = [(-50, 0, -50), (50, 0, 50)]
+        int[] faceVertexCounts = None
+        int[] faceVertexIndices = None
+        normal3f[] normals = [] (
+            interpolation = "faceVarying"
+        )
+        point3f[] points = None
+        texCoord2f[] primvars:st = [] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (90, 1.453208052550341e-15, 180)
+        double3 xformOp:scale = (0.009999999776482582, 0.009999999776482582, 0.009999999776482582)
+        double3 xformOp:translate = (0, 2.2204460492502337e-20, -0.00009999999999999999)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "StringPrimvars"
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 7), (0, 0, 7), (5, 0, 7), (-5, 0, 12), (0, 0, 12), (5, 0, 12), (-5, 0, 17), (0, 0, 17), (5, 0, 17)] (
+            interpolation = "vertex"
+        )
+        string[] primvars:stringValues = ["foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo", "foo"] (
+            interpolation = "faceVarying"
+        )
+        string[] primvars:stringValuesUniform = ["foo", "foo", "foo", "foo", "bar", "bar", "bar", "bar", "baz", "baz", "baz", "baz", "qux", "qux", "qux", "qux"] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (12, 0, 25)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+

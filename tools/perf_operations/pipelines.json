@@ -1,0 +1,58 @@
+{
+    "_comment": "Named operation pipelines. Keys are passed via --pipeline <name>. mesh-count-reduction and data-quality-baseline are bounded-loss (mesh-count-reduction includes conservative decimation driven by maxMeanError, not reductionFactor — see PIPELINES.md). The rest are lossless. Decimation tuning lives in .agents/operations/decimateMeshes.md; keep pinBoundaries explicit in decimation JSON.",
+
+    "safe-cleanup": [
+        {"operation": "computeExtents"},
+        {"operation": "pruneLeaves"},
+        {"operation": "deduplicateGeometry", "considerInstanceability": true},
+        {"operation": "optimizeMaterials"},
+        {"operation": "optimizeTimeSamples"}
+    ],
+
+    "data-quality-baseline": [
+        {"operation": "generateNormals"},
+        {
+            "operation": "meshCleanup",
+            "mergeVertices": true,
+            "removeDegenerateFaces": true,
+            "coorientFaces": true,
+            "makeManifold": true
+        },
+        {"operation": "computeExtents"}
+    ],
+
+    "memory-reduction": [
+        {"operation": "deduplicateGeometry", "considerInstanceability": true},
+        {"operation": "optimizeMaterials"},
+        {"operation": "pruneLeaves"}
+    ],
+
+    "load-time-reduction": [
+        {"operation": "computeExtents"},
+        {"operation": "pruneLeaves"},
+        {"operation": "optimizeTimeSamples"},
+        {"operation": "optimizeMaterials"}
+    ],
+
+    "mesh-count-reduction": [
+        {
+            "operation": "meshCleanup",
+            "mergeVertices": true,
+            "removeIsolatedVertices": true,
+            "removeDegenerateFaces": true
+        },
+        {"operation": "deduplicateGeometry"},
+        {"operation": "removeSmallGeometry"},
+        {
+            "operation": "decimateMeshes",
+            "reductionFactor": 0.0,
+            "maxMeanError": 0.01,
+            "pinBoundaries": true
+        }
+    ],
+
+    "hierarchy-dedup": [
+        {"operation": "deduplicateHierarchies"},
+        {"operation": "deduplicateGeometry", "duplicateMethod": 2, "tolerance": 0.001}
+    ]
+}

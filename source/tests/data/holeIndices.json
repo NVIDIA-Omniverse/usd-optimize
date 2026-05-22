@@ -1,0 +1,55 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/mesh1",
+            "/World/mesh2"
+        ],
+        "considerMaterials": false,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/withHoleIndices",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/mesh0"
+        ],
+        "considerMaterials": false,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/withoutHoleIndices",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/mesh1",
+            "/World/mesh0"
+        ],
+        "considerMaterials": false,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/mixedHoleIndices",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    }
+]

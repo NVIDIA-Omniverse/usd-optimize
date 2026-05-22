@@ -1,0 +1,19 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/mesh0",
+            "/World/mesh0/mesh1"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": true,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 1,
+        "rootPath": "",
+        "meshMaterialPath": "",
+        "notes": ""
+    }
+]

@@ -1,0 +1,307 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (0, 0, 50000)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (429.12570045695463, 429.12570214859863, 429.1257004569544)
+                double3 target = (-0.000003978037852903071, 0.00000795607729742187, -0.000003978038080276747)
+            }
+            dictionary Right = {
+                double3 position = (-50000, 0, 0)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 50000, 0)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./proto_with_materials.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary renderSettings = {
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def Xform "Plane" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = None (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Scope "Geometry"
+        {
+            def Mesh "PlaneMesh" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                float3[] extent = [(-50, 0, -50), (50, 0, 50)]
+                int[] faceVertexCounts = [4]
+                int[] faceVertexIndices = [0, 2, 3, 1]
+                rel material:binding = </World/Plane/Looks/PlaneMaterial> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+                normal3f[] normals = [(0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)] (
+                    interpolation = "faceVarying"
+                )
+                point3f[] points = [(-50, 0, -50), (50, 0, -50), (-50, 0, 50), (50, 0, 50)]
+                texCoord2f[] primvars:st = [(0, 1), (0, 0), (1, 0), (1, 1)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:rotateXYZ = (0, 0, 0)
+                double3 xformOp:scale = (1, 1, 1)
+                double3 xformOp:translate = (0, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+            }
+        }
+
+        def Scope "Looks"
+        {
+            def Material "PlaneMaterial"
+            {
+                token outputs:displacement.connect = </World/Plane/Looks/PlaneMaterial/Shader.outputs:displacement>
+                token outputs:surface.connect = </World/Plane/Looks/PlaneMaterial/Shader.outputs:surface>
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    float inputs:clearcoat = 0 (
+                        customData = {
+                            float default = 0
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        hidden = false
+                    )
+                    float inputs:clearcoatRoughness = 0.01 (
+                        customData = {
+                            float default = 0.01
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        hidden = false
+                    )
+                    color3f inputs:diffuseColor = (0.04326229, 0.6835443, 0.10810087) (
+                        customData = {
+                            float3 default = (0.18, 0.18, 0.18)
+                        }
+                        hidden = false
+                        renderType = "color"
+                    )
+                    float inputs:displacement = 0 (
+                        customData = {
+                            float default = 0
+                        }
+                        hidden = false
+                    )
+                    color3f inputs:emissiveColor = (0, 0, 0) (
+                        customData = {
+                            float3 default = (0, 0, 0)
+                        }
+                        hidden = false
+                        renderType = "color"
+                    )
+                    float inputs:ior = 1.5 (
+                        customData = {
+                            float default = 1.5
+                            dictionary range = {
+                                float max = 3.4028235e38
+                                float min = 0
+                            }
+                            dictionary soft_range = {
+                                float max = 5
+                                float min = 1
+                            }
+                        }
+                        hidden = false
+                    )
+                    float inputs:metallic = 0 (
+                        customData = {
+                            float default = 0
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        hidden = false
+                    )
+                    normal3f inputs:normal = (0, 0, 1) (
+                        customData = {
+                            float3 default = (0, 0, 1)
+                            dictionary range = {
+                                float3 max = (1, 1, 1)
+                                float3 min = (-1, -1, -1)
+                            }
+                        }
+                        hidden = false
+                    )
+                    float inputs:occlusion = 1 (
+                        customData = {
+                            float default = 1
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        doc = "This parameter is unused."
+                        hidden = false
+                    )
+                    float inputs:opacity = 1 (
+                        customData = {
+                            float default = 1
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        hidden = false
+                    )
+                    float inputs:opacityThreshold = 0 (
+                        customData = {
+                            float default = 0
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        hidden = false
+                    )
+                    float inputs:roughness = 0.5 (
+                        customData = {
+                            float default = 0.5
+                            dictionary range = {
+                                float max = 1
+                                float min = 0
+                            }
+                        }
+                        hidden = false
+                    )
+                    color3f inputs:specularColor = (0, 0, 0) (
+                        customData = {
+                            float3 default = (0, 0, 0)
+                        }
+                        hidden = false
+                        renderType = "color"
+                    )
+                    int inputs:useSpecularWorkflow = 0 (
+                        customData = {
+                            int default = 0
+                            dictionary range = {
+                                int max = 1
+                                int min = 0
+                            }
+                            string widgetType = "checkBox"
+                        }
+                        hidden = false
+                    )
+                    token outputs:displacement (
+                        renderType = "material"
+                    )
+                    token outputs:surface (
+                        renderType = "material"
+                    )
+                }
+            }
+        }
+    }
+
+    def Xform "Plane_01" (
+        instanceable = true
+        prepend references = </World/Plane>
+    )
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 145.61717580250755)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Xform "Plane_02" (
+        instanceable = true
+        prepend references = </World/Plane>
+    )
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (172.05734070641836, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "Cube" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+        rel material:binding = </World/Plane/Looks/PlaneMaterial> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+            interpolation = "faceVarying"
+        )
+        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 50, -268.92120383423713)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+
+def Xform "Environment"
+{
+    double3 xformOp:rotateXYZ = (0, 0, 0)
+    double3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+    def DistantLight "defaultLight" (
+        prepend apiSchemas = ["ShapingAPI"]
+    )
+    {
+        float inputs:angle = 1
+        float inputs:intensity = 3000
+        float inputs:shaping:cone:angle = 180
+        float inputs:shaping:cone:softness
+        float inputs:shaping:focus
+        color3f inputs:shaping:focusTint
+        asset inputs:shaping:ies:file
+        double3 xformOp:rotateXYZ = (315, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+

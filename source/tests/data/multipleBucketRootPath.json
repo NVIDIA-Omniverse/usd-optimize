@@ -1,0 +1,39 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Example/DefaultSided/mesh",
+            "/World/Example/SingleSided/mesh",
+            "/World/Example/DoubleSided/mesh"
+        ],
+        "considerMaterials": false,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/Example/MultipleBucket",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Example/DefaultSided/mesh",
+            "/World/Example/DoubleSided/mesh"
+        ],
+        "considerMaterials": false,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/Example/SingleBucket",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    }
+]

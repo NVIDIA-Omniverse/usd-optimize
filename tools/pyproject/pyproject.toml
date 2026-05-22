@@ -1,0 +1,47 @@
+[project]
+name = "omniverse-scene-optimizer"
+version = "0.0.0" # injected at package time
+description = "Tool to optimize the state of a Usd scene for performance."
+# TODO: readme, license, license files
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "usd-exchange",
+  "omniverse-asset-validator>=1.15.1",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/NVIDIA-Omniverse/scene-optimizer-core"
+Documentation = "https://github.com/NVIDIA-Omniverse/scene-optimizer-core"
+# TODO: changelog?
+
+
+[project.entry-points."omni.asset_validator"]
+# Entry-point key must be `registrant` per the Asset Validator Entrypoint
+# Plugins spec; the loader discovers plugins via
+# importlib.metadata.entry_points(group="omni.asset_validator", name="registrant").
+registrant = "omni.scene.optimizer.validators:SceneOptimizerValidatorPlugin"
+
+
+[tool.poetry]
+authors = ["NVIDIA"]
+packages = [
+    { include="omni/scene/optimizer/core" },
+    { include="omni/scene/optimizer/impl" },
+    { include="omni/scene/optimizer/validators" },
+    { include="omniverse_scene_optimizer.libs/operations" },
+    { include="omniverse_scene_optimizer.libs/operation_mapping.json" }
+]
+include = [
+    { path="lib", format="wheel" },
+]
+exclude = [
+]
+
+[tool.poetry.build]
+script = "pybuild.py"
+generate-setup-file = false
+
+[build-system]
+requires = ["poetry-core", "setuptools"]
+build-backend = "poetry.core.masonry.api"

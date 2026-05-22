@@ -1,0 +1,77 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+over "Flattened_Prototype_1"
+{
+    def Xform "grid1" (
+        kind = "component"
+    )
+    {
+        matrix4d xformOp:transform:xform = ( (7.339820709521839, -1.8729363286111458, -4.617729300313117, 0), (3.376555780435174, 8.822850679179442, 1.7884713347287517, 0), (2.2623513807921514, -1.7376155781599858, 4.300749473795144, 0), (4.999999999999998, 4.999999999999999, 8, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+        def Mesh "mesh_0"
+        {
+            float3[] extent = [(-1, 0, -1), (1, 0, 1)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-1, 0, -1), (1, 0, -1), (-1, 0, 1), (1, 0, 1)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "World" (
+    kind = "group"
+)
+{
+    def Xform "Instance0" (
+        instanceable = true
+        kind = "group"
+        add references = </Flattened_Prototype_1>
+    )
+    {
+        matrix4d xformOp:transform:copytopoints1 = ( (0.9009824597960757, 0.26557292559095497, -0.34307670910872673, 0), (-0.10026755007361897, 0.8968140514670735, 0.430895550561209, 0), (0.42211020544645345, -0.35382987195017074, 0.8346420766853769, 0), (-5, 0, -5, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+    }
+
+    def Xform "Instance1" (
+        instanceable = true
+        kind = "group"
+        add references = </Flattened_Prototype_1>
+    )
+    {
+        matrix4d xformOp:transform:copytopoints1 = ( (1.498130488104707, -1.2973086892350245, -0.26943497443066633, 0), (1.3034283376167382, 1.369881438863253, 0.6515361940488102, 0), (-0.2380747977187369, -0.6636377086130997, 1.8716050284175711, 0), (5, 0, -5, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+    }
+
+    def Xform "Instance2" (
+        instanceable = true
+        kind = "group"
+        add references = </Flattened_Prototype_1>
+    )
+    {
+        matrix4d xformOp:transform:copytopoints1 = ( (0.869879855718997, -0.05619615431471115, -0.4900520674933776, 0), (0.20523159262188279, 0.9446462388422389, 0.2559755395171526, 0), (0.4485410014749848, -0.3232421316620854, 0.8332619601988133, 0), (-5, -1, 5, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+    }
+
+    def Xform "Instance3" (
+        instanceable = true
+        kind = "group"
+        add references = </Flattened_Prototype_1>
+    )
+    {
+        matrix4d xformOp:transform:copytopoints1 = ( (0.7566055771955681, -0.4238366443725239, -0.49790611508958194, 0), (0.5426641043705145, 0.8318262508635662, 0.11653651016746086, 0), (0.3647789335807492, -0.3583679495452992, 0.8593653136788739, 0), (4, 2, 4, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+    }
+}

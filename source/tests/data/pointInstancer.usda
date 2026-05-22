@@ -1,0 +1,2430 @@
+#usda 1.0
+(
+    doc = "Generated from Composed Stage of root layer"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    def PointInstancer "Scatter" (
+        kind = "component"
+    )
+    {
+        float3[] extent.timeSamples = {
+            1: [(-30.5, -5.4255033, -30.5), (30.5, 5.4255033, 30.5)],
+        }
+        int64[] invisibleIds = []
+        quath[] orientations = [(1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0), (1, 0, 0, 0)]
+        point3f[] positions = [(-25, 0, -25), (-12.5, 0, -25), (0, 0, -25), (12.5, 0, -25), (25, 0, -25), (-25, 0, -12.5), (-12.5, 0, -12.5), (0, 0, -12.5), (12.5, 0, -12.5), (25, 0, -12.5), (-25, 0, 0), (-12.5, 0, 0), (0, 0, 0), (12.5, 0, 0), (25, 0, 0), (-25, 0, 12.5), (-12.5, 0, 12.5), (0, 0, 12.5), (12.5, 0, 12.5), (25, 0, 12.5), (-25, 0, 25), (-12.5, 0, 25), (0, 0, 25), (12.5, 0, 25), (25, 0, 25)]
+        vector3f[] primvars:P (
+            interpolation = "varying"
+        )
+        vector3f[] primvars:P.timeSamples = {
+            1: [(-25, 0, -25), (-12.5, 0, -25), (0, 0, -25), (12.5, 0, -25), (25, 0, -25), (-25, 0, -12.5), (-12.5, 0, -12.5), (0, 0, -12.5), (12.5, 0, -12.5), (25, 0, -12.5), (-25, 0, 0), (-12.5, 0, 0), (0, 0, 0), (12.5, 0, 0), (25, 0, 0), (-25, 0, 12.5), (-12.5, 0, 12.5), (0, 0, 12.5), (12.5, 0, 12.5), (25, 0, 12.5), (-25, 0, 25), (-12.5, 0, 25), (0, 0, 25), (12.5, 0, 25), (25, 0, 25)],
+        }
+        int[] protoIndices = [0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0]
+        rel prototypes = [
+            </World/Scatter/Prototypes/CubeCluster>,
+            </World/Scatter/Prototypes/PlaneCluster>,
+        ]
+
+        def Scope "Prototypes"
+        {
+            def Xform "PlaneCluster"
+            {
+                def Scope "Prototypes"
+                {
+                    token visibility = "invisible"
+
+                    def Xform "Root"
+                    {
+                        def Mesh "Mesh"
+                        {
+                            float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                            int[] faceVertexCounts = [4]
+                            int[] faceVertexIndices = [0, 1, 3, 2]
+                            uniform token orientation = "leftHanded"
+                            point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                                interpolation = "vertex"
+                            )
+                            color3f[] primvars:displayColor = [(0, 1, 0)] (
+                                interpolation = "constant"
+                            )
+                            uniform token subdivisionScheme = "none"
+                        }
+                    }
+                }
+
+                def Xform "Instance0"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (-1, 0, -1.2246468525851679e-16, 0), (0, 1, 0, 0), (1.2246468525851679e-16, 0, -1, 0), (0, 0, -5, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance1"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (1, 0, 0, 0), (0, -0.8506506681442261, -0.5257312655448914, 0), (0, 0.5257312655448914, -0.8506506681442261, 0), (0, 2.6286559104919434, -4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance2"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (-0.6739287376403809, -0.5438933372497559, -0.5000000596046448, 0), (-0.5438933372497559, 0.8232780694961548, -0.16246014833450317, 0), (0.5000000596046448, 0.16246014833450317, -0.8506506681442261, 0), (2.499999761581421, 0.8123005032539368, -4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance3"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (1, 8.50469294988443e-9, 5.256190593883048e-9, 0), (8.50469294988443e-9, -0.4472135305404663, -0.8944272994995117, 0), (-5.256190593883048e-9, 0.8944272994995117, -0.4472135305404663, 0), (0, 4.472136974334717, -2.236065626144409, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance4"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.47287338972091675, -0.7255280017852783, -0.49999988079071045, 0), (-0.7255280017852783, 0.0013957619667053223, -0.6881912350654602, 0), (0.49999988079071045, 0.6881912350654602, -0.5257308483123779, 0), (2.499999761581421, 3.4409568309783936, -2.628653049468994, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance5"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (-0.30901646614074707, -0.42532581090927124, -0.8506509065628052, 0), (-0.42532581090927124, 0.8618030548095703, -0.2763936221599579, 0), (0.8506509065628052, 0.2763936221599579, -0.44721341133117676, 0), (4.253254413604736, 1.381968379020691, -2.2360661029815674, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance6"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.3606158494949341, 0.8800366520881653, -0.3090170919895172, 0), (0.8800366520881653, -0.21126651763916016, 0.425325483083725, 0), (0.3090170919895172, -0.425325483083725, -0.8506506681442261, 0), (1.5450849533081055, -2.126627206802368, -4.253254413604736, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance7"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (-0.3800368309020996, 0.4484007954597473, -0.8090171813964844, 0), (0.4484007954597473, 0.8543058633804321, 0.26286542415618896, 0), (0.8090171813964844, -0.26286542415618896, -0.5257309675216675, 0), (4.04508638381958, -1.3143270015716553, -2.6286540031433105, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance8"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.5, 0.6881908774375916, -0.5257312059402466, 0), (0.6881908774375916, 0.05278664827346802, 0.7236068248748779, 0), (0.5257312059402466, -0.7236068248748779, -0.44721341133117676, 0), (2.6286559104919434, -3.618034839630127, -2.2360663414001465, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance9"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.3606158494949341, -0.8800367116928101, 0.30901703238487244, 0), (-0.8800367116928101, -0.2112666368484497, 0.4253254234790802, 0), (-0.30901703238487244, -0.4253254234790802, -0.8506507873535156, 0), (-1.5450849533081055, -2.126627206802368, -4.253254413604736, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance10"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (1, 0, 0, 0), (0, -0.5257308483123779, 0.85065096616745, 0), (0, -0.85065096616745, -0.5257308483123779, 0), (0, -4.2532548904418945, -2.6286535263061523, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance11"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.5000001788139343, -0.6881908774375916, 0.5257311463356018, 0), (-0.6881908774375916, 0.052786409854888916, 0.7236069440841675, 0), (-0.5257311463356018, -0.7236069440841675, -0.44721341133117676, 0), (-2.6286559104919434, -3.618034839630127, -2.2360663414001465, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance12"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (-0.6739287376403809, 0.5438932776451111, 0.5000000596046448, 0), (0.5438932776451111, 0.8232780694961548, -0.16246013343334198, 0), (-0.5000000596046448, 0.16246013343334198, -0.8506506681442261, 0), (-2.499999761581421, 0.8123005032539368, -4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance13"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (-0.3800368309020996, -0.4484007954597473, 0.8090171813964844, 0), (-0.4484007954597473, 0.8543058633804321, 0.26286542415618896, 0), (-0.8090171813964844, -0.26286542415618896, -0.5257309675216675, 0), (-4.04508638381958, -1.3143270015716553, -2.6286540031433105, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance14"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (-0.30901646614074707, 0.425325870513916, 0.85065096616745, 0), (0.425325870513916, 0.8618030548095703, -0.2763936519622803, 0), (-0.85065096616745, 0.2763936519622803, -0.44721341133117676, 0), (-4.253254413604736, 1.381968379020691, -2.2360661029815674, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance15"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.47287338972091675, 0.7255280017852783, 0.49999988079071045, 0), (0.7255280017852783, 0.0013957619667053223, -0.6881912350654602, 0), (-0.49999988079071045, 0.6881912350654602, -0.5257308483123779, 0), (-2.499999761581421, 3.4409568309783936, -2.628653049468994, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance16"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.9045085310935974, 0.29389259219169617, 0.30901697278022766, 0), (0.29389259219169617, 0.09549146890640259, -0.9510565400123596, 0), (-0.30901697278022766, 0.9510565400123596, 0, 0), (-1.545084834098816, 4.755282878875732, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance17"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.3454916477203369, 0.4755282998085022, 0.8090169429779053, 0), (0.4755282998085022, 0.6545083522796631, -0.5877854228019714, 0), (-0.8090169429779053, 0.5877854228019714, 0, 0), (-4.045083999633789, 2.938927173614502, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance18"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.8090169429779053, 0.26286566257476807, 0.5257312059402466, 0), (0.26286566257476807, 0.6381964087486267, -0.7236069440841675, 0), (-0.5257312059402466, 0.7236069440841675, 0.447213351726532, 0), (-2.6286559104919434, 3.618034839630127, 2.2360663414001465, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance19"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0, 0, 1, 0), (0, 1, 0, 0), (-1, 0, 0, 0), (-5, 0, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance20"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.3454916477203369, -0.4755282998085022, 0.8090169429779053, 0), (-0.4755282998085022, 0.6545083522796631, 0.5877854228019714, 0), (-0.8090169429779053, -0.5877854228019714, 0, 0), (-4.045083999633789, -2.938927173614502, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance21"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.49999988079071045, -0.16246014833450317, 0.8506508469581604, 0), (-0.16246014833450317, 0.9472134113311768, 0.2763936519622803, 0), (-0.8506508469581604, -0.2763936519622803, 0.4472132921218872, 0), (-4.253254413604736, -1.381968379020691, 2.2360661029815674, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance22"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.9045085310935974, -0.29389259219169617, 0.3090169429779053, 0), (-0.29389259219169617, 0.09549146890640259, 0.9510565400123596, 0), (-0.3090169429779053, -0.9510565400123596, 0, 0), (-1.545084834098816, -4.755282878875732, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance23"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.9045085310935974, 0.29389259219169617, -0.3090169429779053, 0), (0.29389259219169617, 0.09549146890640259, 0.9510565400123596, 0), (0.3090169429779053, -0.9510565400123596, 0, 0), (1.545084834098816, -4.755282878875732, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance24"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (1, 0, 0, 0), (0, 0.447213351726532, 0.8944273591041565, 0), (0, -0.8944273591041565, 0.447213351726532, 0), (0, -4.472136974334717, 2.236065626144409, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance25"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.3454916477203369, 0.4755282998085022, -0.8090169429779053, 0), (0.4755282998085022, 0.6545083522796631, 0.5877854228019714, 0), (0.8090169429779053, -0.5877854228019714, 0, 0), (4.045083999633789, -2.938927173614502, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance26"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0, 0, -1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (5, 0, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance27"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.49999988079071045, 0.16246014833450317, -0.8506508469581604, 0), (0.16246014833450317, 0.9472134113311768, 0.2763936519622803, 0), (0.8506508469581604, -0.2763936519622803, 0.4472132921218872, 0), (4.253254413604736, -1.381968379020691, 2.2360661029815674, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance28"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.3454916477203369, -0.4755282998085022, -0.8090169429779053, 0), (-0.4755282998085022, 0.6545083522796631, -0.5877854228019714, 0), (0.8090169429779053, 0.5877854228019714, 0, 0), (4.045083999633789, 2.938927173614502, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance29"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.9045085310935974, -0.29389259219169617, -0.30901697278022766, 0), (-0.29389259219169617, 0.09549146890640259, -0.9510565400123596, 0), (0.30901697278022766, 0.9510565400123596, 0, 0), (1.545084834098816, 4.755282878875732, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance30"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.8090169429779053, -0.26286566257476807, -0.5257312059402466, 0), (-0.26286566257476807, 0.6381964087486267, -0.7236069440841675, 0), (0.5257312059402466, 0.7236069440841675, 0.447213351726532, 0), (2.6286559104919434, 3.618034839630127, 2.2360663414001465, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance31"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (1, 0, 0, 0), (0, 0.5257308483123779, -0.85065096616745, 0), (0, 0.85065096616745, 0.5257308483123779, 0), (0, 4.2532548904418945, 2.6286535263061523, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance32"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.5710194110870361, 0.13938412070274353, 0.8090172410011292, 0), (0.13938412070274353, 0.954711377620697, -0.26286542415618896, 0), (-0.8090172410011292, 0.26286542415618896, 0.5257308483123779, 0), (-4.04508638381958, 1.3143270015716553, 2.6286540031433105, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance33"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.8361441493034363, -0.22552834451198578, 0.49999991059303284, 0), (-0.22552834451198578, 0.6895866394042969, 0.6881912350654602, 0), (-0.49999991059303284, -0.6881912350654602, 0.5257308483123779, 0), (-2.499999761581421, -3.4409568309783936, 2.628653049468994, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance34"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.8361441493034363, 0.22552834451198578, -0.49999991059303284, 0), (0.22552834451198578, 0.6895866394042969, 0.6881912350654602, 0), (0.49999991059303284, -0.6881912350654602, 0.5257308483123779, 0), (2.499999761581421, -3.4409568309783936, 2.628653049468994, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance35"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.5710194110870361, -0.13938412070274353, -0.8090172410011292, 0), (-0.13938412070274353, 0.954711377620697, -0.26286542415618896, 0), (0.8090172410011292, 0.26286542415618896, 0.5257308483123779, 0), (4.04508638381958, 1.3143270015716553, 2.6286540031433105, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance36"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (1, 0, 0, 0), (0, 1, 9.59254862209491e-8, 0), (0, -9.59254862209491e-8, 1, 0), (0, 0, 5, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance37"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.9484010934829712, -0.07101977616548538, -0.3090170621871948, 0), (-0.07101977616548538, 0.9022496938705444, -0.4253254234790802, 0), (0.3090170621871948, 0.4253254234790802, 0.8506507873535156, 0), (1.5450849533081055, 2.126627206802368, 4.253254413604736, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance38"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.9484010934829712, 0.07101977616548538, 0.3090170621871948, 0), (0.07101977616548538, 0.9022496938705444, -0.4253254234790802, 0), (-0.3090170621871948, 0.4253254234790802, 0.8506507873535156, 0), (-1.5450849533081055, 2.126627206802368, 4.253254413604736, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance39"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.8649123907089233, 0.043892692774534225, -0.4999999701976776, 0), (0.043892692774534225, 0.9857383966445923, 0.1624600887298584, 0), (0.4999999701976776, -0.1624600887298584, 0.8506507873535156, 0), (2.499999761581421, -0.8123005032539368, 4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance40"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (1, 0, 0, 0), (0, 0.8506507873535156, 0.5257311463356018, 0), (0, -0.5257311463356018, 0.8506507873535156, 0), (0, -2.6286559104919434, 4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance41"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints2 = ( (0.8649123907089233, -0.043892692774534225, 0.4999999701976776, 0), (-0.043892692774534225, 0.9857383966445923, 0.1624600887298584, 0), (-0.4999999701976776, -0.1624600887298584, 0.8506507873535156, 0), (-2.499999761581421, -0.8123005032539368, 4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints2"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-1, -1, 0), (1, 1, 0)]
+                        int[] faceVertexCounts = [4]
+                        int[] faceVertexIndices = [0, 1, 3, 2]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(-1, 1, 0), (1, 1, 0), (-1, -1, 0), (1, -1, 0)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 1, 0)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+            }
+
+            def Xform "CubeCluster"
+            {
+                def Scope "Prototypes"
+                {
+                    token visibility = "invisible"
+
+                    def Xform "Root"
+                    {
+                        def Mesh "Mesh"
+                        {
+                            float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                            int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                            uniform token orientation = "leftHanded"
+                            point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                                interpolation = "vertex"
+                            )
+                            color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                                interpolation = "constant"
+                            )
+                            uniform token subdivisionScheme = "none"
+                        }
+                    }
+                }
+
+                def Xform "Instance0"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (-1, 0, -1.2246468525851679e-16, 0), (0, 1, 0, 0), (1.2246468525851679e-16, 0, -1, 0), (0, 0, -5, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance1"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (1, 0, 0, 0), (0, -0.8506506681442261, -0.5257312655448914, 0), (0, 0.5257312655448914, -0.8506506681442261, 0), (0, 2.6286559104919434, -4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance2"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (-0.6739287376403809, -0.5438933372497559, -0.5000000596046448, 0), (-0.5438933372497559, 0.8232780694961548, -0.16246014833450317, 0), (0.5000000596046448, 0.16246014833450317, -0.8506506681442261, 0), (2.499999761581421, 0.8123005032539368, -4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance3"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (1, 8.50469294988443e-9, 5.256190593883048e-9, 0), (8.50469294988443e-9, -0.4472135305404663, -0.8944272994995117, 0), (-5.256190593883048e-9, 0.8944272994995117, -0.4472135305404663, 0), (0, 4.472136974334717, -2.236065626144409, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance4"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.47287338972091675, -0.7255280017852783, -0.49999988079071045, 0), (-0.7255280017852783, 0.0013957619667053223, -0.6881912350654602, 0), (0.49999988079071045, 0.6881912350654602, -0.5257308483123779, 0), (2.499999761581421, 3.4409568309783936, -2.628653049468994, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance5"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (-0.30901646614074707, -0.42532581090927124, -0.8506509065628052, 0), (-0.42532581090927124, 0.8618030548095703, -0.2763936221599579, 0), (0.8506509065628052, 0.2763936221599579, -0.44721341133117676, 0), (4.253254413604736, 1.381968379020691, -2.2360661029815674, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance6"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.3606158494949341, 0.8800366520881653, -0.3090170919895172, 0), (0.8800366520881653, -0.21126651763916016, 0.425325483083725, 0), (0.3090170919895172, -0.425325483083725, -0.8506506681442261, 0), (1.5450849533081055, -2.126627206802368, -4.253254413604736, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance7"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (-0.3800368309020996, 0.4484007954597473, -0.8090171813964844, 0), (0.4484007954597473, 0.8543058633804321, 0.26286542415618896, 0), (0.8090171813964844, -0.26286542415618896, -0.5257309675216675, 0), (4.04508638381958, -1.3143270015716553, -2.6286540031433105, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance8"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.5, 0.6881908774375916, -0.5257312059402466, 0), (0.6881908774375916, 0.05278664827346802, 0.7236068248748779, 0), (0.5257312059402466, -0.7236068248748779, -0.44721341133117676, 0), (2.6286559104919434, -3.618034839630127, -2.2360663414001465, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance9"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.3606158494949341, -0.8800367116928101, 0.30901703238487244, 0), (-0.8800367116928101, -0.2112666368484497, 0.4253254234790802, 0), (-0.30901703238487244, -0.4253254234790802, -0.8506507873535156, 0), (-1.5450849533081055, -2.126627206802368, -4.253254413604736, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance10"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (1, 0, 0, 0), (0, -0.5257308483123779, 0.85065096616745, 0), (0, -0.85065096616745, -0.5257308483123779, 0), (0, -4.2532548904418945, -2.6286535263061523, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance11"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.5000001788139343, -0.6881908774375916, 0.5257311463356018, 0), (-0.6881908774375916, 0.052786409854888916, 0.7236069440841675, 0), (-0.5257311463356018, -0.7236069440841675, -0.44721341133117676, 0), (-2.6286559104919434, -3.618034839630127, -2.2360663414001465, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance12"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (-0.6739287376403809, 0.5438932776451111, 0.5000000596046448, 0), (0.5438932776451111, 0.8232780694961548, -0.16246013343334198, 0), (-0.5000000596046448, 0.16246013343334198, -0.8506506681442261, 0), (-2.499999761581421, 0.8123005032539368, -4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance13"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (-0.3800368309020996, -0.4484007954597473, 0.8090171813964844, 0), (-0.4484007954597473, 0.8543058633804321, 0.26286542415618896, 0), (-0.8090171813964844, -0.26286542415618896, -0.5257309675216675, 0), (-4.04508638381958, -1.3143270015716553, -2.6286540031433105, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance14"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (-0.30901646614074707, 0.425325870513916, 0.85065096616745, 0), (0.425325870513916, 0.8618030548095703, -0.2763936519622803, 0), (-0.85065096616745, 0.2763936519622803, -0.44721341133117676, 0), (-4.253254413604736, 1.381968379020691, -2.2360661029815674, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance15"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.47287338972091675, 0.7255280017852783, 0.49999988079071045, 0), (0.7255280017852783, 0.0013957619667053223, -0.6881912350654602, 0), (-0.49999988079071045, 0.6881912350654602, -0.5257308483123779, 0), (-2.499999761581421, 3.4409568309783936, -2.628653049468994, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance16"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.9045085310935974, 0.29389259219169617, 0.30901697278022766, 0), (0.29389259219169617, 0.09549146890640259, -0.9510565400123596, 0), (-0.30901697278022766, 0.9510565400123596, 0, 0), (-1.545084834098816, 4.755282878875732, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance17"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.3454916477203369, 0.4755282998085022, 0.8090169429779053, 0), (0.4755282998085022, 0.6545083522796631, -0.5877854228019714, 0), (-0.8090169429779053, 0.5877854228019714, 0, 0), (-4.045083999633789, 2.938927173614502, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance18"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.8090169429779053, 0.26286566257476807, 0.5257312059402466, 0), (0.26286566257476807, 0.6381964087486267, -0.7236069440841675, 0), (-0.5257312059402466, 0.7236069440841675, 0.447213351726532, 0), (-2.6286559104919434, 3.618034839630127, 2.2360663414001465, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance19"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0, 0, 1, 0), (0, 1, 0, 0), (-1, 0, 0, 0), (-5, 0, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance20"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.3454916477203369, -0.4755282998085022, 0.8090169429779053, 0), (-0.4755282998085022, 0.6545083522796631, 0.5877854228019714, 0), (-0.8090169429779053, -0.5877854228019714, 0, 0), (-4.045083999633789, -2.938927173614502, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance21"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.49999988079071045, -0.16246014833450317, 0.8506508469581604, 0), (-0.16246014833450317, 0.9472134113311768, 0.2763936519622803, 0), (-0.8506508469581604, -0.2763936519622803, 0.4472132921218872, 0), (-4.253254413604736, -1.381968379020691, 2.2360661029815674, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance22"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.9045085310935974, -0.29389259219169617, 0.3090169429779053, 0), (-0.29389259219169617, 0.09549146890640259, 0.9510565400123596, 0), (-0.3090169429779053, -0.9510565400123596, 0, 0), (-1.545084834098816, -4.755282878875732, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance23"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.9045085310935974, 0.29389259219169617, -0.3090169429779053, 0), (0.29389259219169617, 0.09549146890640259, 0.9510565400123596, 0), (0.3090169429779053, -0.9510565400123596, 0, 0), (1.545084834098816, -4.755282878875732, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance24"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (1, 0, 0, 0), (0, 0.447213351726532, 0.8944273591041565, 0), (0, -0.8944273591041565, 0.447213351726532, 0), (0, -4.472136974334717, 2.236065626144409, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance25"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.3454916477203369, 0.4755282998085022, -0.8090169429779053, 0), (0.4755282998085022, 0.6545083522796631, 0.5877854228019714, 0), (0.8090169429779053, -0.5877854228019714, 0, 0), (4.045083999633789, -2.938927173614502, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance26"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0, 0, -1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (5, 0, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance27"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.49999988079071045, 0.16246014833450317, -0.8506508469581604, 0), (0.16246014833450317, 0.9472134113311768, 0.2763936519622803, 0), (0.8506508469581604, -0.2763936519622803, 0.4472132921218872, 0), (4.253254413604736, -1.381968379020691, 2.2360661029815674, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance28"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.3454916477203369, -0.4755282998085022, -0.8090169429779053, 0), (-0.4755282998085022, 0.6545083522796631, -0.5877854228019714, 0), (0.8090169429779053, 0.5877854228019714, 0, 0), (4.045083999633789, 2.938927173614502, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance29"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.9045085310935974, -0.29389259219169617, -0.30901697278022766, 0), (-0.29389259219169617, 0.09549146890640259, -0.9510565400123596, 0), (0.30901697278022766, 0.9510565400123596, 0, 0), (1.545084834098816, 4.755282878875732, 0, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance30"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.8090169429779053, -0.26286566257476807, -0.5257312059402466, 0), (-0.26286566257476807, 0.6381964087486267, -0.7236069440841675, 0), (0.5257312059402466, 0.7236069440841675, 0.447213351726532, 0), (2.6286559104919434, 3.618034839630127, 2.2360663414001465, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance31"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (1, 0, 0, 0), (0, 0.5257308483123779, -0.85065096616745, 0), (0, 0.85065096616745, 0.5257308483123779, 0), (0, 4.2532548904418945, 2.6286535263061523, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance32"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.5710194110870361, 0.13938412070274353, 0.8090172410011292, 0), (0.13938412070274353, 0.954711377620697, -0.26286542415618896, 0), (-0.8090172410011292, 0.26286542415618896, 0.5257308483123779, 0), (-4.04508638381958, 1.3143270015716553, 2.6286540031433105, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance33"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.8361441493034363, -0.22552834451198578, 0.49999991059303284, 0), (-0.22552834451198578, 0.6895866394042969, 0.6881912350654602, 0), (-0.49999991059303284, -0.6881912350654602, 0.5257308483123779, 0), (-2.499999761581421, -3.4409568309783936, 2.628653049468994, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance34"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.8361441493034363, 0.22552834451198578, -0.49999991059303284, 0), (0.22552834451198578, 0.6895866394042969, 0.6881912350654602, 0), (0.49999991059303284, -0.6881912350654602, 0.5257308483123779, 0), (2.499999761581421, -3.4409568309783936, 2.628653049468994, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance35"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.5710194110870361, -0.13938412070274353, -0.8090172410011292, 0), (-0.13938412070274353, 0.954711377620697, -0.26286542415618896, 0), (0.8090172410011292, 0.26286542415618896, 0.5257308483123779, 0), (4.04508638381958, 1.3143270015716553, 2.6286540031433105, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance36"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (1, 0, 0, 0), (0, 1, 9.59254862209491e-8, 0), (0, -9.59254862209491e-8, 1, 0), (0, 0, 5, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance37"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.9484010934829712, -0.07101977616548538, -0.3090170621871948, 0), (-0.07101977616548538, 0.9022496938705444, -0.4253254234790802, 0), (0.3090170621871948, 0.4253254234790802, 0.8506507873535156, 0), (1.5450849533081055, 2.126627206802368, 4.253254413604736, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance38"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.9484010934829712, 0.07101977616548538, 0.3090170621871948, 0), (0.07101977616548538, 0.9022496938705444, -0.4253254234790802, 0), (-0.3090170621871948, 0.4253254234790802, 0.8506507873535156, 0), (-1.5450849533081055, 2.126627206802368, 4.253254413604736, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance39"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.8649123907089233, 0.043892692774534225, -0.4999999701976776, 0), (0.043892692774534225, 0.9857383966445923, 0.1624600887298584, 0), (0.4999999701976776, -0.1624600887298584, 0.8506507873535156, 0), (2.499999761581421, -0.8123005032539368, 4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance40"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (1, 0, 0, 0), (0, 0.8506507873535156, 0.5257311463356018, 0), (0, -0.5257311463356018, 0.8506507873535156, 0), (0, -2.6286559104919434, 4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+
+                def Xform "Instance41"
+                {
+                    vector3f[] primvars:N = None (
+                        interpolation = "constant"
+                    )
+                    vector3f[] primvars:P = None (
+                        interpolation = "constant"
+                    )
+                    matrix4d xformOp:transform:copytopoints1 = ( (0.8649123907089233, -0.043892692774534225, 0.4999999701976776, 0), (-0.043892692774534225, 0.9857383966445923, 0.1624600887298584, 0), (-0.4999999701976776, -0.1624600887298584, 0.8506507873535156, 0), (-2.499999761581421, -0.8123005032539368, 4.253253936767578, 1) )
+                    uniform token[] xformOpOrder = ["xformOp:transform:copytopoints1"]
+
+                    def Mesh "Mesh"
+                    {
+                        float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                        uniform token orientation = "leftHanded"
+                        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                            interpolation = "vertex"
+                        )
+                        color3f[] primvars:displayColor = [(0, 0.5, 1)] (
+                            interpolation = "constant"
+                        )
+                        uniform token subdivisionScheme = "none"
+                    }
+                }
+            }
+        }
+    }
+
+    def Xform "Plane" (
+        kind = "component"
+    )
+    {
+        matrix4d xformOp:transform:xform = ( (8, 0, 0, 0), (0, 8, 0, 0), (0, 0, 8, 0), (0, -6, 0, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+        def Mesh "mesh3"
+        {
+            float3[] extent = [(0.25, 0, 0.25), (4.75, 0, 4.75)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(0.25, 0, 0.25), (4.75, 0, 0.25), (0.25, 0, 4.75), (4.75, 0, 4.75)] (
+                interpolation = "vertex"
+            )
+            color3f[] primvars:displayColor = [(1, 0, 0)] (
+                interpolation = "constant"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "mesh2"
+        {
+            float3[] extent = [(0.25, 0, -4.75), (4.75, 0, -0.25)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(0.25, 0, -4.75), (4.75, 0, -4.75), (0.25, 0, -0.25), (4.75, 0, -0.25)] (
+                interpolation = "vertex"
+            )
+            color3f[] primvars:displayColor = [(1, 0, 0)] (
+                interpolation = "constant"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "mesh1"
+        {
+            float3[] extent = [(-4.75, 0, 0.25), (-0.25, 0, 4.75)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-4.75, 0, 0.25), (-0.25, 0, 0.25), (-4.75, 0, 4.75), (-0.25, 0, 4.75)] (
+                interpolation = "vertex"
+            )
+            color3f[] primvars:displayColor = [(1, 0, 0)] (
+                interpolation = "constant"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "mesh0"
+        {
+            float3[] extent = [(-4.75, 0, -4.75), (-0.25, 0, -0.25)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-4.75, 0, -4.75), (-0.25, 0, -4.75), (-4.75, 0, -0.25), (-0.25, 0, -0.25)] (
+                interpolation = "vertex"
+            )
+            color3f[] primvars:displayColor = [(1, 0, 0)] (
+                interpolation = "constant"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+

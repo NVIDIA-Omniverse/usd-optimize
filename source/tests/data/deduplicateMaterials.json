@@ -1,0 +1,9 @@
+[
+    {
+        "operation": "optimizeMaterials",
+        "materialPrimPaths": [
+            "/World"
+        ],
+        "optimizeMaterialsMode": 0
+    }
+]

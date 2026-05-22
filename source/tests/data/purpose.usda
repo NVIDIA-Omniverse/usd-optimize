@@ -1,0 +1,162 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+    uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+    def Xform "Undefined"
+    {
+        def Mesh "Mesh0"
+        {
+            float3[] extent = [(-5, 0, -5), (5, 0, 5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -5), (5, 0, -5), (-5, 0, 5), (5, 0, 5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Mesh1"
+        {
+            float3[] extent = [(7, 0, -5), (17, 0, 5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, -5), (17, 0, -5), (7, 0, 5), (17, 0, 5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "Guide"
+    {
+        uniform token purpose = "guide"
+
+        def Mesh "Mesh0"
+        {
+            float3[] extent = [(-5, 0, 31), (5, 0, 41)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 31), (5, 0, 31), (-5, 0, 41), (5, 0, 41)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Mesh1"
+        {
+            float3[] extent = [(7, 0, 31), (17, 0, 41)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, 31), (17, 0, 31), (7, 0, 41), (17, 0, 41)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "Default"
+    {
+        uniform token purpose = "default"
+
+        def Mesh "Mesh0"
+        {
+            float3[] extent = [(-5, 0, 19), (5, 0, 29)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 19), (5, 0, 19), (-5, 0, 29), (5, 0, 29)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Mesh1"
+        {
+            float3[] extent = [(7, 0, 19), (17, 0, 29)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, 19), (17, 0, 19), (7, 0, 29), (17, 0, 29)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "Proxy"
+    {
+        uniform token purpose = "proxy"
+
+        def Mesh "Mesh0"
+        {
+            float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 7), (5, 0, 7), (-5, 0, 17), (5, 0, 17)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Mesh1"
+        {
+            float3[] extent = [(7, 0, 7), (17, 0, 17)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, 7), (17, 0, 7), (7, 0, 17), (17, 0, 17)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "Render"
+    {
+        uniform token purpose = "render"
+
+        def Mesh "Mesh0"
+        {
+            float3[] extent = [(-5, 0, 43), (5, 0, 53)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 43), (5, 0, 43), (-5, 0, 53), (5, 0, 53)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Mesh1"
+        {
+            float3[] extent = [(7, 0, 43), (17, 0, 53)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, 43), (17, 0, 43), (7, 0, 53), (17, 0, 53)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+

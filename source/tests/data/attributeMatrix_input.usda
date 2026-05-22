@@ -1,0 +1,1191 @@
+#usda 1.0
+(
+    doc = "Generated from Composed Stage of root layer"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "group"
+)
+{
+    def Xform "Source" (
+        kind = "group"
+    )
+    {
+        def Xform "doubleSided_False_subdivisionScheme_bilinear_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_bilinear_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (1.2, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_bilinear_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (2.4, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_catmullClark_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (3.5999999999999996, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_catmullClark_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (4.8, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_catmullClark_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (6, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_loop_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (7.2, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_loop_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (8.4, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_loop_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (9.6, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_none_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (10.799999999999999, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_none_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (11.999999999999998, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_none_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (13.199999999999998, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_undefined_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (14.399999999999997, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_undefined_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (15.599999999999996, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_False_subdivisionScheme_undefined_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (16.799999999999997, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 0
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_bilinear_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (17.999999999999996, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_bilinear_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (19.199999999999996, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_bilinear_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (20.399999999999995, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_catmullClark_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (21.599999999999994, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_catmullClark_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (22.799999999999994, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_catmullClark_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (23.999999999999993, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_loop_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (25.199999999999992, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_loop_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (26.39999999999999, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_loop_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (27.59999999999999, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_none_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (28.79999999999999, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_none_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (29.99999999999999, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_none_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (31.19999999999999, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_undefined_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (32.39999999999999, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_undefined_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (33.599999999999994, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_True_subdivisionScheme_undefined_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (34.8, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = 1
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_bilinear_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (36, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_bilinear_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (37.2, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_bilinear_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (38.400000000000006, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "bilinear"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_catmullClark_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (39.60000000000001, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_catmullClark_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (40.80000000000001, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_catmullClark_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (42.000000000000014, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "catmullClark"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_loop_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (43.20000000000002, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_loop_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (44.40000000000002, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_loop_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (45.60000000000002, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "loop"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_none_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (46.800000000000026, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_none_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (48.00000000000003, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_none_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (49.20000000000003, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+                token triangleSubdivisionRule = None
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_undefined_triangleSundivisionRule_catmullClark" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (50.400000000000034, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = "catmullClark"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_undefined_triangleSundivisionRule_smooth" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (51.60000000000004, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = "smooth"
+            }
+        }
+
+        def Xform "doubleSided_undefined_subdivisionScheme_undefined_triangleSundivisionRule_undefined" (
+            kind = "group"
+        )
+        {
+            custom matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (52.80000000000004, 0, 0, 1) )
+            matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "BaseMesh"
+            {
+                uniform bool doubleSided = None
+                float3[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+                int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+                int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+                normal3f[] normals = [(0, 0, 1), (-0, -0, 1), (-0, -0, 1), (-0, -0, 1), (0, -0, -1), (-0, -0, -1), (-0, 0, -1), (-0, -0, -1), (-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0), (-0, -1, -0), (-0, -1, 0), (-0, -1, -0), (0, -1, -0), (1, -0, -0), (1, -0, -0), (1, -0, -0), (1, 0, 0), (-1, -0, -0), (-1, 0, -0), (-1, -0, -0), (-1, -0, 0)] (
+                    interpolation = "faceVarying"
+                )
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = None
+                token triangleSubdivisionRule = None
+            }
+        }
+    }
+}
+

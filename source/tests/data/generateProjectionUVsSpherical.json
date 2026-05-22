@@ -1,0 +1,11 @@
+[
+    {
+        "operation": "generateProjectionUVs",
+        "paths": [
+            "/World/Cube"
+        ],
+        "projectionType": 1,
+        "useWorldSpaceScales": false,
+        "scaleFactor": 1.0
+    }
+]

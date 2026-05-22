@@ -1,0 +1,8 @@
+[
+    {
+        "operation": "mergeVertices",
+        "paths": [],
+        "tolerance": 0.0,
+        "makeManifold": false
+    }
+]

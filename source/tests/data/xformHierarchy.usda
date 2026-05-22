@@ -1,0 +1,95 @@
+#usda 1.0
+(
+    doc = """Generated from Composed Stage of root layer 
+"""
+    endTimeCode = 5
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    matrix4d xformOp:transform:transform1.timeSamples = {
+        1: ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 1, 0, 1) ),
+        2: ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 2, 0, 1) ),
+        3: ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 3, 0, 1) ),
+        4: ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 4, 0, 1) ),
+        5: ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 5, 0, 1) ),
+    }
+    uniform token[] xformOpOrder = ["xformOp:transform:transform1"]
+
+    def Xform "Geometry"
+    {
+        def Mesh "Mesh05"
+        {
+            float3[] extent = [(43, 0, -5), (53, 0, 5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(43, 0, -5), (53, 0, -5), (43, 0, 5), (53, 0, 5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+            uniform token[] xformOpOrder = ["!resetXformStack!"]
+        }
+
+        def Mesh "Mesh03"
+        {
+            float3[] extent = [(19, 0, -5), (29, 0, 5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(19, 0, -5), (29, 0, -5), (19, 0, 5), (29, 0, 5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Mesh04"
+        {
+            float3[] extent = [(31, 0, -5), (41, 0, 5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(31, 0, -5), (41, 0, -5), (31, 0, 5), (41, 0, 5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "Xform"
+        {
+            uniform token[] xformOpOrder = ["!resetXformStack!"]
+
+            def Mesh "Mesh02"
+            {
+                float3[] extent = [(7, 0, -5), (17, 0, 5)]
+                int[] faceVertexCounts = [4]
+                int[] faceVertexIndices = [0, 1, 3, 2]
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(7, 0, -5), (17, 0, -5), (7, 0, 5), (17, 0, 5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "Mesh01"
+            {
+                float3[] extent = [(-5, 0, -5), (5, 0, 5)]
+                int[] faceVertexCounts = [4]
+                int[] faceVertexIndices = [0, 1, 3, 2]
+                uniform token orientation = "leftHanded"
+                point3f[] points = [(-5, 0, -5), (5, 0, -5), (-5, 0, 5), (5, 0, 5)] (
+                    interpolation = "vertex"
+                )
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+

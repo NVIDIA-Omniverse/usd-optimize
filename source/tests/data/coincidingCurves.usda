@@ -1,0 +1,81 @@
+#usda 1.0
+
+
+def Xform "Linear"
+{
+    uniform token[] xformOpOrder = ["xformOp:translate"]
+    float3 xformOp:translate = (0, 0, 0)
+
+    def BasisCurves "Coinciding1" ()
+    {
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        float3 xformOp:translate = (3, 0, 0)
+
+        uniform token type = "linear"
+        int[] curveVertexCounts = [7]
+        point3f[] points = [(0, 0, 0), (1, 1, 0), (1, 2, 0), (0, 3, 0), (-1, 4, 0), (-1, 5, 0), (0, 6, 0)]
+        float[] widths = [.5] (interpolation = "constant")
+        color3f[] primvars:displayColor = [(1, 0, 0)]
+    }
+
+    def BasisCurves "Unique1" ()
+    {
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        float3 xformOp:translate = (6, 0, 0)
+
+        uniform token type = "linear"
+        int[] curveVertexCounts = [7]
+        point3f[] points = [(0, 0, 0), (1, 1, 0), (1, 2, 0), (0, 3, 0), (-1, 4, 0), (-1, 5, 0), (0, 6, 0)]
+        float[] widths = [.5] (interpolation = "constant")
+        color3f[] primvars:displayColor = [(1, 0, 1)]
+    }
+
+    def BasisCurves "Unique2" ()
+    {
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        float3 xformOp:translate = (9, 0, 0)
+
+        uniform token type = "linear"
+        int[] curveVertexCounts = [7]
+        point3f[] points = [(0, 0, 0), (1, 1, 0), (1, 2, 0), (0, 3, 0), (-1, 4, 0), (-1, 5, 0), (0, 6, 0)]
+        float[] widths = [0, .5, .5, .8, .5, .5, 0] (interpolation = "varying")
+        color3f[] primvars:displayColor = [(0, 0, 1)]
+    }
+
+    def BasisCurves "Coinciding2" ()
+    {
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        float3 xformOp:translate = (3, 0, 0)
+
+        uniform token type = "linear"
+        int[] curveVertexCounts = [7]
+        point3f[] points = [(0, 0, 0), (1, 1, 0), (1, 2, 0), (0, 3, 0), (-1, 4, 0), (-1, 5, 0), (0, 6, 0)]
+        float[] widths = [.5] (interpolation = "constant")
+        color3f[] primvars:displayColor = [(0, 1, 0)]
+    }
+
+    def BasisCurves "Unique3" ()
+    {
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        float3 xformOp:translate = (9, 0, 0)
+
+        uniform token type = "linear"
+        int[] curveVertexCounts = [7]
+        point3f[] points = [(0, 0, 0), (-1, 1, 0), (-1, 2, 0), (0, 3, 0), (1, 4, 0), (1, 5, 0), (0, 6, 0)]
+        float[] widths = [0, .5, .5, .8, .5, .5, 0] (interpolation = "varying")
+        color3f[] primvars:displayColor = [(0, 0, 1)]
+    }
+
+    def BasisCurves "Unique4" ()
+    {
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        float3 xformOp:translate = (9, 0, 0)
+
+        uniform token type = "linear"
+        int[] curveVertexCounts = [7]
+        point3f[] points = [(0, 0, 0), (-1, 1, 0), (-1, 2, 0), (0, 3, 0), (1, 4, 0), (2, 5, 0), (0, 6, 0)]
+        float[] widths = [0, .5, .5, .8, .5, .5, 0] (interpolation = "varying")
+        color3f[] primvars:displayColor = [(0, 0, 1)]
+    }
+
+}

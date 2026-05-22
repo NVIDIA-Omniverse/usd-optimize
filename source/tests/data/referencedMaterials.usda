@@ -1,0 +1,96 @@
+#usda 1.0
+(
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def Xform "Cube1" (
+        prepend references = </Prototypes/CubeYellow1>
+    )
+    {
+        matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 5, 1) )        
+    }
+
+    def Xform "Cube2" (
+        prepend references = </Prototypes/CubeYellow2>
+    )
+    {
+        matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 10, 1) )        
+    }
+}
+
+def Xform "Prototypes"
+{
+    token visibility = "invisible"
+
+    def Xform "CubeYellow1"
+    {
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Prototypes/CubeYellow1/Material3>
+            color3f[] primvars:diffuseColor = [(0, 1, 0)] (
+                interpolation = "constant"
+            )
+            double size = 2
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+        def Material "Material3"
+        {
+            token outputs:displacement.connect = </Prototypes/CubeYellow1/Material3/Shader.outputs:displacement>
+            token outputs:surface.connect = </Prototypes/CubeYellow1/Material3/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+    }
+
+    def Xform "CubeYellow2"
+    {
+        float3 xformOp:rotateXYZ = (0, -0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Prototypes/CubeYellow2/Material>
+            double size = 2
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (5, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+
+        def Material "Material"
+        {
+            token outputs:displacement.connect = </Prototypes/CubeYellow2/Material/Shader.outputs:displacement>
+            token outputs:surface.connect = </Prototypes/CubeYellow2/Material/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+    }
+}
+
+
+

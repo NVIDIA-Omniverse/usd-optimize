@@ -1,0 +1,138 @@
+#usda 1.0
+(
+    doc = """Generated from Composed Stage of root layer 
+"""
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "childMeshes" (
+    kind = "component"
+)
+{
+    def Mesh "Mesh" (
+        kind = "component"
+    )
+    {
+        float3[] extent = [(-0.5, 0, -0.5), (0.5, 0, 0.5)]
+        int[] faceVertexCounts = [4]
+        int[] faceVertexIndices = [0, 1, 3, 2]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-0.5, 0, -0.5), (0.5, 0, -0.5), (-0.5, 0, 0.5), (0.5, 0, 0.5)] (
+            interpolation = "vertex"
+        )
+        uniform token subdivisionScheme = "none"
+
+        def Mesh "SubMesh"
+        {
+            float3[] extent = [(-0.5, 1, -0.5), (0.5, 1, 0.5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-0.5, 1, -0.5), (0.5, 1, -0.5), (-0.5, 1, 0.5), (0.5, 1, 0.5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "childMaterials" (
+    kind = "component"
+)
+{
+    def Mesh "Mesh" (
+        apiSchemas = ["MaterialBindingAPI"]
+        kind = "component"
+    )
+    {
+        float3[] extent = [(0.70000005, 0, -0.5), (1.7, 0, 0.5)]
+        int[] faceVertexCounts = [4]
+        int[] faceVertexIndices = [0, 1, 3, 2]
+        rel material:binding = </childMaterials/Mesh/Material>
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(0.70000005, 0, -0.5), (1.7, 0, -0.5), (0.70000005, 0, 0.5), (1.7, 0, 0.5)] (
+            interpolation = "vertex"
+        )
+        uniform token subdivisionScheme = "none"
+
+        def Material "Material"
+        {
+            token outputs:surface.connect = </childMaterials/Mesh/Material/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:surface
+            }
+        }
+    }
+}
+
+def Xform "childSubsets" (
+    kind = "component"
+)
+{
+    def Mesh "Mesh" (
+        kind = "component"
+    )
+    {
+        float3[] extent = [(1.9000001, 0, -0.5), (2.9, 0, 0.5)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 4, 5, 9, 8, 5, 6, 10, 9, 6, 7, 11, 10, 8, 9, 13, 12, 9, 10, 14, 13, 10, 11, 15, 14]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(1.9000001, 0, -0.5), (2.2333333, 0, -0.5), (2.5666668, 0, -0.5), (2.9, 0, -0.5), (1.9000001, 0, -0.16666666), (2.2333333, 0, -0.16666666), (2.5666668, 0, -0.16666666), (2.9, 0, -0.16666666), (1.9000001, 0, 0.16666669), (2.2333333, 0, 0.16666669), (2.5666668, 0, 0.16666669), (2.9, 0, 0.16666669), (1.9000001, 0, 0.5), (2.2333333, 0, 0.5), (2.5666668, 0, 0.5), (2.9, 0, 0.5)] (
+            interpolation = "vertex"
+        )
+        uniform token subdivisionScheme = "none"
+
+        def GeomSubset "green" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            int[] indices = [1, 3, 5, 7]
+            rel material:binding = </childSubsets/Materials/GreenMaterial>
+        }
+
+        def GeomSubset "red" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            int[] indices = [0, 2, 4, 6, 8]
+            rel material:binding = </childSubsets/Materials/RedMaterial>
+        }
+    }
+
+    def Scope "Materials"
+    {
+        def Material "RedMaterial"
+        {
+            token outputs:surface.connect = </childSubsets/Materials/RedMaterial/RedShader.outputs:surface>
+
+            def Shader "RedShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:surface
+            }
+        }
+
+        def Material "GreenMaterial"
+        {
+            token outputs:surface.connect = </childSubsets/Materials/GreenMaterial/GreenShader.outputs:surface>
+
+            def Shader "GreenShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 0.5, 0)
+                token outputs:surface
+            }
+        }
+    }
+}
+

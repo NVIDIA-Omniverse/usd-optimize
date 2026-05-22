@@ -1,0 +1,292 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (0, 0, 50000)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (-764.1268269958558, 427.22265412501645, 822.8476698589216)
+                double3 target = (32.75122602642432, -70.32685093637792, 4.399600670699101)
+            }
+            dictionary Right = {
+                double3 position = (-50000, 0, 0)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 50000, 0)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./validatePrimvars.usda"
+        }
+        dictionary renderSettings = {
+            bool "rtx:useViewLightingMode" = 1
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def Mesh "CubeIndexable"
+    {
+        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 50, -200)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "CubeNonIndexable"
+    {
+        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+        color3f[] primvars:displayColor = [(1, 0, 0.1), (1, 0, 0.2), (1, 0, 0.3), (1, 0, 0.4), (0, 1, 0.5), (0, 1, 0.6), (0, 1, 0.7), (0, 1, 0.8), (0, 0, 1), (0.1, 0, 1), (0.2, 0, 1), (0.3, 0, 1), (1, 0.1, 0), (1, 0.2, 0), (1, 0.3, 0), (1, 0.4, 0), (1, 0.5, 0), (1, 0.6, 0), (1, 0.8, 0), (1, 0.9, 0), (1, 0.1, 0.1), (1, 0.1, 0.2), (1, 0.1, 0.3), (1, 0.1, 0.4)] (
+            interpolation = "faceVarying"
+        )
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 50, 200)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "CubeOutOfBounds"
+    {
+        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0)] (
+            interpolation = "faceVarying"
+        )
+        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:st:indices = [0, 1, 2, 3, 1, 2, 3, 0, 3, 0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 99]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (200, 50, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "CubeManyIndexable"
+    {
+        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+        asset[] primvars:indexableAsset = [@foo@, @bar@, @foo@, @bar@, @foo@, @bar@] (
+            interpolation = "uniform"
+        )
+        color3d[] primvars:indexableColor3d = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "uniform"
+        )
+        color3f[] primvars:indexableColor3f = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "uniform"
+        )
+        color3h[] primvars:indexableColor3h = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "uniform"
+        )
+        color4d[] primvars:indexableColor4d = [(1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1), (1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1)] (
+            interpolation = "uniform"
+        )
+        color4f[] primvars:indexableColor4f = [(1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1), (1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1)] (
+            interpolation = "uniform"
+        )
+        color4h[] primvars:indexableColor4h = [(1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1), (1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1)] (
+            interpolation = "uniform"
+        )
+        double[] primvars:indexableDouble = [1, 1, 1, 2, 2, 2] (
+            interpolation = "uniform"
+        )
+        double2[] primvars:indexableDouble2 = [(1, 2), (2, 3), (3, 4), (1, 2), (2, 3), (3, 4)] (
+            interpolation = "uniform"
+        )
+        double3[] primvars:indexableDouble3 = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        double4[] primvars:indexableDouble4 = [(1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6), (1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6)] (
+            interpolation = "uniform"
+        )
+        float[] primvars:indexableFloat = [1, 1, 1, 1, 1, 1] (
+            interpolation = "uniform"
+        )
+        float2[] primvars:indexableFloat2 = [(1, 2), (2, 3), (3, 4), (1, 2), (2, 3), (3, 4)] (
+            interpolation = "uniform"
+        )
+        float3[] primvars:indexableFloat3 = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        float4[] primvars:indexableFloat4 = [(1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6), (1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6)] (
+            interpolation = "uniform"
+        )
+        half[] primvars:indexableHalf = [1, 1, 1, 1, 1, 1] (
+            interpolation = "uniform"
+        )
+        half2[] primvars:indexableHalf2 = [(1, 2), (2, 3), (3, 4), (1, 2), (2, 3), (3, 4)] (
+            interpolation = "uniform"
+        )
+        half3[] primvars:indexableHalf3 = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        half4[] primvars:indexableHalf4 = [(1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6), (1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6)] (
+            interpolation = "uniform"
+        )
+        int2[] primvars:indexableInt2 = [(1, 2), (2, 3), (3, 4), (1, 2), (2, 3), (3, 4)] (
+            interpolation = "uniform"
+        )
+        int3[] primvars:indexableInt3 = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        int4[] primvars:indexableInt4 = [(1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6), (1, 2, 3, 4), (2, 3, 4, 5), (3, 4, 5, 6)] (
+            interpolation = "uniform"
+        )
+        matrix3d[] primvars:indexableMatrix3d = [( (0.1, 0.2, 0.3), (1, 1.1, 1.2), (2, 2.1, 2.3) ), ( (0.1, 0.2, 0.3), (1, 1.1, 1.2), (2, 2.1, 2.3) ), ( (0.2, 0.2, 0.3), (1, 1.1, 1.2), (2.1, 2.1, 2.3) ), ( (0.1, 0.2, 0.3), (1, 1.1, 1.2), (2, 2.1, 2.3) ), ( (0.1, 0.2, 0.3), (1, 1.1, 1.2), (2, 2.1, 2.3) ), ( (0.1, 0.2, 0.3), (1, 1.1, 1.2), (2, 2.1, 2.3) )] (
+            interpolation = "uniform"
+        )
+        matrix4d[] primvars:indexableMatrix4d = [( (0.1, 0.2, 0.3, 0.4), (1, 1.1, 1.2, 1.3), (2, 2.1, 2.3, 2.4), (3, 3.1, 3.2, 3.4) ), ( (0.1, 0.2, 0.3, 0.4), (1, 1.1, 1.2, 1.3), (2, 2.1, 2.3, 2.4), (3, 3.1, 3.2, 3.4) ), ( (0.1, 0.2, 0.3, 0.4), (1, 1.1, 1.2, 1.3), (2, 2.1, 2.3, 2.4), (3, 3.1, 3.2, 3.4) ), ( (0.1, 0.2, 0.3, 0.4), (1, 1.1, 1.2, 1.3), (2, 2.1, 2.3, 2.4), (3, 3.1, 3.2, 3.4) ), ( (0.1, 0.2, 0.7, 0.4), (1, 1.1, 1.2, 1.3), (2, 2.1, 2.3, 2.4), (3, 3.1, 3.2, 3.4) ), ( (0.1, 0.2, 0.3, 0.4), (1, 1.1, 1.2, 1.3), (2, 2.1, 2.3, 2.4), (3, 3.1, 3.2, 3.4) )] (
+            interpolation = "uniform"
+        )
+        normal3d[] primvars:indexableNormal3d = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        normal3f[] primvars:indexableNormal3f = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        normal3h[] primvars:indexableNormal3h = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        point3d[] primvars:indexablePoint3d = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        point3f[] primvars:indexablePoint3f = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        string[] primvars:indexableString = ["foo", "bar", "baz", "foo", "bar", "baz"] (
+            interpolation = "uniform"
+        )
+        texCoord2d[] primvars:indexableTexCoord2d = [(0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)] (
+            interpolation = "uniform"
+        )
+        texCoord2f[] primvars:indexableTexCoord2f = [(0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)] (
+            interpolation = "uniform"
+        )
+        texCoord2h[] primvars:indexableTexCoord2h = [(0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)] (
+            interpolation = "uniform"
+        )
+        texCoord3f[] primvars:indexableTexCoord3d = [(0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1)] (
+            interpolation = "uniform"
+        )
+        texCoord3d[] primvars:indexableTexCoord3f = [(0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1)] (
+            interpolation = "uniform"
+        )
+        texCoord3h[] primvars:indexableTexCoord3h = [(0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1), (0, 0.5, 1)] (
+            interpolation = "uniform"
+        )
+        vector3d[] primvars:indexableVector3d = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        vector3f[] primvars:indexableVector3f = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        vector3h[] primvars:indexableVector3h = [(1, 2, 3), (2, 3, 4), (3, 4, 5), (1, 2, 3), (2, 3, 4), (3, 4, 5)] (
+            interpolation = "uniform"
+        )
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 50, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "CubeSkipPrimvars"
+    {
+        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+        bool[] primvars:bools = [1, 1, 1, 0, 0, 0] (
+            interpolation = "uniform"
+        )
+        float[] primvars:constantFloat = [1] (
+            interpolation = "constant"
+        )
+        float2[] primvars:elemSize = [(0, 1), (0, 2), (0, 1), (0, 2), (0, 1), (0, 2)] (
+            elementSize = 2
+            interpolation = "uniform"
+        )
+        int[] primvars:ints = [1, 2, 3, 4, 5, 6] (
+            interpolation = "uniform"
+        )
+        float[] primvars:skel:foo = [1, 2, 3, 4, 5, 6] (
+            interpolation = "uniform"
+        )
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-200, 50, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Mesh "CubeNonArray"
+    {
+        float3[] extent = [(-50, -50, -50), (50, 50, 50)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 6, 7, 5, 6, 2, 3, 7, 4, 5, 1, 0, 4, 0, 2, 6, 5, 7, 3, 1]
+        point3f[] points = [(-50, -50, 50), (50, -50, 50), (-50, 50, 50), (50, 50, 50), (-50, -50, -50), (50, -50, -50), (-50, 50, -50), (50, 50, -50)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, -100, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+        float primvars:nonArray = 1.0 (
+            interpolation = "faceVarying"
+        )
+    }
+}
+
+def Xform "Environment"
+{
+    double3 xformOp:rotateXYZ = (0, 0, 0)
+    double3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+    def DistantLight "defaultLight" (
+        prepend apiSchemas = ["ShapingAPI"]
+    )
+    {
+        float inputs:angle = 1
+        float inputs:intensity = 3000
+        float inputs:shaping:cone:angle = 180
+        float inputs:shaping:cone:softness
+        float inputs:shaping:focus
+        color3f inputs:shaping:focusTint
+        asset inputs:shaping:ies:file
+        double3 xformOp:rotateXYZ = (315, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+

@@ -1,0 +1,245 @@
+#usda 1.0
+(
+    doc = "Generated from Composed Stage of root layer"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+    uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+    def Xform "normals_primvarsSt"
+    {
+        def Mesh "mesh1"
+        {
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = [(-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 7), (5, 0, 7), (-5, 0, 17), (5, 0, 17)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = [(-4.5, 0.5), (5.5, 0.5), (5.5, 0.5), (-4.5, 0.5)] (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "mesh0"
+        {
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = [(-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -5), (5, 0, -5), (-5, 0, 5), (5, 0, 5)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = [(-4.5, 0.5), (5.5, 0.5), (5.5, 0.5), (-4.5, 0.5)] (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "normals"
+    {
+        matrix4d xformOp:transform:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (12, 0, 0, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:transform"]
+
+        def Mesh "mesh1"
+        {
+            float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = [(-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 7), (5, 0, 7), (-5, 0, 17), (5, 0, 17)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = None (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "mesh0"
+        {
+            float3[] extent = [(-5, 0, -5), (5, 0, 5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = [(-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0)] (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -5), (5, 0, -5), (-5, 0, 5), (5, 0, 5)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = None (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "primvarsNormals_primvarsSt"
+    {
+        matrix4d xformOp:transform:transform2 = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (24, 0, 0, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:transform2"]
+
+        def Mesh "mesh1"
+        {
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = None (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 7), (5, 0, 7), (-5, 0, 17), (5, 0, 17)] (
+                interpolation = "vertex"
+            )
+            normal3f[] primvars:normals = [(-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = [(-4.5, 0.5), (5.5, 0.5), (5.5, 0.5), (-4.5, 0.5)] (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "mesh0"
+        {
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = None (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -5), (5, 0, -5), (-5, 0, 5), (5, 0, 5)] (
+                interpolation = "vertex"
+            )
+            normal3f[] primvars:normals = [(-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = [(-4.5, 0.5), (5.5, 0.5), (5.5, 0.5), (-4.5, 0.5)] (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "primvarsNormals"
+    {
+        matrix4d xformOp:transform:transform2 = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (24, 0, 0, 1) )
+        matrix4d xformOp:transform:transform3 = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (36, 0, 0, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:transform3"]
+
+        def Mesh "mesh1"
+        {
+            float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = None (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 7), (5, 0, 7), (-5, 0, 17), (5, 0, 17)] (
+                interpolation = "vertex"
+            )
+            normal3f[] primvars:normals = [(-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = None (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "mesh0"
+        {
+            float3[] extent = [(-5, 0, -5), (5, 0, 5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = None (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -5), (5, 0, -5), (-5, 0, 5), (5, 0, 5)] (
+                interpolation = "vertex"
+            )
+            normal3f[] primvars:normals = [(-0, 1, -0), (-0, 1, -0), (-0, 1, -0), (0, 1, 0)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = None (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "primvarsSt"
+    {
+        matrix4d xformOp:transform:transform4 = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (48, 0, 0, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:transform4"]
+
+        def Mesh "mesh1"
+        {
+            float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = None (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 7), (5, 0, 7), (-5, 0, 17), (5, 0, 17)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = [(-4.5, 0.5), (5.5, 0.5), (5.5, 0.5), (-4.5, 0.5)] (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "mesh0"
+        {
+            float3[] extent = [(-5, 0, -5), (5, 0, 5)]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 3, 2]
+            normal3f[] normals = None (
+                interpolation = "faceVarying"
+            )
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -5), (5, 0, -5), (-5, 0, 5), (5, 0, 5)] (
+                interpolation = "vertex"
+            )
+            texCoord2f[] primvars:st = [(-4.5, 0.5), (5.5, 0.5), (5.5, 0.5), (-4.5, 0.5)] (
+                interpolation = "faceVarying"
+            )
+            int[] primvars:st:indices = None
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+

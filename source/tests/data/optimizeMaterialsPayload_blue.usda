@@ -1,0 +1,17 @@
+#usda 1.0
+(
+    defaultPrim = "Blue"
+)
+
+def Material "Blue"
+{
+
+    token outputs:surface.connect = </Blue/Shader.outputs:surface>
+	
+    def Shader "Shader"
+    {
+        uniform token info:id = "UsdPreviewSurface"
+        color3f inputs:diffuseColor = (0, 0, 1)
+        token outputs:surface
+    }
+}

@@ -1,0 +1,501 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (0, 0, 500)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (263.0374868254379, 263.03749248131373, 263.03748682543795)
+                double3 target = (-0.000003978038364493841, 0.00000795607684267452, -0.000003978038250807003)
+            }
+            dictionary Right = {
+                double3 position = (-500, 0, 0)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 500, 0)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./primvarSplitSpatial.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary renderSettings = {
+            float3 "rtx:debugView:pixelDebug:textColor" = (0, 1e18, 0)
+            float3 "rtx:fog:fogColor" = (0.75, 0.75, 0.75)
+            float3 "rtx:index:backgroundColor" = (0, 0, 0)
+            float3 "rtx:index:regionOfInterestMax" = (0, 0, 0)
+            float3 "rtx:index:regionOfInterestMin" = (0, 0, 0)
+            float3 "rtx:post:backgroundZeroAlpha:backgroundDefaultColor" = (0, 0, 0)
+            float3 "rtx:post:colorcorr:contrast" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:gain" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:gamma" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:offset" = (0, 0, 0)
+            float3 "rtx:post:colorcorr:saturation" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:blackpoint" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:contrast" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:gain" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:gamma" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:lift" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:multiply" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:offset" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:whitepoint" = (1, 1, 1)
+            float3 "rtx:post:lensDistortion:lensFocalLengthArray" = (10, 30, 50)
+            float3 "rtx:post:lensFlares:anisoFlareFalloffX" = (450, 475, 500)
+            float3 "rtx:post:lensFlares:anisoFlareFalloffY" = (10, 10, 10)
+            float3 "rtx:post:lensFlares:cutoffPoint" = (2, 2, 2)
+            float3 "rtx:post:lensFlares:haloFlareFalloff" = (10, 10, 10)
+            float3 "rtx:post:lensFlares:haloFlareRadius" = (75, 75, 75)
+            float3 "rtx:post:lensFlares:isotropicFlareFalloff" = (50, 50, 50)
+            float3 "rtx:post:lensFlares:spectralBlurWavelengthRange" = (380, 550, 770)
+            float3 "rtx:post:tonemap:whitepoint" = (1, 1, 1)
+            float3 "rtx:raytracing:indexdirect:svoBrickSize" = (32, 32, 32)
+            float3 "rtx:raytracing:inscattering:singleScatteringAlbedo" = (0.9, 0.9, 0.9)
+            float3 "rtx:raytracing:inscattering:transmittanceColor" = (0.5, 0.5, 0.5)
+            float3 "rtx:sceneDb:ambientLightColor" = (0.1, 0.1, 0.1)
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 0
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+    uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+    def Mesh "BlockedColorMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, -17), (17, 25, -7)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 25, -17), (12, 25, -17), (17, 25, -17), (7, 25, -12), (12, 25, -12), (17, 25, -12), (7, 25, -7), (12, 25, -7), (17, 25, -7), (7, 0, -17), (12, 0, -17), (17, 0, -17), (7, 0, -12), (12, 0, -12), (17, 0, -12), (7, 0, -7), (12, 0, -7), (17, 0, -7)]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, -12)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "NoColorMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, -17), (5, 25, -7)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 25, -17), (0, 25, -17), (5, 25, -17), (-5, 25, -12), (0, 25, -12), (5, 25, -12), (-5, 25, -7), (0, 25, -7), (5, 25, -7), (-5, 0, -17), (0, 0, -17), (5, 0, -17), (-5, 0, -12), (0, 0, -12), (5, 0, -12), (-5, 0, -7), (0, 0, -7), (5, 0, -7)]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (0, 12.5, -12)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "ConstantGreenMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, 55), (17, 25, 65)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, 55), (12, 0, 55), (17, 0, 55), (7, 0, 60), (12, 0, 60), (17, 0, 60), (7, 0, 65), (12, 0, 65), (17, 0, 65), (7, 25, 55), (12, 25, 55), (17, 25, 55), (7, 25, 60), (12, 25, 60), (17, 25, 60), (7, 25, 65), (12, 25, 65), (17, 25, 65)]
+        color3f[] primvars:displayColor = [(0, 1, 0)] (
+            interpolation = "constant"
+        )
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, 60)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "ConstantRedMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 55), (5, 25, 65)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 55), (0, 0, 55), (5, 0, 55), (-5, 0, 60), (0, 0, 60), (5, 0, 60), (-5, 0, 65), (0, 0, 65), (5, 0, 65), (-5, 25, 55), (0, 25, 55), (5, 25, 55), (-5, 25, 60), (0, 25, 60), (5, 25, 60), (-5, 25, 65), (0, 25, 65), (5, 25, 65)]
+        color3f[] primvars:displayColor = [(1, 0, 0)] (
+            interpolation = "constant"
+        )
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (0, 12.5, 60)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "VertexIndexedMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, 43), (17, 25, 53)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, 43), (12, 0, 43), (17, 0, 43), (7, 0, 48), (12, 0, 48), (17, 0, 48), (7, 0, 53), (12, 0, 53), (17, 0, 53), (7, 25, 43), (12, 25, 43), (17, 25, 43), (7, 25, 48), (12, 25, 48), (17, 25, 48), (7, 25, 53), (12, 25, 53), (17, 25, 53)]
+        color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "vertex"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, 48)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "VertexMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 43), (5, 25, 53)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 43), (0, 0, 43), (5, 0, 43), (-5, 0, 48), (0, 0, 48), (5, 0, 48), (-5, 0, 53), (0, 0, 53), (5, 0, 53), (-5, 25, 43), (0, 25, 43), (5, 25, 43), (-5, 25, 48), (0, 25, 48), (5, 25, 48), (-5, 25, 53), (0, 25, 53), (5, 25, 53)]
+        color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "vertex"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (0, 12.5, 48)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "FaceVaryingIndexedMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, 31), (17, 25, 41)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, 31), (12, 0, 31), (17, 0, 31), (7, 0, 36), (12, 0, 36), (17, 0, 36), (7, 0, 41), (12, 0, 41), (17, 0, 41), (7, 25, 31), (12, 25, 31), (17, 25, 31), (7, 25, 36), (12, 25, 36), (17, 25, 36), (7, 25, 41), (12, 25, 41), (17, 25, 41)]
+        color3f[] primvars:displayColor = [(1, 1, 1), (1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:displayColor:indices = [0, 1, 1, 1, 0, 2, 2, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, 3, 3, 3, 0, 1, 1, 1]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, 36)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "VaryingIndexedMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, 19), (17, 25, 29)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, 19), (12, 0, 19), (17, 0, 19), (7, 0, 24), (12, 0, 24), (17, 0, 24), (7, 0, 29), (12, 0, 29), (17, 0, 29), (7, 25, 19), (12, 25, 19), (17, 25, 19), (7, 25, 24), (12, 25, 24), (17, 25, 24), (7, 25, 29), (12, 25, 29), (17, 25, 29)]
+        color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "varying"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, 24)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "UniformIndexedMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, 7), (17, 25, 17)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, 7), (12, 0, 7), (17, 0, 7), (7, 0, 12), (12, 0, 12), (17, 0, 12), (7, 0, 17), (12, 0, 17), (17, 0, 17), (7, 25, 7), (12, 25, 7), (17, 25, 7), (7, 25, 12), (12, 25, 12), (17, 25, 12), (7, 25, 17), (12, 25, 17), (17, 25, 17)]
+        color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "uniform"
+        )
+        int[] primvars:displayColor:indices = [0, 1, 2, 0, 0, 1, 2, 0]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, 12)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "ConstantIndexedMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(7, 0, -5), (17, 25, 5)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 25, -5), (12, 25, -5), (17, 25, -5), (7, 25, 0), (12, 25, 0), (17, 25, 0), (7, 25, 5), (12, 25, 5), (17, 25, 5), (7, 0, -5), (12, 0, -5), (17, 0, -5), (7, 0, 0), (12, 0, 0), (17, 0, 0), (7, 0, 5), (12, 0, 5), (17, 0, 5)]
+        color3f[] primvars:displayColor = [(1, 0, 0)] (
+            interpolation = "constant"
+        )
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "VaryingMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 19), (5, 25, 29)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 19), (0, 0, 19), (5, 0, 19), (-5, 0, 24), (0, 0, 24), (5, 0, 24), (-5, 0, 29), (0, 0, 29), (5, 0, 29), (-5, 25, 19), (0, 25, 19), (5, 25, 19), (-5, 25, 24), (0, 25, 24), (5, 25, 24), (-5, 25, 29), (0, 25, 29), (5, 25, 29)]
+        color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "varying"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 2, 2, 2]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (0, 12.5, 24)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "FaceVaryingMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 31), (5, 25, 41)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 31), (0, 0, 31), (5, 0, 31), (-5, 0, 36), (0, 0, 36), (5, 0, 36), (-5, 0, 41), (0, 0, 41), (5, 0, 41), (-5, 25, 31), (0, 25, 31), (5, 25, 31), (-5, 25, 36), (0, 25, 36), (5, 25, 36), (-5, 25, 41), (0, 25, 41), (5, 25, 41)]
+        color3f[] primvars:displayColor = [(1, 1, 1), (1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:displayColor:indices = [0, 1, 1, 1, 0, 2, 2, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 1, 1, 1, 0, 2, 2, 2, 0, 3, 3, 3, 0, 1, 1, 1]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (0, 12.5, 36)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "UniformMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, 7), (5, 25, 17)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, 7), (0, 0, 7), (5, 0, 7), (-5, 0, 12), (0, 0, 12), (5, 0, 12), (-5, 0, 17), (0, 0, 17), (5, 0, 17), (-5, 25, 7), (0, 25, 7), (5, 25, 7), (-5, 25, 12), (0, 25, 12), (5, 25, 12), (-5, 25, 17), (0, 25, 17), (5, 25, 17)]
+        color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+            interpolation = "uniform"
+        )
+        int[] primvars:displayColor:indices = [0, 1, 2, 0, 0, 1, 2, 0]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (0, 12.5, 12)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "ConstantMesh" (
+        active = true
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-5, 0, -5), (5, 25, 5)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(-5, 0, -5), (0, 0, -5), (5, 0, -5), (-5, 0, 0), (0, 0, 0), (5, 0, 0), (-5, 0, 5), (0, 0, 5), (5, 0, 5), (-5, 25, -5), (0, 25, -5), (5, 25, -5), (-5, 25, 0), (0, 25, 0), (5, 25, 0), (-5, 25, 5), (0, 25, 5), (5, 25, 5)]
+        color3f[] primvars:displayColor = [(1, 0, 0)] (
+            interpolation = "constant"
+        )
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (0, 12.5, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+}
+
+def Scope "expected" (
+    active = false
+)
+{
+    def Mesh "clustered"
+    {
+        uniform bool doubleSided = 1
+        vector3f[] extent = [(-5, 25, -17), (17, 25, -7)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        normal3f[] normals = [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)] (
+            interpolation = "vertex"
+        )
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 25, -17), (12, 25, -17), (17, 25, -17), (7, 25, -12), (12, 25, -12), (17, 25, -12), (7, 25, -7), (12, 25, -7), (17, 25, -7), (-5, 25, -17), (0, 25, -17), (5, 25, -17), (-5, 25, -12), (0, 25, -12), (5, 25, -12), (-5, 25, -7), (0, 25, -7), (5, 25, -7)]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, -12)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "clustered_1"
+    {
+        uniform bool doubleSided = 1
+        vector3f[] extent = [(-5, 0, -17), (17, 0, -7)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+        token interpolateBoundary = "edgeAndCorner"
+        normal3f[] normals = [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)] (
+            interpolation = "vertex"
+        )
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, -17), (12, 0, -17), (17, 0, -17), (7, 0, -12), (12, 0, -12), (17, 0, -12), (7, 0, -7), (12, 0, -7), (17, 0, -7), (-5, 0, -17), (0, 0, -17), (5, 0, -17), (-5, 0, -12), (0, 0, -12), (5, 0, -12), (-5, 0, -7), (0, 0, -7), (5, 0, -7)]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, -12)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "clustered_2"
+    {
+        uniform bool doubleSided = 1
+        vector3f[] extent = [(-5, 0, -5), (17, 0, 65)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16, 18, 19, 22, 21, 19, 20, 23, 22, 21, 22, 25, 24, 22, 23, 26, 25, 27, 28, 31, 30, 28, 29, 32, 31, 30, 31, 34, 33, 31, 32, 35, 34, 36, 37, 40, 39, 37, 38, 41, 40, 39, 40, 43, 42, 40, 41, 44, 43, 45, 46, 49, 48, 46, 47, 50, 49, 48, 49, 52, 51, 49, 50, 53, 52, 54, 55, 58, 57, 55, 56, 59, 58, 57, 58, 61, 60, 58, 59, 62, 61, 63, 64, 67, 66, 64, 65, 68, 67, 66, 67, 70, 69, 67, 68, 71, 70, 72, 73, 76, 75, 73, 74, 77, 76, 75, 76, 79, 78, 76, 77, 80, 79, 81, 82, 85, 84, 82, 83, 86, 85, 84, 85, 88, 87, 85, 86, 89, 88, 90, 91, 94, 93, 91, 92, 95, 94, 93, 94, 97, 96, 94, 95, 98, 97, 99, 100, 103, 102, 100, 101, 104, 103, 102, 103, 106, 105, 103, 104, 107, 106]
+        token interpolateBoundary = "edgeAndCorner"
+        normal3f[] normals = [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)] (
+            interpolation = "vertex"
+        )
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 0, 55), (12, 0, 55), (17, 0, 55), (7, 0, 60), (12, 0, 60), (17, 0, 60), (7, 0, 65), (12, 0, 65), (17, 0, 65), (-5, 0, 55), (0, 0, 55), (5, 0, 55), (-5, 0, 60), (0, 0, 60), (5, 0, 60), (-5, 0, 65), (0, 0, 65), (5, 0, 65), (7, 0, 43), (12, 0, 43), (17, 0, 43), (7, 0, 48), (12, 0, 48), (17, 0, 48), (7, 0, 53), (12, 0, 53), (17, 0, 53), (-5, 0, 43), (0, 0, 43), (5, 0, 43), (-5, 0, 48), (0, 0, 48), (5, 0, 48), (-5, 0, 53), (0, 0, 53), (5, 0, 53), (7, 0, 31), (12, 0, 31), (17, 0, 31), (7, 0, 36), (12, 0, 36), (17, 0, 36), (7, 0, 41), (12, 0, 41), (17, 0, 41), (7, 0, 19), (12, 0, 19), (17, 0, 19), (7, 0, 24), (12, 0, 24), (17, 0, 24), (7, 0, 29), (12, 0, 29), (17, 0, 29), (7, 0, 7), (12, 0, 7), (17, 0, 7), (7, 0, 12), (12, 0, 12), (17, 0, 12), (7, 0, 17), (12, 0, 17), (17, 0, 17), (7, 0, -5), (12, 0, -5), (17, 0, -5), (7, 0, 0), (12, 0, 0), (17, 0, 0), (7, 0, 5), (12, 0, 5), (17, 0, 5), (-5, 0, 19), (0, 0, 19), (5, 0, 19), (-5, 0, 24), (0, 0, 24), (5, 0, 24), (-5, 0, 29), (0, 0, 29), (5, 0, 29), (-5, 0, 31), (0, 0, 31), (5, 0, 31), (-5, 0, 36), (0, 0, 36), (5, 0, 36), (-5, 0, 41), (0, 0, 41), (5, 0, 41), (-5, 0, 7), (0, 0, 7), (5, 0, 7), (-5, 0, 12), (0, 0, 12), (5, 0, 12), (-5, 0, 17), (0, 0, 17), (5, 0, 17), (-5, 0, -5), (0, 0, -5), (5, 0, -5), (-5, 0, 0), (0, 0, 0), (5, 0, 0), (-5, 0, 5), (0, 0, 5), (5, 0, 5)]
+        color3f[] primvars:displayColor = [(0, 1, 0), (1, 0, 0), (0, 0, 1), (1, 1, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 3, 1, 1, 1, 3, 0, 0, 0, 3, 2, 2, 2, 3, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 3, 1, 1, 1, 3, 0, 0, 0, 3, 2, 2, 2, 3, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, 60)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "clustered_3"
+    {
+        uniform bool doubleSided = 1
+        vector3f[] extent = [(-5, 25, -5), (17, 25, 65)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16, 18, 19, 22, 21, 19, 20, 23, 22, 21, 22, 25, 24, 22, 23, 26, 25, 27, 28, 31, 30, 28, 29, 32, 31, 30, 31, 34, 33, 31, 32, 35, 34, 36, 37, 40, 39, 37, 38, 41, 40, 39, 40, 43, 42, 40, 41, 44, 43, 45, 46, 49, 48, 46, 47, 50, 49, 48, 49, 52, 51, 49, 50, 53, 52, 54, 55, 58, 57, 55, 56, 59, 58, 57, 58, 61, 60, 58, 59, 62, 61, 63, 64, 67, 66, 64, 65, 68, 67, 66, 67, 70, 69, 67, 68, 71, 70, 72, 73, 76, 75, 73, 74, 77, 76, 75, 76, 79, 78, 76, 77, 80, 79, 81, 82, 85, 84, 82, 83, 86, 85, 84, 85, 88, 87, 85, 86, 89, 88, 90, 91, 94, 93, 91, 92, 95, 94, 93, 94, 97, 96, 94, 95, 98, 97, 99, 100, 103, 102, 100, 101, 104, 103, 102, 103, 106, 105, 103, 104, 107, 106]
+        token interpolateBoundary = "edgeAndCorner"
+        normal3f[] normals = [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)] (
+            interpolation = "vertex"
+        )
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(7, 25, 55), (12, 25, 55), (17, 25, 55), (7, 25, 60), (12, 25, 60), (17, 25, 60), (7, 25, 65), (12, 25, 65), (17, 25, 65), (-5, 25, 55), (0, 25, 55), (5, 25, 55), (-5, 25, 60), (0, 25, 60), (5, 25, 60), (-5, 25, 65), (0, 25, 65), (5, 25, 65), (7, 25, 43), (12, 25, 43), (17, 25, 43), (7, 25, 48), (12, 25, 48), (17, 25, 48), (7, 25, 53), (12, 25, 53), (17, 25, 53), (-5, 25, 43), (0, 25, 43), (5, 25, 43), (-5, 25, 48), (0, 25, 48), (5, 25, 48), (-5, 25, 53), (0, 25, 53), (5, 25, 53), (7, 25, 31), (12, 25, 31), (17, 25, 31), (7, 25, 36), (12, 25, 36), (17, 25, 36), (7, 25, 41), (12, 25, 41), (17, 25, 41), (7, 25, 19), (12, 25, 19), (17, 25, 19), (7, 25, 24), (12, 25, 24), (17, 25, 24), (7, 25, 29), (12, 25, 29), (17, 25, 29), (7, 25, 7), (12, 25, 7), (17, 25, 7), (7, 25, 12), (12, 25, 12), (17, 25, 12), (7, 25, 17), (12, 25, 17), (17, 25, 17), (7, 25, -5), (12, 25, -5), (17, 25, -5), (7, 25, 0), (12, 25, 0), (17, 25, 0), (7, 25, 5), (12, 25, 5), (17, 25, 5), (-5, 25, 19), (0, 25, 19), (5, 25, 19), (-5, 25, 24), (0, 25, 24), (5, 25, 24), (-5, 25, 29), (0, 25, 29), (5, 25, 29), (-5, 25, 31), (0, 25, 31), (5, 25, 31), (-5, 25, 36), (0, 25, 36), (5, 25, 36), (-5, 25, 41), (0, 25, 41), (5, 25, 41), (-5, 25, 7), (0, 25, 7), (5, 25, 7), (-5, 25, 12), (0, 25, 12), (5, 25, 12), (-5, 25, 17), (0, 25, 17), (5, 25, 17), (-5, 25, -5), (0, 25, -5), (5, 25, -5), (-5, 25, 0), (0, 25, 0), (5, 25, 0), (-5, 25, 5), (0, 25, 5), (5, 25, 5)]
+        color3f[] primvars:displayColor = [(0, 1, 0), (1, 0, 0), (0, 0, 1), (1, 1, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:displayColor:indices = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 3, 1, 1, 1, 3, 0, 0, 0, 3, 2, 2, 2, 3, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 3, 1, 1, 1, 3, 0, 0, 0, 3, 2, 2, 2, 3, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (12, 12.5, 60)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+}

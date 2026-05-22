@@ -1,0 +1,12 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [],
+        "considerMaterials": true,
+        "materialAlbedoAsVertexColors": false,
+        "originalGeomOption": 1,
+        "mergePoint": 0,
+        "rootPath": "",
+        "considerAllAttributes": false
+    }
+]

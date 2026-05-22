@@ -1,0 +1,115 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (185080.88280473018, -4.1096211501552327e-11, 0)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (112589.99161331562, 32819.50361643542, 1037.960787392361)
+                double3 target = (110570, 31800.02, 0)
+            }
+            dictionary Right = {
+                double3 position = (0, -28385.525076333135, -6.30285270116396e-12)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 0, 85229)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 0.01
+    upAxis = "Z"
+)
+
+def Xform "Root" (
+    instanceable = false
+    kind = "assembly"
+)
+{
+    def Xform "dach" (
+        instanceable = false
+        kind = "subcomponent"
+    )
+    {
+        string displayName = "dach"
+
+        def Xform "sm2d" (
+            instanceable = false
+            kind = "subcomponent"
+        )
+        {
+            string displayName = "sm2d"
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            def Mesh "CELL__SHAPE__1518"
+            {
+                uniform bool doubleSided = 1
+                int[] faceVertexCounts = [3, 3]
+                int[] faceVertexIndices = [0, 1, 2, 3, 1, 0]
+                custom rel material:binding
+                prepend rel material:binding = </Root/Looks/Material2859>
+                normal3f[] normals = [(0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1)] (
+                    interpolation = "varying"
+                )
+                point3f[] points = [(755, 15, 0), (-755, -15, 0), (-755, 15, 0), (755, -15, 0)]
+                uniform token subdivisionScheme = "none"
+                matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (107490, 31800.02, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Mesh "CELL__SHAPE__1516"
+            {
+                uniform bool doubleSided = 1
+                int[] faceVertexCounts = [3, 3]
+                int[] faceVertexIndices = [0, 1, 2, 3, 1, 0]
+                custom rel material:binding
+                prepend rel material:binding = </Root/Looks/Material2859>
+                normal3f[] normals = [(0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1)] (
+                    interpolation = "varying"
+                )
+                point3f[] points = [(755, 15, 0), (-755, -15, 0), (-755, 15, 0), (755, -15, 0)]
+                uniform token subdivisionScheme = "none"
+                matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (109030, 31800.02, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+
+            def Mesh "CELL__SHAPE__1514"
+            {
+                uniform bool doubleSided = 1
+                int[] faceVertexCounts = [3, 3]
+                int[] faceVertexIndices = [0, 1, 2, 3, 1, 0]
+                custom rel material:binding
+                prepend rel material:binding = </Root/Looks/Material2859>
+                normal3f[] normals = [(0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1)] (
+                    interpolation = "varying"
+                )
+                point3f[] points = [(755, 15, 0), (-755, -15, 0), (-755, 15, 0), (755, -15, 0)]
+                uniform token subdivisionScheme = "none"
+                matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (110570, 31800.02, 0, 1) )
+                uniform token[] xformOpOrder = ["xformOp:transform"]
+            }
+        }
+    }
+
+    def Xform "Looks"
+    {
+        def Material "Material2859"
+        {
+            token outputs:surface.connect = </Root/Looks/Material2859/previewShader.outputs:surface>
+
+            def Shader "previewShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.625843, 0.7420894, 0.55027574)
+                token outputs:surface
+            }
+        }
+    }
+}
+

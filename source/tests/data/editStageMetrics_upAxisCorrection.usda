@@ -1,0 +1,24 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def Camera "Camera"
+    {
+        float2 clippingRange = (1, 10000000)
+        float focalLength = 18.147562
+        float focusDistance = 400
+        double3 xformOp:rotateYXZ = (-31.911273735380888, -28.187128727086474, -30.749371046956668)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-12.28037695504049, 162.98088439312113, 195.6715896151123)
+        float xformOp:rotateX:upAxisCorrection = -90.0
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateYXZ", "xformOp:scale", "xformOp:rotateX:upAxisCorrection"]
+    }
+}

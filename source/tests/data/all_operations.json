@@ -1,0 +1,96 @@
+[
+  {
+    "operation": "deletePrims",
+    "primPaths": [],
+    "notes": ""
+  },
+  {
+    "operation": "merge",
+    "meshPrimPaths": [],
+    "considerMaterials": false,
+    "materialAlbedoAsVertexColors": false,
+    "parentXform": false,
+    "originalGeomOption": 0,
+    "rootPath": "",
+    "notes": ""
+  },
+  {
+    "operation": "pivot",
+    "meshPrimPaths": [],
+    "notes": ""
+  },
+  {
+    "operation": "deduplicateGeometry",
+    "meshPrimPaths": [],
+    "duplicateMethod": 2,
+    "considerMaterials": false,
+    "considerDeepTransforms": false,
+    "tolerance": 0.05,
+    "fuzzy": false,
+    "useGpu": false,
+    "allowScaling": false,
+    "notes": ""
+  },
+  {
+    "operation": "findCoincidingMeshes",
+    "meshPrimPaths": [],
+    "considerDeepTransforms": false,
+    "tolerance": 0.05,
+    "notes": ""
+  },
+  {
+    "operation": "findCoincidingMeshes",
+    "meshPrimPaths": [],
+    "considerDeepTransforms": true,
+    "tolerance": 0.05,
+    "notes": ""
+  },
+  {
+    "operation": "processPointClouds",
+    "primPaths": [],
+    "partition": true,
+    "chunkSize": 300000,
+    "notes": ""
+  },
+  {
+    "operation": "computeExtents",
+    "meshPrimPaths": []
+  },
+  {
+    "operation": "optimizeMaterials",
+    "materialPrimPaths": [],
+    "optimizeMaterialsMode": 0
+  },
+  {
+    "operation": "merge",
+    "meshPrimPaths": [],
+    "considerMaterials": false,
+    "considerNormalsVariability": false,
+    "considerStVariability": false,
+    "considerSubdivisionSchema": false,
+    "materialAlbedoAsVertexColors": false,
+    "parentXform": false,
+    "originalGeomOption": 0,
+    "rootPath": "",
+    "meshMaterialPath": "",
+    "notes": "Legacy parameters"
+  },
+  {
+    "operation": "pivot",
+    "meshPrimPaths": [],
+    "notes": "Legacy parameters"
+  },
+  {
+    "operation": "printStats"
+  },
+  {
+    "operation": "pruneLeaves",
+    "pruneMode": 0
+  },
+  {
+    "operation": "deduplicateHierarchies",
+    "paths": [],
+    "tolerance": 0.001,
+    "ignoreShaderOutputs": true,
+    "notes": "Empty paths -> safe no-op when run against fixtures with no structural duplicates."
+  }]

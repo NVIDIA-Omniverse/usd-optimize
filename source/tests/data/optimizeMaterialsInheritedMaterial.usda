@@ -1,0 +1,45 @@
+#usda 1.0
+(
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "Cube" (
+    prepend apiSchemas = ["MaterialBindingAPI"]
+)
+{
+    rel material:binding = </Cube/Material>
+
+    def Material "Material"
+    {
+        token outputs:displacement.connect = </Cube/Material/Shader.outputs:displacement>
+        token outputs:surface.connect = </Cube/Material/Shader.outputs:surface>
+
+        def Shader "Shader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (1, 1, 0)
+            token outputs:displacement
+            token outputs:surface
+        }
+    }
+
+    def Cube "CubeShape"
+    {
+        float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+        color3f[] primvars:diffuseColor = [(0, 1, 0)] (
+            interpolation = "constant"
+        )
+        color3f[] primvars:displayColor = [(0, 0, 1)] (
+            interpolation = "constant"
+        )
+        double size = 2
+        matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 5, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform"]
+    }
+}
+

@@ -1,0 +1,32 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def BasisCurves "BasisCurves" (
+        active = true
+        prepend apiSchemas = ["OmniSceneVisualizationAPI"]
+    )
+    {
+        uniform token basis = "bezier"
+        int[] curveVertexCounts = [18]
+        float3[] extent = [(-118.6084, -100.50006, -137.33081), (151.30072, 100.50006, 158.30438)]
+        bool omni:scene:visualization:drawWireframe = 1
+        point3f[] points = [(19.613525, -100, -29.668304), (58.861298, 34, 65.4942), (-64.39911, 0, 145.80438), (-64.39911, -22, 145.80438), (-64.39911, -10, 145.80438), (-106.1084, 1, 14.931671), (-106.1084, -0.000061035156, 14.931671), (-106.1084, -0.000061035156, 14.931671), (-57.068176, 0, -91.512054), (-57.068176, 100, -91.512054), (-57.068176, 0, -91.512054), (76.18799, 0.000061035156, -88.92462), (76.18799, 0.000061035156, -88.92462), (76.18799, 0.000061035156, -88.92462), (138.80072, -0.000061035156, 76.36954), (138.80072, -0.000061035156, 76.36954), (138.80072, -0.000061035156, 76.36954), (-19.634247, 0, -124.83081)]
+        uniform token purpose = "default"
+        uniform token type = "cubic"
+        float[] widths = [1, 5, 40, 2, 10, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25]
+        uniform token wrap = "periodic"
+        double3 xformOp:rotateXYZ = (25.80000038444996, 25.600000381469727, 17.100000254809856)
+        double3 xformOp:scale = (0.800000011920929, 1.700000025331974, 1.3000000193715096)
+        double3 xformOp:translate = (32.11357275394579, 36.85005382168163, 67.9124623216631)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}

@@ -1,0 +1,7 @@
+[
+    {
+      "operation": "editStageMetrics",
+      "metersPerUnit": 1.0,
+      "upAxis": 2
+    }
+]

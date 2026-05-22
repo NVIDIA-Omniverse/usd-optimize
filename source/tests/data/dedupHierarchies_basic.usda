@@ -1,0 +1,81 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 0.01
+    upAxis = "Y"
+)
+
+# Three sibling Xforms named differently but sharing the same displayName.
+# Plus a fourth Xform with the same displayName that already carries an
+# authored reference — it must be excluded from the duplicate group so the
+# operation does not overwrite an instance the user has already customised.
+# Plus a standalone Xform with a distinct displayName, and a Looks material
+# scope that must be skipped.
+
+def Xform "World"
+{
+    def Xform "Tree_Original" (
+        displayName = "Tree"
+    )
+    {
+        def Mesh "Trunk"
+        {
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 2, 3]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)]
+        }
+    }
+
+    def Xform "Tree_Copy1" (
+        displayName = "Tree"
+    )
+    {
+        def Mesh "Trunk"
+        {
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 2, 3]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)]
+        }
+    }
+
+    def Xform "Tree_Copy2" (
+        displayName = "Tree"
+    )
+    {
+        def Mesh "Trunk"
+        {
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 2, 3]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)]
+        }
+    }
+
+    # Already references Tree_Original. Same displayName "Tree", so the
+    # group-detection pass sees it; the ref-exclusion filter must leave it
+    # alone — its existing reference is preserved verbatim.
+    def Xform "Tree_Already_Referenced" (
+        displayName = "Tree"
+        prepend references = </World/Tree_Original>
+    )
+    {
+    }
+
+    def Xform "Bush" (
+        displayName = "Bush"
+    )
+    {
+        def Mesh "Leaves"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0.5, 1, 0)]
+        }
+    }
+
+    def Scope "Looks"
+    {
+        def Material "TreeMaterial"
+        {
+        }
+    }
+}

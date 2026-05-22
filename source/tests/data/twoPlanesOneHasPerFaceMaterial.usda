@@ -1,0 +1,169 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 0.01
+    upAxis = "Z"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    def Mesh "pPlane1" (
+        prepend apiSchemas = ["ShadowAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-0.5, -0.5, 0), (0.5, 0.5, 0)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)] (
+            interpolation = "faceVarying"
+        )
+        point3f[] points = [(-0.5, -0.5, 0), (0, -0.5, 0), (0.5, -0.5, 0), (-0.5, 0, 0), (0, 0, 0), (0.5, 0, 0), (-0.5, 0.5, 0), (0, 0.5, 0), (0.5, 0.5, 0)]
+        uniform token subdivisionScheme = "none"
+        uniform token subsetFamily:materialBind:familyType = "partition"
+
+        def GeomSubset "lambertRed"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [3, 0]
+            rel material:binding = </World/Looks/lambertRed>
+        }
+
+        def GeomSubset "lambertYellow"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [2]
+            rel material:binding = </World/Looks/lambertYellow>
+        }
+
+        def GeomSubset "lambertGreen"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [1]
+            rel material:binding = </World/Looks/lambertGreen>
+        }
+    }
+
+    def Mesh "pPlane2" (
+        prepend apiSchemas = ["ShadowAPI"]
+    )
+    {
+        uniform bool doubleSided = 1
+        float3[] extent = [(-0.5, 0, -0.5), (0.5, 0, 0.5)]
+        int[] faceVertexCounts = [4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+        rel material:binding = </World/Looks/lambertBlue>
+        normal3f[] normals = [(0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0)] (
+            interpolation = "faceVarying"
+        )
+        point3f[] points = [(-0.5, 0, 0.5), (0, 0, 0.5), (0.5, 0, 0.5), (-0.5, 0, 0), (0, 0, 0), (0.5, 0, 0), (-0.5, 0, -0.5), (0, 0, -0.5), (0.5, 0, -0.5)]
+        uniform token subdivisionScheme = "none"
+        float3 xformOp:rotateXYZ = (90, 0, 0)
+        double3 xformOp:translate = (1.2, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+    }
+
+    def Scope "Looks"
+    {
+        def Material "lambertRed"
+        {
+            token outputs:mdl:surface.connect = </World/Looks/lambertRed/Shader.outputs:out>
+            token outputs:surface.connect = </World/Looks/lambertRed/lambertRedPreviewSurface.outputs:surface>
+
+            def Shader "lambertRedPreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:surface
+            }
+
+            def Shader "Shader" (
+                kind = "Material"
+            )
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (1, 0, 0)
+                token outputs:out
+            }
+        }
+
+        def Material "lambertYellow"
+        {
+            token outputs:mdl:surface.connect = </World/Looks/lambertYellow/Shader.outputs:out>
+            token outputs:surface.connect = </World/Looks/lambertYellow/lambertYellowPreviewSurface.outputs:surface>
+
+            def Shader "lambertYellowPreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 0)
+                token outputs:surface
+            }
+
+            def Shader "Shader" (
+                kind = "Material"
+            )
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (1, 1, 0)
+                token outputs:out
+            }
+        }
+
+        def Material "lambertGreen"
+        {
+            token outputs:mdl:surface.connect = </World/Looks/lambertGreen/Shader.outputs:out>
+            token outputs:surface.connect = </World/Looks/lambertGreen/lambertGreenPreviewSurface.outputs:surface>
+
+            def Shader "lambertGreenPreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 1, 0)
+                token outputs:surface
+            }
+
+            def Shader "Shader" (
+                kind = "Material"
+            )
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0, 1, 0)
+                token outputs:out
+            }
+        }
+
+        def Material "lambertBlue"
+        {
+            token outputs:mdl:surface.connect = </World/Looks/lambertBlue/Shader.outputs:out>
+            token outputs:surface.connect = </World/Looks/lambertBlue/lambertBluePreviewSurface.outputs:surface>
+
+            def Shader "lambertBluePreviewSurface"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 0, 1)
+                token outputs:surface
+            }
+
+            def Shader "Shader" (
+                kind = "Material"
+            )
+            {
+                uniform token info:implementationSource = "sourceAsset"
+                uniform asset info:mdl:sourceAsset = @OmniPBR.mdl@
+                uniform token info:mdl:sourceAsset:subIdentifier = "OmniPBR"
+                color3f inputs:diffuse_color_constant = (0, 0, 1)
+                token outputs:out
+            }
+        }
+    }
+}

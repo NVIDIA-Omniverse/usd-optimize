@@ -1,0 +1,21 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Example/DefaultSided/mesh",
+            "/World/Example/SingleSided/mesh",
+            "/World/Example/DoubleSided/mesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 1,
+        "rootPath": "/World/Example/merged",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    }
+]

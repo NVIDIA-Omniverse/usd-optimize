@@ -1,0 +1,9 @@
+[
+  {
+    "operation": "mergeAtLeaf",
+    "considerNormalsVariability": false,
+    "considerStVariability": false,
+    "considerSubdivisionSchema": false,
+    "materialAlbedoAsVertexColors": false
+  }
+]

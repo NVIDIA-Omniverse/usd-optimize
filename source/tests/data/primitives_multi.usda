@@ -1,0 +1,169 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (0, 0, 50000)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (352.1400046925205, 500.2816499447053, 416.3881933295771)
+                double3 target = (-128.69759685117714, 67.33765942562877, -159.2459804432475)
+            }
+            dictionary Right = {
+                double3 position = (-50000, 0, 0)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 50000, 0)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./primitives_multi.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        int refinementOverrideImplVersion = 0
+        dictionary renderSettings = {
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 60
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def Sphere "Sphere"
+    {
+        float3[] extent = [(-40, -40, -40), (40, 40, 40)]
+        double radius = 40
+        custom bool refinementEnableOverride = 1
+        custom int refinementLevel = 2
+        double3 xformOp:rotateXYZ = (24.487684823854096, 0, -27.10885967103303)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-181.8289031982422, 69.2592544555664, 112.56964874267578)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Cylinder "Cylinder"
+    {
+        uniform token axis = "Y"
+        float3[] extent = [(-40, -60, -40), (40, 60, 40)]
+        double height = 120
+        double radius = 40
+        custom bool refinementEnableOverride = 1
+        custom int refinementLevel = 2
+        double3 xformOp:rotateXYZ = (-25.25352719869204, -11.816119265410123, -23.466064604901675)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-95.03247833251953, 67.35303497314453, 27.679441452026367)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Cone "Cone"
+    {
+        uniform token axis = "Y"
+        float3[] extent = [(-60, -40, -60), (60, 40, 60)]
+        double height = 80
+        double radius = 60
+        custom bool refinementEnableOverride = 1
+        custom int refinementLevel = 2
+        double3 xformOp:rotateXYZ = (17.394736816066285, 38.45559182414627, 205.0112239894795)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (7.551743507385254, 67.98844146728516, -75.5401840209961)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Cube "Cube"
+    {
+        float3[] extent = [(-45, -45, -45), (45, 45, 45)]
+        double size = 90
+        double3 xformOp:rotateXYZ = (-26.866870914871214, 16.76740605680942, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (114.14146423339844, 54.0095100402832, -168.15097045898438)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Sphere "Sphere_01"
+    {
+        float3[] extent = [(-60, -60, -60), (60, 60, 60)]
+        double radius = 60
+        custom bool refinementEnableOverride = 1
+        custom int refinementLevel = 2
+        double3 xformOp:rotateXYZ = (63.59310731963555, -12.638118078397326, -74.93465128574033)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-402.653901602191, 69.25925445556402, -56.0572900484865)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Cylinder "Cylinder_01"
+    {
+        uniform token axis = "Y"
+        float3[] extent = [(-80, -15, -80), (80, 15, 80)]
+        double height = 30
+        double radius = 80
+        custom bool refinementEnableOverride = 1
+        custom int refinementLevel = 2
+        double3 xformOp:rotateXYZ = (-30.041707639032666, -79.25465635693433, 32.19368940552059)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-312.9508120743486, 67.3530349731431, -207.2491265810404)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Cone "Cone_01"
+    {
+        uniform token axis = "Y"
+        float3[] extent = [(-45, -60, -45), (45, 60, 45)]
+        double height = 120
+        double radius = 45
+        custom bool refinementEnableOverride = 1
+        custom int refinementLevel = 2
+        double3 xformOp:rotateXYZ = (97.9657004651632, -69.11882634250449, 48.335789817475415)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-117.281246039521, 67.98844146729081, -326.2084971303847)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Cube "Cube_01"
+    {
+        float3[] extent = [(-17.5, -17.5, -17.5), (17.5, 17.5, 17.5)]
+        double size = 35
+        double3 xformOp:rotateXYZ = (21.90855724896184, -20.18789735229234, 14.599138009517418)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (49.275434643232366, 54.00951004028342, -458.04576057231634)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+
+def Xform "Environment"
+{
+    double3 xformOp:rotateXYZ = (0, 0, 0)
+    double3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+    def DistantLight "defaultLight" (
+        prepend apiSchemas = ["ShapingAPI"]
+    )
+    {
+        float inputs:angle = 1
+        float inputs:intensity = 3000
+        float inputs:shaping:cone:angle = 180
+        float inputs:shaping:cone:softness
+        float inputs:shaping:focus
+        color3f inputs:shaping:focusTint
+        asset inputs:shaping:ies:file
+        double3 xformOp:rotateXYZ = (315, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+}
+

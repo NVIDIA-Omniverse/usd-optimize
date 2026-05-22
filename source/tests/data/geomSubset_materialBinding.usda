@@ -1,0 +1,230 @@
+#usda 1.0
+(
+    doc = "Generated from Composed Stage of root layer"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    def Xform "Geometry"
+    {
+        matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+        def Mesh "oneSubset_partition"
+        {
+            float3[] extent = [(-5, 0, -17), (5, 0, -7)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 4, 5, 9, 8, 5, 6, 10, 9, 6, 7, 11, 10, 8, 9, 13, 12, 9, 10, 14, 13, 10, 11, 15, 14]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -17), (-1.6666667, 0, -17), (1.6666665, 0, -17), (5, 0, -17), (-5, 0, -13.666667), (-1.6666667, 0, -13.666667), (1.6666665, 0, -13.666667), (5, 0, -13.666667), (-5, 0, -10.333334), (-1.6666667, 0, -10.333334), (1.6666665, 0, -10.333334), (5, 0, -10.333334), (-5, 0, -7), (-1.6666667, 0, -7), (1.6666665, 0, -7), (5, 0, -7)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+
+            def GeomSubset "red" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token familyName = "materialBind"
+                int[] indices = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                rel material:binding = </World/Materials/Red>
+                uniform token subsetFamily:materialBind:familyType = "partition"
+            }
+        }
+
+        def Mesh "threeSubsets_partition"
+        {
+            float3[] extent = [(-5, 0, -5), (5, 0, 5)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 4, 5, 9, 8, 5, 6, 10, 9, 6, 7, 11, 10, 8, 9, 13, 12, 9, 10, 14, 13, 10, 11, 15, 14]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, -5), (-1.6666667, 0, -5), (1.6666665, 0, -5), (5, 0, -5), (-5, 0, -1.6666667), (-1.6666667, 0, -1.6666667), (1.6666665, 0, -1.6666667), (5, 0, -1.6666667), (-5, 0, 1.6666665), (-1.6666667, 0, 1.6666665), (1.6666665, 0, 1.6666665), (5, 0, 1.6666665), (-5, 0, 5), (-1.6666667, 0, 5), (1.6666665, 0, 5), (5, 0, 5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+
+            def GeomSubset "green" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token familyName = "materialBind"
+                int[] indices = [1, 4, 7]
+                rel material:binding = </World/Materials/Green>
+                uniform token subsetFamily:materialBind:familyType = "partition"
+            }
+
+            def GeomSubset "blue" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token familyName = "materialBind"
+                int[] indices = [2, 5, 8]
+                rel material:binding = </World/Materials/Blue>
+                uniform token subsetFamily:materialBind:familyType = "partition"
+            }
+
+            def GeomSubset "red" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token familyName = "materialBind"
+                int[] indices = [0, 3, 6]
+                rel material:binding = </World/Materials/Red>
+                uniform token subsetFamily:materialBind:familyType = "partition"
+            }
+        }
+
+        def Mesh "twoSubsets_partition"
+        {
+            float3[] extent = [(-5, 0, 7), (5, 0, 17)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 4, 5, 9, 8, 5, 6, 10, 9, 6, 7, 11, 10, 8, 9, 13, 12, 9, 10, 14, 13, 10, 11, 15, 14]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(-5, 0, 7), (-1.6666667, 0, 7), (1.6666665, 0, 7), (5, 0, 7), (-5, 0, 10.333333), (-1.6666667, 0, 10.333333), (1.6666665, 0, 10.333333), (5, 0, 10.333333), (-5, 0, 13.666666), (-1.6666667, 0, 13.666666), (1.6666665, 0, 13.666666), (5, 0, 13.666666), (-5, 0, 17), (-1.6666667, 0, 17), (1.6666665, 0, 17), (5, 0, 17)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+
+            def GeomSubset "green" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token familyName = "materialBind"
+                int[] indices = [1, 3, 5, 7]
+                rel material:binding = </World/Materials/Green>
+                uniform token subsetFamily:materialBind:familyType = "partition"
+            }
+
+            def GeomSubset "red" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token familyName = "materialBind"
+                int[] indices = [0, 2, 4, 6, 8]
+                rel material:binding = </World/Materials/Red>
+                uniform token subsetFamily:materialBind:familyType = "partition"
+            }
+        }
+
+        def Mesh "noSubsets" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(7, 0, -17), (17, 0, -7)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 4, 5, 9, 8, 5, 6, 10, 9, 6, 7, 11, 10, 8, 9, 13, 12, 9, 10, 14, 13, 10, 11, 15, 14]
+            rel material:binding = </World/Materials/Red>
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, -17), (10.333333, 0, -17), (13.666666, 0, -17), (17, 0, -17), (7, 0, -13.666667), (10.333333, 0, -13.666667), (13.666666, 0, -13.666667), (17, 0, -13.666667), (7, 0, -10.333334), (10.333333, 0, -10.333334), (13.666666, 0, -10.333334), (17, 0, -10.333334), (7, 0, -7), (10.333333, 0, -7), (13.666666, 0, -7), (17, 0, -7)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "twoSubsets_nonOverlapping" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(7, 0, -5), (17, 0, 5)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 4, 5, 9, 8, 5, 6, 10, 9, 6, 7, 11, 10, 8, 9, 13, 12, 9, 10, 14, 13, 10, 11, 15, 14]
+            rel material:binding = </World/Materials/Red>
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, -5), (10.333333, 0, -5), (13.666666, 0, -5), (17, 0, -5), (7, 0, -1.6666667), (10.333333, 0, -1.6666667), (13.666666, 0, -1.6666667), (17, 0, -1.6666667), (7, 0, 1.6666665), (10.333333, 0, 1.6666665), (13.666666, 0, 1.6666665), (17, 0, 1.6666665), (7, 0, 5), (10.333333, 0, 5), (13.666666, 0, 5), (17, 0, 5)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+
+            def GeomSubset "green" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                int[] indices = [1, 4, 7]
+                rel material:binding = </World/Materials/Green>
+                uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+            }
+
+            def GeomSubset "blue" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                int[] indices = [2, 5, 8]
+                rel material:binding = </World/Materials/Blue>
+                uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+            }
+        }
+
+        def Mesh "oneSubset_nonOverlapping" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(7, 0, 7), (17, 0, 17)]
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 4, 5, 9, 8, 5, 6, 10, 9, 6, 7, 11, 10, 8, 9, 13, 12, 9, 10, 14, 13, 10, 11, 15, 14]
+            rel material:binding = </World/Materials/Red>
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, 7), (10.333333, 0, 7), (13.666666, 0, 7), (17, 0, 7), (7, 0, 10.333333), (10.333333, 0, 10.333333), (13.666666, 0, 10.333333), (17, 0, 10.333333), (7, 0, 13.666666), (10.333333, 0, 13.666666), (13.666666, 0, 13.666666), (17, 0, 13.666666), (7, 0, 17), (10.333333, 0, 17), (13.666666, 0, 17), (17, 0, 17)] (
+                interpolation = "vertex"
+            )
+            uniform token subdivisionScheme = "none"
+
+            def GeomSubset "green" (
+                apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token familyName = "materialBind"
+                int[] indices = [1, 3, 5, 7]
+                rel material:binding = </World/Materials/Green>
+                uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+            }
+        }
+    }
+
+    def Scope "Materials"
+    {
+        def Material "Red"
+        {
+            token outputs:surface.connect = </World/Materials/Red/RedShader.outputs:surface>
+
+            def Shader "RedShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:surface
+            }
+        }
+
+        def Material "Green"
+        {
+            token outputs:surface.connect = </World/Materials/Green/GreenShader.outputs:surface>
+
+            def Shader "GreenShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 1, 0)
+                token outputs:surface
+            }
+        }
+
+        def Material "Blue"
+        {
+            token outputs:surface.connect = </World/Materials/Blue/BlueShader.outputs:surface>
+
+            def Shader "BlueShader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 0, 1)
+                token outputs:surface
+            }
+        }
+    }
+}
+

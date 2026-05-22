@@ -1,0 +1,18 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 1
+    metersPerUnit = 1
+    startTimeCode = 1
+    subLayers = [
+        @./dedup/various_construction_arcs.usda@
+    ]
+    upAxis = "Z"
+)
+
+def "World_Copy" (
+    prepend references = </World>
+)
+{
+}
+

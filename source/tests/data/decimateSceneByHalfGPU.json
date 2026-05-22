@@ -1,0 +1,11 @@
+[
+    {
+        "operation": "decimateMeshes",
+        "paths": [
+        ],
+        "reductionFactor": 50.0,
+        "maxMeanError": 0.0,
+        "cpuVertexCountThreshold": 0,
+        "gpuVertexCountThreshold": 0
+    }
+]

@@ -1,0 +1,50 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World" (
+    kind = "component"
+)
+{
+    matrix4d xformOp:transform:xform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+    uniform token[] xformOpOrder = ["xformOp:transform:xform"]
+
+    def Xform "VertexIndexedMesh" (
+        instanceable = true
+    )
+    {
+        def Mesh "Mesh"
+        {
+            uniform bool doubleSided = 1
+            float3[] extent = [(7, 0, 43), (17, 0, 53)]
+            int[] faceVertexCounts = [4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7]
+            uniform token orientation = "leftHanded"
+            point3f[] points = [(7, 0, 43), (12, 0, 43), (17, 0, 43), (7, 0, 48), (12, 0, 48), (17, 0, 48), (7, 0, 53), (12, 0, 53), (17, 0, 53)] (
+                interpolation = "vertex"
+            )
+            color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+                interpolation = "vertex"
+            )
+            int[] primvars:displayColor:indices = [0, 0, 0, 1, 1, 1, 2, 2, 2]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Xform "VertexIndexedCopy" (
+        add references = </World/VertexIndexedMesh>
+    )
+    {
+        double3 xformOp:translate = (0, 5, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]      
+    }
+
+}
+

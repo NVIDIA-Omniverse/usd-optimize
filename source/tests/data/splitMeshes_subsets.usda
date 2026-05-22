@@ -1,0 +1,240 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def DistantLight "DistantLight" (
+        prepend apiSchemas = ["ShapingAPI"]
+    )
+    {
+        float inputs:angle = 1
+        float inputs:intensity = 3000
+        float inputs:shaping:cone:angle = 180
+        float inputs:shaping:cone:softness
+        float inputs:shaping:focus
+        color3f inputs:shaping:focusTint
+        asset inputs:shaping:ies:file
+        double3 xformOp:rotateXYZ = (315, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+    }
+
+    def Scope "Looks"
+    {
+        def Material "Material1"
+        {
+            token outputs:displacement.connect = </World/Looks/Material1/Shader.outputs:displacement>
+            token outputs:surface.connect = </World/Looks/Material1/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+
+        def Material "Material2"
+        {
+            token outputs:displacement.connect = </World/Looks/Material2/Shader.outputs:displacement>
+            token outputs:surface.connect = </World/Looks/Material2/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 1, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+
+        def Material "Material3"
+        {
+            token outputs:displacement.connect = </World/Looks/Material3/Shader.outputs:displacement>
+            token outputs:surface.connect = </World/Looks/Material3/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 0, 1)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+
+        def Material "Material4"
+        {
+            token outputs:displacement.connect = </World/Looks/Material4/Shader.outputs:displacement>
+            token outputs:surface.connect = </World/Looks/Material4/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 1, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+
+        def Material "Material5"
+        {
+            token outputs:displacement.connect = </World/Looks/Material5/Shader.outputs:displacement>
+            token outputs:surface.connect = </World/Looks/Material5/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 1, 1)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+    }
+
+    def Mesh "Thing1"
+    {
+        uniform bool doubleSided = 0
+        float3[] extent = [(-150, -50, -150), (150, 50, 150)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 0, 4, 5, 1, 1, 5, 6, 3, 2, 3, 6, 7, 0, 2, 7, 4, 4, 7, 6, 5, 8, 9, 11, 10, 8, 12, 13, 9, 9, 13, 14, 11, 10, 11, 14, 15, 8, 10, 15, 12, 12, 15, 14, 13, 16, 17, 19, 18, 16, 20, 21, 17, 17, 21, 22, 19, 18, 19, 22, 23, 16, 18, 23, 20, 20, 23, 22, 21, 24, 25, 27, 26, 24, 28, 29, 25, 25, 29, 30, 27, 26, 27, 30, 31, 24, 26, 31, 28, 28, 31, 30, 29, 32, 33, 35, 34, 32, 36, 37, 33, 33, 37, 38, 35, 34, 35, 38, 39, 32, 34, 39, 36, 36, 39, 38, 37]
+        token interpolateBoundary = "edgeAndCorner"
+        uniform token orientation = "rightHanded"
+        point3f[] points = [(-150, -50, -50), (-50, -50, -50), (-150, -50, 50), (-50, -50, 50), (-150, 50, -50), (-50, 50, -50), (-50, 50, 50), (-150, 50, 50), (50, -50, -50), (150, -50, -50), (50, -50, 50), (150, -50, 50), (50, 50, -50), (150, 50, -50), (150, 50, 50), (50, 50, 50), (-50, -50, 50), (50, -50, 50), (-50, -50, 150), (50, -50, 150), (-50, 50, 50), (50, 50, 50), (50, 50, 150), (-50, 50, 150), (-50, -50, -150), (50, -50, -150), (-50, -50, -50), (50, -50, -50), (-50, 50, -150), (50, 50, -150), (50, 50, -50), (-50, 50, -50), (-50, -50, -50), (50, -50, -50), (-50, -50, 50), (50, -50, 50), (-50, 50, -50), (50, 50, -50), (50, 50, 50), (-50, 50, 50)]
+        float3[] primvars:normals = [(0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 0, 1), (-1, 0, 0), (0, 1, 0)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:normals:indices = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5]
+        float2[] primvars:st = [(1, 0), (0, 0), (0, 1), (1, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:st:indices = [0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:translate:pivot = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+
+        def GeomSubset "Part1"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [24, 25, 26, 27, 28, 29]
+            custom rel material:binding = </World/Looks/Material1>
+        }
+
+        def GeomSubset "Part2"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [18, 19, 20, 21, 22, 23]
+            custom rel material:binding = </World/Looks/Material2>
+        }
+
+        def GeomSubset "Part3"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [12, 13, 14, 15, 16, 17]
+            custom rel material:binding = </World/Looks/Material3>
+        }
+
+        def GeomSubset "Part4"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [6, 7, 8, 9, 10, 11]
+            custom rel material:binding = </World/Looks/Material4>
+        }
+
+        def GeomSubset "Part5"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0, 1, 2, 3, 4, 5]
+            custom rel material:binding = </World/Looks/Material5>
+        }
+    }
+
+    def Mesh "Thing2"
+    {
+        uniform bool doubleSided = 0
+        float3[] extent = [(-150, -50, -150), (150, 50, 150)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 0, 4, 5, 1, 1, 5, 6, 3, 2, 3, 6, 7, 0, 2, 7, 4, 4, 7, 6, 5, 8, 9, 11, 10, 8, 12, 13, 9, 9, 13, 14, 11, 10, 11, 14, 15, 8, 10, 15, 12, 12, 15, 14, 13, 16, 17, 19, 18, 16, 20, 21, 17, 17, 21, 22, 19, 18, 19, 22, 23, 16, 18, 23, 20, 20, 23, 22, 21, 24, 25, 27, 26, 24, 28, 29, 25, 25, 29, 30, 27, 26, 27, 30, 31, 24, 26, 31, 28, 28, 31, 30, 29, 32, 33, 35, 34, 32, 36, 37, 33, 33, 37, 38, 35, 34, 35, 38, 39, 32, 34, 39, 36, 36, 39, 38, 37]
+        token interpolateBoundary = "edgeAndCorner"
+        custom rel material:binding = </World/Looks/Material1>
+        uniform token orientation = "rightHanded"
+        point3f[] points = [(-150, -50, -50), (-50, -50, -50), (-150, -50, 50), (-50, -50, 50), (-150, 50, -50), (-50, 50, -50), (-50, 50, 50), (-150, 50, 50), (50, -50, -50), (150, -50, -50), (50, -50, 50), (150, -50, 50), (50, 50, -50), (150, 50, -50), (150, 50, 50), (50, 50, 50), (-50, -50, 50), (50, -50, 50), (-50, -50, 150), (50, -50, 150), (-50, 50, 50), (50, 50, 50), (50, 50, 150), (-50, 50, 150), (-50, -50, -150), (50, -50, -150), (-50, -50, -50), (50, -50, -50), (-50, 50, -150), (50, 50, -150), (50, 50, -50), (-50, 50, -50), (-50, -50, -50), (50, -50, -50), (-50, -50, 50), (50, -50, 50), (-50, 50, -50), (50, 50, -50), (50, 50, 50), (-50, 50, 50)]
+        float3[] primvars:normals = [(0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 0, 1), (-1, 0, 0), (0, 1, 0)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:normals:indices = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5]
+        float2[] primvars:st = [(1, 0), (0, 0), (0, 1), (1, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:st:indices = [0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (400, 0, 0)
+        float3 xformOp:translate:pivot = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:translate:pivot", "xformOp:rotateXYZ", "xformOp:scale", "!invert!xformOp:translate:pivot"]
+
+        def GeomSubset "Part1"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [24, 25, 26, 27, 28, 29]
+            custom rel material:binding = </World/Looks/Material2>
+        }
+    }
+
+    def Mesh "Thing3"
+    {
+        uniform bool doubleSided = 0
+        float3[] extent = [(-150, -50, -150), (150, 50, 150)]
+        token faceVaryingLinearInterpolation = "cornersPlus1"
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 0, 4, 5, 1, 1, 5, 6, 3, 2, 3, 6, 7, 0, 2, 7, 4, 4, 7, 6, 5, 8, 9, 11, 10, 8, 12, 13, 9, 9, 13, 14, 11, 10, 11, 14, 15, 8, 10, 15, 12, 12, 15, 14, 13, 16, 17, 19, 18, 16, 20, 21, 17, 17, 21, 22, 19, 18, 19, 22, 23, 16, 18, 23, 20, 20, 23, 22, 21, 24, 25, 27, 26, 24, 28, 29, 25, 25, 29, 30, 27, 26, 27, 30, 31, 24, 26, 31, 28, 28, 31, 30, 29, 32, 33, 35, 34, 32, 36, 37, 33, 33, 37, 38, 35, 34, 35, 38, 39, 32, 34, 39, 36, 36, 39, 38, 37]
+        token interpolateBoundary = "edgeAndCorner"
+        custom rel material:binding = </World/Looks/Material1>
+        uniform token orientation = "rightHanded"
+        point3f[] points = [(-150, -50, -50), (-50, -50, -50), (-150, -50, 50), (-50, -50, 50), (-150, 50, -50), (-50, 50, -50), (-50, 50, 50), (-150, 50, 50), (50, -50, -50), (150, -50, -50), (50, -50, 50), (150, -50, 50), (50, 50, -50), (150, 50, -50), (150, 50, 50), (50, 50, 50), (-50, -50, 50), (50, -50, 50), (-50, -50, 150), (50, -50, 150), (-50, 50, 50), (50, 50, 50), (50, 50, 150), (-50, 50, 150), (-50, -50, -150), (50, -50, -150), (-50, -50, -50), (50, -50, -50), (-50, 50, -150), (50, 50, -150), (50, 50, -50), (-50, 50, -50), (-50, -50, -50), (50, -50, -50), (-50, -50, 50), (50, -50, 50), (-50, 50, -50), (50, 50, -50), (50, 50, 50), (-50, 50, 50)]
+        float3[] primvars:normals = [(0, -1, 0), (0, 0, -1), (1, 0, 0), (0, 0, 1), (-1, 0, 0), (0, 1, 0)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:normals:indices = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5]
+        float2[] primvars:st = [(1, 0), (0, 0), (0, 1), (1, 1)] (
+            interpolation = "faceVarying"
+        )
+        int[] primvars:st:indices = [0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1, 0, 1, 2, 3, 0, 3, 2, 1, 0, 1, 2, 3, 0, 1, 2, 3, 0, 3, 2, 1, 0, 3, 2, 1]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "none"
+        uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+        token triangleSubdivisionRule = "catmullClark"
+        token visibility = "inherited"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (-400, 0, 0)
+        float3 xformOp:translate:pivot = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:translate:pivot", "xformOp:rotateXYZ", "xformOp:scale", "!invert!xformOp:translate:pivot"]
+    }
+}
+

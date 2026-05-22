@@ -1,0 +1,9 @@
+<project toolsVersion="5.6">
+  <dependency name="premake" linkPath="../_build/host-deps/premake">
+    <package name="premake" version="5.0.0-beta2+nv1-${platform}" platforms="windows-x86_64 linux-x86_64 linux-aarch64" />
+  </dependency>
+  <!-- linbuild is intentionally not listed: the artifact is not available from the public CloudFront remote
+       (only premake and similar packages are). GitLab CI and typical Linux builds use OMNI_REPO_BUILD_NO_DOCKER=1
+       and the ci-jammy builder image directly. For nested-docker local builds, use NVIDIA-internal packman remotes
+       or install linbuild separately and point repo at it. -->
+</project>

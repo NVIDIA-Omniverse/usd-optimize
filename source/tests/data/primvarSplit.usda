@@ -1,0 +1,115 @@
+#usda 1.0
+
+def Mesh "MergedConstant" (
+    apiSchemas = ["ShadowAPI"]
+)
+{
+    uniform bool doubleSided = 1
+    float3[] extent = [(-5, 0, 55), (17, 0, 65)]
+    token faceVaryingLinearInterpolation = "cornersPlus1"
+    int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+    int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+    token interpolateBoundary = "edgeAndCorner"
+    uniform token orientation = "leftHanded"
+    point3f[] points = [(-5, 0, 55), (0, 0, 55), (5, 0, 55), (-5, 0, 60), (0, 0, 60), (5, 0, 60), (-5, 0, 65), (0, 0, 65), (5, 0, 65), (7, 0, 55), (12, 0, 55), (17, 0, 55), (7, 0, 60), (12, 0, 60), (17, 0, 60), (7, 0, 65), (12, 0, 65), (17, 0, 65)]
+    color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0)] (
+        interpolation = "uniform"
+    )
+    int[] primvars:displayColor:indices = [0, 0, 0, 0, 1, 1, 1, 1]
+    uniform token purpose = "default"
+    uniform token subdivisionScheme = "none"
+    token triangleSubdivisionRule = "catmullClark"
+    token visibility = "inherited"
+    float3 xformOp:translate:pivot = (6, 0, 60)
+    uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    custom uint[] randomArrayData = [1, 2, 3, 4, 5, 6, 7, 8]
+}
+
+def Mesh "MergedVertex"
+{
+    uniform bool doubleSided = 1
+    float3[] extent = [(-5, 0, 43), (17, 0, 53)]
+    token faceVaryingLinearInterpolation = "cornersPlus1"
+    int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+    int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+    token interpolateBoundary = "edgeAndCorner"
+    uniform token orientation = "leftHanded"
+    point3f[] points = [(-5, 0, 43), (0, 0, 43), (5, 0, 43), (-5, 0, 48), (0, 0, 48), (5, 0, 48), (-5, 0, 53), (0, 0, 53), (5, 0, 53), (7, 0, 43), (12, 0, 43), (17, 0, 43), (7, 0, 48), (12, 0, 48), (17, 0, 48), (7, 0, 53), (12, 0, 53), (17, 0, 53)]
+    color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+        interpolation = "vertex"
+    )
+    int[] primvars:displayColor:indices = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 0, 0, 0]
+    uniform token purpose = "default"
+    uniform token subdivisionScheme = "none"
+    token triangleSubdivisionRule = "catmullClark"
+    token visibility = "inherited"
+    float3 xformOp:translate:pivot = (6, 0, 48)
+    uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+}
+
+def Mesh "MergedFaceVarying"
+{
+    uniform bool doubleSided = 1
+    float3[] extent = [(-5, 0, 31), (17, 0, 41)]
+    token faceVaryingLinearInterpolation = "cornersPlus1"
+    int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+    int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+    token interpolateBoundary = "edgeAndCorner"
+    uniform token orientation = "leftHanded"
+    point3f[] points = [(-5, 0, 31), (0, 0, 31), (5, 0, 31), (-5, 0, 36), (0, 0, 36), (5, 0, 36), (-5, 0, 41), (0, 0, 41), (5, 0, 41), (7, 0, 31), (12, 0, 31), (17, 0, 31), (7, 0, 36), (12, 0, 36), (17, 0, 36), (7, 0, 41), (12, 0, 41), (17, 0, 41)]
+    color3f[] primvars:displayColor = [(1, 1, 1), (1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+        interpolation = "faceVarying"
+    )
+    int[] primvars:displayColor:indices = [0, 1, 1, 1, 0, 2, 2, 2, 0, 3, 3, 3, 0, 1, 1, 1, 1, 1, 1, 0, 3, 3, 3, 0, 2, 2, 2, 0, 1, 1, 1, 0]
+    uniform token purpose = "default"
+    uniform token subdivisionScheme = "none"
+    token triangleSubdivisionRule = "catmullClark"
+    token visibility = "inherited"
+    float3 xformOp:translate:pivot = (6, 0, 36)
+    uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+}
+
+def Mesh "MergedVarying"
+{
+    uniform bool doubleSided = 1
+    float3[] extent = [(-5, 0, 19), (17, 0, 29)]
+    token faceVaryingLinearInterpolation = "cornersPlus1"
+    int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+    int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+    token interpolateBoundary = "edgeAndCorner"
+    uniform token orientation = "leftHanded"
+    point3f[] points = [(-5, 0, 19), (0, 0, 19), (5, 0, 19), (-5, 0, 24), (0, 0, 24), (5, 0, 24), (-5, 0, 29), (0, 0, 29), (5, 0, 29), (7, 0, 19), (12, 0, 19), (17, 0, 19), (7, 0, 24), (12, 0, 24), (17, 0, 24), (7, 0, 29), (12, 0, 29), (17, 0, 29)]
+    color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+        interpolation = "varying"
+    )
+    int[] primvars:displayColor:indices = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 0, 0, 0]
+    uniform token purpose = "default"
+    uniform token subdivisionScheme = "none"
+    token triangleSubdivisionRule = "catmullClark"
+    token visibility = "inherited"
+    float3 xformOp:translate:pivot = (6, 0, 24)
+    uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+}
+
+def Mesh "MergedUniform"
+{
+    uniform bool doubleSided = 1
+    float3[] extent = [(-5, 0, 7), (17, 0, 17)]
+    token faceVaryingLinearInterpolation = "cornersPlus1"
+    int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4]
+    int[] faceVertexIndices = [0, 1, 4, 3, 1, 2, 5, 4, 3, 4, 7, 6, 4, 5, 8, 7, 9, 10, 13, 12, 10, 11, 14, 13, 12, 13, 16, 15, 13, 14, 17, 16]
+    token interpolateBoundary = "edgeAndCorner"
+    uniform token orientation = "leftHanded"
+    point3f[] points = [(-5, 0, 7), (0, 0, 7), (5, 0, 7), (-5, 0, 12), (0, 0, 12), (5, 0, 12), (-5, 0, 17), (0, 0, 17), (5, 0, 17), (7, 0, 7), (12, 0, 7), (17, 0, 7), (7, 0, 12), (12, 0, 12), (17, 0, 12), (7, 0, 17), (12, 0, 17), (17, 0, 17)]
+    color3f[] primvars:displayColor = [(1, 0, 0), (0, 1, 0), (0, 0, 1)] (
+        interpolation = "uniform"
+    )
+    int[] primvars:displayColor:indices = [0, 1, 2, 0, 0, 2, 1, 0]
+    uniform token purpose = "default"
+    uniform token subdivisionScheme = "none"
+    token triangleSubdivisionRule = "catmullClark"
+    token visibility = "inherited"
+    float3 xformOp:translate:pivot = (6, 0, 12)
+    uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+}
+

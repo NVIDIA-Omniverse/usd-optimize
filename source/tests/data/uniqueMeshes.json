@@ -1,0 +1,28 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Cube1",
+            "/World/Cube2"
+        ],
+        "considerMaterials": true,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Cube1",
+            "/World/Cube2"
+        ],
+        "considerMaterials": true,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "",
+        "notes": ""
+    }
+]

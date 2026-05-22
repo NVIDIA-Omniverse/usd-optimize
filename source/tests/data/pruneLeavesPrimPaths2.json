@@ -1,0 +1,7 @@
+[
+    {
+        "operation": "pruneLeaves",
+        "paths": ["/World/Leaf2/Leaf2/Leaf1"],
+        "pruneMode": 1
+    }
+]

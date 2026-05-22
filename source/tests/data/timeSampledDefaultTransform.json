@@ -1,0 +1,13 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [],
+        "considerMaterials": true,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 1,
+        "rootPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    }
+]

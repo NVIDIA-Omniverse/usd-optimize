@@ -1,0 +1,218 @@
+#usda 1.0
+(
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Scope "Materials"
+{
+    def Scope "Red"
+    {
+        def Material "Material1"
+        {
+            token outputs:displacement.connect = </Materials/Red/Material1/Shader.outputs:displacement>
+            token outputs:surface.connect = </Materials/Red/Material1/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }    
+
+        def Material "Material2"
+        {
+            token outputs:displacement.connect = </Materials/Red/Material2/Shader.outputs:displacement>
+            token outputs:surface.connect = </Materials/Red/Material2/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }    
+
+        def Material "Material3"
+        {
+            token outputs:displacement.connect = </Materials/Red/Material3/Shader.outputs:displacement>
+            token outputs:surface.connect = </Materials/Red/Material3/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        } 
+    }
+
+    def Scope "Blue"
+    {
+        def Material "Material1"
+        {
+            token outputs:displacement.connect = </Materials/Blue/Material1/Shader.outputs:displacement>
+            token outputs:surface.connect = </Materials/Blue/Material1/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 0, 1)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }    
+        def Material "Material2"
+        {
+            token outputs:displacement.connect = </Materials/Blue/Material2/Shader.outputs:displacement>
+            token outputs:surface.connect = </Materials/Blue/Material2/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 0, 1)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }    
+    }
+
+    def Scope "Green"
+    {
+        def Material "Material1"
+        {
+            token outputs:displacement.connect = </Materials/Green/Material1/Shader.outputs:displacement>
+            token outputs:surface.connect = </Materials/Green/Material1/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 1, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }        
+        def Material "Material2"
+        {
+            token outputs:displacement.connect = </Materials/Green/Material2/Shader.outputs:displacement>
+            token outputs:surface.connect = </Materials/Green/Material2/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 1, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }        
+    }
+}
+
+def Xform "Cubes"
+{
+    def Xform "Cube1"
+    {
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Materials/Red/Material1>
+            double size = 2
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 5, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+
+    def Xform "Cube2"
+    {
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Materials/Red/Material2>
+            double size = 2
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+
+    def Xform "Cube3"
+    {
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Materials/Red/Material3>
+            double size = 2
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (5, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+
+    def Xform "Cube4"
+    {
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Materials/Green/Material1>
+            double size = 2
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (5, 0, 5, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+
+    def Xform "Cube5"
+    {
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Materials/Green/Material2>
+            double size = 2
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (5, 5, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+
+    def Xform "Cube6"
+    {
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Materials/Blue/Material1>
+            double size = 2
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 5, 5, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+
+    def Xform "Cube7"
+    {
+        def Cube "Shape" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            float3[] extent = [(-1, -1, -1), (1, 1, 1)]
+            rel material:binding = </Materials/Blue/Material2>
+            double size = 2
+            matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (-5, 0, 0, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }    
+}

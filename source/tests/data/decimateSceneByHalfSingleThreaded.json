@@ -1,0 +1,13 @@
+[
+    {
+        "operation": "executionContext",
+        "singleThreaded": 1
+    },
+    {
+        "operation": "decimateMeshes",
+        "paths": [
+        ],
+        "reductionFactor": 50.0,
+        "maxMeanError": 0.0
+    }
+]

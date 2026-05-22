@@ -1,0 +1,41 @@
+<project toolsVersion="5.0">
+  <!-- USD and Python are sourced from usd-deps.packman.xml (run "repo usd" to regenerate). -->
+  <import path="../deps/usd-deps.packman.xml">
+    <filter include="usd-${config}" />
+    <filter include="python" />
+  </import>
+  <dependency name="usd-${config}" linkPath="../_build/target-deps/usd/${config}"/>
+  <dependency name="python" linkPath="../_build/target-deps/python" />
+
+  <!-- Carbonite SDK (header-only usage for logging/profiling macros) -->
+  <dependency name="carb_sdk_plugins" linkPath="../_build/target-deps/carb_sdk_plugins">
+    <package name="carb_sdk+plugins.${platform_target_abi}" version="210.1.4+release.12772.a4efbbdc.gl" />
+  </dependency>
+
+  <!-- pybind11 for Python bindings -->
+  <dependency name="pybind11" linkPath="../_build/target-deps/pybind11">
+    <package name="pybind11" version="2.11.1-0" />
+  </dependency>
+
+  <!-- doctest for C++ unit tests -->
+  <dependency name="doctest" linkPath="../_build/target-deps/doctest">
+    <package name="doctest" version="2.4.5+nv1-3" />
+  </dependency>
+
+  <dependency name="omnimesh_ops_usd" linkPath="../_build/target-deps/omnimesh_ops_usd/${config}">
+    <package name="omnimesh_ops_usd" version="110.0.2+main.2596.45208e2f.gl.${platform_target_abi}.${config}" />
+  </dependency>
+  <dependency name="mesh_tools" linkPath="../_build/target-deps/mesh_tools/${config}">
+    <package name="mesh_tools" version="110.0.15+main.1687.d5bba94c.gl.${platform_target_abi}.${config}" platforms="windows-x86_64 manylinux_2_35_x86_64 manylinux_2_35_aarch64" />
+  </dependency>
+  <dependency name="autouv-core" linkPath="../_build/target-deps/autouv-core">
+    <package name="autouv-core" version="1.0.2+main.64.67ed9ccb.gl.${platform_target_abi}" />
+  </dependency>
+  <dependency name="cuda" linkPath="../_build/target-deps/cuda">
+    <package name="cuda" version="12.4.1-5-${platform_target_abi}-release" platforms="linux-x86_64 manylinux_2_35_x86_64 linux-aarch64 manylinux_2_35_aarch64" />
+  </dependency>
+  <dependency name="shrinkwrap_openvdb" linkPath="../_build/target-deps/shrinkwrap_openvdb/${config}">
+    <package name="shrinkwrap_openvdb" version="13.0.1+mr7.32.cd71db74.gl.${platform_target_abi}.${config}" />
+  </dependency>
+
+</project>

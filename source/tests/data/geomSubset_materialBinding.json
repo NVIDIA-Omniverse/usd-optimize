@@ -1,0 +1,80 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Geometry/noSubsets"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/NoSubsets_ConsiderMaterialTrue",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Geometry/noSubsets"
+        ],
+        "considerMaterials": false,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/NoSubsets_ConsiderMaterialFalse",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Geometry/oneSubset_partition",
+            "/World/Geometry/threeSubsets_partition",
+            "/World/Geometry/twoSubsets_partition",
+            "/World/Geometry/noSubsets",
+            "/World/Geometry/twoSubsets_nonOverlapping",
+            "/World/Geometry/oneSubset_nonOverlapping"
+        ],
+        "considerMaterials": false,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/Everything_ConsiderMaterialFalse",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Geometry/oneSubset_partition",
+            "/World/Geometry/threeSubsets_partition",
+            "/World/Geometry/twoSubsets_partition",
+            "/World/Geometry/noSubsets",
+            "/World/Geometry/twoSubsets_nonOverlapping",
+            "/World/Geometry/oneSubset_nonOverlapping"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "",
+        "meshMaterialPath": "",
+        "notes": "",
+        "allowSingleMeshes": true        
+    }
+]

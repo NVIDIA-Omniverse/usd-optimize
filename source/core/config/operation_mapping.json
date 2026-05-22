@@ -1,0 +1,18 @@
+{
+  "operations":
+  {
+      "findCoincidingMeshes": "findCoincidingGeometry",
+      "findHiddenMeshes": "findOccludedMeshes"
+  },
+  "attributes":
+  {
+      "findCoincidingGeometry":
+      {
+          "meshPrimPaths": "primPaths"
+      },
+      "findOccludedMeshes":
+      {
+          "gridResolution": "maximumGridResolution"
+      }
+  }
+}

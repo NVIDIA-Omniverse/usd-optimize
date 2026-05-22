@@ -1,0 +1,13 @@
+[
+  {
+    "operation": "deduplicateGeometry",
+    "meshPrimPaths": [],
+    "duplicateMethod": 0,
+    "considerDeepTransforms": true,
+    "tolerance": 0.00000001,
+    "fuzzy": false,
+    "useGpu": false,
+    "allowScaling": false,
+    "notes": "duplicateMethod=eCopyValues"
+  }
+]

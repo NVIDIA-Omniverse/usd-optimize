@@ -1,0 +1,153 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    endTimeCode = 100
+    metersPerUnit = 0.01
+    startTimeCode = 0
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+
+def Xform "World"
+{
+
+    over Xform "Cube1"
+    {
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Cube"
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 0, 4, 5, 1, 1, 5, 6, 3, 2, 3, 6, 7, 0, 2, 7, 4, 4, 7, 6, 5]
+            point3f[] points = [(-50, -50, -50), (50, -50, -50), (-50, -50, 50), (50, -50, 50), (-50, 50, -50), (50, 50, -50), (50, 50, 50), (-50, 50, 50)]
+            uniform token subdivisionScheme = "none"
+
+            def GeomSubset "SubsetRed" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token elementType = "face"
+                uniform token familyName = "materialBind"
+                int[] indices = [0, 1]
+                custom rel material:binding = </World/Looks/Red>
+            }
+
+            def GeomSubset "Green" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token elementType = "face"
+                uniform token familyName = "materialBind"
+                int[] indices = [2, 3]
+                custom rel material:binding = </World/Looks/Green>
+            }
+
+            def GeomSubset "SubsetBlue" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token elementType = "face"
+                uniform token familyName = "materialBind"
+                int[] indices = [4, 5]
+                custom rel material:binding = </World/Looks/Blue>
+            }
+        }    
+    }
+
+    over Xform "Cube2"
+    {
+
+        double3 xformOp:rotateXYZ = (0, 0, 0)
+        double3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (200, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def Mesh "Cube"
+        {
+            int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+            int[] faceVertexIndices = [0, 1, 3, 2, 0, 4, 5, 1, 1, 5, 6, 3, 2, 3, 6, 7, 0, 2, 7, 4, 4, 7, 6, 5]
+            point3f[] points = [(-50, -50, -50), (50, -50, -50), (-50, -50, 50), (50, -50, 50), (-50, 50, -50), (50, 50, -50), (50, 50, 50), (-50, 50, 50)]
+            uniform token subdivisionScheme = "none"
+
+            def GeomSubset "SubsetRed" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token elementType = "face"
+                uniform token familyName = "materialBind"
+                int[] indices = [0, 1]
+                custom rel material:binding = </World/Looks/Red>
+            }
+
+            def GeomSubset "Green" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token elementType = "face"
+                uniform token familyName = "materialBind"
+                int[] indices = [2, 3]
+                custom rel material:binding = </World/Looks/Green>
+            }
+
+            def GeomSubset "SubsetBlue" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token elementType = "face"
+                uniform token familyName = "materialBind"
+                int[] indices = [4, 5]
+                custom rel material:binding = </World/Looks/Blue>
+            }
+        }    
+    }
+
+    def Scope "Looks"
+    {
+
+        def Material "Red"
+        {
+            token outputs:displacement.connect = </World/Looks/Red/Shader.outputs:displacement>
+            token outputs:surface.connect = </World/Looks/Red/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+
+        def Material "Green"
+        {
+            token outputs:displacement.connect = </World/Looks/Green/Shader.outputs:displacement>
+            token outputs:surface.connect = </World/Looks/Green/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 1, 0)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+
+        def Material "Blue"
+        {
+            token outputs:displacement.connect = </World/Looks/Blue/Shader.outputs:displacement>
+            token outputs:surface.connect = </World/Looks/Blue/Shader.outputs:surface>
+
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0, 0, 1)
+                token outputs:displacement
+                token outputs:surface
+            }
+        }
+    }
+}

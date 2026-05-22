@@ -1,0 +1,157 @@
+#usda 1.0
+(
+    customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (0, 0, 500)
+                double radius = 500
+            }
+            dictionary Perspective = {
+                double3 position = (10.404843692379066, 10.404855378148929, 10.404843692379124)
+                double3 target = (-0.000003978038385810123, 0.00000795607677517296, -0.000003978038325413991)
+            }
+            dictionary Right = {
+                double3 position = (-500, 0, 0)
+                double radius = 500
+            }
+            dictionary Top = {
+                double3 position = (0, 500, 0)
+                double radius = 500
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
+        dictionary omni_layer = {
+            string authoring_layer = "./result.usda"
+            dictionary locked = {
+            }
+            dictionary muteness = {
+            }
+        }
+        dictionary renderSettings = {
+            float3 "rtx:debugView:pixelDebug:textColor" = (0, 1e18, 0)
+            float3 "rtx:fog:fogColor" = (0.75, 0.75, 0.75)
+            float3 "rtx:index:backgroundColor" = (0, 0, 0)
+            float3 "rtx:index:regionOfInterestMax" = (0, 0, 0)
+            float3 "rtx:index:regionOfInterestMin" = (0, 0, 0)
+            float3 "rtx:post:backgroundZeroAlpha:backgroundDefaultColor" = (0, 0, 0)
+            float3 "rtx:post:colorcorr:contrast" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:gain" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:gamma" = (1, 1, 1)
+            float3 "rtx:post:colorcorr:offset" = (0, 0, 0)
+            float3 "rtx:post:colorcorr:saturation" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:blackpoint" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:contrast" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:gain" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:gamma" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:lift" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:multiply" = (1, 1, 1)
+            float3 "rtx:post:colorgrad:offset" = (0, 0, 0)
+            float3 "rtx:post:colorgrad:whitepoint" = (1, 1, 1)
+            float3 "rtx:post:lensDistortion:lensFocalLengthArray" = (10, 30, 50)
+            float3 "rtx:post:lensFlares:anisoFlareFalloffX" = (450, 475, 500)
+            float3 "rtx:post:lensFlares:anisoFlareFalloffY" = (10, 10, 10)
+            float3 "rtx:post:lensFlares:cutoffPoint" = (2, 2, 2)
+            float3 "rtx:post:lensFlares:haloFlareFalloff" = (10, 10, 10)
+            float3 "rtx:post:lensFlares:haloFlareRadius" = (75, 75, 75)
+            float3 "rtx:post:lensFlares:isotropicFlareFalloff" = (50, 50, 50)
+            float3 "rtx:post:lensFlares:spectralBlurWavelengthRange" = (380, 550, 770)
+            float3 "rtx:post:tonemap:whitepoint" = (1, 1, 1)
+            float3 "rtx:raytracing:indexdirect:svoBrickSize" = (32, 32, 32)
+            float3 "rtx:raytracing:inscattering:singleScatteringAlbedo" = (0.9, 0.9, 0.9)
+            float3 "rtx:raytracing:inscattering:transmittanceColor" = (0.5, 0.5, 0.5)
+            float3 "rtx:sceneDb:ambientLightColor" = (0.1, 0.1, 0.1)
+        }
+    }
+    defaultPrim = "World"
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Mesh "merged"
+{
+    int[] cornerIndices = [4, 5, 6, 7, 12, 13, 14, 15]
+    float[] cornerSharpnesses = [0.2, 0.4, 0.6, 0.8, 0.1, 0.3, 0.5, 0.7]
+    int[] creaseIndices = [0, 1, 3, 2, 0, 16, 17, 19, 18, 16]
+    int[] creaseLengths = [5, 5]
+    float[] creaseSharpnesses = [10, 5.5]
+    vector3f[] extent = [(-0.5, -0.5, -0.5), (4.1, 0.5, 0.5)]
+    int[] faceVertexCounts = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+    int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3, 8, 9, 11, 10, 12, 13, 15, 14, 14, 15, 10, 11, 13, 12, 9, 8, 13, 8, 10, 15, 9, 12, 14, 11, 16, 17, 19, 18, 20, 21, 23, 22, 22, 23, 18, 19, 21, 20, 17, 16, 21, 16, 18, 23, 17, 20, 22, 19, 24, 25, 27, 26, 28, 29, 31, 30, 30, 31, 26, 27, 29, 28, 25, 24, 29, 24, 26, 31, 25, 28, 30, 27]
+    uniform token orientation = "leftHanded"
+    point3f[] points = [(4.1, -0.5, 0.5), (3.1, -0.5, 0.5), (4.1, 0.5, 0.5), (3.1, 0.5, 0.5), (3.1, -0.5, -0.5), (4.1, -0.5, -0.5), (3.1, 0.5, -0.5), (4.1, 0.5, -0.5), (2.9, -0.5, 0.5), (1.9, -0.5, 0.5), (2.9, 0.5, 0.5), (1.9, 0.5, 0.5), (1.9, -0.5, -0.5), (2.9, -0.5, -0.5), (1.9, 0.5, -0.5), (2.9, 0.5, -0.5), (1.7, -0.5, 0.5), (0.7, -0.5, 0.5), (1.7, 0.5, 0.5), (0.7, 0.5, 0.5), (0.7, -0.5, -0.5), (1.7, -0.5, -0.5), (0.7, 0.5, -0.5), (1.7, 0.5, -0.5), (0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)]
+    uniform token purpose = "default"
+    uniform token subdivisionScheme = "catmullClark"
+    float3 xformOp:translate:pivot = (1.8, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+}
+
+def Scope "expected" (
+    active = false
+)
+{
+    def Mesh "merged_part"
+    {
+        int[] cornerIndices = [4, 5, 6, 7]
+        float[] cornerSharpnesses = [0.2, 0.4, 0.6, 0.8]
+        int[] creaseIndices = [0, 1, 3, 2, 0]
+        int[] creaseLengths = [5]
+        float[] creaseSharpnesses = [10]
+        vector3f[] extent = [(3.1, -0.5, -0.5), (4.1, 0.5, 0.5)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(4.1, -0.5, 0.5), (3.1, -0.5, 0.5), (4.1, 0.5, 0.5), (3.1, 0.5, 0.5), (3.1, -0.5, -0.5), (4.1, -0.5, -0.5), (3.1, 0.5, -0.5), (4.1, 0.5, -0.5)]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "catmullClark"
+        float3 xformOp:translate:pivot = (1.8, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "merged_part_1"
+    {
+        int[] cornerIndices = [4, 5, 6, 7]
+        float[] cornerSharpnesses = [0.1, 0.3, 0.5, 0.7]
+        vector3f[] extent = [(1.9, -0.5, -0.5), (2.9, 0.5, 0.5)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(2.9, -0.5, 0.5), (1.9, -0.5, 0.5), (2.9, 0.5, 0.5), (1.9, 0.5, 0.5), (1.9, -0.5, -0.5), (2.9, -0.5, -0.5), (1.9, 0.5, -0.5), (2.9, 0.5, -0.5)]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "catmullClark"
+        float3 xformOp:translate:pivot = (1.8, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "merged_part_2"
+    {
+        int[] creaseIndices = [0, 1, 3, 2, 0]
+        int[] creaseLengths = [5]
+        float[] creaseSharpnesses = [5.5]
+        vector3f[] extent = [(0.7, -0.5, -0.5), (1.7, 0.5, 0.5)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(1.7, -0.5, 0.5), (0.7, -0.5, 0.5), (1.7, 0.5, 0.5), (0.7, 0.5, 0.5), (0.7, -0.5, -0.5), (1.7, -0.5, -0.5), (0.7, 0.5, -0.5), (1.7, 0.5, -0.5)]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "catmullClark"
+        float3 xformOp:translate:pivot = (1.8, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+
+    def Mesh "merged_part_3"
+    {
+        vector3f[] extent = [(-0.5, -0.5, -0.5), (0.5, 0.5, 0.5)]
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [0, 1, 3, 2, 4, 5, 7, 6, 6, 7, 2, 3, 5, 4, 1, 0, 5, 0, 2, 7, 1, 4, 6, 3]
+        uniform token orientation = "leftHanded"
+        point3f[] points = [(0.5, -0.5, 0.5), (-0.5, -0.5, 0.5), (0.5, 0.5, 0.5), (-0.5, 0.5, 0.5), (-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (-0.5, 0.5, -0.5), (0.5, 0.5, -0.5)]
+        uniform token purpose = "default"
+        uniform token subdivisionScheme = "catmullClark"
+        float3 xformOp:translate:pivot = (1.8, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate:pivot", "!invert!xformOp:translate:pivot"]
+    }
+}

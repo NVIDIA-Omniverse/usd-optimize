@@ -1,0 +1,14 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World"
+        ],
+        "considerMaterials": false,
+        "materialAlbedoAsVertexColors": false,
+        "originalGeomOption": 1,
+        "mergePoint": 7,
+        "rootPath": "",
+        "considerAllAttributes": false
+    }
+]

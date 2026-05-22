@@ -1,0 +1,143 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/ConstantMesh",
+            "/World/ConstantRedMesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/ConstantToConstant",
+        "meshMaterialPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/ConstantGreenMesh",
+            "/World/ConstantRedMesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/ConstantToUniform",
+        "meshMaterialPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/UniformMesh",
+            "/World/UniformIndexedMesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/UniformToUniform",
+        "meshMaterialPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/UniformIndexedMesh",
+            "/World/VertexIndexedMesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/UniformVertexToFaceVarying",
+        "meshMaterialPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/VaryingMesh",
+            "/World/VaryingIndexedMesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/VaryingToVarying",
+        "meshMaterialPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/VertexMesh",
+            "/World/VertexIndexedMesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/VertexToVertex",
+        "meshMaterialPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/VertexMesh",
+            "/World/FaceVaryingIndexedMesh",
+            "/World/VaryingMesh",
+            "/World/ConstantMesh",
+            "/World/UnfiormIndexedMesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/MixedToFaceVarying",
+        "meshMaterialPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/UniformMesh",
+            "/World/UniformIndexedMesh",
+            "/World/FaceVaryingMesh",
+            "/World/FaceVaryingIndexedMesh"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/UniformOffset",
+        "meshMaterialPath": "",
+        "notes": ""
+    }
+]

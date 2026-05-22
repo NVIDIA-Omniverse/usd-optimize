@@ -1,0 +1,8 @@
+[
+    {
+        "operation": "optimizeMaterials",
+        "materialPrimPaths": [
+        ],
+        "optimizeMaterialsMode": 1
+    }
+]

@@ -1,0 +1,6 @@
+[
+    {
+        "operation": "pruneLeaves",
+        "pruneMode": 1
+    }
+]

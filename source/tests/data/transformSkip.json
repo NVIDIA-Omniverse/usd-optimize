@@ -1,0 +1,38 @@
+[
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Cube",
+            "/World/Cube_01",
+            "/World/Cube_02"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/Skipped",
+        "meshMaterialPath": "",
+        "notes": ""
+    },
+    {
+        "operation": "merge",
+        "meshPrimPaths": [
+            "/World/Cube",
+            "/World/Cube_01",
+            "/World/Cube_02"
+        ],
+        "considerMaterials": true,
+        "considerNormalsVariability": false,
+        "considerStVariability": false,
+        "considerSubdivisionSchema": false,
+        "materialAlbedoAsVertexColors": false,
+        "parentXform": false,
+        "originalGeomOption": 0,
+        "rootPath": "/World/Xform/Mesh",
+        "meshMaterialPath": "",
+        "notes": ""
+    }
+]

@@ -1,0 +1,43 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+# Two meshes whose points differ by an EXACT 180-degree rotation around the X
+# axis (i.e. (x, y, z) -> (x, -y, -z)). Each prim also has a translate with
+# non-zero Y and Z components, so the rotation does NOT commute with the
+# translate -- applying them in the wrong order shifts the deduplicated prim
+# to the wrong position.
+#
+# The shape is an asymmetric "wedge" (5 vertices, 6 triangular faces) chosen
+# so the deep-transform matching algorithm has a uniquely-determined axis
+# basis and yields the exact rotation matrix.
+
+def Xform "World"
+{
+    def Mesh "MeshSource"
+    {
+        float3[] extent = [(0, 0, 0), (4, 2, 3)]
+        int[] faceVertexCounts = [3, 3, 3, 3, 3, 3]
+        int[] faceVertexIndices = [0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 1, 1, 4, 2, 2, 4, 3]
+        uniform token orientation = "rightHanded"
+        point3f[] points = [(0, 0, 0), (4, 0, 0), (0, 2, 0), (0, 0, 3), (1, 2, 3)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (0.5, 7, 11)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+
+    def Mesh "MeshFlipped"
+    {
+        float3[] extent = [(0, -2, -3), (4, 0, 0)]
+        int[] faceVertexCounts = [3, 3, 3, 3, 3, 3]
+        int[] faceVertexIndices = [0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 1, 1, 4, 2, 2, 4, 3]
+        uniform token orientation = "rightHanded"
+        point3f[] points = [(0, 0, 0), (4, 0, 0), (0, -2, 0), (0, 0, -3), (1, -2, -3)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (-0.5, 7, 11)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+}

@@ -42,7 +42,7 @@ def _find_repo_usd_templates() -> str:
 def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
     parser.description = (
         "Tool to manage USD dependencies for Scene Optimizer. "
-        "Generates deps/usd-deps.packman.xml for the selected USD flavor. "
+        "Generates deps/usd-deps.generated.packman.xml for the selected USD flavor. "
         "Use 'kit' (default) to build against the Kit SDK USD, or specify a stock "
         "OpenUSD flavor. Supported non-kit flavors are listed in deps/usd_flavors.json."
     )
@@ -52,7 +52,7 @@ def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
         "--generate-usd-deps",
         dest="generate_usd_deps",
         action="store_true",
-        help="Generate deps/usd-deps.packman.xml for the selected USD flavor.",
+        help="Generate deps/usd-deps.generated.packman.xml for the selected USD flavor.",
     )
     parser.add_argument(
         "--usd-flavor",
@@ -79,7 +79,7 @@ def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
         "--output-dir",
         dest="output_dir",
         default=None,
-        help="Output directory for usd-deps.packman.xml (default: deps/).",
+        help="Output directory for usd-deps.generated.packman.xml (default: deps/).",
     )
 
     def run_repo_tool(options, config: Dict):
@@ -97,7 +97,7 @@ def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
             f"Generating USD deps: flavor={usd_flavor}, ver={usd_ver}, python={python_ver}"
         )
 
-        output_path = os.path.join(output_dir, "usd-deps.packman.xml")
+        output_path = os.path.join(output_dir, "usd-deps.generated.packman.xml")
 
         if usd_flavor == "kit":
             with open(output_path, "w") as f:

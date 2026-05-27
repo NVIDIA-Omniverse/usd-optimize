@@ -510,6 +510,44 @@ class Test_Operation_Deduplicate_Geometry(Test_Operation):
             # Assert that the materials bound before and after have the same paths.
             self.assertBoundMaterialsEqual(prim_before, prim_after)
 
+            # If the original mesh prim had MaterialBindingAPI, the post-dedup
+            # xform prim must also carry MaterialBindingAPI so the relationship is schema-valid.
+            # note: the case where the schema is missing from the origin prim is tested in: test_material_binding_api_schema_added_to_xform
+            if "MaterialBindingAPI" in prim_before.GetAppliedSchemas():
+                # the xform prim is at the path of the before prim
+                xform_prim = stage_after.GetPrimAtPath(Sdf.Path(path_before))
+                if xform_prim.IsValid() and UsdGeom.Xform(xform_prim):
+                    self.assertIn(
+                        "MaterialBindingAPI",
+                        xform_prim.GetAppliedSchemas(),
+                        f"Xform {xform_prim.GetPath()} is missing MaterialBindingAPI schema",
+                    )
+
+    async def test_material_binding_api_schema_added_to_xform(self):
+        """Check that MaterialBindingAPI is present on the new Xform prim even when the source mesh
+        had a material:binding relationship but was missing the MaterialBindingAPI schema declaration."""
+        # Load a scene where the mesh prims intentionally omit 'prepend apiSchemas = ["MaterialBindingAPI"]'
+        # while still carrying a material:binding relationship.  After deduplication the resulting Xform
+        # must have MaterialBindingAPI applied (added by the safety-check path).
+        stage = self._open_stage("deduplicateMissingMaterialBindingAPI.usda")
+
+        args = DEFAULT_ARGS.copy()
+        args["duplicateMethod"] = DUPLICATE_METHOD_INSTANCEABLEREFERENCE
+        args["considerDeepTransforms"] = True
+        args["tolerance"] = 0.05
+        self._execute_command(args)
+
+        # Both mesh prims should have been deduplicated into Xform + Geometry children.
+        for prim_path in ("/World/mesh_a", "/World/mesh_b"):
+            xform_prim = stage.GetPrimAtPath(prim_path)
+            self.assertTrue(xform_prim.IsValid(), f"Prim {prim_path} not found after dedup")
+            self.assertTrue(UsdGeom.Xform(xform_prim), f"{prim_path} should be an Xform after dedup")
+            self.assertIn(
+                "MaterialBindingAPI",
+                xform_prim.GetAppliedSchemas(),
+                f"{prim_path} is missing MaterialBindingAPI schema after dedup",
+            )
+
     async def test_crash_with_empty_extent(self):
         """Check that we do not crash when deduplicate operations are run in series"""
         # The crash in this case was caused by meshes that do not have extent values defined being deduplicated multiple
@@ -1084,6 +1122,17 @@ class Test_Operation_Deduplicate_Geometry(Test_Operation):
 
         return Gf.Vec3d((pre_pivot_matrix * parent_to_world).Transform(pivot_local))
 
+    def get_naive_worldspace_pivot(self, prim):
+        """Where the pivot widget lands if you just transform pivot_local through the prim's
+        full local-to-world. Many viewers/editors draw the pivot this way, so it has to
+        agree with the rotation-center calculation above. A regression that puts the pivot
+        value in the wrong space (e.g. target-local while dedupTransform is still in L2W)
+        shows up here as a shift by the dedupTransform's translation.
+        """
+        xform_cache = UsdGeom.XformCache(Usd.TimeCode.Default())
+        pivot_local = Gf.Vec3d(prim.GetAttribute("xformOp:translate:pivot").Get())
+        return Gf.Vec3d(xform_cache.GetLocalToWorldTransform(prim).Transform(pivot_local))
+
     async def test_deduplicate_inverse_pivot_copy(self):
         """Test deduplicating meshes with a pivot using copyValues"""
 
@@ -1133,7 +1182,29 @@ class Test_Operation_Deduplicate_Geometry(Test_Operation):
     async def test_deduplicate_inverse_pivot_instance(self):
         """Test deduplicating meshes with a pivot using instanceableref"""
 
-        stage = self._open_stage("deduplicateGeometryPivot.usda")
+        file_name = "deduplicateGeometryPivot.usda"
+        file_path = _get_test_data_file_path(file_name)
+
+        # Capture worldspace point positions from a fresh pre-dedup stage so we can verify
+        # that the actual geometry (not just the pivot widget) lands at the same place
+        # after deduplication. Worldspace pivot equality alone is not enough: a buggy split
+        # that leaves a stray pivot translate on the Geometry child can leave pivot widgets
+        # in the right spot while shifting every vertex by the pivot value.
+        layer_before = Sdf.Layer.OpenAsAnonymous(file_path)
+        stage_before = Usd.Stage.Open(layer_before)
+        xformCache_before = UsdGeom.XformCache()
+        worldspace_points_before = {
+            path: _get_worldspace_points(stage_before.GetPrimAtPath(path), xformCache_before)
+            for path in (
+                "/World/Cube",
+                "/World/CubeDuplicate",
+                "/World/CubeDuplicateCustomPivot",
+                "/World/CubeDuplicateAlternateTopology",
+                "/World/CubeDuplicateAlternateTopologyCustomPivot",
+            )
+        }
+
+        stage = self._open_stage(file_name)
 
         cube = stage.GetPrimAtPath("/World/Cube")
         cubeDup = stage.GetPrimAtPath("/World/CubeDuplicate")
@@ -1154,6 +1225,18 @@ class Test_Operation_Deduplicate_Geometry(Test_Operation):
         cubeDupAltWorldPivot = self.get_worldspace_pivot(cubeDupAlt)
         cubeDupAltPivotWorldPivot = self.get_worldspace_pivot(cubeDupAltPivot)
 
+        # Also capture the naive pivot widget position (pivot_local transformed through L2W).
+        # The rotation-center computation above only looks at ops listed before the pivot in
+        # xformOpOrder, so it stays correct as long as the pivot value is in the right local
+        # space relative to those ops. Editors usually draw the pivot widget at the naive
+        # L2W-transformed value, which is sensitive to the pivot's coordinate space across
+        # the entire transform stack -- including the dedupTransform.
+        cubeNaivePivot = self.get_naive_worldspace_pivot(cube)
+        cubeDupNaivePivot = self.get_naive_worldspace_pivot(cubeDup)
+        cubeDupPivotNaivePivot = self.get_naive_worldspace_pivot(cubeDupPivot)
+        cubeDupAltNaivePivot = self.get_naive_worldspace_pivot(cubeDupAlt)
+        cubeDupAltPivotNaivePivot = self.get_naive_worldspace_pivot(cubeDupAltPivot)
+
         # Execute operation
         args = DEFAULT_ARGS.copy()
         success, result = self._execute_command(args)
@@ -1171,6 +1254,35 @@ class Test_Operation_Deduplicate_Geometry(Test_Operation):
         self.assertEqual(self.get_worldspace_pivot(cubeDupPivot), cubeDupPivotWorldPivot)
         self.assertEqual(self.get_worldspace_pivot(cubeDupAlt), cubeDupAltWorldPivot)
         self.assertEqual(self.get_worldspace_pivot(cubeDupAltPivot), cubeDupAltPivotWorldPivot)
+
+        # And assert the naive pivot widget position is preserved too. The dedup must place
+        # the pivot value in whatever local space keeps `pivot_local * L2W` invariant -- a
+        # regression that leaves the pivot in target-local space shifts the widget by the
+        # dedupTransform's translation for every custom-pivot duplicate.
+        self.assertEqual(self.get_naive_worldspace_pivot(cube), cubeNaivePivot)
+        self.assertEqual(self.get_naive_worldspace_pivot(cubeDup), cubeDupNaivePivot)
+        self.assertEqual(self.get_naive_worldspace_pivot(cubeDupPivot), cubeDupPivotNaivePivot)
+        self.assertEqual(self.get_naive_worldspace_pivot(cubeDupAlt), cubeDupAltNaivePivot)
+        self.assertEqual(self.get_naive_worldspace_pivot(cubeDupAltPivot), cubeDupAltPivotNaivePivot)
+
+        # The deduplicated geometry must occupy the same world-space positions it did before
+        # the operation ran. This catches pivot-handling regressions that ws_pivot misses --
+        # e.g. a stray pivot translate left on the Geometry child by the split would shift
+        # every vertex while still leaving the pivot widget at the right world location.
+        xformCache_after = UsdGeom.XformCache()
+        for path, points_before in worldspace_points_before.items():
+            points_after = _get_worldspace_points(stage.GetPrimAtPath(path), xformCache_after)
+            self.assertEqual(
+                len(points_before),
+                len(points_after),
+                f"Point count for {path} changed across dedup ({len(points_before)} -> {len(points_after)})",
+            )
+            self.assertVec3ArrayAlmostEqual(
+                points_before,
+                points_after,
+                tolerance=1e-6,
+                msg=f"World-space points of {path} changed across dedup",
+            )
 
         mesh = stage.GetPrimAtPath("/World/Cube/Geometry")
         meshDup = stage.GetPrimAtPath("/World/CubeDuplicate/Geometry")
@@ -1629,3 +1741,85 @@ class Test_Operation_Deduplicate_Geometry(Test_Operation):
                 self.assertAlmostEqual(
                     bbox_before.GetMax()[i], bbox_after.GetMax()[i], delta=tol, msg=f"Bbox max[{i}] differs for {path}"
                 )
+
+    async def test_deduplicate_reference_transform_is_innermost_op(self):
+        """Regression test: when the dedup transform between the two meshes is a non-translation
+        (here a 180-degree rotation around X) and the prim has a non-axis-aligned translate, the
+        deduplicated prim must end up at the same world-space position as the original mesh.
+
+        The reference transform must be the LAST entry in xformOpOrder (the innermost op) so
+        that prototype points are mapped into the target's local space BEFORE the prim's
+        existing translate/rotate/scale stack runs. Placing it first applied it last, which
+        worked for pure-translation transforms but flipped Y/Z translates here.
+        """
+        file_name = "deduplicateGeometryFlippedDuplicate.usda"
+        file_path = _get_test_data_file_path(file_name)
+
+        # Capture worldspace points of both meshes from a fresh stage *before* deduplicating.
+        layer_before = Sdf.Layer.OpenAsAnonymous(file_path)
+        stage_before = Usd.Stage.Open(layer_before)
+        xformCache_before = UsdGeom.XformCache()
+        source_points_before = _get_worldspace_points(
+            stage_before.GetPrimAtPath("/World/MeshSource"), xformCache_before
+        )
+        flipped_points_before = _get_worldspace_points(
+            stage_before.GetPrimAtPath("/World/MeshFlipped"), xformCache_before
+        )
+
+        # Sanity check: the two meshes are not coincident before dedup -- if they were, the
+        # test wouldn't actually distinguish the bug.
+        self.assertNotEqual(source_points_before, flipped_points_before)
+
+        # Default args use InstanceableReference, which routes through _conformUsingComposition
+        # -- the code path that places the DeduplicateGeometryReferenceTransform op.
+        stage = self._open_stage(file_name)
+        args = DEFAULT_ARGS.copy()
+        success, result = self._execute_command(args)
+        self.assertTrue(success)
+        self.assertTrue(result[0])
+
+        # One of the two meshes should be the prototype (still a Mesh after the split into
+        # Xform+Geometry, accessed via the Geometry child), the other should have been
+        # converted to an Xform referencing the prototype.
+        source_after = stage.GetPrimAtPath("/World/MeshSource")
+        flipped_after = stage.GetPrimAtPath("/World/MeshFlipped")
+        self.assertTrue(source_after.IsA(UsdGeom.Xform))
+        self.assertTrue(flipped_after.IsA(UsdGeom.Xform))
+        self.assertTrue(flipped_after.IsInstance())
+
+        # The fix requires the dedup reference transform to be the LAST op in xformOpOrder
+        # so it is applied first to the prototype's points. Assert that directly.
+        flipped_xformable = UsdGeom.Xformable(flipped_after)
+        op_order = flipped_xformable.GetXformOpOrderAttr().Get()
+        self.assertIsNotNone(op_order)
+        self.assertGreater(len(op_order), 0)
+        self.assertTrue(
+            op_order[-1].endswith("DeduplicateGeometryReferenceTransform"),
+            f"Expected DeduplicateGeometryReferenceTransform to be the last (innermost) op, "
+            f"got xformOpOrder={list(op_order)}",
+        )
+
+        # Worldspace points must be preserved for both prims. Compare against fresh values
+        # taken from the pre-dedup stage above.
+        xformCache_after = UsdGeom.XformCache()
+        source_points_after = _get_worldspace_points(source_after, xformCache_after)
+        flipped_points_after = _get_worldspace_points(flipped_after, xformCache_after)
+
+        self.assertEqual(len(source_points_before), len(source_points_after))
+        self.assertEqual(len(flipped_points_before), len(flipped_points_after))
+
+        # Use a tight tolerance; the dedup transform is a pure rotation so the only error
+        # source is float<->double round-tripping when authoring the matrix.
+        self.assertVec3ArrayAlmostEqual(
+            source_points_before,
+            source_points_after,
+            tolerance=1e-6,
+            msg="World-space points of /World/MeshSource changed across dedup",
+        )
+        self.assertVec3ArrayAlmostEqual(
+            flipped_points_before,
+            flipped_points_after,
+            tolerance=1e-6,
+            msg="World-space points of /World/MeshFlipped changed across dedup -- "
+            "the reference transform was likely applied in the wrong order",
+        )

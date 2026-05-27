@@ -11,7 +11,7 @@ provided below.
 
 The list of components below is generated from the build-time and run-time dependencies
 declared in `deps/target-deps.packman.xml` (which transitively imports
-`deps/usd-deps.packman.xml`).
+`deps/usd-deps.generated.packman.xml`).
 
 ---
 
@@ -351,11 +351,11 @@ from NVIDIA CORPORATION is strictly prohibited.
 # Notes
 
 * This file enumerates the packages declared in `deps/target-deps.packman.xml` (and the
-  USD/Python imports it pulls from `deps/usd-deps.packman.xml`). Build-host-only and
+  USD/Python imports it pulls from `deps/usd-deps.generated.packman.xml`). Build-host-only and
   developer tooling dependencies (`deps/host-deps.packman.xml`, `deps/repo-deps.packman.xml`,
   and the optional `deps/repo-deps-nv.packman.xml` side-car) are not included here because
   they are not redistributed with the product.
-* **Python (CPython, PSF License)** is pulled in via `deps/usd-deps.packman.xml` as a
+* **Python (CPython, PSF License)** is pulled in via `deps/usd-deps.generated.packman.xml` as a
   host-environment dependency used only for building the pybind11 bindings. The CPython
   interpreter is not redistributed as part of Scene Optimizer Core (consumers supply
   their own Python runtime), so it is intentionally omitted from the OSS attribution

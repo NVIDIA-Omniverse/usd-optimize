@@ -711,6 +711,8 @@ struct _BatchSplitPerPrim
     std::vector<_BatchSplitPropertyEdit> properties;
     VtTokenArray pivotXformOpOrder;
     std::vector<_BatchSplitPropertyEdit> pivotProperties;
+    SdfListOp<TfToken> xformApiSchemas;
+    bool hasXformApiSchemas = false;
 };
 
 // Capture everything `_flattenPropertyToPrimSpec` would have read from the UsdProperty,
@@ -776,6 +778,33 @@ static void _writeBatchSplitPropertyEdit(const _BatchSplitPropertyEdit& edit, co
 }
 
 
+bool _addMaterialBindingAPIToSchemas(SdfListOp<TfToken>& apiSchemas)
+{
+    TfTokenVector prepended = apiSchemas.GetPrependedItems();
+    TfTokenVector explicitItems = apiSchemas.GetExplicitItems();
+    const TfTokenVector& appended = apiSchemas.GetAppendedItems();
+    const bool found =
+        std::find(prepended.begin(), prepended.end(), UsdShadeTokens->MaterialBindingAPI) != prepended.end() ||
+        std::find(explicitItems.begin(), explicitItems.end(), UsdShadeTokens->MaterialBindingAPI) != explicitItems.end() ||
+        std::find(appended.begin(), appended.end(), UsdShadeTokens->MaterialBindingAPI) != appended.end();
+    if (!found)
+    {
+        if (!explicitItems.empty())
+        {
+            explicitItems.push_back(UsdShadeTokens->MaterialBindingAPI);
+            apiSchemas.SetExplicitItems(explicitItems);
+        }
+        else
+        {
+            prepended.push_back(UsdShadeTokens->MaterialBindingAPI);
+            apiSchemas.SetPrependedItems(prepended);
+        }
+        return true;
+    }
+    return false;
+}
+
+
 void _batchedSplitIntoXformAndChild(const UsdStageWeakPtr& stage, const SdfPathVector& primPaths)
 {
     const SdfLayerHandle& editLayer = stage->GetEditTarget().GetLayer();
@@ -805,11 +834,18 @@ void _batchedSplitIntoXformAndChild(const UsdStageWeakPtr& stage, const SdfPathV
                 const UsdPrim& prim = stage->GetPrimAtPath(primPath);
                 e.meshTypeName = prim.GetTypeName();
 
-                // Metadata destined for the temp Mesh spec.
+                // Metadata: typeName/specifier are set explicitly; apiSchemas move to the Xform (since
+                // inheritable properties like material bindings move there too); everything else goes to the Mesh.
                 for (const auto& md : prim.GetAllAuthoredMetadata())
                 {
                     if (md.first == _tokens->typeName || md.first == _tokens->specifier)
                     {
+                        continue;
+                    }
+                    if (md.first == UsdTokens->apiSchemas && md.second.IsHolding<SdfListOp<TfToken>>())
+                    {
+                        e.xformApiSchemas = md.second.Get<SdfListOp<TfToken>>();
+                        e.hasXformApiSchemas = true;
                         continue;
                     }
                     e.meshMetadata.emplace(md.first, md.second);
@@ -823,21 +859,53 @@ void _batchedSplitIntoXformAndChild(const UsdStageWeakPtr& stage, const SdfPathV
                     e.properties.push_back(std::move(pe));
                 }
 
-                // Pivot xform ops: forward ops carry the value to flatten onto the Mesh;
-                // both forward and inverse op names go into the new xformOpOrder so the
-                // pivot/inverse pair round-trips correctly.
+                // Pivot xform ops: forward ops carry the value to flatten onto the Mesh, and
+                // both forward and inverse op names go into the Mesh's xformOpOrder so the
+                // pivot/inverse pair cancels out -- otherwise the forward pivot translate
+                // would shift every Geometry point by the pivot value, since the parent
+                // Xform's matching inverse op lives on a different prim and can't cancel it.
+                // Asking _getPivotXformOps for the inverses too guarantees we only emit
+                // well-formed pairs; orphan pivot ops are skipped.
                 UsdGeomXformable xformable(prim);
                 if (xformable)
                 {
                     bool reset = false;
                     const std::vector<UsdGeomXformOp> xformOps = xformable.GetOrderedXformOps(&reset);
 
-                    for (const auto& op : _getPivotXformOps(xformOps))
+                    for (const UsdGeomXformOp& op : _getPivotXformOps(xformOps, /*includeInverseOps=*/true))
                     {
-                        _BatchSplitPropertyEdit pe;
-                        _fillBatchSplitPropertyEdit(op.GetAttr(), /*goesOnXform=*/false, pe);
-                        e.pivotProperties.push_back(std::move(pe));
+                        // Only the forward op owns the attribute value; the inverse op
+                        // shares it via the "!invert!" name prefix.
+                        if (!op.IsInverseOp())
+                        {
+                            _BatchSplitPropertyEdit pe;
+                            _fillBatchSplitPropertyEdit(op.GetAttr(), /*goesOnXform=*/false, pe);
+                            e.pivotProperties.push_back(std::move(pe));
+                        }
+
                         e.pivotXformOpOrder.push_back(op.GetOpName());
+                    }
+                }
+
+                // Safety check: if any material binding relationship is moving to the Xform, ensure
+                // MaterialBindingAPI is present in its apiSchemas even if it was absent on the source prim.
+                bool hasMaterialBindingOnXform = false;
+                for (const auto& pe : e.properties)
+                {
+                    if (pe.goesOnXform && !pe.isAttribute &&
+                        TfStringStartsWith(pe.name.GetString(), UsdShadeTokens->materialBinding.GetString()))
+                    {
+                        hasMaterialBindingOnXform = true;
+                        break;
+                    }
+                }
+                // if there is a material binding relationship on the xform, we
+                // to ensure the MaterialBindingAPI schema is also on the xform
+                if (hasMaterialBindingOnXform)
+                {
+                    if (_addMaterialBindingAPIToSchemas(e.xformApiSchemas))
+                    {
+                        e.hasXformApiSchemas = true;
                     }
                 }
             }
@@ -884,6 +952,11 @@ void _batchedSplitIntoXformAndChild(const UsdStageWeakPtr& stage, const SdfPathV
                                                                     UsdGeomTokens->xformOpOrder.GetString(),
                                                                     SdfValueTypeNames->TokenArray);
             attrSpec->SetField(SdfFieldKeys->Default, e.pivotXformOpOrder);
+        }
+
+        if (e.hasXformApiSchemas)
+        {
+            tempXformSpec->SetInfo(UsdTokens->apiSchemas, VtValue(e.xformApiSchemas));
         }
 
         if (e.hasExistingSpec)
@@ -1201,34 +1274,64 @@ VtValue _toArrayVtValue(const VtValue& value)
 
 std::vector<UsdGeomXformOp> _getPivotXformOps(const std::vector<UsdGeomXformOp>& orderedXformOps)
 {
-    std::vector<UsdGeomXformOp> pivotOps;
-    for (const UsdGeomXformOp& xformOp : orderedXformOps)
+    // Kept for ABI compatibility with callers built against earlier releases. New internal code
+    // should call the 2-arg overload directly.
+    return _getPivotXformOps(orderedXformOps, /*includeInverseOps=*/false);
+}
+
+
+std::vector<UsdGeomXformOp> _getPivotXformOps(const std::vector<UsdGeomXformOp>& orderedXformOps, bool includeInverseOps)
+{
+    static const std::string invertPrefix = "!invert!";
+
+    // First pass: collect the names of every forward pivot op that has a matching inverse, and
+    // every inverse pivot op that has a matching forward. Only ops that form a pair survive --
+    // orphans (forward without inverse, inverse without forward) are skipped so callers can rely
+    // on the result being a well-formed pivot stack.
+    std::set<std::string> pairedOpNames;
+    for (const UsdGeomXformOp& op : orderedXformOps)
     {
-        // skip inverse ops as we are looking for the forward ops in the first loop
-        if (xformOp.IsInverseOp())
+        if (op.IsInverseOp())
         {
             continue;
         }
-        const std::string opName = xformOp.GetOpName().GetString();
-
-        for (const UsdGeomXformOp& otherXformOp : orderedXformOps)
+        const std::string& forwardName = op.GetOpName().GetString();
+        for (const UsdGeomXformOp& other : orderedXformOps)
         {
-            // we're only interested in inverse ops in the second loop
-            if (!otherXformOp.IsInverseOp())
+            if (!other.IsInverseOp())
             {
                 continue;
             }
-
-            // if the inverse op has the same name as the forward op (minus the "!invert!" prefix) then this is a pivot
-            static const std::string invertPrefix = "!invert!";
-            const std::string commonName =
-                otherXformOp.GetOpName().GetString().substr(invertPrefix.length(), std::string::npos);
-            if (commonName == opName)
+            const std::string commonName = other.GetOpName().GetString().substr(invertPrefix.length(), std::string::npos);
+            if (commonName == forwardName)
             {
-                pivotOps.push_back(xformOp);
+                pairedOpNames.insert(forwardName);
                 break;
             }
         }
+    }
+
+    // Second pass: walk the original order and emit forward (and, if requested, inverse) ops
+    // belonging to a paired set. Keeping the original order matters when callers re-author an
+    // xformOpOrder from this result -- the forward/inverse arrangement that USD relies on to
+    // cancel them out is preserved.
+    std::vector<UsdGeomXformOp> pivotOps;
+    for (const UsdGeomXformOp& op : orderedXformOps)
+    {
+        const std::string opName = op.IsInverseOp() ?
+                                       op.GetOpName().GetString().substr(invertPrefix.length(), std::string::npos) :
+                                       op.GetOpName().GetString();
+
+        if (pairedOpNames.find(opName) == pairedOpNames.end())
+        {
+            continue;
+        }
+
+        if (op.IsInverseOp() && !includeInverseOps)
+        {
+            continue;
+        }
+        pivotOps.push_back(op);
     }
     return pivotOps;
 }

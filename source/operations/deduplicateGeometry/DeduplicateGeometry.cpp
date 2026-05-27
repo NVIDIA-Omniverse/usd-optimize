@@ -897,13 +897,30 @@ void DeduplicateGeometryOperation::_conformUsingComposition(const PrimVectors& d
                 bool reset = false;
                 std::vector<UsdGeomXformOp> xformOps = xformable.GetOrderedXformOps(&reset);
 
-                // create a new op order with our new xform op inserted at the start of the chain
+                // Place the composition transform so it runs *after* any pivot pair in execution
+                // (i.e. before the first forward pivot op in the xformOpOrder list — USD applies
+                // last-listed ops first). That keeps the pivot operations in prototype-local
+                // space, where the geometry actually lives, so the pivot value reads the same
+                // when transformed naively through the local-to-world. When there is no pivot
+                // pair the composition transform is the most-local op and goes at the end.
+                const std::vector<UsdGeomXformOp> pivotOps = _getPivotXformOps(xformOps, /*includeInverseOps=*/false);
+                const TfToken firstPivotName = pivotOps.empty() ? TfToken() : pivotOps.front().GetOpName();
+
                 VtTokenArray newXformOpOrder;
                 newXformOpOrder.reserve(xformOpOrder.size() + 1);
-                newXformOpOrder.push_back(_tokens->compositionXformOp);
+                bool insertedCompositionOp = false;
                 for (const TfToken& token : xformOpOrder)
                 {
+                    if (!insertedCompositionOp && !firstPivotName.IsEmpty() && token == firstPivotName)
+                    {
+                        newXformOpOrder.push_back(_tokens->compositionXformOp);
+                        insertedCompositionOp = true;
+                    }
                     newXformOpOrder.push_back(token);
+                }
+                if (!insertedCompositionOp)
+                {
+                    newXformOpOrder.push_back(_tokens->compositionXformOp);
                 }
 
                 // Author a transform xformOp and set its value.
@@ -918,10 +935,8 @@ void DeduplicateGeometryOperation::_conformUsingComposition(const PrimVectors& d
                                                                      SdfVariabilityUniform);
                 xformOpOrderSpec->SetInfo(SdfFieldKeys->Default, VtValue(newXformOpOrder));
 
-                // get any ops that are pivots
-                const std::vector<UsdGeomXformOp> pivotOps = _getPivotXformOps(xformOps);
-
                 // Copy authored properties from the Mesh to the new Xform.
+                bool hasMaterialBindingOnXform = false;
                 for (const auto& property : prim.GetAuthoredProperties())
                 {
                     const TfToken& propertyName = property.GetName();
@@ -936,8 +951,16 @@ void DeduplicateGeometryOperation::_conformUsingComposition(const PrimVectors& d
                     // will be on the child prim that comes from composition.
                     if (_isInheritableProperty(property))
                     {
-                        // Pivots have a slightly special case. They are inheritable, but we need to adjust their
-                        // value to compensate for the matrix we applied.
+                        if (!property.Is<UsdAttribute>() &&
+                            propertyName.GetString() == UsdShadeTokens->materialBinding.GetString())
+                        {
+                            hasMaterialBindingOnXform = true;
+                        }
+
+                        // Pivots need their value remapped into prototype-local space so the !pivot/pivot
+                        // pair operates on the prototype's raw points (the dedupTransform runs after the
+                        // pivot pair in execution). Without this, a viewer that draws the pivot widget
+                        // at `pivot_local * L2W` would see it shifted by the dedupTransform's offset.
                         const auto pivotIt = std::find_if(pivotOps.begin(),
                                                           pivotOps.end(),
                                                           [&propertyName](const UsdGeomXformOp& op)
@@ -965,14 +988,12 @@ void DeduplicateGeometryOperation::_conformUsingComposition(const PrimVectors& d
                                 }
                             }
 
-                            // If we got the pivot as a vec3 then transform, otherwise just fall through and flatten
-                            // the property as normal.
                             if (gotPivotVal)
                             {
-                                // transform the pivot by the new matrix.
+                                // Map the pivot from target-local space back into prototype-local space.
                                 pivotVal = xform.GetInverse().Transform(pivotVal);
 
-                                // Preserve original type: convert back to vec3f if needed
+                                // Preserve original type: convert back to vec3f if needed.
                                 VtValue value;
                                 if (pivotIt->GetTypeName() == SdfValueTypeNames->Float3)
                                 {
@@ -990,6 +1011,30 @@ void DeduplicateGeometryOperation::_conformUsingComposition(const PrimVectors& d
                         }
 
                         _flattenPropertyToPrimSpec(property, tempSpec);
+                    }
+                }
+
+                // Move apiSchemas from the Mesh to the Xform. Inheritable properties like material bindings are
+                // moved to the Xform, so their associated schemas must follow.
+                {
+                    VtValue apiSchemasValue;
+                    SdfListOp<TfToken> xformApiSchemas;
+                    if (prim.GetMetadata(UsdTokens->apiSchemas, &apiSchemasValue) && !apiSchemasValue.IsEmpty())
+                    {
+                        xformApiSchemas = apiSchemasValue.Get<SdfListOp<TfToken>>();
+                    }
+
+                    // Safety check: ensure MaterialBindingAPI is present if a material binding was moved to the Xform.
+                    if (hasMaterialBindingOnXform)
+                    {
+                        _addMaterialBindingAPIToSchemas(xformApiSchemas);
+                    }
+
+                    if (!xformApiSchemas.GetPrependedItems().empty() || !xformApiSchemas.GetExplicitItems().empty() ||
+                        !xformApiSchemas.GetAppendedItems().empty() || !xformApiSchemas.GetDeletedItems().empty() ||
+                        !xformApiSchemas.GetOrderedItems().empty())
+                    {
+                        tempSpec->SetInfo(UsdTokens->apiSchemas, VtValue(xformApiSchemas));
                     }
                 }
 

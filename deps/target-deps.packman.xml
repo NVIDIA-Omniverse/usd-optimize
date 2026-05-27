@@ -1,6 +1,6 @@
 <project toolsVersion="5.0">
-  <!-- USD and Python are sourced from usd-deps.packman.xml (run "repo usd" to regenerate). -->
-  <import path="../deps/usd-deps.packman.xml">
+  <!-- USD and Python are sourced from usd-deps.generated.packman.xml (run "repo usd" to regenerate). -->
+  <import path="../deps/usd-deps.generated.packman.xml">
     <filter include="usd-${config}" />
     <filter include="python" />
   </import>

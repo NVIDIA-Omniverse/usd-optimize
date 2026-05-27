@@ -59,7 +59,7 @@ msbuild.link_host_toolchain = true
 msbuild.sln_file = "scene-optimizer-core.sln"
 msbuild.vs_version = ""  # "vs2019" | "vs2022" | "" (vswhere; prefer an install with MSVC + Win SDK)
 
-# Generate deps/usd-deps.packman.xml before pulling dependencies.
+# Generate deps/usd-deps.generated.packman.xml before pulling dependencies.
 # This selects the correct USD packages for the chosen flavor.
 fetch.before_pull_commands = [
   [

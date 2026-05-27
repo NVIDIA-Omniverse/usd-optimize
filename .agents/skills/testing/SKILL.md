@@ -108,14 +108,51 @@ Run Python binding tests through the repo wrapper so the bundled Python, USD,
 and Scene Optimizer paths are set correctly:
 
 ```bash
-./repo.sh test -s python
+./repo.sh test -s python                    # run everything
 repo.bat test -s python
 ```
 
-The generated Python wrapper currently runs the full `python` suite. Do not use
-`repo.sh test -s python -f "test_operation_*.py"` for per-file filtering: `-f`
-filters the generated wrapper executable (`test.python.sh` / `.bat`), not the
-files under `source/tests/test.python/`.
+To run an individual test, pass a `module`, `module.Class`, or
+`module.Class.method` spec. `-e=` forwards the arg through to the Python test
+runner (`run_discover.py`):
+
+```bash
+# Run every test in test_operation_pivot.py
+./repo.sh test -s python -e=test_operation_pivot
+repo.bat test -s python -e=test_operation_pivot
+
+# Run all tests in a class
+./repo.sh test -s python -e=test_operation_pivot.Test_Operation_Pivot
+repo.bat test -s python -e=test_operation_pivot.Test_Operation_Pivot
+
+# Run a single test method
+./repo.sh test -s python -e=test_operation_pivot.Test_Operation_Pivot.test_pivot_xforms_center
+repo.bat test -s python -e=test_operation_pivot.Test_Operation_Pivot.test_pivot_xforms_center
+
+# Substring pattern across module.Class.method names (pytest-style -k)
+./repo.sh test -s python -e=-k -e=pivot_xforms
+repo.bat test -s python -e=-k -e=pivot_xforms
+```
+
+A trailing `.py` on the module name is accepted and stripped, so
+`-e=test_operation_pivot.py` works the same as `-e=test_operation_pivot`.
+
+You can also invoke the generated wrapper directly for the same effect (the
+wrapper sets `LD_LIBRARY_PATH` / `PATH` for you):
+
+```bash
+# Linux
+./_build/linux-x86_64/release/test.python.sh test_operation_pivot
+./_build/linux-x86_64/release/test.python.sh -k pivot_xforms
+
+# Windows (cmd.exe / PowerShell)
+.\_build\windows-x86_64\release\test.python.bat test_operation_pivot
+.\_build\windows-x86_64\release\test.python.bat -k pivot_xforms
+```
+
+Do **not** use `repo.sh test -s python -f "test_operation_*.py"` for filtering:
+`-f` filters the generated wrapper executable list (`test.python.sh` /
+`.bat`), not the files under `source/tests/test.python/`. Use `-e=` instead.
 
 ## Test Locations
 
@@ -187,7 +224,7 @@ failure as the signal to look at — don't paper over it.
 | All tests fail with `library not found` / `DLL load failed` | Built one config but ran tests against another (e.g. built `debug`, ran default `release`). | Match `--config` between `build` and `test` (or pass `-c debug` to both). |
 | `[doctest] Status: SUCCESS!` but the trailing summary says `1 tests processes returned 0` | Quirk of the runner — the C++ suite isn't `glob_and_exec`, so the summary undercounts. | Scroll up to confirm the `[doctest]` line. The exit code is authoritative. |
 | Python binding test errors with `ImportError: cannot import name SceneOptimizerCore` | Build didn't produce the bindings, or `PYTHONPATH` is shadowed. | Check `_build/<platform>/<config>/python/` exists. Run via `./repo.sh test -s python` (don't invoke pytest directly). |
-| `repo.sh test -s python -f "test_operation_foo.py"` reports `All 0 tests processes returned 0` | `-f` filtered out the `test.python` wrapper instead of selecting a Python test file. | Run `./repo.sh test -s python`; the current Python wrapper runs the full suite. |
+| `repo.sh test -s python -f "test_operation_foo.py"` reports `All 0 tests processes returned 0` | `-f` filtered out the `test.python` wrapper instead of selecting a Python test file. | Use `-e=test_operation_foo` (not `-f`) to forward the spec through to `run_discover.py`. |
 | Coverage HTML is empty after `cxx_coverage --collect` | Counters weren't zeroed, or no test was actually executed under the gcov build. | Run `./repo.sh cxx_coverage --zero-coverage` first, then `./repo.sh test`, then `--collect --generate-html`. |
 | A specific Doctest case won't match `--test-case` filter | Pattern needs quoting — shells can eat `*`. | Use `-e="--test-case=*Plugins*"` (the `=` is required so the runner doesn't parse the value as its own flag). |
 

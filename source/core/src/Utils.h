@@ -401,10 +401,16 @@ void _flattenPropertyToPrimSpecWithValue(const PXR_NS::UsdProperty& property,
 OMNI_SO_EXPORT
 bool _isInheritableProperty(const PXR_NS::UsdProperty& property);
 
+// Adds MaterialBindingAPI to the list of applied schemas on the prim spec if it is not already present. Returns true if
+// the API schema was added, false if it was already present.
+OMNI_SO_EXPORT
+bool _addMaterialBindingAPIToSchemas(PXR_NS::SdfListOp<PXR_NS::TfToken>& apiSchemas);
+
 // For each prim, add a child prim of the same type and flatten non-inheritable properties onto a child prim while
 // repurposing the current prim as an Xform.
 OMNI_SO_EXPORT
 void _batchedSplitIntoXformAndChild(const PXR_NS::UsdStageWeakPtr& stage, const std::vector<PXR_NS::SdfPath>& primPaths);
+
 
 /// Adapted from ArchMakeTmpFileName (pxr/base/arch).  The original uses /var/tmp which
 /// is not automatically cleaned up; we override to /tmp to avoid accumulating stale files.
@@ -503,11 +509,24 @@ PXR_NS::VtValue _toArrayVtValue(const PXR_NS::VtValue& value);
 /// Given a list of ordered xform ops for a prim, returns a ordered list of any of the xforms ops that are pivots
 ///
 /// \param orderedXformOps The list of ordered xform ops to find pivots in.
-/// \return A list of any xform ops that are pivots, in the same order they were in the original list. Empty if no
-/// pivots
+/// \return A list of forward pivot ops that participate in a pivot/!invert pair, in the same order they were in the
+///         original list. Orphan pivot ops (forward without a matching inverse) are skipped. Empty if no pivot pairs
 ///         are found.
+///
+/// Kept for ABI compatibility -- forwards to the 2-arg overload with includeInverseOps=false.
 OMNI_SO_EXPORT
 std::vector<PXR_NS::UsdGeomXformOp> _getPivotXformOps(const std::vector<PXR_NS::UsdGeomXformOp>& orderedXformOps);
+
+/// \param orderedXformOps The list of ordered xform ops to find pivots in.
+/// \param includeInverseOps If true, the returned list also contains the matched inverse ops (interleaved in the order
+///        they appeared in \p orderedXformOps). If false, only forward ops are returned, which is convenient when you
+///        need the pivot values -- inverse ops do not own an attribute value.
+/// \return A list of xform ops that participate in a pivot/!invert pair, in the same order they were in the original
+///         list. Orphan pivot ops (forward without a matching inverse, or vice versa) are skipped. Empty if no pivot
+///         pairs are found.
+OMNI_SO_EXPORT
+std::vector<PXR_NS::UsdGeomXformOp> _getPivotXformOps(const std::vector<PXR_NS::UsdGeomXformOp>& orderedXformOps,
+                                                      bool includeInverseOps);
 
 
 // Tolerance comparison for numeric types

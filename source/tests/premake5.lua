@@ -160,8 +160,12 @@ if errorlevel 1 (
     %s -m pip install --quiet --disable-pip-version-check "omniverse-asset-validator>=1.15.1"
 )
 ]], win_python_bin, win_python_bin)
+        -- Forward extra args (%*) to run_discover.py so callers can run
+        -- individual tests, e.g.:
+        --     test.python.bat test_operation_pivot
+        --     test.python.bat -k pivot
         local win_discover_cmd = string.format(
-            '%s "%s/run_discover.py" "%s"',
+            '%s "%s/run_discover.py" "%s" %%*',
             win_python_bin, win_test_dir, win_test_dir)
         local f = io.open(bat_file_path, 'w')
         f:write("@echo off\nsetlocal\n"
@@ -218,8 +222,12 @@ export PYTHONPATH=%s${PYTHONPATH:+:$PYTHONPATH}
 %s -c "import omni.asset_validator" >/dev/null 2>&1 || \
     %s -m pip install --quiet --disable-pip-version-check "omniverse-asset-validator>=1.15.1"
 ]], python_bin, python_bin)
+        -- Forward extra args ("$@") to run_discover.py so callers can run
+        -- individual tests, e.g.:
+        --     ./test.python.sh test_operation_pivot
+        --     ./test.python.sh -k pivot
         local discover_cmd = string.format(
-            '%s "%s/run_discover.py" "%s"',
+            '%s "%s/run_discover.py" "%s" "$@"',
             python_bin, test_dir, test_dir)
         local f = io.open(sh_file_path, 'w')
         f:write(string.format([[

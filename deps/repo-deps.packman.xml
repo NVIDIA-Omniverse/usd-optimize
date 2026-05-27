@@ -26,7 +26,4 @@
   <dependency name="repo_test" linkPath="../_repo/deps/repo_test">
     <package name="repo_test" version="2.46.1" />
   </dependency>
-  <dependency name="repo_kit_tools" linkPath="../_repo/deps/repo_kit_tools">
-    <package name="repo_kit_tools" version="1.20.4" />
-  </dependency>
 </project>

@@ -256,7 +256,6 @@ struct MeshSpecEqual
 
 private:
     const std::vector<MeshSpec>& m_meshSpecs;
-    bool m_considerDeepTransforms;
     float m_toleranceSq;
 };
 

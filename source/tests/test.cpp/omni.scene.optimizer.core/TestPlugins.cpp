@@ -109,6 +109,15 @@ public:
 
     OperationResult executeImpl() override
     {
+        // Capture as-seen argument values for post-execute inspection. Bound argument
+        // members are reset to defaults after execute() returns (see Operation::resetArgs),
+        // so tests that need to verify what was actually populated must snapshot here.
+        m_seenTestFloat1 = m_testFloat1;
+        m_seenTestFloat4 = m_testFloat4;
+        m_seenTestDouble = m_testDouble;
+        m_seenDoubles = m_doubles;
+        m_seenInt = m_testInt;
+
         // Debug var to allow failing execution
         if (m_fail)
         {
@@ -169,6 +178,15 @@ public:
     double m_testFloatPreset = 0.0;
     bool m_testChild1 = false;
     bool m_testChild2 = false;
+
+    // Snapshots populated by executeImpl(), not bound to arguments and therefore
+    // not reset between executions. Use these to verify what populateExecutionArguments
+    // actually wrote into the bound members.
+    float m_seenTestFloat1 = 0.0f;
+    float m_seenTestFloat4 = 0.0f;
+    double m_seenTestDouble = 0.0;
+    std::vector<double> m_seenDoubles;
+    int m_seenInt = 0;
 };
 
 
@@ -541,5 +559,113 @@ TEST_CASE("Test Plugin Execution")
 
         // Test with float/int values that are outside the configured range
         CHECK(operation->execute(&context, JsParseString(json).GetJsObject()).success);
+    }
+
+
+    SUBCASE("Test int-to-real coercion (and rejection of incompatible conversions)")
+    {
+        // JSON has no syntactic distinction between `1` and `1.0` once a user writes
+        // a value without a decimal point. We accept integer literals for real-valued
+        // arguments (scalars and arrays). Verify both the success path and that the
+        // bound member receives the correctly-typed value.
+        UsdStageRefPtr stage = UsdStage::CreateInMemory();
+        ExecutionContext context = testutils::_getContext(stage);
+
+        // Scalar int -> float / double
+        {
+            OperationUPtr operation = getTestPlugin();
+            REQUIRE(operation);
+
+            TestOperation* testOp = dynamic_cast<TestOperation*>(operation.get());
+            REQUIRE(testOp);
+
+            std::string json = R"(
+            {
+                "testFloat1": 7,
+                "testFloat4": 2,
+                "testDouble": 42
+            })";
+
+            CHECK(operation->execute(&context, JsParseString(json).GetJsObject()).success);
+
+            CHECK_EQ(testOp->m_seenTestFloat1, doctest::Approx(7.0f));
+            CHECK_EQ(testOp->m_seenTestFloat4, doctest::Approx(2.0f));
+            CHECK_EQ(testOp->m_seenTestDouble, doctest::Approx(42.0));
+        }
+
+        // Scalar int promoted then clamped against a float min
+        {
+            OperationUPtr operation = getTestPlugin();
+            REQUIRE(operation);
+
+            TestOperation* testOp = dynamic_cast<TestOperation*>(operation.get());
+            REQUIRE(testOp);
+
+            // testFloat4 has min=1.0, max=2.0 — int 0 should promote then clamp to 1.0
+            std::string json = R"({"testFloat4": 0})";
+            CHECK(operation->execute(&context, JsParseString(json).GetJsObject()).success);
+            CHECK_EQ(testOp->m_seenTestFloat4, doctest::Approx(1.0f));
+        }
+
+        // Mixed-type array: ints and floats together promote to the array element type
+        {
+            OperationUPtr operation = getTestPlugin();
+            REQUIRE(operation);
+
+            TestOperation* testOp = dynamic_cast<TestOperation*>(operation.get());
+            REQUIRE(testOp);
+
+            std::string json = R"({"testDoubleArray": [1, 2.5, 3]})";
+            CHECK(operation->execute(&context, JsParseString(json).GetJsObject()).success);
+
+            REQUIRE_EQ(testOp->m_seenDoubles.size(), 3);
+            CHECK_EQ(testOp->m_seenDoubles[0], doctest::Approx(1.0));
+            CHECK_EQ(testOp->m_seenDoubles[1], doctest::Approx(2.5));
+            CHECK_EQ(testOp->m_seenDoubles[2], doctest::Approx(3.0));
+        }
+
+        // All-int array for a real-valued array argument
+        {
+            OperationUPtr operation = getTestPlugin();
+            REQUIRE(operation);
+
+            TestOperation* testOp = dynamic_cast<TestOperation*>(operation.get());
+            REQUIRE(testOp);
+
+            std::string json = R"({"testDoubleArray": [1, 2, 3]})";
+            CHECK(operation->execute(&context, JsParseString(json).GetJsObject()).success);
+
+            REQUIRE_EQ(testOp->m_seenDoubles.size(), 3);
+            CHECK_EQ(testOp->m_seenDoubles[0], doctest::Approx(1.0));
+            CHECK_EQ(testOp->m_seenDoubles[1], doctest::Approx(2.0));
+            CHECK_EQ(testOp->m_seenDoubles[2], doctest::Approx(3.0));
+        }
+
+        // Real -> int demotion is still rejected (lossy and almost always a config bug).
+        // Paired with a positive int-in-int-out check to ensure the negative result above
+        // really comes from the type gate and not an unrelated short-circuit.
+        {
+            OperationUPtr operation = getTestPlugin();
+            REQUIRE(operation);
+
+            TestOperation* testOp = dynamic_cast<TestOperation*>(operation.get());
+            REQUIRE(testOp);
+
+            std::string rejectJson = R"({"testInt": 3.7})";
+            CHECK_FALSE(operation->execute(&context, JsParseString(rejectJson).GetJsObject()).success);
+
+            std::string acceptJson = R"({"testInt": 5})";
+            CHECK(operation->execute(&context, JsParseString(acceptJson).GetJsObject()).success);
+            CHECK_EQ(testOp->m_seenInt, 5);
+        }
+
+        // String where a float is expected is still rejected
+        {
+            OperationUPtr operation = getTestPlugin();
+            REQUIRE(operation);
+
+            std::string json = R"({"testFloat1": "nope"})";
+            CHECK_FALSE(operation->execute(&context, JsParseString(json).GetJsObject()).success);
+        }
     }
 }

@@ -5,9 +5,9 @@
 
 import re
 
-from omni.scene.optimizer.core.scripts import standalone
 from pxr import UsdGeom
 
+from .scripts import standalone
 from .test_utils import Test_Operation, _get_context, _get_meshes
 
 # MergePointOption values

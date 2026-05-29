@@ -155,6 +155,78 @@ class Test_Operation_Remove_Attributes(Test_Operation):
         value = prim.GetAttribute("foo").Get()
         self.assertEqual(value, 20)
 
+    async def test_removing_indexed_primvar(self):
+        """Removing an indexed primvar should also remove its indices attribute"""
+
+        prim = self.stage.GetPrimAtPath("/World/Cube")
+
+        # Sanity check: both the primvar and its indices are authored.
+        self.assertTrue(prim.GetAttribute("primvars:myColor"))
+        self.assertTrue(prim.GetAttribute("primvars:myColor:indices"))
+
+        self.args["attributes"] = ["primvars:myColor"]
+        success, result = self._execute_command(self.args, context=self.context)
+        self.assertTrue(success)
+        self.assertTrue(result[0])
+
+        # Both the values and the sibling :indices attribute should be gone.
+        self.assertFalse(prim.GetAttribute("primvars:myColor"))
+        self.assertFalse(prim.GetAttribute("primvars:myColor:indices"))
+
+    async def test_blocking_indexed_primvar(self):
+        """Blocking an indexed primvar should also block its indices attribute"""
+
+        prim = self.stage.GetPrimAtPath("/World/Cube")
+
+        self.assertEqual(len(prim.GetAttribute("primvars:myColor").Get()), 2)
+        self.assertEqual(len(prim.GetAttribute("primvars:myColor:indices").Get()), 8)
+
+        self.args["attributes"] = ["primvars:myColor"]
+        self.args["mode"] = MODE_BLOCK
+        success, result = self._execute_command(self.args, context=self.context)
+        self.assertTrue(success)
+        self.assertTrue(result[0])
+
+        # Both attributes still exist but have no value.
+        values = prim.GetAttribute("primvars:myColor")
+        indices = prim.GetAttribute("primvars:myColor:indices")
+        self.assertTrue(values)
+        self.assertTrue(indices)
+        self.assertIsNone(values.Get())
+        self.assertIsNone(indices.Get())
+
+    async def test_removing_indexed_primvar_via_namespace(self):
+        """A namespace match should remove an indexed primvars values and its indices"""
+
+        prim = self.stage.GetPrimAtPath("/World/Cube")
+
+        self.assertTrue(prim.GetAttribute("primvars:myColor"))
+        self.assertTrue(prim.GetAttribute("primvars:myColor:indices"))
+
+        self.args["attributes"] = ["primvars:"]
+        success, result = self._execute_command(self.args, context=self.context)
+        self.assertTrue(success)
+        self.assertTrue(result[0])
+
+        # Both the indexed primvar's values and its indices should be picked up
+        # by the namespace iteration — no special handling needed.
+        self.assertFalse(prim.GetAttribute("primvars:myColor"))
+        self.assertFalse(prim.GetAttribute("primvars:myColor:indices"))
+
+    async def test_removing_indexed_primvar_with_indices_listed(self):
+        """Listing both the primvar and its indices should not double-process the indices"""
+
+        prim = self.stage.GetPrimAtPath("/World/Cube")
+
+        # Explicitly list both — collectIndices should skip pushing a duplicate.
+        self.args["attributes"] = ["primvars:myColor", "primvars:myColor:indices"]
+        success, result = self._execute_command(self.args, context=self.context)
+        self.assertTrue(success)
+        self.assertTrue(result[0])
+
+        self.assertFalse(prim.GetAttribute("primvars:myColor"))
+        self.assertFalse(prim.GetAttribute("primvars:myColor:indices"))
+
     async def test_blocking_over(self):
         """Test blocking behaviour on a reference"""
 

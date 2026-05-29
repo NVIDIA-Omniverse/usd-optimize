@@ -9,7 +9,7 @@
     <package name="repo_build" version="1.27.2" />
   </dependency>
   <dependency name="repo_usd" linkPath="../_repo/deps/repo_usd">
-    <package name="repo_usd" version="5.0.26" />
+    <package name="repo_usd" version="5.0.34" />
   </dependency>
   <dependency name="repo_ci" linkPath="../_repo/deps/repo_ci">
     <package name="repo_ci" version="0.9.3" />

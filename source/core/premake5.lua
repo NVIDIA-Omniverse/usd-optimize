@@ -16,7 +16,6 @@ project_with_location("omni.scene.optimizer.core")
     removefiles { "src/SceneOptimizerInterface.cpp", "src/sceneOptimizer.cpp" }
 
     local lib_dir = "%{root}/_build/%{cfg.system}-%{cfg.platform}/%{config}/lib"
-    local ext_dir = "%{root}/_build/%{cfg.system}-%{cfg.platform}/%{config}/exts/omni.scene.optimizer.core"
 
     -- Copy third-party libs into the lib dir so they will be picked up at runtime.
     repo_build.prebuild_copy {
@@ -25,10 +24,6 @@ project_with_location("omni.scene.optimizer.core")
         {"%{root}/_build/target-deps/mesh_tools/%{config}/lib/*", lib_dir},
         -- Operation name/attribute mapping
         {"config/operation_mapping.json", lib_dir},
-    }
-    -- Link test data dir into the expected location
-    repo_build.prebuild_link {
-        { "%{root}/source/tests/data", ext_dir.."/data" },
     }
 
     -- Copy USD and Python libs to an extraLibs dir for testing
@@ -64,14 +59,9 @@ project_with_location("core_python")
         python_sources = "python/omni/scene/optimizer/impl/core/*.py",
     })
 
-    so_build.python_module({
-        module_path = "omni/scene/optimizer/core",
-        python_sources = "python/omni/scene/optimizer/core/*.py",
-    })
-
-    so_build.python_module({
-        module_path = "omni/scene/optimizer/core/operation",
-        python_sources = "python/omni/scene/optimizer/core/operation/*.py",
+    so_build.symlink_folder({
+        target_dir = "python/omni/scene/optimizer/core",
+        source_dir = "python/omni/scene/optimizer/core",
     })
 
 
@@ -156,16 +146,11 @@ if not os.getenv("CI_PIPELINE_ID") then
         links {'omni.scene.optimizer.core'}
 
         add_usd {"ar","vt", "gf", "pcp", "sdf", "arch", "usd", "tf", "js", "trace", "usdUtils", "usdGeom", "usdPhysics", "usdShade", "usdSkel", "work", "kind"}
-        add_usd {"hd", "usdLux", "usdImaging", "pxOsd", "plug", "python"}
+        add_usd {"usdLux", "plug", "python"}
 
         filter { "configurations:debug" }
             links {"tbb_debug"}
         filter  { "configurations:release" }
             links {"tbb"}
-        filter {}
-
-        -- Extra libs required by linux, but not win
-        filter { "system:linux" }
-            add_usd {"hdx"}
         filter {}
 end

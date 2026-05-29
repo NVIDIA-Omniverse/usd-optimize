@@ -22,29 +22,13 @@ namespace omni::scene::optimizer
 namespace testutils
 {
 
-FrameworkScoped::FrameworkScoped()
-{
-    m_framework = nullptr;
-}
-
-FrameworkScoped::~FrameworkScoped()
-{
-}
-
-void FrameworkScoped::loadPlugins(const std::vector<const char*>& loadedFileWildcards,
-                                  const char* const* pluginSearchPaths,
-                                  size_t searchPathCount)
-{
-}
-
-
 std::string _getTestDataFilePath(const std::string& name)
 {
     static bool unused = false;
     static std::string const kLibraryDirectory = carb::extras::getLibraryDirectory(&unused);
 
     carb::extras::Path path(kLibraryDirectory);
-    path /= "exts/omni.scene.optimizer.core/data";
+    path /= "tests/data";
     path /= name;
 
     if (std::filesystem::exists(path.c_str()))

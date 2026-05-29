@@ -12,8 +12,9 @@ import time
 import unittest
 
 from omni.scene.optimizer.core import ExecutionContext, SceneOptimizerCore
-from omni.scene.optimizer.core.scripts import standalone
 from pxr import Sdf, Usd, UsdGeom, UsdUtils
+
+from .scripts import standalone
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 def _get_test_data_file_path(name):
     """Get the path for a file within the test data directory."""
     script_dir = pathlib.Path(__file__).resolve().parent
-    test_data_path = script_dir / ".." / ".." / ".." / "exts" / "omni.scene.optimizer.core" / "data"
+    test_data_path = script_dir / ".." / "data"
     test_file_path = test_data_path / name
     return str(test_file_path.resolve())
 

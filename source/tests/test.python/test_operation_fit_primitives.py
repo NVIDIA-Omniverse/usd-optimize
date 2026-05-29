@@ -273,3 +273,35 @@ class Test_Operation_PrimitiveFit(Test_Operation):
             if mesh.GetPrim().IsDefined():
                 defined_count += 1
         self.assertEqual(defined_count, 3)
+
+    async def test_primitive_fit_failure_for_hollow_mesh(self):
+        """Test primitive fit failure for hollow mesh"""
+
+        stage = self._open_stage("extruded_box.usda")
+
+        # Check the meshes in the stage
+        before_meshes = _get_meshes(stage)
+        self.assertEqual(len(before_meshes), 1)
+        before_name = before_meshes[0].GetPrim().GetName()
+        self.assertEqual(before_name, "Extruded_Box")
+
+        # Check that there are no prims in the stage
+        before_prims = _get_primitive_shapes(stage)
+        self.assertEqual(len(before_prims), 0)
+
+        args = DEFAULT_ARGS.copy()
+        success, _ = self._execute_command(args)
+
+        # The operation should execute successfully.
+        # Note, this does not mean that any mesh was fit with a primitive,
+        # just that the operation completed without error.
+        self.assertTrue(success)
+
+        # Check that there is still only one mesh in the stage
+        after_meshes = _get_meshes(stage)
+        self.assertEqual(len(after_meshes), 1)
+        self.assertEqual(after_meshes[0].GetPrim().GetName(), before_name)
+
+        # Check that there are still no prims in the stage
+        after_prims = _get_primitive_shapes(stage)
+        self.assertEqual(len(after_prims), 0)

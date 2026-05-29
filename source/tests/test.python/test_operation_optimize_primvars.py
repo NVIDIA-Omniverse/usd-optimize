@@ -3,9 +3,9 @@
 #
 
 
-from omni.scene.optimizer.core.scripts import standalone
 from pxr import Usd, UsdGeom
 
+from .scripts import standalone
 from .test_utils import Test_Operation, _get_context
 
 # Mode Enum

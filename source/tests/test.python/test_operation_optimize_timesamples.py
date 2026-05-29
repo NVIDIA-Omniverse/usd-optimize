@@ -4,9 +4,9 @@
 
 
 from omni.scene.optimizer.core import SceneOptimizerCore
-from omni.scene.optimizer.core.scripts import standalone
 from pxr import Usd
 
+from .scripts import standalone
 from .test_utils import Test_Operation, _get_context
 
 # Default arguments for the command

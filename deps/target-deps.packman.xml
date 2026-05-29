@@ -23,7 +23,7 @@
   </dependency>
 
   <dependency name="omnimesh_ops_usd" linkPath="../_build/target-deps/omnimesh_ops_usd/${config}">
-    <package name="omnimesh_ops_usd" version="110.0.2+main.2596.45208e2f.gl.${platform_target_abi}.${config}" />
+    <package name="omnimesh_ops_usd" version="110.0.3+release.2764.7bb5da99.gl.${platform_target_abi}.${config}" />
   </dependency>
   <dependency name="mesh_tools" linkPath="../_build/target-deps/mesh_tools/${config}">
     <package name="mesh_tools" version="110.0.15+main.1687.d5bba94c.gl.${platform_target_abi}.${config}" platforms="windows-x86_64 manylinux_2_35_x86_64 manylinux_2_35_aarch64" />

@@ -14,20 +14,10 @@
 #include <doctest/doctest.h>
 
 
-namespace
-{
-
-const std::vector<const char*> kPlugins = { "omni.scene.optimizer.core.plugin" };
-const std::vector<const char*> kPluginSearchPaths = { "exts/omni.scene.optimizer.core/bin" };
-
-}
 using namespace omni::scene::optimizer;
 
 int main(int argc, char** argv)
 {
-    testutils::FrameworkScoped framework;
-    framework.loadPlugins(kPlugins, kPluginSearchPaths.data(), kPluginSearchPaths.size());
-
     doctest::Context context(argc, argv);
 
     // Initialize the Optimizer with all plugins.

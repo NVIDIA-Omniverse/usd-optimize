@@ -240,7 +240,7 @@ from NVIDIA CORPORATION is strictly prohibited.
 
 ## NVIDIA CORPORATION - omnimesh_ops_usd - NVIDIA Proprietary
 
-Component: `omnimesh_ops_usd` (version 110.0.2)
+Component: `omnimesh_ops_usd` (version 110.0.3)
 
 Attribution Statements: NVIDIA-developed mesh-operations library used by Scene Optimizer
 operations. Refer to the package's bundled `LICENSE` and `THIRD_PARTY_NOTICES` files for

@@ -84,7 +84,7 @@ If this prints `OK` the drop is healthy. Any positive op-registry count confirms
 ## What does NOT work in the drop
 
 - **`repo.sh build` / `repo.bat test`** — `repo.sh`/`repo.bat` is not shipped. The README's "Quickstart" applies to the source repo, not to the binary drop.
-- **`python/tests/test.python/run_discover.py`** — the bundled `test_validators_*.py` modules require PyPI **`omniverse-asset-validator`** (`omni.asset_validator`). Without it, imports fail before unittest runs. If **any** module fails to import, `run_discover.py` exits with code 1 **without executing tests**. Even with imports fixed, most modules still expect fixtures under `../../../exts/omni.scene.optimizer.core/data` (source tree only). The self-contained cases in `test_core_python_bindings.py` (`test_executionContext`, `test_executionContext_reportPath_roundtrip`, `test_executionContext_reportPath_survives_executeOperation`, `test_sceneOptimizerCore`, `test_operation`) match the smoke check above.
+- **`python/tests/test.python/run_discover.py`** — the bundled `test_validators_*.py` modules require PyPI **`omniverse-asset-validator`** (`omni.asset_validator`). Without it, imports fail before unittest runs. If **any** module fails to import, `run_discover.py` exits with code 1 **without executing tests**. Even with imports fixed, most modules still expect fixtures under `tests/data`. The self-contained cases in `test_core_python_bindings.py` (`test_executionContext`, `test_executionContext_reportPath_roundtrip`, `test_executionContext_reportPath_survives_executeOperation`, `test_sceneOptimizerCore`, `test_operation`) match the smoke check above.
 
 ## Public API surface
 

@@ -336,8 +336,28 @@ static bool setArg(const JsValue& value, const Argument* argument)
     }
     else if (value.IsInt())
     {
-        _extractArg(value.GetInt(), target);
-        _clampArg(argument, *(reinterpret_cast<int*>(target)));
+        // Accept an int where the argument expects a real (float/double): JSON has no
+        // distinction at the syntax level between "0" and "0.0", so users routinely
+        // write integer literals for real-valued parameters. Promotion is lossless
+        // for the magnitudes seen in optimization configs.
+        if (argument->getDefaultValue().IsReal())
+        {
+            if (argument->getIsFloat())
+            {
+                _extractArg(static_cast<float>(value.GetInt()), target);
+                _clampArg(argument, *(reinterpret_cast<float*>(target)));
+            }
+            else
+            {
+                _extractArg(static_cast<double>(value.GetInt()), target);
+                _clampArg(argument, *(reinterpret_cast<double*>(target)));
+            }
+        }
+        else
+        {
+            _extractArg(value.GetInt(), target);
+            _clampArg(argument, *(reinterpret_cast<int*>(target)));
+        }
     }
     else if (value.IsReal())
     {
@@ -355,21 +375,56 @@ static bool setArg(const JsValue& value, const Argument* argument)
     }
     else if (value.IsArray())
     {
+        // Walk a JsArray element-by-element so integer literals (`[1, 2, 3]`) are accepted
+        // for a real-valued array argument, matching the scalar IsInt->IsReal promotion above.
+        // Returns false (and leaves the output untouched) if any element is non-numeric.
+        auto coerceNumericArray = [](const JsArray& arr, auto& outVec) -> bool
+        {
+            using T = typename std::decay_t<decltype(outVec)>::value_type;
+            outVec.reserve(arr.size());
+            for (const JsValue& element : arr)
+            {
+                if (element.IsReal())
+                {
+                    outVec.push_back(static_cast<T>(element.GetReal()));
+                }
+                else if (element.IsInt())
+                {
+                    outVec.push_back(static_cast<T>(element.GetInt()));
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        };
+
         switch (argument->getArrayType())
         {
         case ArgumentArrayType::eIntArray:
+            // No coercion: writing `1.0` for an int member is rejected, matching the
+            // scalar IsReal->Int rejection. GetArrayOf<int>() throws on mixed elements.
             _extractArg(value.GetArrayOf<int>(), target);
             break;
         case ArgumentArrayType::eDoubleArray:
-            _extractArg(value.GetArrayOf<double>(), target);
+        {
+            std::vector<double> values;
+            if (!coerceNumericArray(value.GetJsArray(), values))
+            {
+                return false;
+            }
+            _extractArg(values, target);
             break;
+        }
         case ArgumentArrayType::eFloatArray:
         {
-            // Explicit conversion from double to float, to ensure we set the correct
-            // data on the target
-            std::vector<double> _doubles = value.GetArrayOf<double>();
-            std::vector<float> _floats(_doubles.begin(), _doubles.end());
-            _extractArg(_floats, target);
+            std::vector<float> values;
+            if (!coerceNumericArray(value.GetJsArray(), values))
+            {
+                return false;
+            }
+            _extractArg(values, target);
             break;
         }
         case ArgumentArrayType::eStringArray:
@@ -423,7 +478,16 @@ bool Operation::populateExecutionArguments(const JsObject& args)
         const JsValue& value = it.second;
 
         const auto& defaultValue = argDescription->getDefaultValue();
-        if (value.GetType() != defaultValue.GetType())
+
+        // Compatibility rules:
+        //   - exact type match: always OK (this already covers array-on-both-sides;
+        //     element-typing is enforced later in setArg())
+        //   - JSON int where argument expects a real: promote (JSON has no `1.0` vs `1`
+        //     distinction at the value level once a user types it without a decimal point)
+        const bool exactMatch = (value.GetType() == defaultValue.GetType());
+        const bool intToReal = (value.IsInt() && defaultValue.IsReal());
+
+        if (!exactMatch && !intToReal)
         {
             CARB_LOG_WARN("Argument %s value type does not match expected: %s != %s",
                           it.first.c_str(),

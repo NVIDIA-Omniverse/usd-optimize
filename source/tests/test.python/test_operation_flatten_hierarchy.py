@@ -3,7 +3,6 @@
 #
 
 
-from omni.scene.optimizer.core.scripts import standalone
 from pxr import Gf, UsdGeom, UsdShade
 
 from .test_utils import Test_Operation, _get_context

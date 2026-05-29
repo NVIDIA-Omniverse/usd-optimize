@@ -228,7 +228,6 @@ files = [
     ["_build/$platform/$config/lib", "lib"],
     ["_build/$platform/$config/extraLibs", "extraLibs"],
     ["_build/target-deps/usd/$config/lib/python", "usdpy"],
-    ["_build/PACKAGE-LICENSES/**", "PACKAGE-LICENSES"],
 ]
 files_exclude = [
     ["**.pdb"],
@@ -250,10 +249,10 @@ files = [
     ["_build/$platform/$config/python", "python"],
     ["_build/$platform/$config/lib", "lib"],
     ["_build/$platform/$config/extraLibs", "extraLibs"],
+    ["_build/$platform/$config/tests", "tests"],
     ["_build/target-deps/usd/$config/lib/python", "usdpy"],
     ["_build/$platform/$config/test.cpp*", ""],
     ["_build/$platform/$config/test.python*", ""],
-    ["_build/$platform/$config/exts/omni.scene.optimizer.core/**", "exts/omni.scene.optimizer.core"],
 ]
 files_exclude = [
     ["**.pdb"],

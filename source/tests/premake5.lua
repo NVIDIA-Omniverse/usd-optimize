@@ -150,7 +150,7 @@ set PYTHONPATH=%%TEST_PY_PATH%%;%%PYTHONPATH%%
         ]], to_env_paths(lib_config_paths, "%~dp0"), to_env_paths(python_config_paths, "%~dp0"))
 
         -- the actual test runner
-        local win_test_dir = "%~dp0/python/tests/"..name
+        local win_test_dir = "%~dp0/tests/"..name
         local win_python_bin = '"%~dp0/../../target-deps/python/python.exe"'
         -- The asset_validator integration tests need omniverse-asset-validator
         -- importable from the bundled Python. Install on first run only.
@@ -212,7 +212,7 @@ export PYTHONPATH=%s${PYTHONPATH:+:$PYTHONPATH}
         )
 
         -- test runner
-        local test_dir = "$SCRIPT_DIR/python/tests/"..name
+        local test_dir = "$SCRIPT_DIR/tests/"..name
         local python_bin = string.format(
             '"$SCRIPT_DIR/../../target-deps/python/bin/python%s"',
             PYTHON_VERSION)
@@ -285,35 +285,25 @@ create_python_test_runner("test.python", "debug", python_lib_paths, python_py_pa
 
 
 group "tests"
+    project_common "test.data"
+        dependson("omni.scene.optimizer.core")
+
+        kind "Utility"
+
+        so_build.symlink_folder({
+            target_dir = "tests/data",
+            source_dir = "data",
+        })
+
     project_common "test.python"
         dependson("omni.scene.optimizer.core")
 
         kind "Utility"
 
-        so_build.python_module({
-            module_path = "tests/test.python",
-            python_sources = "test.python/**.py",
+        so_build.symlink_folder({
+            target_dir = "tests/test.python",
+            source_dir = "test.python",
         })
-
-        so_build.python_module({
-            module_path = "tests/test.python/test_operation",
-            python_sources = "test.python/test_operation/**.py",
-        })
-
-        -- Custom test runner that supports relative imports in the
-        -- dotted test.python directory.
-        repo_build.prebuild_copy {
-            {"standalone_support/run_discover.py",
-             target_python_dir.."/tests/test.python"},
-        }
-
-        -- Deploy the standalone scripts module so that test_utils.py can
-        -- import omni.scene.optimizer.core.scripts.standalone.
-        so_build.python_module({
-            module_path = "omni/scene/optimizer/core/scripts",
-            python_sources = "standalone_support/scripts/**.py",
-        })
-
 
     project_common "test.cpp"
         dependson("omni.scene.optimizer.core")
@@ -339,12 +329,7 @@ group "tests"
         }
 
         add_usd { "arch", "gf", "js", "sdf", "tf", "usd", "usdGeom", "usdPhysics", "usdShade", "vt", "usdUtils" }
-        add_usd { "hd", "usdLux", "usdImaging", "pxOsd", "plug", "python" }
-
-        -- Extra libs required by linux, but not win
-        filter { "system:linux" }
-            add_usd {"hdx"}
-        filter {}
+        add_usd { "usdLux", "plug", "python" }
 
         so_build.use_python()
         so_build.use_pybind()

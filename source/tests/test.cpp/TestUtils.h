@@ -15,12 +15,6 @@
 // Doctest
 #include <doctest/doctest.h>
 
-// Forward declaration
-namespace carb
-{
-struct Framework;
-}
-
 
 // Workaround for ambiguous operator<< overload when using REQUIRE(TfRefPtr<T>)
 // with doctest.
@@ -39,22 +33,6 @@ namespace omni::scene::optimizer
 
 namespace testutils
 {
-
-//! Utility class to facilitate framework acquisition and plugin loading
-class FrameworkScoped
-{
-public:
-    FrameworkScoped();
-    ~FrameworkScoped();
-
-    void loadPlugins(const std::vector<const char*>& loadedFileWildcards,
-                     const char* const* pluginSearchPaths,
-                     size_t searchPathCount);
-
-private:
-    carb::Framework* m_framework;
-};
-
 
 /// Get the path for a file within the test data directory of omni.scene.optimizer.core extension
 std::string _getTestDataFilePath(const std::string& name);

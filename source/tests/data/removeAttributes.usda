@@ -22,6 +22,10 @@ def Xform "World"
         texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0), (0, 1), (0, 0), (1, 0), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (1, 1), (0, 1), (0, 0)] (
             interpolation = "faceVarying"
         )
+        color3f[] primvars:myColor = [(1, 0, 0), (0, 1, 0)] (
+            interpolation = "vertex"
+        )
+        int[] primvars:myColor:indices = [0, 1, 0, 1, 0, 1, 0, 1]
         token ui:displayGroup = "Test Value"
         int ui:order = 1024
         uniform token subdivisionScheme = "none"

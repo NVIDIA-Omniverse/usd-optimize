@@ -4,9 +4,9 @@
 
 
 from omni.scene.optimizer.core import SceneOptimizerCore
-from omni.scene.optimizer.core.scripts import commands, standalone
 from pxr import UsdGeom, UsdShade
 
+from .scripts import commands, standalone
 from .test_utils import Test_Operation, _get_context, _get_meshes, _get_test_data_file_path
 
 # OriginalGeometryOption values

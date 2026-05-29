@@ -62,17 +62,12 @@ function m.use_usd()
     }
 
     add_usd {"ar","vt", "gf", "pcp", "sdf", "arch", "usd", "tf", "js", "trace", "usdUtils", "usdGeom", "usdPhysics", "usdShade", "usdSkel", "work", "kind"}
-    add_usd {"hd", "usdLux", "usdImaging", "pxOsd", "plug", "python"}
+    add_usd {"usdLux", "plug", "python"}
 
     filter { "configurations:debug" }
         links {"tbb_debug"}
     filter  { "configurations:release" }
         links {"tbb"}
-    filter {}
-
-    -- Extra libs required by linux, but not win
-    filter { "system:linux" }
-        add_usd {"hdx"}
     filter {}
 
 end
@@ -258,21 +253,20 @@ function m.python_bindings(options)
 
 end
 
-
-function m.python_module(options)
+-- Creates a folder that is symlinked from the source directory to the target
+-- directory in the build directory.
+function m.symlink_folder(options)
     -- check options
-    if type(options.module_path) ~= "string" then
-        error("`module_path` must be specified")
+    if type(options.source_dir) ~= "string" and type(options.target_dir) ~= "string" then
+        error("`source_dir` and `target_dir` must be specified")
     end
 
-    local module_path = options.module_path
-    local python_sources = options.python_sources or {}
+    local source_dir = options.source_dir
+    local target_dir = options.target_dir
 
-
-    local target_bindings_dir = target_python_dir.."/"..module_path
-    repo_build.prebuild_copy({ python_sources, target_bindings_dir })
+    local build_target_dir = target_build_dir.."/"..target_dir
+    repo_build.prebuild_link({ source_dir, build_target_dir })
 end
-
 
 -- Create a C++ operation plugin
 -- @param sources: A list of source files to add to the project

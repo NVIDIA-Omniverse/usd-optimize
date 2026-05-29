@@ -218,7 +218,6 @@ class Test_Operation_<PascalCase>(Test_Operation):
         mesh.CreateFaceVertexCountsAttr([4])
         mesh.CreateFaceVertexIndicesAttr([0, 1, 2, 3])
 
-        self._current_stage = stage
         _, (success, error, _) = self._execute_command({})
         self.assertTrue(success, f"Operation failed: {error}")
 ```
@@ -229,8 +228,7 @@ them for sync execution). Use `self._execute_command(args_dict)` to run
 the operation.
 
 For operations that need fixture files, place them in
-`exts/omni.scene.optimizer.core/data/` and load with
-`self._open_stage("fixture.usda")`.
+`source/tests/data` and load with `self._open_stage("fixture.usda")`.
 
 ## Step 4 — Create the operation guide
 

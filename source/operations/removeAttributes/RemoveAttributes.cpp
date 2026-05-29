@@ -11,8 +11,14 @@
 // Carbonite
 #include <carb/profiler/Profile.h>
 
+// USD
+#include <pxr/usd/usdGeom/primvar.h>
+
 // TBB
 #include <tbb/parallel_for.h>
+
+// C++
+#include <unordered_set>
 
 PXR_NAMESPACE_USING_DIRECTIVE
 
@@ -75,8 +81,8 @@ OperationResult RemoveAttributesOperation::executeImpl()
     CARB_PROFILE_ZONE(0, "SceneOptimizer|RemoveAttributes|Execute");
 
     // Create a set of the attribute names for faster lookup, and extract namespaces
-    // to a separate vector.
-    std::set<TfToken> attributeNames;
+    // to a separate vector. Use a hash set since TfToken has a free O(1) hash.
+    std::unordered_set<TfToken, TfToken::HashFunctor> attributeNames;
     std::vector<std::string> namespaces;
 
     for (const auto& value : m_attributes)
@@ -127,6 +133,45 @@ OperationResult RemoveAttributesOperation::executeImpl()
             // of repeated and sequential vector copies at the end.
             std::vector<UsdAttribute> _toRemove;
 
+            // For primvars, ensure that if they have indices the indices are also
+            // removed - otherwise we leave useless data lying around. Callers should
+            // gate on UsdGeomPrimvar::IsPrimvar() before invoking.
+            auto checkIndices = [&](const UsdAttribute& attribute)
+            {
+                const UsdGeomPrimvar primvar(attribute);
+                if (!primvar.IsIndexed())
+                {
+                    return;
+                }
+
+                const UsdAttribute indicesAttr = primvar.GetIndicesAttr();
+                if (!indicesAttr)
+                {
+                    return;
+                }
+
+                // Skip if the indices attribute will already be picked up by the
+                // users filter — otherwise it'd be queued for removal twice.
+                // Functionally doesn't matter, but would result in it being
+                // counted twice for the log.
+                const TfToken& indicesName = indicesAttr.GetName();
+                if (attributeNames.find(indicesName) != attributeNames.end())
+                {
+                    return;
+                }
+
+                if (std::any_of(namespaces.cbegin(),
+                                namespaces.cend(),
+                                [&](const std::string& _namespace)
+                                { return TfStringStartsWith(indicesName, _namespace); }))
+                {
+                    return;
+                }
+
+                SO_LOG_VERBOSE("Matched primvar indices %s", indicesAttr.GetPath().GetAsString().c_str());
+                _toRemove.push_back(indicesAttr);
+            };
+
             for (size_t i = range.begin(); i < range.end(); ++i)
             {
                 const auto& prim = prims[i];
@@ -139,6 +184,13 @@ OperationResult RemoveAttributesOperation::executeImpl()
                     {
                         SO_LOG_VERBOSE("Matched attribute %s", attribute.GetPath().GetAsString().c_str());
                         _toRemove.push_back(attribute);
+
+                        // If the attribute is a primvar then make sure we also remove indices
+                        // in case the user specified a primvar but not the indices attribute.
+                        if (UsdGeomPrimvar::IsPrimvar(attribute))
+                        {
+                            checkIndices(attribute);
+                        }
                         continue;
                     }
 

@@ -1,0 +1,859 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Prune Leaves &#8212; Usd Optimize</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=767de534" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/api.css?v=6f210184" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script rel="preload" src="../../_static/modal-table.js"></script>
+    <script src="../../_static/documentation_options.js?v=96647119"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scrollspy-patch.js?v=edc4054a"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=65e89d2a"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/operations/pruneLeaves';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.3.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script src="../../_static/version-patch.js?v=3e13fdd2"></script>
+
+    <link rel="icon" href="../../_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Python Script" href="pythonScript.html" />
+    <link rel="prev" title="Primitives to Meshes" href="primitivesToMeshes.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Sep 30, 2026"/>
+
+
+  </head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Usd Optimize - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Usd Optimize - Home"/>
+  
+  
+    <p class="title logo__title">Usd Optimize</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/usd" title="www" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-globe fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">www</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVIDIA-Omniverse/usd-optimize" title="github" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">github</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Usd Optimize - Home"/>
+    <img src="../../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Usd Optimize - Home"/>
+  
+  
+    <p class="title logo__title">Usd Optimize</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://developer.nvidia.com/usd" title="www" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-globe fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">www</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVIDIA-Omniverse/usd-optimize" title="github" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">github</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../operations.html">Operations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="generateAtlasUVs.html">Auto UV Unwrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="boxClip.html">Box Clip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computeExtents.html">Compute Extents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pivot.html">Compute Pivot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="countVertices.html">Count Vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decimateMeshes.html">Decimate Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deduplicateGeometry.html">Deduplicate Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deduplicateHierarchies.html">Deduplicate Hierarchies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deleteHiddenPrims.html">Delete Hidden Prims</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deletePrims.html">Delete Prims</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diceMeshes.html">Dice Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editStageMetrics.html">Edit Stage Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="findCoincidingGeometry.html">Find Coincident Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="findFlatHierarchies.html">Find Flat Hierarchies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="findOccludedMeshes.html">Find Occluded Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="findOverlappingMeshes.html">Find Overlapping Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fitPrimitives.html">Fit Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flattenHierarchy.html">Flatten Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generateNormals.html">Generate Normals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generateProjectionUVs.html">Generate Projection UVs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generateScene.html">Generate Scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifoldMeshes.html">Manifold Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="merge.html">Merge Static Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mergeVertices.html">Merge Vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshCleanup.html">Mesh Cleanup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="moveMaterials.html">Move Materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizeMaterials.html">Optimize Materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizePrimvars.html">Optimize Primvars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizeSkelRoots.html">Optimize Skeleton Roots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizeTimeSamples.html">Optimize Time Samples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="organizePrototypes.html">Organize Prototypes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="primitivesToMeshes.html">Primitives to Meshes</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Prune Leaves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pythonScript.html">Python Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rtxMeshCount.html">RTX Mesh Count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="remeshMeshes.html">Remesh Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removeAttributes.html">Remove Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removePrims.html">Remove Prims</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removeSmallGeometry.html">Remove Small Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removeUntypedPrims.html">Remove Untyped Prims</a></li>
+<li class="toctree-l2"><a class="reference internal" href="removeUnusedUVs.html">Remove Unused UVs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shrinkwrap.html">Shrinkwrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sparseMeshes.html">Sparse Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="splitMeshes.html">Split Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="printStats.html">Stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subdivideMeshes.html">Subdivide Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triangulateMeshes.html">Triangulate Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilityFunction.html">Utility Function</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../choosing-operations.html">Choosing Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance-validators.html">Performance Validators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python.html">Usd Optimize Python API</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/api.html">Usd Optimize C++ API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/classes.html">Classes</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/macros.html">Macros</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Defs_8h_1a2f99609b2b508f1db7e651e6806780cb.html">USD_OPTIMIZE_EXPORT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Log_8h_1a65b7c84043ea14a62bf9aa4ea4517df5.html">USD_OPTIMIZE_LOG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Log_8h_1ac0fde37f9c05b83c5e331082915c01ec.html">USD_OPTIMIZE_LOG_ERROR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Log_8h_1af4603729edd679ab84aa4b40ddacba39.html">USD_OPTIMIZE_LOG_FATAL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Log_8h_1abc13da4e372a8b4b8ce16ee50e0ca858.html">USD_OPTIMIZE_LOG_INFO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Log_8h_1a4a55e3ec8efb6bf2df01899dda05fed1.html">USD_OPTIMIZE_LOG_VERBOSE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Log_8h_1ae4a4d6f6c63cf3801589ea2542d68c80.html">USD_OPTIMIZE_LOG_WARN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Core_8h_1a68559c36e233694ceaff7a6f3f01a4ed.html">USD_OPTIMIZE_PLUGIN_INIT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Defs_8h_1aa66cf79546f413d3f342e30b506692e7.html">USD_OPTIMIZE_TO_STRING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/define_Defs_8h_1a9b56bae0f5c766013d6098b8597cca65.html">_USD_OPTIMIZE_TO_STRING</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/enumerations.html">Enumerations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/functions.html">Functions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/function_Defs_8h_1aba4e7dae10195fbec41d4f7354e84780.html">usd_optimize_execution_context_copy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/function_Defs_8h_1aee1d45e2efe7d0860f778edec7a77a20.html">usd_optimize_execution_context_free</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/function_Defs_8h_1affe6216a2714976b70b08bb0b479d26a.html">usd_optimize_operation_result_free</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/namespaces.html">Namespaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../api/namespace_usd__optimize.html">usd_optimize</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1Argument.html">Argument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/enum_namespaceusd__optimize_1a317365fbefeb7b767ea0e85626289f43.html">ArgumentArrayType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1Coalescer.html">Coalescer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1a059cb57691b2296ab10da8c2fb3372fc.html">CoalescerUPtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1ColorValue.html">ColorValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1ConcurrentVectorMemoryPool.html">ConcurrentVectorMemoryPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1a231c95fff9b03e2c1e155cf4216d1736.html">EnumMap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1ad1f0a76164fbcb09cef1be6a46f74228.html">FloatPreset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1a9f890f09af4877ab5c92b65877c83fc9.html">FloatPresetsVector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1FuzzyTransformSolver.html">FuzzyTransformSolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1abe3549573a249270dc46c03a79152d44.html">GetStage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a42967855b229d9b95816f22a3b91cfc5.html">GetStageMeshDescriptors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1Group.html">Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1ab31c0ce1d4859fdf2e0e7e1c066b6391.html">HashCache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1af729bf39904127c0ca6d4d35bd91f57f.html">IncludeAttrValueFn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/enum_namespaceusd__optimize_1a105264c1ad6f9d2426a03fb8cb4d0c57.html">LogLevel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1MergedValues.html">MergedValues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1MeshStats.html">MeshStats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1OmniOperation.html">OmniOperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1Operation.html">Operation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1ad80df1158cddbe683c076632151e3903.html">OperationUPtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1PrimData.html">PrimData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1PrimInfo.html">PrimInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1PrimvarStats.html">PrimvarStats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1ProcessedData.html">ProcessedData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1ProcessedHostMesh.html">ProcessedHostMesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1ProcessedHostMeshData.html">ProcessedHostMeshData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1ProcessedHostPrim.html">ProcessedHostPrim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1PythonOperation.html">PythonOperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1RefCountedPyObject.html">RefCountedPyObject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/enum_namespaceusd__optimize_1ac0136ce2aebd41512b91f0228487cba3.html">RemoveMethod</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1Report.html">Report</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1a32d596b6ee3a03e63748444aea7a7c4e.html">ResolveFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1ScopedPyObject.html">ScopedPyObject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1ScopedTimer.html">ScopedTimer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1SdfValueTypeNameHashFunctor.html">SdfValueTypeNameHashFunctor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1StatArgs.html">StatArgs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1StatCounters.html">StatCounters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1ac82c42cb257aea2085de06d25385b635.html">StatCountersUPtr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/structusd__optimize_1_1TotalStats.html">TotalStats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/classusd__optimize_1_1UsdOptimizeCore.html">UsdOptimizeCore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1a269e320cd961432699066da17ea8352d.html">UsdOptimizeOperationCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/typedef_namespaceusd__optimize_1abcb331049143521122ac9e4ebf7a0743.html">UsdOptimizeOperationDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a9e3f285323f3daac0126ca6303a364a6.html">_addMaterialBindingAPIToSchemas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a3d7c4d30d077e866ed3205737edca2ab.html">_batchedSplitIntoXformAndChild</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a0bbf68b47e9774a9499b81c422c33ee7.html">_calculteUVScaleValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1af7d6bec0ff844070fed92b01f18f5058.html">_clearXformOps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ababf1412eed5d2ccef3efd2bc44f790a.html">_collectSceneStats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1abb2b235ce3a734cb93ea28246ccd591d.html">_computeCentroid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a01932458229fdfa1c9f9994779551e91.html">_computeExtents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ab7b01bebf297f2fc1475c228e15e7bf8.html">_computeExtents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a2f9b73bade61b34f55103e9c1c758956.html">_computePseudoMaxVec3f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a3ae543b8f39f155a70e54f1cfc8a0419.html">_computePseudoMaxVec3f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a5c309945760754e04138c2a8735d17cf.html">_computePseudoMaxVec3f</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a2b1d8857ffbb92df61599826c3bf886f.html">_containsOrderedXformOpsSuffix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ac78c1f09471baa6aad9f5d7fd05d1c1c.html">_convertToSdfPaths</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a6cabed212cfe17cc9dbaf15e2eaeeae8.html">_copyPrim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a72fb7f7cc38ffe2618826de7e1be61cb.html">_deactivatePrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a09c07a7cf54191c1ddd080d17897f253.html">_deletePrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a0de755417fdb6850819cf92c0037b0d1.html">_deletePrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8065ee3bfcc9564492a880a1195a4722.html">_findInstancedPrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a63ba5225581081052f62734570ae203c.html">_findPrimsMissingExtents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a6aa1a86f61bd815e38664c29c741ebe8.html">_findPrimsMissingExtents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8db475ae41897c5d06089ba05358ec5a.html">_flattenInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1abebaec22bba9ddeb66f082b5178bbf39.html">_flattenPropertyToPrimSpec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a9bfc5b4411780defbb7e2fe7639b2533.html">_flattenPropertyToPrimSpecWithValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ac629996d7fa7138b5e05bad94cc9c99d.html">_getDefaultLinearUnitsPresets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a24c0150b83c249b64dcc39707605726d.html">_getDefaultSingleVtValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a1eddc13dee18c8a0f8eb57ad91ad1351.html">_getExecutionContextFromPyWrapper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a34c6315ffc6256d540b5bdda847d6a4e.html">_getFormattedBytes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ac992bd81574adcbf6eb0739dbfd57a7d.html">_getMaterialAlbedo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a7219d8c777ddf2e796eb56663b5b9a25.html">_getPivotXformOps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1abb3427195300d066fe9187f8e37769bd.html">_getPivotXformOps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a483ba75fb900da2019ce15798e62c55e.html">_getSizeFromSdfValueType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8c2d115fd63ab82a172bdf7fa97f8978.html">_getTempFile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8334c523fc5dde1e20707ae85c787a84.html">_getTransformFromToFuzzy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a90591da28badb76971e389ffd06d682d.html">_getUniqueChildPaths</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8c30edb67c49890440950014d84dc468.html">_hasAuthoredTimeSamples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a0d0534c70bc81b66df6272eb09dae6df.html">_hashPrim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a380ae0d08ff6490205af1a1aa44e2eee.html">_hashPrim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ae4214561211ca8af6de98c838f5558e6.html">_hashPrim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a2a6647a68e07a4c9e326010e8092bf6c.html">_hidePrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a5cd0700aca08ae8bbd6001eed04c77a2.html">_hsvToRgb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1aa3034f06d2c223023691247c9f74fdc0.html">_isInheritableProperty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ae3c17aa09f9ba18a68f7de64ea267beb.html">_jsonArrayToPybindList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1aa7a29d8e68d538d26cfcfef7885e3858.html">_jsonObjectToPybindDict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a6dfd3b658063c830c44ceda137329daf.html">_jsonValueToPybindObject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ac770ed8fb4247c6e2580b50c4b3351e0.html">_mightBeTimeVarying</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a9f56454e5357d0d45ec0db4fe3d5c220.html">_operationResultToPybindTuple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ab23ed826fc9d67b10494bc02a87481e8.html">_parseJson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ae7fffd4dcbbdad411721809c26f99f85.html">_parseJson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a5b542ff78f33a10963a81b2c8bbdbf41.html">_primHasAuthoredUVsWithValues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a98c05019752fedee971ea41ec1e5ac78.html">_pyAsBool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a85db44f15ba58c6c89c5f16991ad6325.html">_pyAsInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a4176bd3cf4f011924e888d9679d47f5a.html">_pyAsString</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a91f2b4a34e0ca7941f1f001175c4f4ed.html">_pyCheckAndGetExceptionMessage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a16b638e79cbf89e5fa941e6ba05f2fbc.html">_pyCheckAndRaiseException</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a22511621acc404b5fb039ee8d45bed08.html">_pyGetObjectAttribute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a3f14afe85d44e02b145a78fab24a07e2.html">_removePrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a7f43e9f3068b58dfdd009b2de30e6544.html">_removePrimsWithAuthoredTimeSamples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a6573fe4b57a61ef1d73386080c9e16e0.html">_resolveExpressionsToPrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a96c3716063fdc1e6bb6e7bd38a8831e7.html">_resolveExpressionsToPrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1af9ef393246b20e7c21795fa542f1d1e7.html">_resolveExpressionsToPrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1acc83195178604c7a475a7c0a1816c954.html">_resolvePathsToPrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1adf4a1964d90e5d96e5f5ae43f588e780.html">_resolvePrim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a04465bf422c0c1c218c34bfdbddcd6ba.html">_resolveSdfPaths</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a4a98ccece8bda9b35e8cb94c9c37c498.html">_resolveSdfPaths</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ada5d118f042f478ebc178ad12a9b9747.html">_safeCreatePrim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1aad78bda78420f2954cfdcd96a13cc618.html">_setAttributeOnPrims</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a7fe626e63c2deded46e01a2331cb33db.html">_toArrayVtValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a035c9cad45c988b42bcdfb03888c9592.html">_toJson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a14988c6e020c95e91adcef2ef7dea812.html">_toJson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a379aeb810671c59d01f5565d95fd7762.html">_toJson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a85ed586c8b6bebc5a4872854c37816e1.html">_toJson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ac05b9cbe46656b0d85060d7c4ce151f7.html">_toJson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a92577ce5d8bb3a097b6eb0c047b70227.html">_toJsonStr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a0b8c4d76aa8b3c0573b568739dfa49e9.html">arePointsFinite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1abef0d1cab6f0b947dd33c7ea755dfd9e.html">carbLevelFromLogLevel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8087a8ab8ea1488cffa7f73f9024200b.html">getCStr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a2832131c9d75251df54dc7f0c7da58f2.html">isClose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a2d02a9686460b74f53888bec15bf8f92.html">isClose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a4ad7a024e1412a2e174c6a6d60dc1cf0.html">isClose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ad514c66f19a2961b1936730d4bf0ed2a.html">isClose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1af7329723c3f28d22b8ce29d87aa55f13.html">isClose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1af231f3a98105524dedf7c090719e4b58.html">isCudaAvailable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a96580bd3b5c7cbbf33d38a4e34838872.html">isTransformFinite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a58cdce6851d05511c7293cf564952a14.html">kDisplayTypeAttributeList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a096da710c7542bc6affebc3425f89abf.html">kDisplayTypeBool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1abb535f3bdd1e89a4cbdd38aebf96565a.html">kDisplayTypeCode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a09a5dc8ab99e501462c138f348ead21c.html">kDisplayTypeEnum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a214a8e0ad92a3bfd55bb3009e6b39791.html">kDisplayTypeFloat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a9b2997622e01ceb6d408bf488b5d8522.html">kDisplayTypeFloatArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1aaefed85f829cabc7cc40afcf77be8524.html">kDisplayTypeFloatPresets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1ab154d0940301465f7ba71a47f54ef3cd.html">kDisplayTypeFloatSlider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a1fce9cf9f75775ce295ebdc999c9dd2c.html">kDisplayTypeInt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1ab05efa111e5d7bf84e0b37bea9537d53.html">kDisplayTypeIntSlider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a22fd3cce7562fb52b3f59040f889414a.html">kDisplayTypePrimPath</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a215efdbc454deb671a88ffbfc99475b4.html">kDisplayTypePrimPaths</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a63e19c86139033cfb9f0d16f0c81371a.html">kDisplayTypeText</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a37b2dc00069a39264e37c1c14ec2a75f.html">kDisplayTypeTextList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a7ae9ccc6906bc4da04e5c42bac69d8b8.html">s_categoryStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a0bc5aeacd58ad6e93e69227a9a5e26b3.html">s_displayGroupGeometry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a978ac2b15d5c0c4eafed74b0922ccf73.html">s_displayGroupMaterials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1acfccf35700f832aec0d743cbf6e30d4d.html">s_displayGroupStage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1ac83cae8316dc53d7a6b4fa7715be424a.html">s_displayGroupUtilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/namespace_usd__optimize__tbbcompat.html">tbbcompat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1afdfff8670dc24bb4c47e2382f34f768f.html">usdOptimizeLog</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ab052514ada104c58672e760b4520880a.html">usdOptimizeOperationCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a33024a282630f0b69216ac5b37f334bf.html">usdOptimizeOperationDelete</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/structs.html">Structs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/structExecutionContext.html">ExecutionContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/structOperationResult.html">OperationResult</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/structUsdOptimizePluginVersion.html">UsdOptimizePluginVersion</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/typedefs.html">Typedefs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/variables.html">Variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Tool</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../operations.html" class="nav-link">Operations</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Prune Leaves</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="prune-leaves">
+<h1>Prune Leaves<a class="headerlink" href="#prune-leaves" title="Link to this heading">#</a></h1>
+<p><strong>Key</strong>: <code class="docutils literal notranslate"><span class="pre">pruneLeaves</span></code></p>
+<p>Prune unnecessary leaf grouping prims (<code class="docutils literal notranslate"><span class="pre">Scope</span></code>, <code class="docutils literal notranslate"><span class="pre">Xform</span></code>) from a stage.</p>
+<section id="arguments">
+<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
+<section id="prim-paths-to-search">
+<h3>Prim Paths to Search<a class="headerlink" href="#prim-paths-to-search" title="Link to this heading">#</a></h3>
+<p>Optional list of prim paths to consider</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Name: <code class="docutils literal notranslate"><span class="pre">paths</span></code></p></li>
+<li><p>Type: <code class="docutils literal notranslate"><span class="pre">[string]</span></code></p></li>
+<li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">[]</span></code></p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="method">
+<h3>Method<a class="headerlink" href="#method" title="Link to this heading">#</a></h3>
+<p>How to prune any leaf prims that are found</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Name: <code class="docutils literal notranslate"><span class="pre">pruneMode</span></code></p></li>
+<li><p>Type: <code class="docutils literal notranslate"><span class="pre">int</span></code></p></li>
+<li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><dl class="simple">
+<dt>Enum Values:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">1:</span> <span class="pre">Delete</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2:</span> <span class="pre">Deactivate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3:</span> <span class="pre">Hide</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="filter-inactive-prims">
+<h3>Filter Inactive Prims<a class="headerlink" href="#filter-inactive-prims" title="Link to this heading">#</a></h3>
+<p>Do not consider inactive prims empty</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Name: <code class="docutils literal notranslate"><span class="pre">filterInactive</span></code></p></li>
+<li><p>Type: <code class="docutils literal notranslate"><span class="pre">bool</span></code></p></li>
+<li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="preserve-unloaded-payloads">
+<h3>Preserve Unloaded Payloads<a class="headerlink" href="#preserve-unloaded-payloads" title="Link to this heading">#</a></h3>
+<p>Do not prune leaf prims that carry an unloaded payload (they may contribute content once loaded). Disable to prune them anyway.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Name: <code class="docutils literal notranslate"><span class="pre">preserveUnloadedPayloads</span></code></p></li>
+<li><p>Type: <code class="docutils literal notranslate"><span class="pre">bool</span></code></p></li>
+<li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="primitivesToMeshes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Primitives to Meshes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pythonScript.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Python Script</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arguments">Arguments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prim-paths-to-search">Prim Paths to Search</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filter-inactive-prims">Filter Inactive Prims</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preserve-unloaded-payloads">Preserve Unloaded Payloads</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2022-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on Sep 30, 2026.
+  <br/>
+</p></div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

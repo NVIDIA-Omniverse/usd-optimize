@@ -1,0 +1,45 @@
+#usda 1.0
+
+def Xform "World"
+{
+    # "DeadRef" composes a reference arc whose target prim does not exist, so the arc contributes
+    # nothing. Its only child is an untyped over left behind by an earlier material rebind. A pure
+    # over composes to nothing and can never contribute content, so it must not count as a child --
+    # otherwise DeadRef is never an empty leaf and survives carrying a dangling reference.
+    def Xform "DeadRef" (
+        prepend references = </Meshes/GEO>
+    )
+    {
+        over "BoundMaterial"
+        {
+            rel material:binding = </World/Looks/Mat>
+
+            over "Mesh"
+            {
+            }
+        }
+    }
+
+    # Same shape, but with a real defined child alongside the over. Real content still counts, so
+    # this one must be kept -- guarding against the leaf test becoming too aggressive.
+    def Xform "DeadRefWithContent" (
+        prepend references = </Meshes/GEO_2>
+    )
+    {
+        over "BoundMaterial"
+        {
+            rel material:binding = </World/Looks/Mat>
+        }
+
+        def Cube "RealChild"
+        {
+            double size = 10
+        }
+    }
+
+    # Real geometry so that "World" itself is never an empty leaf, keeping the result focused on DeadRef.
+    def Cube "Keeper"
+    {
+        double size = 10
+    }
+}

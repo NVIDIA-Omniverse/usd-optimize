@@ -7,16 +7,41 @@ Mesh Cleanup
 **Key**: ``meshCleanup``
 
 Applies various cleanups to a mesh: merge vertices that are closer to one another than a
-given tolerance, remove degenerate faces, make the result manifold, and/or remove isolated vertices. Each
-cleanup is an independent toggle, so a config can run just the passes it needs.
+given tolerance, remove degenerate faces, make the result manifold, and/or remove isolated vertices.
 
 How the flags interact
 ----------------------
 
-The merge sub-flags (``mergeBoundaries``, ``mergeNeighbors``, ``contractDegenerateEdges``) only take
-effect when ``mergeVertices`` is enabled; they refine *which* coincident vertices are merged. The
-cleanups run in a fixed order (merge, then degenerate/duplicate face removal, then optional manifold and
-isolated-vertex passes), so enabling several at once is the normal case.
+The passes are **not independent**, and this is the most common source of surprise. They run in a
+fixed canonical order, each taking its input from the residual state the previous one left behind,
+so **fixing one defect can create another**:
+
+1. merge coincident neighbour vertices (``mergeVertices`` + ``mergeNeighbors``)
+2. contract degenerate edges (``contractDegenerateEdges``)
+3. remove degenerate faces (``removeDegenerateFaces``)
+4. remove isolated vertices (``removeIsolatedVertices``)
+5. merge coincident boundary vertices (``mergeVertices`` + ``mergeBoundaries``)
+6. remove duplicate (lamina) faces (``removeDuplicateFaces``)
+7. coorient faces (``coorientFaces``)
+8. make manifold (``makeManifold``)
+
+The order is fixed; you choose only which steps run. Merging coincident vertices *creates*
+degenerate edges and faces -- a face collapses from three distinct vertex references to two when
+two of its vertices merge -- and removing those degenerate faces then *strands* isolated vertices.
+Merging boundary vertices can likewise produce duplicate, inconsistently oriented or non-manifold
+faces.
+
+**Prefer the defaults — running a subset is what leaves a mesh half-cleaned.** Steps 1-6 are all
+enabled by default precisely because they are the interacting set: merging vertices with
+``contractDegenerateEdges`` or ``removeDegenerateFaces`` turned off asks the operation to create
+degeneracies and then leave them behind. Disable an individual pass only when you know your input
+cannot produce the defect that pass handles.
+
+Steps 7 and 8 are off by default because they change winding and topology rather than removing
+defects introduced upstream of them; see below.
+
+The merge sub-flags (``mergeBoundaries``, ``mergeNeighbors``) only take effect when
+``mergeVertices`` is enabled; they refine *which* coincident vertices are merged.
 
 When to enable coorientFaces and makeManifold
 ---------------------------------------------
@@ -44,11 +69,11 @@ A common data-quality baseline is ``generateNormals`` -> ``meshCleanup`` -> ``co
 Starting configurations
 -----------------------
 
-Standard cleanup (defaults):
+Standard cleanup -- the defaults already enable steps 1-6, so no arguments are needed:
 
 .. code-block:: json
 
-    [{"operation": "meshCleanup", "mergeVertices": true, "removeDegenerateFaces": true, "removeIsolatedVertices": true}]
+    [{"operation": "meshCleanup"}]
 
 Full repair (manifold, consistent winding):
 

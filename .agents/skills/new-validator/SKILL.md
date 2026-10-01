@@ -227,7 +227,10 @@ After `docs_gen`, the rule appears in
 Verify the rule is registered:
 
 ```python
+import usd_validation_nvidia          # import first
 from usd_optimize.validators import register_all
 rules = register_all()
-assert any(r.__name__ == "<Name>Checker" for r in rules)
+# register_all() renames each rule to UsdOptimize<Name>Checker before returning it,
+# so assert against the registered name, not the class name as written.
+assert any(r.__name__ == "UsdOptimize<Name>Checker" for r in rules)
 ```

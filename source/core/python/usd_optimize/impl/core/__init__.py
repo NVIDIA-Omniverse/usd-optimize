@@ -5,10 +5,63 @@
 
 import glob
 import os
+import sys
 
 # Handles returned by os.add_dll_directory. Kept at module scope so the directories
 # remain on the DLL search path for the lifetime of the process.
 _dll_directories = []
+
+_EXTENSION_STEM = "_usd_optimize_impl_core"
+_MODULE_SUFFIXES = (".pyd", ".so")
+
+
+def _abi_error(shipped, expected):
+    """Why the `shipped` extension suffixes cannot be imported by an interpreter
+    whose own tagged suffix is `expected`, or None if they can."""
+    if not shipped:
+        return "no extension module found"
+    if expected in shipped:
+        return None
+    if all(suffix in _MODULE_SUFFIXES for suffix in shipped):
+        return "extension module carries no ABI tag"
+    return "built for {}, but this interpreter expects {}".format(", ".join(sorted(shipped)), expected)
+
+
+def _check_python_abi(directory=None):
+    """Raise on an interpreter/ABI mismatch before the import turns it into a
+    misleading ``ModuleNotFoundError``.
+
+    The Linux drop bundles an exact-match ``libpython3.X.so.1.0``, so the loader
+    resolves it under the wrong interpreter and nothing objects. The expected ABI
+    is read from the shipped filename, never hardcoded. `directory` is for tests.
+    """
+    import importlib.machinery
+    import warnings
+
+    if directory is None:
+        directory = os.path.dirname(os.path.realpath(__file__))
+    shipped = [
+        os.path.basename(path)[len(_EXTENSION_STEM) :]
+        for path in glob.glob(os.path.join(directory, _EXTENSION_STEM + ".*"))
+        if path.endswith(_MODULE_SUFFIXES)
+    ]
+    reason = _abi_error(shipped, importlib.machinery.EXTENSION_SUFFIXES[0])
+    if reason is None:
+        return
+
+    if not shipped or "no ABI tag" in reason:
+        # Nothing to compare: warn, but let the import raise its own error.
+        warnings.warn(
+            "Cannot verify the Python ABI of {}: {}.".format(_EXTENSION_STEM, reason),
+            ImportWarning,
+            stacklevel=2,
+        )
+        return
+
+    raise ImportError(
+        "{} {}. Running Python {}. Use an interpreter matching the py_<version> "
+        "token in the package name.".format(_EXTENSION_STEM, reason, sys.version.split()[0])
+    )
 
 
 def _setup_windows_dll_dirs():
@@ -65,6 +118,9 @@ def _setup_windows_dll_dirs():
             except OSError:
                 pass
 
+
+# Before the import below, which would otherwise report a missing module.
+_check_python_abi()
 
 # try import the core implementation, if we're in a extension then we won't need to add the dll directories since
 # they will already be set up, otherwise we need to add them here so the import can find the required dlls

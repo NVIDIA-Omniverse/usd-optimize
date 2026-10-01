@@ -4,7 +4,7 @@ description: Collapse duplicate prim hierarchies into instanceable internal refe
 allowed-tools: Bash, Read
 metadata:
   author: NVIDIA Corporation
-  version: "1.0.0"
+  version: "1.0.1"
   tags: [usd, deduplication, hierarchy, instancing]
 ---
 
@@ -49,7 +49,7 @@ entire prim hierarchies matched by structure.
 
 Sections below are ordered for execution — read past **Step 3** before
 concluding saving or pipeline details are missing. Search for keywords like
-`tolerance`, `paths`, `deduplicateGeometry`, `analysisMode`, `ignoreShaderOutputs`,
+`tolerance`, `paths`, `deduplicateGeometry`, `analysis mode`, `ignoreShaderOutputs`,
 or `GetRootLayer().Export` to jump.
 
 - **Inputs** — asset path and optional `--paths` scoping.
@@ -217,9 +217,9 @@ property-value comparison — safe on any asset.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Operation runs but reports 0 prototype groups | Stage has no default prim, or all subtrees are unique. | Set a default prim (`stage.SetDefaultPrim(...)`) and re-run. Confirm with `analysisMode: 1` to see the candidate map. |
+| Operation runs but reports 0 prototype groups | Stage has no default prim, or all subtrees are unique. | Set a default prim (`stage.SetDefaultPrim(...)`) and re-run. Confirm with the CLI's `-an` analysis mode to see the candidate map (`analysisMode` is a context flag, not an operation argument -- passing it in a config JSON is silently ignored). |
 | Output uses synthetic `/Flattened_Prototype_N` paths | Ran with `-fl` / `--flatten`. | Drop `-fl`; the default `-w` root-layer export preserves prototype names — see Step 3. |
 | Fewer duplicates found than expected | Floating-point drift from re-export or tessellation may push otherwise-identical subtrees out of bitwise match. | Increase `tolerance` (only affects float arrays and scalar float/double; integer topology always requires exact match). |
-| CLI exits non-zero on the config | Operation rejected the config (bad arg key) or hit a USD I/O error. | Check the CLI log; verify argument keys against `docs/operations/deduplicateHierarchies.rst`. |
+| CLI exits non-zero on the config | A USD I/O error, or the operation itself reported failure. | Check the CLI log. An unknown argument key is **not** a cause — it logs a warning and the operation runs with that argument's default, at exit 0. Verify keys against `docs/operations/deduplicateHierarchies.rst`. |
 | Per-mesh duplicates remain after the run | This op only handles whole hierarchies. | Pair with `deduplicateGeometry` (already in the canonical pipeline shown in Step 3). |
 

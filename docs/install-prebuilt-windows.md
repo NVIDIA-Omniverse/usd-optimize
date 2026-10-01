@@ -14,9 +14,13 @@ If you are building Usd Optimize from source, see the top-level [README](../READ
 | --- | --- |
 | `include/` | C++ public headers (`usd_optimize/core/`) |
 | `lib/` | Prebuilt DLLs and Windows import libraries (`usd_optimize.core.dll`, plugin DLLs, `operation_mapping.json` — deprecated-name aliases for `mapConfig()`, not the list of operations) |
-| `python/` | Python bindings (`usd_optimize.core`) and bundled tests under `python/tests/test.python/` |
+| `bin/` | The `usdOptimize` command-line tool |
+| `python/` | Python bindings (`usd_optimize.core`) |
 | `usdpy/` | OpenUSD Python runtime modules (`pxr.*`) — the package brings its own USD |
-| `extraLibs/` | Third-party runtime libraries (Alembic, MaterialX, OpenSubdiv, TBB) and the matching CPython runtime DLL (e.g. `python312.dll` for `py_3.12`) |
+| `extraLibs/` | Third-party runtime libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic and OpenSubdiv) and the matching CPython runtime DLL (e.g. `python312.dll` for `py_3.12`) |
+| `config_presets/` | Ready-made operation stacks for `usdOptimize -c` |
+| `docs/` | This guide and the rest of the documentation set |
+| `.agents/` | Task-specific skill files (`.agents/skills/<name>/SKILL.md`) |
 
 There is **no `python.exe` in the package** — you must supply your own interpreter that matches the package's Python ABI.
 
@@ -76,7 +80,7 @@ Two paths must be exported every session:
 | Variable | Why |
 | --- | --- |
 | `PYTHONPATH` += `python;usdpy` | Lets the interpreter find both `usd_optimize.*` and `pxr.*` |
-| `PATH` += `lib;extraLibs` | Lets Windows resolve transitive DLL dependencies (USD, TBB, Alembic, plugin DLLs) |
+| `PATH` += `lib;extraLibs` | Lets Windows resolve transitive DLL dependencies (USD, TBB, plugin DLLs) |
 
 PowerShell:
 
@@ -175,17 +179,11 @@ if not all(ok for ok, _err, _out in results):
 stage.Save()
 ```
 
-Valid **`operation`** strings are whatever the loaded plugins register — enumerate them at runtime with `UsdOptimizeCore.getInstance().getOperations()` (the exact count varies by build). The bundled tests under `python/tests/test.python/` show descriptor JSON for many operations. **`lib/operation_mapping.json` is not that catalog:** it only lists deprecated operation keys and a few legacy argument renames for `UsdOptimizeCore.getInstance().mapConfig()`, so keys such as `merge`, `deletePrims`, or `decimateMeshes` will not appear there. The full per-operation argument reference is in the [Usd Optimize user manual](https://docs.omniverse.nvidia.com/extensions/latest/ext_scene-optimizer/user-manual.html).
+Valid **`operation`** strings are whatever the loaded plugins register — enumerate them at runtime with `UsdOptimizeCore.getInstance().getOperations()` (the exact count varies by build). The bundled `config_presets/*.json` show descriptor JSON for many operations. **`lib/operation_mapping.json` is not that catalog:** it only lists deprecated operation keys and a few legacy argument renames for `UsdOptimizeCore.getInstance().mapConfig()`, so keys such as `merge`, `deletePrims`, or `decimateMeshes` will not appear there. The full per-operation argument reference is in the [Usd Optimize user manual](https://docs.omniverse.nvidia.com/extensions/latest/ext_scene-optimizer/user-manual.html).
 
-## Notes on the Bundled Tests
+## Notes on Testing a Drop
 
-`python/tests/test.python/` ships the full Python suite from the repository plus `run_discover.py`. **Do not expect `run_discover.py` to pass on a minimal binary-release install.**
-
-- **`test_validators_*.py`** depend on NVIDIA **`usd-validation-nvidia`** from [PyPI](https://pypi.org/project/usd-validation-nvidia/) (`pip install usd-validation-nvidia`). They import `usd_validation_nvidia`; without that package you get **`ModuleNotFoundError: No module named 'usd_validation_nvidia'`** (one failure line per module at import time).
-
-- **`run_discover.py` imports every `test_*.py` before unittest runs.** If **any** import fails, it prints all import failures to stderr and **`sys.exit(1)` without running tests** — so a typical release sees validator import errors only and **executes zero tests**, not a long report of fixture misses. Only after every module imports successfully does the runner execute tests; **many** of those tests expect USD fixtures under `../data`, which exists in the source tree but not in the published package.
-
-The self-contained tests in `test_core_python_bindings.py` (`test_executionContext`, `test_executionContext_reportPath_roundtrip`, `test_executionContext_reportPath_survives_executeOperation`, `test_usdOptimizeCore`, `test_operation`) are equivalent to the smoke-check above.
+The Python test suite is **not** part of a published drop. It and its fixtures are routed into a separate, unpublished archive, so there is no `run_discover.py` to run. Use the smoke-check above to confirm an install is healthy.
 
 ## Troubleshooting
 
@@ -200,8 +198,8 @@ Two common causes:
 **`ModuleNotFoundError: No module named 'usd_optimize'` or `'pxr'`**
 `PYTHONPATH` is missing `python` or `usdpy`. Both directories must be on `PYTHONPATH`.
 
-**`ModuleNotFoundError: No module named 'usd_validation_nvidia'`** (common when running bundled `run_discover.py`)
-The `test_validators_*.py` modules require PyPI **`usd-validation-nvidia`** (`pip install usd-validation-nvidia`). Without it, `run_discover.py` fails during its import phase and runs no tests. Prefer `test_core_python_bindings.py` or the [smoke check](#verifying-the-install) for package verification alone.
+**`ModuleNotFoundError: No module named 'usd_validation_nvidia'`** (importing `usd_optimize.validators`)
+The drop ships the validator rules but not the framework they build on. Install it from PyPI: `pip install usd-validation-nvidia`. Only the validators need it — the core bindings and the [smoke check](#verifying-the-install) work without it.
 
 **`UsdOptimizeCore.getInstance().getOperations()` returns an empty list**
 The plugin DLLs in `lib/` did not load. Confirm the directory is on `PATH`, that no DLLs were quarantined by antivirus, and that the package matches your platform (`windows-x86_64`).

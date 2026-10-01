@@ -364,13 +364,13 @@ class TestFixerParameterHookup(TestCase):
         )
         stage = Usd.Stage.CreateInMemory()
         with patch("usd_optimize.validators.primitive_fit_checker.analysis.optimize") as mock_optimize:
-            rule._fit_primitives("sphere", False, stage, stage.GetPrimAtPath("/"))
+            rule._fit_primitives("sphere", stage, stage.GetPrimAtPath("/"))
         args = self._first_op_args(mock_optimize)
         self.assertEqual(args["vertexTolerance"], 0.5)
         self.assertEqual(args["volumeTolerance"], 0.25)
         self.assertEqual(args["ignoreSubsets"], False)
         self.assertEqual(args["fitSphere"], True)  # per-suggestion fit target
-        self.assertEqual(args["ignoreNonConstPrimvars"], False)  # callsite-driven
+        self.assertEqual(args["ignoreNonConstPrimvars"], False)
 
 
 def _per_prim_messages(mock_add_warning, summary_substrings):

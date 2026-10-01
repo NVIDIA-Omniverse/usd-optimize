@@ -156,7 +156,7 @@ set PYTHONPATH=%%TEST_PY_PATH%%;%%PYTHONPATH%%
         -- bundled Python. pip enforces the floor; a presence check would skip an
         -- older install.
         local win_ensure_av = string.format([[
-%s -m pip install --quiet --disable-pip-version-check "usd-validation-nvidia>=1.21.0"
+%s -m pip install --quiet --disable-pip-version-check "usd-validation-nvidia>=1.22.0,<2"
 ]], win_python_bin)
         -- Forward extra args (%*) to run_discover.py so callers can run
         -- individual tests, e.g.:
@@ -218,7 +218,7 @@ export PYTHONPATH=%s${PYTHONPATH:+:$PYTHONPATH}
         -- bundled Python. pip enforces the floor; a presence check would skip an
         -- older install.
         local ensure_av = string.format([[
-%s -m pip install --quiet --disable-pip-version-check "usd-validation-nvidia>=1.21.0"
+%s -m pip install --quiet --disable-pip-version-check "usd-validation-nvidia>=1.22.0,<2"
 ]], python_bin)
         -- Forward extra args ("$@") to run_discover.py so callers can run
         -- individual tests, e.g.:
@@ -320,10 +320,12 @@ group "tests"
 
         externalincludedirs {
             "%{target_deps}/usd/%{config}/include",
+            "%{target_deps}/tbb/%{config}/include",
         }
 
         libdirs {
-            "%{target_deps}/usd/%{config}/lib"
+            "%{target_deps}/usd/%{config}/lib",
+            "%{target_deps}/tbb/%{config}/lib"
         }
 
         files {
@@ -405,11 +407,13 @@ group "tests"
         usd_optimize_build.use_usd_optimize_core()
 
         externalincludedirs {
-            "%{target_deps}/usd/%{config}/include", -- for TBB
+            "%{target_deps}/usd/%{config}/include",
+            "%{target_deps}/tbb/%{config}/include",
         }
 
         libdirs {
-            "%{target_deps}/usd/%{config}/lib" -- for TBB
+            "%{target_deps}/usd/%{config}/lib",
+            "%{target_deps}/tbb/%{config}/lib"
         }
 
         targetdir ("%{bin_dir}")

@@ -16,6 +16,7 @@ import importlib.util
 import io
 import os
 import shutil
+import stat
 import sys
 import tempfile
 import types
@@ -55,6 +56,8 @@ _GUARD_CASES = [
     (["a.usd", "--fix", "--fix-output"], "requires a path argument"),
     (["--fix", "-r", "SomeRule"], "no .usd"),
     (["a.usd", "b.usd", "--fix"], "single source asset"),
+    (["a.usd", "--fix-overwrite"], "--fix-overwrite requires --fix"),
+    (["a.usd", "--fix", "--fix-overwrite", "--fix-in-place"], "--fix-overwrite cannot be combined"),
 ]
 
 
@@ -150,6 +153,105 @@ class Test(unittest.TestCase):
                 self.assertIn("resolves to the source", err)
                 self.assertEqual(self.calls, [])
         self.assertTrue(os.path.exists(asset))
+
+    def test_existing_destination_not_clobbered(self):
+        # The copy is made before validation runs, so without this guard even a run that
+        # finds nothing to fix destroys the file. --fix-overwrite opts back in.
+        asset = self._asset()
+        out = os.path.join(self._tmp, "scene.fixed.usd")
+        with open(out, "wb") as f:
+            f.write(b"sentinel\n")
+
+        rc, _, err = self._run([asset, "--fix"])
+        self.assertEqual(rc, 2)
+        self.assertIn("already exists", err)
+        self.assertEqual(self.calls, [])
+        with open(out, "rb") as f:
+            self.assertEqual(f.read(), b"sentinel\n")
+
+        rc, _, _ = self._run([asset, "--fix", "--fix-overwrite"])
+        self.assertEqual(rc, 0)
+        self.assertIn(out, self.calls[0])
+        with open(out, "rb") as f:
+            self.assertNotEqual(f.read(), b"sentinel\n")
+
+    def test_overwrite_rejected_when_in_place_comes_from_env(self):
+        # The guard reads the resolved mode: via the env var there is still no destination
+        # file, and silently ignoring --fix-overwrite while mutating the source is the
+        # failure being guarded against.
+        asset = self._asset()
+        os.environ["USD_OPTIMIZE_FIX_IN_PLACE"] = "1"
+        rc, _, err = self._run([asset, "--fix", "--fix-overwrite"])
+        self.assertEqual(rc, 2)
+        self.assertIn("--fix-overwrite cannot be combined", err)
+        self.assertEqual(self.calls, [])
+
+    def test_missing_source_named_as_missing(self):
+        # os.access is False for a missing path too, so the writability check must not
+        # tell someone with a typo to go change permissions.
+        missing = os.path.join(self._tmp, "nope.usd")
+        rc, _, err = self._run([missing, "--fix"])
+        self.assertEqual(rc, 2)
+        self.assertIn("does not exist", err)
+        self.assertNotIn("read-only", err)
+        self.assertEqual(self.calls, [])
+
+    def test_failed_copy_leaves_no_placeholder(self):
+        # The destination is reserved before the copy; a failed copy must not leave it
+        # behind, or the re-run hits "already exists".
+        asset = self._asset()
+        out = os.path.join(self._tmp, "scene.fixed.usd")
+        with mock.patch.object(_driver.shutil, "copy2", side_effect=OSError("disk full")):
+            with self.assertRaises(OSError):
+                self._run([asset, "--fix"])
+        self.assertFalse(os.path.exists(out))
+
+    def test_failed_run_removes_the_unfixed_copy(self):
+        # A run that dies after the copy must not leave an unfixed duplicate behind.
+        asset = self._asset()
+        out = os.path.join(self._tmp, "scene.fixed.usd")
+        seen = []
+
+        def boom():
+            seen.append(os.path.exists(out))
+            raise RuntimeError("Failed to open layer")
+
+        sys.modules["usd_validation_nvidia"].cli_main = boom
+        with self.assertRaises(RuntimeError):
+            self._run([asset, "--fix"])
+        self.assertEqual(seen, [True])  # the copy was there during the run
+        self.assertFalse(os.path.exists(out))  # and was unwound when it failed
+        self.assertTrue(os.path.exists(asset))  # source never at risk
+
+    def test_issues_found_keeps_the_fixed_output(self):
+        # "Issues found" is sys.exit(1) from a completed run; its output must survive.
+        asset = self._asset()
+        out = os.path.join(self._tmp, "scene.fixed.usd")
+
+        def issues_found():
+            sys.exit(1)
+
+        sys.modules["usd_validation_nvidia"].cli_main = issues_found
+        with self.assertRaises(SystemExit):
+            self._run([asset, "--fix"])
+        self.assertTrue(os.path.exists(out))
+
+    def test_read_only_source_rejected(self):
+        # copy2 preserves the mode, so the copy would be unwritable and upstream would
+        # report the fix as applied while saving nothing.
+        asset = self._asset()
+        os.chmod(asset, stat.S_IREAD)
+        if os.access(asset, os.W_OK):  # e.g. running as root, where the mode is advisory
+            os.chmod(asset, stat.S_IREAD | stat.S_IWRITE)
+            self.skipTest("cannot make a file unwritable for this user")
+        try:
+            rc, _, err = self._run([asset, "--fix"])
+        finally:
+            os.chmod(asset, stat.S_IREAD | stat.S_IWRITE)
+        self.assertEqual(rc, 2)
+        self.assertIn("read-only", err)
+        self.assertEqual(self.calls, [])
+        self.assertFalse(os.path.exists(os.path.join(self._tmp, "scene.fixed.usd")))
 
     # ---- happy paths --------------------------------------------------------
 

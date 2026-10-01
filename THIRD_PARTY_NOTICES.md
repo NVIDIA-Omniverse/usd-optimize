@@ -13,8 +13,8 @@ The list of components below reflects the build-time and run-time dependencies
 declared in `deps/target-deps.packman.xml` (which transitively imports
 `deps/usd-deps.generated.packman.xml` and, for USD-version-specific libraries,
 `deps/usd-lib-deps.generated.packman.xml` sourced from `deps/usd-lib-deps.json`).
-Version strings match the packman package pins for the default USD 25.11 build unless
-noted otherwise.
+Version strings match the packman package pins for the default build — selected by the
+`usd_ver` token in `repo.toml`, currently 26.08 — unless noted otherwise.
 
 ---
 
@@ -22,8 +22,8 @@ noted otherwise.
 
 ## Pixar Animation Studios - OpenUSD - Tomorrow Open Source Technology License 1.0
 
-Component: `usd-${config}` (version 25.11; packman package
-`0.25.11-gl.18041+v25.11.363a7c8d`)
+Component: `usd-${config}` (version 26.08; packman package `openusd`
+`0.26.08-9-<platform>-dynamic-${config}-py312.no_imaging`)
 
 Attribution Statements: The proprietary code links against OpenUSD shared libraries and
 uses its C++ and Python APIs pervasively. The core library reads, writes, traverses, and
@@ -69,7 +69,8 @@ TOMORROW OPEN SOURCE TECHNOLOGY LICENSE 1.0
 
 ## Intel Corporation / UXL Foundation - oneTBB (Threading Building Blocks) - Apache License 2.0
 
-Component: `oneTBB` (transitive, bundled with OpenUSD)
+Component: `oneTBB` (packman package `onetbb` `2021.13.0-4-<platform>-${config}` on USD
+26.08; through 25.11 it is instead bundled inside the OpenUSD package)
 
 Attribution Statements: The proprietary code links against TBB and calls its parallel
 algorithms (e.g. `tbb::parallel_for`, `tbb::parallel_reduce`) directly from C++ source to
@@ -85,6 +86,43 @@ License Text(https://github.com/uxlfoundation/oneTBB/blob/master/LICENSE.txt)
                         http://www.apache.org/licenses/
 
 Copyright (c) 2005-2024 Intel Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+---
+
+## Academy Software Foundation - MaterialX - Apache License 2.0
+
+Component: `MaterialX` (packman package `materialx` `1.39.5-14-<platform>-${config}-py312`
+on USD 26.08; through 25.11 it is instead bundled inside the OpenUSD package)
+
+Attribution Statements: MaterialX is redistributed in `extraLibs/` as the runtime that
+OpenUSD's `usdMtlx` plugin depends on — `usd_usdMtlx` ships from the OpenUSD package's
+`lib/`, while its `MaterialX*` runtime libraries come from the MaterialX package (see
+`source/core/premake5.lua`). Usd Optimize's own source does not call MaterialX APIs; the
+libraries are present so that stages referencing MaterialX shading networks resolve at
+runtime. Source code is available at
+https://github.com/AcademySoftwareFoundation/MaterialX.
+
+License Text(https://github.com/AcademySoftwareFoundation/MaterialX/blob/main/LICENSE)
+
+```
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+Copyright Contributors to the MaterialX Project
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -363,9 +401,15 @@ from NVIDIA CORPORATION is strictly prohibited.
   `deps/repo-deps.packman.xml`, and the optional `deps/repo-deps-nv.packman.xml`
   side-car) are not included here because they are not redistributed with the product.
 * **`omnimesh_ops_usd`, `autouv-core`, and `shrinkwrap_openvdb`** are pinned per OpenUSD
-  version in `deps/usd-lib-deps.json` (currently 25.11 and 25.05). The entries above
-  describe the default 25.11 build; consult that file for the exact packman strings when
-  building against 25.05.
+  version in `deps/usd-lib-deps.json` (currently 26.08, 25.11 and 25.05). The entries above
+  describe the default build selected by `repo.toml`'s `usd_ver` token; consult that file
+  for the exact packman strings when building against another version.
+* **The OpenUSD, oneTBB and MaterialX pins also vary by USD version.** From 26.08 oneTBB and
+  MaterialX are their own packman packages; through 25.11 both ship inside the OpenUSD
+  package. The pins a given build actually resolved are in
+  `deps/usd-deps.generated.packman.xml`. Note that none of these three packages ships an
+  in-package `LICENSE` or `THIRD_PARTY_NOTICES` file, so for them the entries above are the
+  attribution of record rather than a summary of one.
 * **Python (CPython, PSF License)** is pulled in via `deps/usd-deps.generated.packman.xml` as a
   host-environment dependency used only for building the pybind11 bindings. The CPython
   interpreter is not redistributed as part of Usd Optimize Core (consumers supply

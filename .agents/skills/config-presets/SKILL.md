@@ -4,7 +4,7 @@ description: Choose and run a ready-made preset operation stack from config_pres
 allowed-tools: Shell, Read
 metadata:
   author: NVIDIA Corporation
-  version: "1.0.0"
+  version: "1.0.1"
   tags: [usd, optimization, presets, config]
 ---
 
@@ -37,12 +37,12 @@ flags, error handling), [`tune-parameters`](../tune-parameters/SKILL.md)
 
 ```bash
 # POSIX
-_build/linux-x86_64/release/bin/usdOptimize -i in.usd -c config_presets/safe-cleanup.json -s -r -w out.usd
+_build/linux-x86_64/release/bin/usdOptimize -i in.usd -c config_presets/safe-cleanup.json -s -w out.usd
 ```
 
 ```powershell
 # Windows: use the .bat launcher, not usdOptimize.exe
-_build\windows-x86_64\release\bin\usdOptimize.bat -i in.usd -c config_presets\safe-cleanup.json -s -r -w out.usd
+_build\windows-x86_64\release\bin\usdOptimize.bat -i in.usd -c config_presets\safe-cleanup.json -s -w out.usd
 ```
 
 Presets live in `config_presets/` at the repo root, and ship in the same
@@ -82,7 +82,7 @@ sequence or combine their operation lists into a custom config.
 _build/<platform>/<config>/bin/usdOptimize \
     -i input.usd \
     -c config_presets/<preset>.json \
-    -s -r \
+    -s \
     -w output.usd
 ```
 
@@ -103,6 +103,9 @@ For interactive parameter tuning on a single operation, use
 To verify a preset did what you expected, re-run with `-an` for analysis only,
 or compare before/after with [`compare-stages`](../compare-stages/SKILL.md).
 The `-s` stats block in the log reports prim and mesh counts either side.
+Don't pair it with `-r`, which moves the block out of the log,
+into a `usdOptimize.*` report in the system temp directory,
+and prints the path of a second report that lacks it.
 
 ## Troubleshooting
 
@@ -115,6 +118,7 @@ The `-s` stats block in the log reports prim and mesh counts either side.
 | CLI exits non-zero mid-chain | One operation in the stack failed | Surface the failing op line from the log; the rest of the stack did not run. |
 | Ran clean but the stage looks unchanged | The preset's operations found nothing to do on this asset | Confirm with `run-validators` that the issues the preset targets are actually present. |
 | `Unknown argument '<key>' ... ignoring it` | A hand-edited preset has a typo'd argument name | Check the key against `docs/operations/<key>.rst`; the op ran with its default. |
+| `Could not find operation <name>` | The build cannot resolve that operation name; `-c` skips it, runs the rest and still exits 0 | Grep the whole log for `Could not find operation`. No shipped preset names a Python-plugin op, so this normally means a hand-edited preset or a drop predating the operation. |
 
 ## Purpose
 

@@ -55,10 +55,15 @@ function m.use_usd()
 
     externalincludedirs {
         target_deps.."/usd/%{config}/include",
+        -- USD 26.08+ only; through 25.11 both were bundled in the USD package.
+        target_deps.."/tbb/%{config}/include",
+        target_deps.."/materialx/%{config}/include",
     }
 
     libdirs {
         target_deps.."/usd/%{config}/lib",
+        target_deps.."/tbb/%{config}/lib",
+        target_deps.."/materialx/%{config}/lib",
     }
 
     add_usd {"ar","vt", "gf", "pcp", "sdf", "arch", "usd", "tf", "js", "trace", "usdUtils", "usdGeom", "usdPhysics", "usdShade", "usdSkel", "work", "kind"}

@@ -17,6 +17,8 @@
 
 // USD
 #include <pxr/usd/ar/resolverScopedCache.h>
+#include <pxr/usd/sdf/proxyTypes.h>
+#include <pxr/usd/sdf/reference.h>
 #include <pxr/usd/usd/primCompositionQuery.h>
 #include <pxr/usd/usd/primRange.h>
 #include <pxr/usd/usdGeom/primvarsAPI.h>
@@ -392,6 +394,22 @@ static void _findInstancedParents(const UsdStageWeakPtr& usdStage, std::map<UsdP
 // Callback when a material is hashed
 using HashedMaterialFn = std::function<void(const UsdPrim& prim, size_t hash)>;
 
+/// Whether the material composed to any shader at all. A referenced shading network whose node
+/// definitions are not installed -- MaterialX without its standard library, say -- composes to
+/// nothing, and that is the only case where _hashPrim has no content to tell two materials apart.
+static bool _hasComposedShader(const UsdPrim& prim)
+{
+    // Instance proxies too, or an instanceable material would never count as composed.
+    for (const auto& descendant : UsdPrimRange(prim, UsdTraverseInstanceProxies()))
+    {
+        if (descendant != prim && descendant.IsA<UsdShadeShader>())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 /// Takes a material and hashes it. If the material is a reference, then the source material is first
 /// resolved and hashed, ensuring that if we are going to rebind uniqueMaterials in a stage that the least
 /// referenced one is the one we rebind to.
@@ -426,6 +444,14 @@ static void _hashMaterial(const UsdPrim& prim,
     // This is gated by a (default true) argument so that when we want to hash materials in
     // multiple ways, e.g. to check for primvar deduplication, we can avoid the expense of
     // this in subsequent calls.
+    //
+    // A referenced shading network -- a MaterialX document, say -- can compose to no shaders at
+    // all when its node definitions are not installed, leaving _hashPrim nothing to tell two
+    // different materials apart. Collect the layers the references resolved to so they can
+    // discriminate. Resolved, not authored: the same spelling names a different file when it is
+    // authored in a different directory.
+    size_t referenceHash = 0;
+    bool hasReferenceAssetPath = false;
     if (checkArcs)
     {
         UsdPrimCompositionQuery compositionQuery(prim);
@@ -448,6 +474,17 @@ static void _hashMaterial(const UsdPrim& prim,
             const PcpArcType& arcType = arc.GetArcType();
             if (arcType == PcpArcTypeReference)
             {
+                SdfReferenceEditorProxy referenceEditor;
+                SdfReference reference;
+                const SdfLayerHandle targetLayer = arc.GetTargetLayer();
+                if (targetLayer && arc.GetIntroducingListEditor(&referenceEditor, &reference) &&
+                    !reference.GetAssetPath().empty())
+                {
+                    referenceHash = TfHash::Combine(referenceHash, targetLayer->GetIdentifier());
+                    referenceHash = TfHash::Combine(referenceHash, arc.GetTargetPrimPath().GetString());
+                    hasReferenceAssetPath = true;
+                }
+
                 // Get the actual target - this is the base material we want to avoid deleting, as
                 // it is used indirectly by this reference.
                 const auto& target = stage->GetPrimAtPath(arc.GetTargetNode().GetPath());
@@ -471,6 +508,15 @@ static void _hashMaterial(const UsdPrim& prim,
 
     // Hash the material
     size_t hash = _hashPrim(stage, prim, hashCache, includeFn);
+
+    // Only discriminate when _hashPrim had nothing to work with. GetCompositionArcs() also reports
+    // arcs introduced on ancestors, so applying this to every referenced material would stop
+    // identical materials under differently-referenced containers from deduplicating. A material
+    // whose network composed hashes on its content, as before.
+    if (hasReferenceAssetPath && !_hasComposedShader(prim))
+    {
+        hash = TfHash::Combine(hash, referenceHash);
+    }
 
     // Include the path of the first parent that is instanced in the hash, so that we do not
     // bind prims to uniqueMaterials that are outside the scope of the prototype created by scene instancing.

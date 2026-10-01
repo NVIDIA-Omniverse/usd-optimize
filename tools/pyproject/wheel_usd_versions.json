@@ -1,4 +1,4 @@
 {
-    "_comment": "OpenUSD versions the usd-optimize wheel is built and published against. The wheel binds usd-exchange / usd-validation-nvidia from PyPI (see tools/pyproject/pyproject.toml), which are built against these USD versions, so the wheel must be too. This is the single source of truth for the wheel's USD pin: tools/repoman/py_package.py guards the built tree against it and tools/ci/build.py uses it to decide which CI lane(s) build the wheel. Add a version here to publish a wheel for it.",
-    "usd_vers": ["25.05"]
+    "_comment": "OpenUSD versions the usd-optimize wheel is built and published against. The wheel binds usd-exchange / usd-validation-nvidia from PyPI (see tools/pyproject/pyproject.toml), which are built against these USD versions, so the wheel must be too. This is the single source of truth for the wheel's USD pin: tools/repoman/py_package.py guards the built tree against it and tools/ci/build.py uses it to decide which CI lane(s) build the wheel. This must hold exactly one version - the wheel filename carries no USD tag, so a second entry builds the same filename twice and collides at publish; changing it migrates every wheel consumer.",
+    "usd_vers": ["26.08"]
 }

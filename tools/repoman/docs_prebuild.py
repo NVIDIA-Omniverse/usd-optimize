@@ -39,7 +39,7 @@ _DEFAULT_CONFIG = "release"
 # imports ``usd_validation_nvidia``. That package is not part of the build, so it
 # must be pip-installed into the bundled interpreter before the import. Keep the
 # version constraint in sync with tools/pyproject/pyproject.toml.
-_VALIDATION_PACKAGE = "usd-validation-nvidia>=1.21.0"
+_VALIDATION_PACKAGE = "usd-validation-nvidia>=1.22.0,<2"
 
 
 def _host_platform() -> str:

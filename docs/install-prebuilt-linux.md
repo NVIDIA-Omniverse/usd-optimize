@@ -16,56 +16,42 @@ If you are building Usd Optimize from source, see the top-level [README](../READ
 | --- | --- |
 | `include/` | C++ public headers (`usd_optimize/core/`) |
 | `lib/` | Prebuilt shared libraries (`libusd_optimize.core.so`, plugin `.so` files, `operation_mapping.json` — deprecated-name aliases for `mapConfig()`, not the list of operations) |
-| `python/` | Python bindings (`usd_optimize.core`) and bundled tests under `python/tests/test.python/` |
+| `bin/` | The `usdOptimize` command-line tool |
+| `python/` | Python bindings (`usd_optimize.core`) |
 | `usdpy/` | OpenUSD Python runtime modules (`pxr.*`) — the package brings its own USD |
-| `extraLibs/` | Third-party runtime libraries (Alembic, MaterialX, OpenSubdiv, TBB) |
+| `extraLibs/` | Third-party runtime libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic and OpenSubdiv) and the matching CPython runtime (`libpython3.X.so.1.0`) |
+| `config_presets/` | Ready-made operation stacks for `usdOptimize -c` |
+| `docs/` | This guide and the rest of the documentation set |
+| `.agents/` | Task-specific skill files (`.agents/skills/<name>/SKILL.md`) |
 
 Two notable differences from the Windows drop:
 
 - There is **no `python` interpreter in the package** — you must supply your own that matches the package's Python ABI.
-- The Linux drop **does not bundle `libpython3.X.so.1.0`**. The bundled `pxr` modules link against it dynamically, so it must come from the Python you install (see below).
+- The Linux drop **does** bundle `libpython3.X.so.1.0`, in `extraLibs/`. The bundled `pxr` modules link against it dynamically and resolve it from there once `extraLibs` is on `LD_LIBRARY_PATH` ([step 3](#3-set-environment-variables)), so you do **not** have to install a shared `libpython` yourself.
 
 ## Prerequisites
 
 ### Python — must match the package name
 
-The Python version is encoded in the package directory name (`py_3.12` in the example above). The bundled USD `.so` modules are linked against `libpython3.12.so.1.0`, so loading them under any other Python (3.10, 3.11, 3.13, …) fails at import time with an undefined-symbol or `cannot open shared object file: libpython3.12.so.1.0` error.
+The Python version is encoded in the package directory name (`py_3.12` in the example above). The bundled USD `.so` modules are compiled against the CPython 3.12 ABI, so you must supply a **matching 3.12 interpreter**.
 
-This is a hard ABI requirement. Install the matching Python *with the shared library*. On Ubuntu/Debian, the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) is the easiest source for older or newer Python versions than your distro ships:
+You do **not** need to supply the shared `libpython`. The drop bundles `libpython3.12.so.1.0` in `extraLibs/`, and the bundled `pxr` modules resolve it from there once `extraLibs` is on `LD_LIBRARY_PATH` (see [step 3](#3-set-environment-variables)). A plain interpreter install is enough.
+
+If `python3.12 --version` already works, you have everything you need — skip ahead to [Installing](#installing).
+
+If it does not, you need to obtain one. On Ubuntu/Debian the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) is the easiest source for a Python version your distro does not ship:
 
 ```bash
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
-sudo apt-get install python3.12 python3.12-venv libpython3.12
+sudo apt-get install python3.12 python3.12-venv
 ```
 
-`libpython3.12` is the package that provides `libpython3.12.so.1.0` on deadsnakes — installing only `python3.12` (the interpreter) is not enough; loading the bundled USD modules will fail.
+> **Importing `pxr` does not catch a mismatched interpreter.** Because the drop supplies an exact-match `libpython3.12.so.1.0`, the dynamic linker has nothing to object to, so importing `pxr` under 3.10 or 3.11 can *appear* to succeed rather than failing with a clear ABI error. You may instead get an `undefined symbol: PyXxx_...` ImportError (see [Troubleshooting](#troubleshooting)). Which of the two you hit depends on the interpreter and on which symbols a module touches, so **neither outcome is guaranteed and a clean `pxr` import does not mean the interpreter is right**. Importing `usd_optimize.core` does check, and raises an `ImportError` naming both ABIs (see [Troubleshooting](#troubleshooting)). Running a mismatched interpreter is unsupported and untested; [step 2](#2-recommended-create-a-python-virtual-environment) shows how to confirm the one you use.
 
-> **The package that ships `libpython3.X.so.1.0` varies by where Python comes from:**
->
-> | Source | Package providing `libpython3.X.so.1.0` |
-> | --- | --- |
-> | deadsnakes PPA (Ubuntu/Debian) | `libpython3.X` (sometimes pulled in by `python3.X-dev`) |
-> | Stock Ubuntu/Debian (system Python) | `libpython3.X` (e.g. `libpython3.12` on Ubuntu 24.04) |
-> | pyenv | none — must rebuild with `PYTHON_CONFIGURE_OPTS="--enable-shared"` |
-> | conda / miniconda | included in the `python` package; usually under `$CONDA_PREFIX/lib` |
->
-> Regardless of source, verify the shared library actually landed before troubleshooting Usd Optimize:
->
-> ```bash
-> # Index of what ldconfig remembers — can be stale; see interpretation below.
-> ldconfig -p | grep libpython3.12.so.1.0
-> PYLIBDIR="$(python3.12 -c 'import sysconfig; print(sysconfig.get_config_var("LIBDIR"))')"
-> ls "$PYLIBDIR" | grep libpython3.12
-> ```
->
-> **How to interpret this:** Finding `libpython3.12.so.1.0` under `PYLIBDIR` shows the interpreter has the shared library. Three common situations:
->
-> 1. **`ls` does not show the `.so`** — install or rebuild Python with `--enable-shared` (see the table above).
-> 2. **`ls` shows the `.so` in a distro default library directory** (typically under `/usr/lib` or `/lib`, including multiarch paths such as `/usr/lib/x86_64-linux-gnu` on Debian/Ubuntu), but **`ldconfig -p` is still empty** — the linker cache is stale. The package post-install scripts normally refresh it via `ldconfig`; after an interrupted `apt` run or partial upgrade that step may never have run. Run **`sudo ldconfig`** once, then grep `ldconfig -p` again. You do **not** need an extra reinstall or redundant `PYLIBDIR` entries on `LD_LIBRARY_PATH`.
-> 3. **`ls` shows the `.so` only under an interpreter-specific prefix** (pyenv install dir, conda env, …) — that location is typically **outside** the default `ldconfig` search path even when fresh. Append that `PYLIBDIR` to `LD_LIBRARY_PATH` in [step 3](#3-set-environment-variables) below (conda activation usually handles this automatically).
+If you prefer a distro-neutral install, [pyenv](https://github.com/pyenv/pyenv) works on any Linux: `pyenv install 3.12`. You do **not** need to add `PYTHON_CONFIGURE_OPTS="--enable-shared"`: current pyenv passes `--enable-shared` itself unless you ask for `--disable-shared`. A deliberately static build works too, because the drop supplies its own `libpython3.12.so.1.0`.
 
-If you prefer a distro-neutral install, [pyenv](https://github.com/pyenv/pyenv) works on any Linux: `PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.12`. The `--enable-shared` flag is required so that `libpython3.12.so.1.0` is built; pyenv defaults to a static interpreter, which the package cannot link against. After install, the `.so` lives under `~/.pyenv/versions/3.12.<patch>/lib/`, which is **not** on the default `ldconfig` path — add it to `LD_LIBRARY_PATH` alongside `lib` and `extraLibs`.
+> **With `extraLibs` on `LD_LIBRARY_PATH`, the drop's `libpython` takes precedence.** `LD_LIBRARY_PATH` outranks an interpreter's own `DT_RUNPATH`, so a shared interpreter loads the drop's `libpython3.12.so.1.0` rather than the one it shipped with. Across 3.12 micro versions that is harmless — they are ABI-compatible — but it does mean `sys.version` can report the drop's build rather than the one you installed.
 
 ### C++ runtime (only if you link against the C++ libraries)
 
@@ -94,6 +80,14 @@ source "$PACKAGE_ROOT/.venv/bin/activate"
 
 Adjust the interpreter name to wherever your matching Python lives (`which python3.12` will print it).
 
+Confirm the venv runs the matching interpreter (`3.12.x` for a `py_3.12` package). The [smoke test](#verifying-the-install) uses this same interpreter:
+
+```bash
+"$PACKAGE_ROOT/.venv/bin/python" -c "import sys; print(sys.version)"   # expect 3.12.x
+```
+
+If it prints anything else, recreate the venv with the matching Python.
+
 ### 3. Set environment variables
 
 Two paths must be exported every session:
@@ -101,7 +95,7 @@ Two paths must be exported every session:
 | Variable | Why |
 | --- | --- |
 | `PYTHONPATH` += `python:usdpy` | Lets the interpreter find both `usd_optimize.*` and `pxr.*` |
-| `LD_LIBRARY_PATH` += `lib:extraLibs` | Lets the dynamic linker resolve transitive shared-object dependencies (USD, TBB, Alembic, plugin `.so`s) |
+| `LD_LIBRARY_PATH` += `lib:extraLibs` | Lets the dynamic linker resolve transitive shared-object dependencies (USD, TBB, plugin `.so`s) |
 
 bash/zsh:
 
@@ -194,32 +188,29 @@ if not all(ok for ok, _err, _out in results):
 stage.Save()
 ```
 
-Valid **`operation`** strings are whatever the loaded plugins register — enumerate them at runtime with `UsdOptimizeCore.getInstance().getOperations()` (the exact count varies by build). The bundled tests under `python/tests/test.python/` show descriptor JSON for many operations. **`lib/operation_mapping.json` is not that catalog:** it only lists deprecated operation keys and a few legacy argument renames for `UsdOptimizeCore.getInstance().mapConfig()`, so keys such as `merge`, `deletePrims`, or `decimateMeshes` will not appear there. The full per-operation argument reference is in the [Usd Optimize user manual](https://docs.omniverse.nvidia.com/extensions/latest/ext_scene-optimizer/user-manual.html).
+Valid **`operation`** strings are whatever the loaded plugins register — enumerate them at runtime with `UsdOptimizeCore.getInstance().getOperations()` (the exact count varies by build). The bundled `config_presets/*.json` show descriptor JSON for many operations. **`lib/operation_mapping.json` is not that catalog:** it only lists deprecated operation keys and a few legacy argument renames for `UsdOptimizeCore.getInstance().mapConfig()`, so keys such as `merge`, `deletePrims`, or `decimateMeshes` will not appear there. The full per-operation argument reference is in the [Usd Optimize user manual](https://docs.omniverse.nvidia.com/extensions/latest/ext_scene-optimizer/user-manual.html).
 
-## Notes on the Bundled Tests
+## Notes on Testing a Drop
 
-`python/tests/test.python/` ships the full Python suite from the repository plus `run_discover.py`. **Do not expect `run_discover.py` to pass on a minimal binary-release install.**
-
-- **`test_validators_*.py`** depend on NVIDIA **`usd-validation-nvidia`** from [PyPI](https://pypi.org/project/usd-validation-nvidia/) (`pip install usd-validation-nvidia`). They import `usd_validation_nvidia`; without that package you get **`ModuleNotFoundError: No module named 'usd_validation_nvidia'`** (one failure line per module at import time).
-
-- **`run_discover.py` imports every `test_*.py` before unittest runs.** If **any** import fails, it prints all import failures to stderr and **`sys.exit(1)` without running tests** — so a typical release sees validator import errors only and **executes zero tests**, not a long report of fixture misses. Only after every module imports successfully does the runner execute tests; **many** of those tests expect USD fixtures under `../data`, which exists in the source tree but not in the published package.
-
-The self-contained tests in `test_core_python_bindings.py` (`test_executionContext`, `test_executionContext_reportPath_roundtrip`, `test_executionContext_reportPath_survives_executeOperation`, `test_usdOptimizeCore`, `test_operation`) are equivalent to the smoke-check above.
+The Python test suite is **not** part of a published drop. It and its fixtures are routed into a separate, unpublished archive, so there is no `run_discover.py` to run. Use the smoke-check above to confirm an install is healthy.
 
 ## Troubleshooting
 
 **`ImportError: libpython3.12.so.1.0: cannot open shared object file: No such file or directory`**
-The interpreter cannot locate the ABI-matching shared `libpython`. Work through [the verification snippet under Python prerequisites](#python--must-match-the-package-name): compare `PYLIBDIR`/`ls` to `ldconfig -p`.
+The drop bundles this library in `extraLibs/`, so this almost always means `extraLibs` is missing from `LD_LIBRARY_PATH` — or was exported *after* the interpreter started. Re-check [step 3](#3-set-environment-variables) and restart the interpreter.
 
-- If **`ls` finds `libpython3.12.so.1.0` under `/usr/lib` or `/lib` (including multiarch subdirs)** but **`ldconfig -p` does not**, refresh **`sudo ldconfig`** and retry — an empty grep is often a stale linker cache after a skipped or failed apt trigger, not a missing package.
-- If **`ls` finds the `.so` only under pyenv**, add `~/.pyenv/versions/3.12.<patch>/lib` to **`LD_LIBRARY_PATH`** (after confirming you built with `--enable-shared`; see Prerequisites).
-- If **`ls` finds the `.so` only under conda**, activate that env (`$CONDA_PREFIX/lib`).
-- Only if **`ls` does not find the `.so`**, install the shared library package (Ubuntu/Debian: **`sudo apt-get install libpython3.12`** for the matching interpreter) or rebuild with `--enable-shared`.
+```bash
+ls "$PACKAGE_ROOT/extraLibs" | grep libpython   # should list libpython3.12.so.1.0
+echo "$LD_LIBRARY_PATH"                         # must contain both lib and extraLibs
+```
 
-See the [Python prerequisite](#python--must-match-the-package-name) for the package-name table per Python source.
+You do **not** need to install a system `libpython3.12`, run `sudo ldconfig`, or rebuild Python with `--enable-shared` — those steps were required by earlier revisions of this guide and are not needed with a bundled runtime.
+
+**`ImportError: _usd_optimize_impl_core built for .cpython-312-x86_64-linux-gnu.so, but this interpreter expects .cpython-3XX-x86_64-linux-gnu.so`**
+`usd_optimize.core` checks the interpreter on import, and yours does not match the package's `py_<version>` token. Recreate the venv with the matching Python ([step 2](#2-recommended-create-a-python-virtual-environment)).
 
 **`ImportError: <something>.so: undefined symbol: PyXxx_...`**
-Your interpreter does not match the package's `py_<version>` token. Install the matching Python version.
+Your interpreter does not match the package's `py_<version>` token. Install the matching Python version. Note the converse does not hold: importing only `pxr` under a mismatched interpreter often produces **no** error at all — see the [Python prerequisite](#python--must-match-the-package-name).
 
 **`ImportError: <pxr/something>.so: cannot open shared object file: No such file or directory`**
 `LD_LIBRARY_PATH` is missing `lib` or `extraLibs`. Both must be on `LD_LIBRARY_PATH` before the Python process starts so the dynamic linker can resolve transitive `.so`s. Setting them after `import pxr` has already run will not help — restart the interpreter.
@@ -230,8 +221,8 @@ The `libstdc++.so.6` on the target is older than what the package was built agai
 **`ModuleNotFoundError: No module named 'usd_optimize'` or `'pxr'`**
 `PYTHONPATH` is missing `python` or `usdpy`. Both directories must be on `PYTHONPATH`.
 
-**`ModuleNotFoundError: No module named 'usd_validation_nvidia'`** (common when running bundled `run_discover.py`)
-The `test_validators_*.py` modules require PyPI **`usd-validation-nvidia`** (`pip install usd-validation-nvidia`). Without it, `run_discover.py` fails during its import phase and runs no tests. Prefer `test_core_python_bindings.py` or the [smoke check](#verifying-the-install) for package verification alone.
+**`ModuleNotFoundError: No module named 'usd_validation_nvidia'`** (importing `usd_optimize.validators`)
+The drop ships the validator rules but not the framework they build on. Install it from PyPI: `pip install usd-validation-nvidia`. Only the validators need it — the core bindings and the [smoke check](#verifying-the-install) work without it.
 
 **`UsdOptimizeCore.getInstance().getOperations()` returns an empty list**
 The plugin `.so` files in `lib/` did not load. Confirm the directory is on `LD_LIBRARY_PATH` and that the package matches your platform (`linux-x86_64` vs `linux-aarch64`). Setting `LD_DEBUG=libs` before the Python process will print the linker's search trace and usually pinpoints the missing dependency.

@@ -4,7 +4,7 @@ description: Triage a failing Usd Optimize operation. Use when an op errors, sil
 allowed-tools: Shell, Read, Grep, Glob
 metadata:
   author: NVIDIA Corporation
-  version: "1.0.0"
+  version: "1.0.1"
   tags: [debug, troubleshooting, operations]
 ---
 
@@ -154,9 +154,10 @@ For the full CLI flag reference (`-v`, `-s`, `-an`, `-r`, `-st`), see
 
 | Pattern | Likely cause | Fix |
 |---|---|---|
-| Log says `0 meshes processed` or similar | `paths` filter doesn't match any prims, or stage has no matching prim types. | Check the `paths` argument. An empty `paths` array means "all prims" for most ops, but some interpret it as "nothing selected." |
+| Operation produces **no log line at all** | `paths` matched nothing. No operation prints a "0 processed" line, so silence *is* the signal — and the exit code is still 0. | Check the `paths` argument (see the bare-path rule below). An empty `paths` array means "all prims" for most ops, but some interpret it as "nothing selected." |
+| `paths` set to a bare non-Mesh prim path | A bare path matches **only that one prim**. `paths=/World` on an Xform therefore matches nothing, silently, with exit 0 and no output. | Use the SdfPathExpression descendant form `/World//*`, or list both (`["/World", "/World//*"]`) when the target may itself be the Mesh. |
 | Operation ran but output is identical to input | Arguments are at defaults that produce no change (e.g. `reductionFactor: 100` keeps everything). | Review the parameter defaults in the guide or C++ source. |
-| Log shows processing but the save failed | `--no-save` was passed, or `stage.GetRootLayer().Save()` / `.Export()` wasn't called. | Check the runner output for the save step. |
+| Log shows processing but the save failed | No `-w`/`--write` output path was given, or `stage.GetRootLayer().Save()` / `.Export()` wasn't called. | Check the runner output for the save step. (There is no `--no-save` flag — omitting `-w` is how you run without writing.) |
 
 ### Unexpected output (operation ran but result is wrong)
 
@@ -197,8 +198,10 @@ For the full CLI flag reference (`-v`, `-s`, `-an`, `-r`, `-st`), see
 
 ### Material operations (`optimizeMaterials`)
 
-- `convertToColor: true` replaces material networks with flat colors.
-  Unintended if the user didn't ask for it.
+- `optimizeMaterialsMode: 1` ("Convert to color") replaces material networks with
+  flat colors. Unintended if the user didn't ask for it. The mode is an enum, not a
+  boolean: `0` Deduplicate (the default), `1` Convert to color, `2` Remove unbound,
+  `3` Deduplicate with primvars.
 
 ### Hierarchy operations (`flattenHierarchy`, `pruneLeaves`)
 
@@ -233,7 +236,8 @@ guessing.
   config JSON, command line, or Python snippet — so the actual
   arguments are known.
 - A reproducible invocation. If the failure is intermittent, capture a
-  log first with `--verbose --captureStats --no-save`.
+  log first with `--verbose -s` and no `-w` (there is no `--no-save`
+  or `--captureStats` flag; `-s`/`--stats` is the stats switch).
 
 ## Limitations
 
@@ -254,8 +258,8 @@ can't make progress.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Verbose log is empty | `executionContext` step missing or placed after the failing op. | Put `{"operation":"executionContext","verbose":true,"captureStats":true}` as the first config entry. |
-| Analysis mode reports `not supported` | Operation doesn't implement `executeAnalysisImpl`. | Drop analysis mode; run on a copy of the stage with `--no-save`. |
+| Verbose log is empty | `executionContext` step missing or placed after the failing op. | Put `{"operation":"executionContext","verbose":1}` as the first config entry. **Use `1`, not `true`** — the parser reads these keys with `IsInt()`, so a JSON boolean is silently ignored. `captureStats` is not a recognised key here; use the CLI `-s` instead. |
+| Analysis mode reports `not supported` | Operation doesn't implement `executeAnalysisImpl`. | Drop analysis mode; run on a copy of the stage and omit `-w` so nothing is written. |
 | Op succeeds standalone but fails in chain | Earlier step in the chain mutated the stage in a way that invalidates the inputs. | Bisect the chain — run the failing op directly after the input is loaded. |
 | `libusd` mismatch error from `Operation.cpp` | Two `libusd` builds loaded — typical with system `pxr` + dev-tree Usd Optimize. | Use the build's bundled Python via the wrapper scripts (`tools/perf_*/run.sh`). See `run-validators` § CLI invocation for the `libusd` alignment exports. |
 

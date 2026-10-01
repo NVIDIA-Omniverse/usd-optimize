@@ -218,6 +218,12 @@ both overfill the inside of the arc and underfill its outside (the true swept ex
 chord). ``timeStep`` must be fine enough relative to the fastest rotation on the stage to keep both errors
 small; when in doubt, decrease it and confirm the envelope extent stops changing.
 
+``adaptivity`` trades containment margin for triangle count in this mode: at higher values it can pull
+the envelope surface inward of positions the volume step actually swept, most visibly on flat regions.
+The bounding box does not catch this — it is computed before the simplification pass runs. If the
+envelope must contain the swept geometry, leave ``adaptivity`` at ``0`` in this mode, or verify
+empirically that sampled points fall inside the output.
+
 Choosing resolution
 -------------------
 
@@ -243,7 +249,8 @@ Tuning order
 1. Set ``voxelSize`` for the target detail level (start small and increase until cost is acceptable).
 2. Increase ``erode`` to close larger gaps and holes.
 3. Adjust ``threshold`` to shift the extracted iso-surface inward or outward.
-4. Raise ``adaptivity`` to thin out triangles on flat areas.
+4. Raise ``adaptivity`` to thin out triangles on flat areas (costs containment margin in
+   ``Temporal Combined`` mode; see `Input modes`_).
 
 ``erode`` is not a "how much to shrink" dial with a neutral value at 0; it is the number of constrained
 erosion steps the level set is allowed to take, coarse to fine, while conforming toward the true surface.
@@ -276,6 +283,13 @@ Gap-closing / hole-filling (coarser, more erosion):
 .. code-block:: json
 
     [{"operation": "shrinkwrap", "voxelSize": 0.2, "erode": 16.0, "adaptivity": 0.5}]
+
+Motion envelope over a fixed time range (``Temporal Combined`` mode):
+
+.. code-block:: json
+
+    [{"operation": "shrinkwrap", "inputMode": 1, "startTime": 1, "endTime": 48, "timeStep": 1,
+      "connectTimeSamples": true, "outputPath": "/World/Envelope", "voxelSize": 0.05}]
 )DOC";
 }
 

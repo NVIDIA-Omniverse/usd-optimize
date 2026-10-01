@@ -1,4 +1,4 @@
 poetry-core==2.3.2
 poetry==2.3.4
 auditwheel==6.3.0
-usd-validation-nvidia==1.21.0
+usd-validation-nvidia==1.22.0

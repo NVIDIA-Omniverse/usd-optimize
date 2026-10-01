@@ -31,6 +31,8 @@ project_with_location("usd_optimize_cli")
 
     externalincludedirs {
         "%{root}/_build/target-deps/usd/%{config}/include",
+        -- USD 26.08+ only; absent for 25.x.
+        "%{root}/_build/target-deps/tbb/%{config}/include",
         "%{root}/_build/target-deps/python/include/python"..PYTHON_VERSION,
     }
 
@@ -79,6 +81,10 @@ project_with_location("usd_optimize_cli")
 
     -- Link against the actual usd optimize shared lib
     links {'usd_optimize.core'}
+
+    libdirs {
+        "%{root}/_build/target-deps/tbb/%{config}/lib",
+    }
 
     add_usd {"ar","vt", "gf", "pcp", "sdf", "arch", "usd", "tf", "js", "trace", "usdUtils", "usdGeom", "usdPhysics", "usdShade", "usdSkel", "work", "kind"}
     add_usd {"usdLux", "plug", "python"}

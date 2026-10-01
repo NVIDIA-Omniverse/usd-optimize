@@ -4,7 +4,7 @@ description: Create a USD proxy mesh sibling. Use to generate decimated, bbox, o
 allowed-tools: Read, Write, Bash
 metadata:
   author: NVIDIA Corporation
-  version: "1.0.0"
+  version: "1.0.1"
   tags: [usd, proxy, lod, decimation]
 ---
 
@@ -215,7 +215,7 @@ purpose pair on demand.
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | Proxy is empty after the run | Source has no authored spec at the edit-target layer (reference/payload only). | Flatten the source subtree first, or set the edit target to a layer that carries the source's specs. |
-| Proxy has many small meshes despite Step 3 | Default `mergePoint: 1` skips boundaries with a single mesh. | Set `allowSingleMeshes: true`, or widen with `mergePoint: 7` (Root Prim) / `0` (Stage). See `references/decimate-mode.md` § Step 3 variants. |
+| Proxy has many small meshes despite Step 3 | This recipe's `mergePoint: 1` skips boundaries with a single mesh. | Set `allowSingleMeshes: true`, or widen with `mergePoint: 7` (Root Prim) / `0` (Stage). See `references/decimate-mode.md` § Step 3 variants. |
 | Decimation overshoots the target % | Topology floor — many small meshes can't shrink below their minimum vertex count. | Drop `reductionFactor` further (e.g. 5 → 1) or accept the floor; see `references/parameter-tuning.md` § What to expect from the actual numbers. |
 | Bbox box renders as a rounded blob | Default Catmull-Clark subdivision applied. | Ensure `subdivisionScheme = "none"` and `faceVarying` normals are authored — both are in `references/bounding-box-modes.md` § Common scaffolding. |
 | `purpose` doesn't flow to descendants | Some descendant has its own authored `purpose` opinion. | Use `_set_purpose_subtree` in `references/decimate-mode.md` § Step 5 (it clears descendant authored opinions). |

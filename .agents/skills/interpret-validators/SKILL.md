@@ -4,7 +4,7 @@ description: Read saved validator artifacts and triage the issues that --fix cou
 allowed-tools: Bash, Read
 metadata:
   author: NVIDIA Corporation
-  version: "1.0.0"
+  version: "1.0.1"
   tags: [validation, reporting, analysis]
 ---
 
@@ -377,7 +377,7 @@ of these:
 - "Show me `<RuleName>` issues on `<prim_path>`" — `--locations` + substring filter.
 - "Show me only base rules" / "only Usd Optimize rules" — family filter on Step 4.
 - "Re-run validation" — hand off to the `run-validators` skill.
-- "Only check `<RuleName>`" — explain there's no `--rule` flag; filter post-hoc.
+- "Only check `<RuleName>`" — pass `-r <RuleName>` to the driver (repeatable).
 
 ---
 

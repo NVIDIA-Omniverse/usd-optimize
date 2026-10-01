@@ -77,13 +77,17 @@ def collect(path):
     mpu = UsdGeom.GetStageMetersPerUnit(stage)
     up = UsdGeom.GetStageUpAxis(stage)
 
-    prims = list(stage.TraverseAll())
+    # Expanded counts include instance proxies, so instancing never reads as deletion;
+    # distinct counts take each prototype prim once, however many instances share it.
+    prims = list(Usd.PrimRange.Stage(stage, Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate)))
+    distinct = list(dict.fromkeys(p.GetPrimInPrototype() if p.IsInstanceProxy() else p for p in prims))
     meshes = [p for p in prims if p.IsA(UsdGeom.Mesh)]
     materials = [p for p in prims if p.IsA(UsdShade.Material)]
     instances = [p for p in prims if p.IsInstance()]
 
     total_verts = 0
     total_faces = 0
+    total_triangles = 0
     for m in meshes:
         mesh = UsdGeom.Mesh(m)
         pts = mesh.GetPointsAttr().Get()
@@ -92,6 +96,9 @@ def collect(path):
             total_verts += len(pts)
         if fvc:
             total_faces += len(fvc)
+            # A quad is 1 face but 2 triangles. Clamped at 0 so a malformed face
+            # (fewer than 3 vertices) on an unvalidated asset can't subtract.
+            total_triangles += sum(max(n - 2, 0) for n in fvc)
 
     file_size = safe_getsize(path)
 
@@ -101,11 +108,14 @@ def collect(path):
         "metersPerUnit": mpu,
         "upAxis": str(up),
         "total_prims": len(prims),
+        "distinct_prims": len(distinct),
         "meshes": len(meshes),
+        "distinct_meshes": sum(1 for p in distinct if p.IsA(UsdGeom.Mesh)),
         "materials": len(materials),
         "instances": len(instances),
         "total_vertices": total_verts,
         "total_faces": total_faces,
+        "total_triangles": total_triangles,
     }
 
 before = collect(sys.argv[1])
@@ -140,7 +150,7 @@ if (Test-Path $BuildDir) {
 & $PyBin "$env:TEMP\_compare_stages.py" "<before.usd>" "<after.usd>"
 ```
 
-For a build-vs-build comparison, use the build's own USD (path 1) so both stages read through the same USD the operations wrote. If you fall back to an installed `pxr`, pin it to the build: `pip install usd-core==25.11` (match the USD version pinned in `deps/usd_flavors.json` / `deps/usd-lib-deps.json`; a bare `pip install usd-core` may not match).
+For a build-vs-build comparison, use the build's own USD (path 1) so both stages read through the same USD the operations wrote. If you fall back to an installed `pxr`, pin it to the build: `pip install usd-core==26.08` (match the USD version pinned in `deps/usd_flavors.json` / `deps/usd-lib-deps.json`; a bare `pip install usd-core` may not match).
 
 ## Step 2 — Present the comparison table
 
@@ -153,14 +163,22 @@ Comparison: <before_basename> → <after_basename>
 |-----------------|-----------|-----------|---------|-------|
 | File size       |   12.3 MB |    8.1 MB |  -4.2 MB | -34% |
 | Prims           |    12,450 |     8,230 |  -4,220 | -34% |
-| Meshes          |     3,200 |     1,100 |  -2,100 | -66% |
+| Distinct prims  |    12,450 |     7,530 |  -4,920 | -40% |
+| Meshes          |     3,200 |     3,200 |       0 |   0% |
+| Distinct meshes |     3,200 |     2,500 |    -700 | -22% |
 | Vertices        | 1,245,000 |   620,000 | -625,000 | -50% |
 | Faces           |   830,000 |   415,000 | -415,000 | -50% |
+| Triangles       | 1,200,000 |   415,000 | -785,000 | -65% |
 | Materials       |        45 |        12 |     -33 | -73% |
 | Instances       |         0 |       800 |    +800 |    — |
 | metersPerUnit   |      0.01 |      0.01 |       — |    — |
 | upAxis          |         Y |         Y |       — |    — |
 ```
+
+Counts include every instance's copy, so instancing never lowers `meshes`
+or the geometry totals; it shows up in `instances` and the distinct counts.
+A quad is one face but two triangles, so compare `total_triangles`
+across a triangulating op such as decimation.
 
 Format file sizes in human-readable units (KB/MB/GB). Use commas for
 large numbers. Flag any change in `metersPerUnit` or `upAxis` with a
@@ -170,9 +188,9 @@ warning — those shouldn't change during optimization.
 
 After the table, add a 1–2 sentence synthesis:
 
-> Optimization reduced vertex count by 50% and mesh count by 66% (mostly
-> from `deduplicateGeometry` creating 800 instances). File size dropped
-> 34%. Stage metadata unchanged.
+> Decimation cut triangles by 65% and vertices by 50%; `deduplicateGeometry`
+> shared meshes across 800 instances (distinct meshes -22%, none deleted).
+> File size dropped 34%. Stage metadata unchanged.
 
 If you know which operations were run (e.g. from a prior `run-operations`
 session), attribute the changes to specific ops.
@@ -214,7 +232,8 @@ def collect_prim_paths(path):
     stage = Usd.Stage.Open(path)
     if not stage:
         return set()
-    return {str(p.GetPath()) for p in stage.TraverseAll()}
+    return {str(p.GetPath())
+            for p in Usd.PrimRange.Stage(stage, Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate))}
 
 before_paths = collect_prim_paths(sys.argv[1])
 after_paths = collect_prim_paths(sys.argv[2])
@@ -254,7 +273,7 @@ to attribute a regression to a specific operation.
 - Two USD files (`.usd` / `.usda` / `.usdc` / `.usdz`) on disk.
 - A Python interpreter with the USD bindings (`from pxr import Usd`) —
   a built repo (`_build/target-deps/`, env exported per Step 1), an
-  existing pxr (wheel/Kit/conda), or a pinned `pip install usd-core==25.11`.
+  existing pxr (wheel/Kit/conda), or a pinned `pip install usd-core==26.08`.
 - For `--validators`: saved `issues.csv` artifacts from
   `run-validators` for both stages.
 
@@ -268,6 +287,8 @@ to attribute a regression to a specific operation.
   same validator set (mismatched rule sets produce noisy deltas).
 - Prim-level diff (`--prims`) can be slow and verbose on multi-million-prim
   stages — defaults to first 20 adds/removes.
+- Counts expand instance proxies, so a heavily instanced stage
+  takes far longer to scan than its `distinct_prims` count suggests.
 
 ## Troubleshooting
 

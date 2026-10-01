@@ -27,6 +27,12 @@ def _is_bound_material(stage, prim_path, material_path):
     return False
 
 
+def _get_bound_material_path(stage, prim_path):
+    """Returns the path of the material bound to a prim"""
+    material, _ = UsdShade.MaterialBindingAPI(stage.GetPrimAtPath(prim_path)).ComputeBoundMaterial()
+    return material.GetPath()
+
+
 def _count_materials(stage):
     """Count the number of Materials in a stage"""
 
@@ -164,6 +170,32 @@ class Test_Operation_Optimize_Materials(Test_Operation):
                 uniqueMaterials += 1
 
         self.assertEqual(uniqueMaterials, 4)
+
+    async def test_DeduplicateMaterialsReferences(self):
+        """Test that referenced materials merge on content, or on their source file when nothing composed"""
+        stage = self._open_stage("deduplicateMaterialsReferences/root.usda")
+        self.assertEqual(_count_materials(stage), 9)
+
+        args = DEFAULT_ARGS.copy()
+        self._execute_command(args)
+
+        def bound(cube):
+            return _get_bound_material_path(stage, "/World/" + cube)
+
+        # The same file merges, however the reference to it is spelled
+        self.assertEqual(bound("CubeA"), bound("CubeADuplicate"))
+        self.assertEqual(bound("CubeA"), bound("CubeLooksA"))
+        self.assertEqual(bound("CubeB"), bound("CubeLooksB"))
+
+        # Different files never merge, even when the reference is spelled the same
+        self.assertNotEqual(bound("CubeA"), bound("CubeB"))
+        self.assertNotEqual(bound("CubeLooksA"), bound("CubeLooksB"))
+
+        # Composed networks merge on content, whichever file they came from
+        self.assertEqual(bound("CubeContainerA"), bound("CubeContainerB"))
+        self.assertEqual(bound("CubeInstanceA"), bound("CubeInstanceB"))
+
+        self.assertEqual(_count_materials(stage), 4)
 
     async def test_OptimizeMaterials(self):
         """Test various material optimizations"""

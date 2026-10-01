@@ -54,7 +54,9 @@ class ColocatedVerticesChecker(BaseUsdOptimizeChecker):
                     "mergeBoundaries": True,
                     "mergeNeighbors": True,
                     "contractDegenerateEdges": False,
-                    "removeDegenerateFaces": False,
+                    # Welding collapses faces to zero area; removing them is what keeps the output
+                    # manifold. contractDegenerateEdges stays off -- it corrupts omo::checkClean.
+                    "removeDegenerateFaces": True,
                     "makeManifold": False,
                     "removeIsolatedVertices": False,
                     "removeDuplicateFaces": False,

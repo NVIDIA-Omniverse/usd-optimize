@@ -135,9 +135,9 @@ def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
     parser.add_argument(
         "--usd-ver",
         dest="usd_ver",
-        default="25.11",
+        default="26.08",
         help=(
-            "USD version (e.g. '25.11'). Selects the stock OpenUSD deps template for "
+            "USD version (e.g. '26.08'). Selects the stock OpenUSD deps template for "
             "non-kit flavors, and the USD-version-dependent library versions "
             "(omnimesh_ops_usd, autouv-core, shrinkwrap_openvdb) for all flavors, "
             "including kit."
@@ -178,9 +178,12 @@ def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
                 f.write(_KIT_USD_DEPS_TEMPLATE)
             omni.repo.man.logger.info(f"Generated kit USD deps: {output_path}")
         else:
-            templates_root = _find_repo_usd_templates()
-            # Template directory structure: <flavor>/<usd_ver>+<python_ver>/usd-deps.packman.xml
+            # A repo-local deps/usd-flavors/<flavor>/<usd_ver>+<python_ver>/ template wins over
+            # repo_usd's, so versions repo_usd lacks a template for (26.08+) can still be built.
             version_key = f"{usd_ver}+{python_ver}"
+            local_root = os.path.join(root, "deps", "usd-flavors")
+            local_path = os.path.join(local_root, usd_flavor, version_key, "usd-deps.packman.xml")
+            templates_root = local_root if os.path.isfile(local_path) else _find_repo_usd_templates()
             template_path = os.path.join(templates_root, usd_flavor, version_key, "usd-deps.packman.xml")
             if not os.path.isfile(template_path):
                 flavor_dir = os.path.join(templates_root, usd_flavor)

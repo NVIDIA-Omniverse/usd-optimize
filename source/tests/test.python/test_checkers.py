@@ -4,6 +4,7 @@
 
 from unittest import TestCase
 
+from pxr import Sdf, Usd
 from usd_optimize.validators import (
     CoincidingGeometryChecker,
     ColocatedVerticesChecker,
@@ -31,7 +32,7 @@ from usd_optimize.validators import (
     ZeroAreaFacesChecker,
     ZeroExtentChecker,
 )
-from usd_validation_nvidia import IssuePredicates, UserParameter, ValidationEngine
+from usd_validation_nvidia import FixStatus, IssueFixer, IssuePredicates, UserParameter, ValidationEngine
 from usd_validation_nvidia.tests import IsAnError, IsAnInfo, IsAWarning, ValidationTestCaseMixin
 
 from .test_utils import _get_test_data_file_path
@@ -250,6 +251,42 @@ class Test_Checkers(TestCase, ValidationTestCaseMixin):
         self.assertEqual(issues[0].message, "Found 2 overlapping meshes in the stage.")
         self.assertIsInstance(issues[0].at, tuple)
 
+    def test_primitive_fit_checker_offers_no_lossy_autofix(self):
+        """Only the lossless fit may carry a suggestion -- IssueFixer applies them unattended"""
+
+        # Synthetic analysis data: no fixture in the repo yields a non-zero
+        # nonconstPrimvarMeshCount, which is why the assertRule test below rotted.
+        rule = PrimitiveFitChecker()
+        warnings = []
+        rule._AddWarning = lambda **kw: warnings.append(kw)
+        rule._AddInfo = lambda **kw: None
+        rule._AddVerbosePrimWarnings = lambda *a, **kw: None
+        rule._CheckStage(
+            Usd.Stage.CreateInMemory(),
+            {
+                "totalMeshCount": 2,
+                "composedCount": 0,
+                "totalFaceCount": 12,
+                "totalVertexCount": 16,
+                "primitives": {
+                    "cube": {
+                        "meshCount": 1,
+                        "faceCount": 6,
+                        "vertexCount": 8,
+                        "nonconstPrimvarMeshCount": 1,
+                        "nonconstPrimvarFaceCount": 6,
+                        "nonconstPrimvarVertexCount": 8,
+                    }
+                },
+            },
+        )
+        lossless = [w for w in warnings if "w/o non-const primvars" in w["message"]]
+        lossy = [w for w in warnings if "WITH non-const primvars" in w["message"]]
+        self.assertEqual(len(lossless), 1)
+        self.assertEqual(len(lossy), 1)
+        self.assertIn("suggestion", lossless[0])
+        self.assertNotIn("suggestion", lossy[0])
+
     # TODO: fix me
     # def test_primitive_fit_checker(self):
     #     self.assertRule(
@@ -301,6 +338,22 @@ class Test_Checkers(TestCase, ValidationTestCaseMixin):
             rule=ColocatedVerticesChecker,
             predicate=None,
         )
+
+    def test_merge_vertices_checker_fix_output_is_manifold(self):
+        """Welding must not leave the collapsed faces behind for other rules to flag"""
+
+        stage = Usd.Stage.Open(_get_test_data_file_path("mergeColocatedVertices_input.usd"))
+        session_layer = Sdf.Layer.CreateAnonymous()
+        stage.GetSessionLayer().subLayerPaths.append(session_layer.identifier)
+
+        result = self.validate(asset=stage, rule=ColocatedVerticesChecker)
+        for fix in IssueFixer(stage).fix_at(result.issues(), session_layer):
+            self.assertEqual(fix.status, FixStatus.SUCCESS, msg=fix.exception)
+
+        # assertSuggestion only re-runs the rule that produced the fix, so it cannot see that the
+        # welded output is itself defective. These two rules are what the fix used to break.
+        self.assertSuccess(asset=stage, rule=NonManifoldChecker)
+        self.assertSuccess(asset=stage, rule=WindingsChecker)
 
     def test_nonmanifold_checker(self):
         """Test for nonmanifold geometry"""

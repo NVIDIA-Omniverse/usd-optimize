@@ -63,7 +63,7 @@ drive operations through the core singleton:
 
 .. code-block:: cpp
 
-   #include <usd_optimize/core/UsdOptimize.h>
+   #include <usd_optimize/core/Core.h>
 
 The public C++ interface is documented in the :doc:`../api/api` reference.
 The equivalent Python entry points are described in :doc:`python`, and the

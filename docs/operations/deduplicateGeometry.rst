@@ -24,9 +24,17 @@ Matching controls
 
 ``tolerance`` (default ``0.001``, stage units) is the position tolerance for considering two meshes
 equal; use ``0`` to require exact matches. ``fuzzy`` enables shape-based matching; ``allowScaling`` lets
-uniformly scaled copies match; ``considerDeepTransforms`` (default ``true``) accounts for the full
-world transform when comparing. ``minimumDuplicates`` (default ``2``) sets how many copies must exist
-before a prototype is created. ``ignoreAttributes`` excludes named attributes from the comparison.
+uniformly scaled copies match; ``considerDeepTransforms`` (default ``true``) lets two meshes match when
+their stored points differ by a linear transform, instead of requiring the point arrays to agree
+directly. ``minimumDuplicates`` (default ``2``) sets how many copies must exist before a prototype is
+created. ``ignoreAttributes`` excludes named attributes from the comparison.
+
+``considerDeepTransforms`` is meant to find more duplicates, but some data sets report more with it
+disabled; if a scene with obvious repeats yields none, try both and compare the counts.
+
+``ignoreAttributes`` applies only to the Reference, Instanceable Reference and Point Instancer
+methods; for Copy Values and Set Attribute it is a no-op. Prefer a specific attribute over a
+namespace, since one ending in ``:`` also excludes everything beneath it.
 
 Recommended pipelines
 ---------------------

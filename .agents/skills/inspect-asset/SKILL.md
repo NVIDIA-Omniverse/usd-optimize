@@ -84,7 +84,7 @@ if (Test-Path $BuildDir) {
 
 Reuse the resolved interpreter (`$PYBIN` / `$PyBin`, env exported) for Step 2. If
 it still fails (no build, no `pxr`): build the repo, or `pip install
-usd-core==25.11` (match the USD version pinned in `deps/usd_flavors.json` /
+usd-core==26.08` (match the USD version pinned in `deps/usd_flavors.json` /
 `deps/usd-lib-deps.json`; a bare `pip install usd-core` may not match the
 build's USD).
 
@@ -94,6 +94,11 @@ build's USD).
 
 Write a temp script and run it with the Step 1 interpreter (`$PYBIN` /
 `$PyBin`, build env exported). The script outputs a single JSON object.
+
+Save it as `_inspect_asset.py` in a dedicated scratch directory.
+Never name it `inspect.py` or run it beside one:
+the script's directory comes first on `sys.path`,
+so that file shadows the stdlib `inspect` module and `from pxr import Usd` fails.
 
 ```python
 import json, os, sys
@@ -111,7 +116,10 @@ mpu = UsdGeom.GetStageMetersPerUnit(stage)
 up = UsdGeom.GetStageUpAxis(stage)
 default_prim = stage.GetDefaultPrim()
 
-all_prims = list(stage.TraverseAll())
+# Expanded counts include instance proxies, so instanced geometry counts per instance;
+# distinct counts take each prototype prim once, however many instances share it.
+all_prims = list(Usd.PrimRange.Stage(stage, Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate)))
+distinct_prims = list(dict.fromkeys(p.GetPrimInPrototype() if p.IsInstanceProxy() else p for p in all_prims))
 type_counts = {}
 for p in all_prims:
     t = p.GetTypeName() or "(untyped)"
@@ -124,6 +132,7 @@ skel_roots = [p for p in all_prims if p.IsA(UsdSkel.Root)]
 
 total_verts = 0
 total_faces = 0
+total_triangles = 0
 per_mesh = []
 
 for p in meshes:
@@ -134,18 +143,24 @@ for p in meshes:
     nf = len(fvc) if fvc else 0
     total_verts += nv
     total_faces += nf
+    # A quad is 1 face but 2 triangles. Clamped at 0 so a malformed face
+    # (fewer than 3 vertices) on an unvalidated asset can't subtract.
+    total_triangles += sum(max(n - 2, 0) for n in fvc) if fvc else 0
     if detailed:
         per_mesh.append({"path": str(p.GetPath()), "vertices": nv, "faces": nf})
 
-# Sample-only probe: stops at the first time-sampled attribute and caps the
-# scan at 500 prims so large stages don't pay for a full sweep.
+# Sample-only probe, capped at 500 distinct prims to keep large stages fast,
+# so a negative result means "unknown", not "no".
+# A single time sample is a constant, not animation; it is reported separately.
 has_animation = False
-for p in all_prims[:500]:
+has_single_sample_attrs = False
+animation_scan_complete = len(distinct_prims) <= 500
+for p in distinct_prims[:500]:
     for attr in p.GetAttributes():
-        if attr.GetNumTimeSamples() > 1:
-            has_animation = True
-            break
-    if has_animation:
+        n = attr.GetNumTimeSamples()
+        has_animation |= n > 1
+        has_single_sample_attrs |= n == 1
+    if has_animation and has_single_sample_attrs:
         break
 
 bcache = UsdGeom.BBoxCache(Usd.TimeCode.Default(),
@@ -176,14 +191,19 @@ result = {
     "upAxis": str(up),
     "defaultPrim": str(default_prim.GetPath()) if default_prim else None,
     "total_prims": len(all_prims),
+    "distinct_prims": len(distinct_prims),
     "type_counts": dict(sorted(type_counts.items(), key=lambda x: -x[1])),
     "meshes": len(meshes),
+    "distinct_meshes": sum(1 for p in distinct_prims if p.IsA(UsdGeom.Mesh)),
     "total_vertices": total_verts,
     "total_faces": total_faces,
+    "total_triangles": total_triangles,
     "materials": len(materials),
     "instances": len(instances),
     "skel_roots": len(skel_roots),
     "has_animation": has_animation,
+    "has_single_sample_attrs": has_single_sample_attrs,
+    "animation_scan_complete": animation_scan_complete,
     "bbox": bbox,
 }
 if detailed:
@@ -210,12 +230,13 @@ Stage metadata:
   defaultPrim:   <path or "(none)")>
 
 Geometry:
-  Prims:    <total>
-  Meshes:   <count>  (<vertices> vertices, <faces> faces)
+  Prims:    <total>  (<distinct> distinct)
+  Meshes:   <count>  (<distinct> distinct; <vertices> vertices, <faces> faces, <triangles> triangles)
   Materials: <count>
   Instances: <count>
   SkelRoots: <count>
-  Animation: <yes/no>
+  Animation: <yes/no, or "unknown" if none was found in a capped scan>
+  Single-sample attributes: <yes/no>
 
 Bounding box (stage units):
   Size: <X> × <Y> × <Z>
@@ -252,6 +273,8 @@ Map `metersPerUnit` to a human-readable name:
   prims.
 - **Animation detected**: note that time-sampled attributes are present;
   `optimizeTimeSamples` may be relevant.
+- **Single-sample attributes**: each holds a constant as a time sample;
+  `optimizeTimeSamples` replaces it with a default value.
 - **High instance count**: the stage already uses instancing; warn before
   running `deduplicateGeometry` (which adds more instances) or `merge`
   (which can't merge instanced prims without deinstancing first).
@@ -301,14 +324,15 @@ step when the user opens a new asset.
 - A USD asset path (`.usd` / `.usda` / `.usdc` / `.usdz`).
 - A Python interpreter with the `pxr` bindings — a built repo
   (`_build/target-deps/`, env exported per Step 1), an existing pxr
-  (wheel/Kit/conda), or a pinned `pip install usd-core==25.11`.
+  (wheel/Kit/conda), or a pinned `pip install usd-core==26.08`.
 
 ## Limitations
 
 - This skill is read-only — it never edits the input.
-- Animation detection is a sample-only probe (caps at 500 prims and
-  stops at the first time-sampled attribute) to keep large stages
-  fast. The flag is a hint, not an exhaustive scan.
+- Animation detection is a sample-only probe (the first 500 distinct prims)
+  to keep large stages fast. The flag is a hint, not an exhaustive scan.
+- Counts expand instance proxies, so a heavily instanced stage
+  takes far longer to scan than its `distinct_prims` count suggests.
 - Bounding box is computed for `default` + `render` purposes; assets
   whose visual content lives under `proxy` or `guide` purposes will
   report a degenerate bbox.
@@ -319,7 +343,7 @@ step when the user opens a new asset.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| `pxr` import fails | Not built, no `pxr` installed, or a stray `PYTHONPATH` shadows the build (ABI error). | Build the repo and re-run Step 1 (it exports the build env), or `pip install usd-core==25.11` (matched pin). |
+| `pxr` import fails | Not built, no `pxr` installed, or a stray `PYTHONPATH` shadows the build (ABI error). | Build the repo and re-run Step 1 (it exports the build env), or `pip install usd-core==26.08` (matched pin). |
 | `Failed to open: <path>` in the JSON output | Path is wrong, layer is corrupt, or it's a non-USD file with a `.usd` extension. | Verify the path; try `usdcat <path>` or open in `usdview` to confirm the file is a valid USD layer. |
 | `total_prims = 0` | Asset is essentially empty, or the open call hit a payload that didn't load. | Check whether the stage uses payloads — `Stage.OpenMasked` or `Usd.Stage.Open(path, Usd.Stage.LoadAll)` may surface content. |
 | `bbox = null` | All visible prims are non-renderable, or the stage uses non-`default`/`render` purpose. | Inspect with `--detailed` and check `purpose` on top-level prims. |

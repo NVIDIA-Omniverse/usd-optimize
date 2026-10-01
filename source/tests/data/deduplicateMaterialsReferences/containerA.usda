@@ -1,0 +1,20 @@
+#usda 1.0
+(
+    defaultPrim = "Container"
+)
+
+def Scope "Container"
+{
+    def Material "Material"
+    {
+        token outputs:surface.connect = </Container/Material/Shader.outputs:surface>
+
+        def Shader "Shader"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.5, 0.5, 0.5)
+            float inputs:roughness = 0.4
+            token outputs:surface
+        }
+    }
+}

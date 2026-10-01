@@ -363,6 +363,32 @@ class Test_Operation_Prune_Leaves_Command(Test_Operation):
         self.assertTrue(result[0])
         self.assertEqual(result[2]["analysis"], ["/World/Ref"])
 
+    async def test_PruneLeaves_undefined_overs_are_not_content(self):
+        """Undefined prims (pure overs) must not count as content when deciding leaf-ness.
+
+        A de-instance-then-merge stack authors material rebinds as untyped overs under each
+        referencing prim; once merge removes the reference target those overs are all that remain.
+        Counting them as children kept the referencing Xform alive carrying a dangling reference,
+        so the stage under-reduced.
+        """
+        stage = self._open_stage("pruneLeavesDanglingRefOvers.usda")
+
+        # Sanity check the fixture: no composed children, but the over is present as an undefined spec.
+        dead = stage.GetPrimAtPath("/World/DeadRef")
+        self.assertTrue(dead)
+        self.assertEqual(len(dead.GetChildren()), 0)
+        self.assertEqual(len(dead.GetFilteredChildren(Usd.PrimAllPrimsPredicate)), 1)
+
+        context = _get_context(stage)
+        self._execute_command({"paths": [], "pruneMode": 1}, context)
+
+        # The dead reference and its orphaned overs are pruned...
+        self.assertFalse(stage.GetPrimAtPath("/World/DeadRef"))
+        # ...while a referencing prim that still composes real content is kept, as is real geometry.
+        self.assertTrue(stage.GetPrimAtPath("/World/DeadRefWithContent"))
+        self.assertTrue(stage.GetPrimAtPath("/World/DeadRefWithContent/RealChild"))
+        self.assertTrue(stage.GetPrimAtPath("/World/Keeper"))
+
     async def test_PruneLeaves_ignore_mode_errors_outside_analysis(self):
         """pruneMode=Ignore (0) removes nothing, so it errors outside analysis mode but is moot within it."""
         # Outside analysis mode: doing nothing is pointless work, so the operation fails.

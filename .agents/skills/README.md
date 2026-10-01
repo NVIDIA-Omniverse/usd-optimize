@@ -58,7 +58,9 @@ original `<asset>` stays intact for the before/after diff:
    ↓
 /run-validators <asset>                         — validate (read-only); writes a per-issue CSV
    ↓ opt into --fix to repair (writes a NEW file; source kept):
-   ↓   /run-validators <asset> --fix --fix-output <fixed.usd>   (--fix-in-place overwrites <asset>)
+   ↓   /run-validators <asset> --fix          (default: <stem>.fixed<ext> beside <asset>)
+   ↓   --fix-output must stay in <asset>'s directory: only the root layer is copied
+   ↓   --fix-in-place overwrites <asset>; --fix-overwrite replaces an existing output
 /interpret-validators <fixed.usd>               — triage ONLY the issues --fix could not resolve
    ↓ for each: the op + parameters that need a user decision
 /run-operations <fixed.usd> -c config_presets/<name>.json   (or a custom JSON config / inline -o)

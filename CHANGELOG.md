@@ -1,5 +1,51 @@
 # Changelog
 
+## [1.3.0] - 2026-09-30
+### Added
+- OpenUSD 26.08 as a build target on windows-x86_64, linux-x86_64 and linux-aarch64,
+  alongside 25.05 and 25.11.
+- `usd_optimize`: an import-time `ImportError` when the extension module was built for a
+  different Python than the running interpreter, instead of a misleading `ModuleNotFoundError`.
+- Versioned documentation on GitHub Pages, with a populated version dropdown and a `latest/`
+  that follows the newest release.
+- `docs/choosing-operations.rst`: an "Improving Load Time" section.
+
+### Changed
+- **Breaking (PyPI wheel only):** the wheel now targets OpenUSD 26.08 and requires
+  `usd-exchange>=3.0.0,<4`; pin `usd-optimize==1.2.1` to stay on 25.05.
+- OpenUSD 26.08 is now the repository default build version; 25.05 and 25.11 stay selectable
+  with `--usd-ver`.
+- Raise the `usd-validation-nvidia` floor to `1.22.0`, bounded below 2, in the wheel and the
+  `run-validators` wrappers.
+- `PrimitiveFitChecker`: drop the fix suggestion for meshes with non-constant primvars, so
+  `--fix` cannot discard them unattended.
+- `ColocatedVerticesChecker`: its `meshCleanup` fix now also removes the degenerate faces that
+  welding creates.
+- `run-validators`: `--fix` fails closed when the output would be clobbered or cannot be saved.
+- `THIRD_PARTY_NOTICES.md`: attribute MaterialX and oneTBB, which OpenUSD 26.08 ships as
+  separate packages.
+- `meshCleanup`: document that the passes run in a fixed order and are not independent.
+- `deduplicateGeometry`: correct what `considerDeepTransforms` compares, and scope
+  `ignoreAttributes` to the reference and point-instancer methods.
+- `shrinkwrap`: document that `adaptivity` trades containment for triangle count in
+  `Temporal Combined` mode.
+- Correct the prebuilt-drop and C++ docs to match the shipped artifact.
+
+### Fixed
+- `pruneLeaves`: undefined prims (pure `over`s) no longer count as content, so a grouping prim
+  is pruned even when a removed reference target left dead overs behind. Inactive prims are
+  unaffected and stay controlled by `filterInactive`.
+- `optimizeMaterials`: no longer deduplicates materials that reference different files when
+  neither composes any shaders, e.g. MaterialX without its standard library installed.
+- `run-validators`: a `--fix` run that fails before saving no longer leaves the unfixed copy
+  behind, which read as a successful fix.
+- `run-validators`: a failed `usd-validation-nvidia` install exits 2 (nothing validated)
+  instead of 1 (issues found).
+- PyPI wheel (Linux): share usd-exchange's oneTBB instead of loading a second copy that ignored
+  the host's `Work.SetConcurrencyLimit`.
+- Agent skills: correct claims the shipped binary contradicts and recipes that gave wrong
+  results when followed literally.
+
 ## [1.2.1] - 2026-09-04
 ### Added
 - `shrinkwrap`: `Temporal Combined` mode — sweep meshes over a time range into one static
@@ -15,8 +61,13 @@
 - GitHub Pages workflows for the rendered docs, plus a CI doc-link checker.
 
 ### Changed
-- `run-validators`: `--fix` now writes to `<stem>.fixed<ext>` (or `--fix-output <path>`);
-  `--fix-in-place` overwrites the source as before.
+- **Breaking:** `run-validators`: `--fix` now writes to `<stem>.fixed<ext>` (or
+  `--fix-output <path>`) and leaves the source untouched. A caller that runs `--fix` and
+  then re-reads the source path gets unfixed data, with no warning and exit 0; pass
+  `--fix-in-place` to restore the previous in-place behaviour.
+- `run-validators`: the driver exits 2 on fix-flag misuse — `--fix-output` without a path or
+  without `--fix`, `--fix-in-place` without `--fix`, the two combined, zero or several
+  candidate assets to protect, or `--fix-output` resolving to the source.
 - Performance validators: `WindingsChecker`, `ColocatedVerticesChecker`, and
   `ZeroAreaFacesChecker` declare explicit `meshCleanup` arguments instead of inheriting
   its six enabled defect categories.

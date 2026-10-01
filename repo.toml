@@ -13,7 +13,7 @@ name = "usd-optimize"
 # Supported flavors and versions are listed in deps/usd_flavors.json.
 [repo.tokens]
 usd_flavor = "usd"
-usd_ver = "25.11"
+usd_ver = "26.08"
 python_ver = "3.12"
 
 "platform:linux-x86_64".abi = "2.35"
@@ -393,4 +393,7 @@ enabled = true
 [repo_publish]
 enabled = true
 packages = ["usd_optimize"]
+# Fully qualified: repo_man's default "cloudfront" is ambiguous when the runner has a
+# user-level packman config that also defines a "cloudfront" remote.
+default_remote = "packman:cloudfront"
 

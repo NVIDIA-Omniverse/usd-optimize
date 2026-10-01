@@ -108,6 +108,105 @@ significantly reduce memory usage.
 .. Note:: Reducing the memory a stage consumes can also speed up load and
    evaluation, since less data needs to be read and processed.
 
+Improving Load Time
+-------------------
+
+Load time is two distinct kinds of work, and an optimization that improves one may
+do nothing for the other:
+
+- **USD work** — layer parsing, composition, payload resolution and traversal.
+  Scales with prim count, and governs how long the stage takes to transfer and to
+  open in any tool without a renderer.
+- **Render preparation** — shader compilation, asset cook, texture upload and
+  acceleration structure builds. Scales with unique materials, textures and
+  meshes rather than prim count.
+
+Establish which dominates first. A stage slow to open in a USD tool is usually
+bound by prim count, and the operations below apply. One that opens quickly
+outside a renderer but is slow to become interactive is bound by render
+preparation, where :doc:`Optimize Materials<operations/optimizeMaterials>` and
+**Convert To Color** are the better levers.
+
+Deduplicate Geometry With Point Instancers
+##########################################
+
+Setting ``duplicateMethod`` to **Point Instancer** replaces each set of duplicate
+meshes with a single ``UsdGeomPointInstancer``: the geometry is authored once as a
+prototype, and every duplicate becomes an instance entry on it.
+
+This is the most effective way to reduce prim count on highly repetitive content,
+such as CAD-converted factory, building and plant data where the same bolt, beam
+or fitting was authored thousands of times as unique geometry. It helps three
+ways: each instance entry is one fewer prim to compose and traverse (often most
+of the scene); the renderer builds acceleration structures from the prototype
+rather than every copy, lowering GPU memory; and less geometry is written to
+disk, so the stage transfers and opens faster.
+
+.. Note:: How much this helps depends on how repetitive the source data is.
+   Measure before and after rather than assuming a result.
+
+Order Of Operations
+~~~~~~~~~~~~~~~~~~~
+
+Point-instancer deduplication needs the data prepared first. Run in order:
+
+1. **Deinstance existing instances** — :doc:`Utility Function<operations/utilityFunction>`
+   with the **Deinstance** function clears ``instanceable``. De-duplicate Geometry
+   cannot look inside a native instance, so anything behind an existing boundary is
+   skipped, even when that boundary shares almost nothing.
+2. **Run** :doc:`Optimize Materials<operations/optimizeMaterials>` — a prototype is
+   material-homogeneous, so geometrically identical meshes carrying their own
+   material prims cannot share one. Pipelines that author one material per mesh
+   split every duplicate set down to a single member.
+3. **Run** :doc:`De-duplicate Geometry<operations/deduplicateGeometry>` with
+   ``duplicateMethod`` set to **Point Instancer**.
+4. **Run** :doc:`Prune Leaves<operations/pruneLeaves>` — deduplication empties the
+   hierarchy that held the copies; pruning removes the leftover structure.
+
+Settings That Determine Whether Duplicates Are Found
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If a scene that visibly contains repeated parts yields no duplicate sets, check
+these two arguments before concluding the content cannot be optimized:
+
+- ``considerDeepTransforms`` (default ``true``) lets two meshes match when their
+  points differ by a linear transform, rather than requiring the arrays to agree
+  directly. It is meant to find more duplicates, but some data sets report more
+  with it disabled — run it both ways and compare the counts.
+- ``ignoreAttributes`` excludes named attributes from the comparison. Conversion
+  pipelines often stamp a unique per-element identifier on every prim, and one
+  differing value is enough to make identical meshes compare as distinct.
+
+.. Caution:: Prefer naming a specific attribute over a namespace. One ending in
+   ``:`` also excludes every attribute beneath it, which can merge geometry across
+   categories you meant to keep separate, such as source layer provenance.
+
+``minimumDuplicates`` (default ``2``) sets how many copies a set needs before an
+instancer is created, so raising it skips very small sets.
+
+Trade-offs
+~~~~~~~~~~
+
+.. Caution:: Instances within a ``UsdGeomPointInstancer`` are not individually
+   selectable — the instancer is a single object. This suits loading, viewing and
+   inspection, but not workflows that select or attach data to individual parts.
+
+It may also be unsuitable for physics or SimReady scenes, which expect
+individually addressable prims. Per-prim attributes that carried meaning on the
+originals, such as source identifiers, are not preserved per instance by default;
+if downstream tooling needs them, plan how to carry them onto the instancer.
+
+Confirming The Result
+~~~~~~~~~~~~~~~~~~~~~
+
+Rendered mesh and triangle counts should stay the same while prim count falls.
+Running :doc:`De-duplicate Geometry<operations/deduplicateGeometry>` in analysis
+mode first reports how many duplicate sets exist without modifying the stage.
+
+.. Note:: The :doc:`performance-validators` are a useful first step here. CAD
+   conversion frequently leaves empty meshes, zero-extent prims and broken
+   references that inflate prim count without contributing geometry.
+
 Other Tools
 -----------
 
@@ -174,19 +273,20 @@ Summary of Expected Performance Improvements
 .. table::
    :widths: 20 20 15 15 15 15
 
-   ============ ============== =========== =========== =========== =======
-   Process      Options        Load Time   CPU RAM     GPU RAM     FPS
-   ============ ============== =========== =========== =========== =======
-   Merge        By Selection   Slight      No          No          Yes
-   Merge        By Material    Slight      No          No          Yes
-   Merge        Rigid Body     Slight      No          No          Yes
-   Merge        By Skeleton    Slight      No          No          Yes
-   Merge        By Spatial     Yes         No          No          Yes
-   Decimate     Tol./Reduction Yes         Yes         Yes         Yes
-   Deduplicate  Instances      Yes         Yes         No          Slight
-   Opt Mats     Deduplicate    Yes         Yes         Yes         Yes
-   Opt Mats     Convert Color  Yes         Yes         Yes         Yes
-   ============ ============== =========== =========== =========== =======
+   ============ =============== =========== =========== =========== =======
+   Process      Options         Load Time   CPU RAM     GPU RAM     FPS
+   ============ =============== =========== =========== =========== =======
+   Merge        By Selection    Slight      No          No          Yes
+   Merge        By Material     Slight      No          No          Yes
+   Merge        Rigid Body      Slight      No          No          Yes
+   Merge        By Skeleton     Slight      No          No          Yes
+   Merge        By Spatial      Yes         No          No          Yes
+   Decimate     Tol./Reduction  Yes         Yes         Yes         Yes
+   Deduplicate  Instances       Yes         Yes         No          Slight
+   Deduplicate  Point Instancer Yes         Yes         Yes         Slight
+   Opt Mats     Deduplicate     Yes         Yes         Yes         Yes
+   Opt Mats     Convert Color   Yes         Yes         Yes         Yes
+   ============ =============== =========== =========== =========== =======
 
 Inspecting The Results
 ----------------------

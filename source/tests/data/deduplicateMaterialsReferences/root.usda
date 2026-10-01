@@ -1,0 +1,126 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    subLayers = [
+        @./a/looks.usda@,
+        @./b/looks.usda@
+    ]
+)
+
+def Xform "World"
+{
+    # a/material.usda and b/material.usda each hold a Material that composes to nothing, standing in
+    # for a MaterialX document without its standard library, so only the file tells them apart.
+    def Material "A" (
+        prepend references = @./a/material.usda@
+    )
+    {
+    }
+
+    # Same file as A, so a genuine duplicate.
+    def Material "ADuplicate" (
+        prepend references = @./a/material.usda@
+    )
+    {
+    }
+
+    def Material "B" (
+        prepend references = @./b/material.usda@
+    )
+    {
+    }
+
+    # The sublayers add /World/Looks/A and /World/Looks/B, both authored as @./material.usda@, which
+    # resolves to a different file in each.
+
+    # Identical shading networks, under containers referenced from different files.
+    def Scope "ContainerA" (
+        prepend references = @./containerA.usda@
+    )
+    {
+    }
+
+    def Scope "ContainerB" (
+        prepend references = @./containerB.usda@
+    )
+    {
+    }
+
+    # The same networks, as instanceable materials.
+    def Material "InstanceA" (
+        instanceable = true
+        prepend references = @./containerA.usda@</Container/Material>
+    )
+    {
+    }
+
+    def Material "InstanceB" (
+        instanceable = true
+        prepend references = @./containerB.usda@</Container/Material>
+    )
+    {
+    }
+
+    def Cube "CubeA" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/A>
+    }
+
+    def Cube "CubeADuplicate" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/ADuplicate>
+    }
+
+    def Cube "CubeB" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/B>
+    }
+
+    def Cube "CubeLooksA" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/Looks/A>
+    }
+
+    def Cube "CubeLooksB" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/Looks/B>
+    }
+
+    def Cube "CubeContainerA" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/ContainerA/Material>
+    }
+
+    def Cube "CubeContainerB" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/ContainerB/Material>
+    }
+
+    def Cube "CubeInstanceA" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/InstanceA>
+    }
+
+    def Cube "CubeInstanceB" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/InstanceB>
+    }
+}

@@ -28,7 +28,7 @@ class PrimitiveFitChecker(BaseUsdOptimizeChecker):
         "ALLOW_MISSING_ENDCAPS": ParameterFromOpArg("allowMissingEndcaps"),
     }
 
-    def _fit_primitives(self, prim_name, ignore_nonconst_primvars, usdStage: Usd.Stage, prim: Usd.Prim) -> None:
+    def _fit_primitives(self, prim_name, usdStage: Usd.Stage, prim: Usd.Prim) -> None:
         """
         Replace meshes with fit primitives using Usd Optimize
         """
@@ -47,7 +47,7 @@ class PrimitiveFitChecker(BaseUsdOptimizeChecker):
                 "fitCylinder": (prim_name == "cylinder"),
                 "fitCone": (prim_name == "cone"),
                 "fitCube": (prim_name == "cube"),
-                "ignoreNonConstPrimvars": ignore_nonconst_primvars,
+                "ignoreNonConstPrimvars": False,  # a trade-off; never taken unattended
             }
         )
         operations: List[analysis.OperationConfig] = [
@@ -91,7 +91,7 @@ class PrimitiveFitChecker(BaseUsdOptimizeChecker):
                     at=usdStage.GetPrimAtPath("/"),
                     suggestion=Suggestion(
                         message="Use the Usd Optimize operation Fit Primitives with fit {} enabled.".format(name),
-                        callable=partial(self._fit_primitives, name, False),
+                        callable=partial(self._fit_primitives, name),
                     ),
                 )
 
@@ -111,14 +111,12 @@ class PrimitiveFitChecker(BaseUsdOptimizeChecker):
                 text += "but eliminating {} faces and {} vertices.".format(
                     nonconst_primvar_face_count, nonconst_primvar_vertex_count
                 )
+                # No suggestion: IssueFixer applies them unattended, so attaching one here
+                # would take the primvar loss on the user's behalf.
                 self._AddWarning(
-                    message=text,
+                    message=text + " Run fitPrimitives with "
+                    '"Ignore non-const primvars" if losing them is acceptable.',
                     at=usdStage.GetPrimAtPath("/"),
-                    suggestion=Suggestion(
-                        message="If losing surface-varying features is acceptable, use the Usd Optimize operation "
-                        'Fit Primitives with both fit {} and "Ignore non-const primvars" enabled.'.format(name),
-                        callable=partial(self._fit_primitives, name, True),
-                    ),
                 )
 
                 # In verbose mode, list each fittable mesh (with non-const primvars) individually.

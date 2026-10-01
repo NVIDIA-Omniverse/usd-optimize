@@ -97,6 +97,49 @@ def _assert_pypi_compatible_tag(wheel: str):
         raise RuntimeError(f"wheel has a non-manylinux tag; PyPI rejects bare linux_* tags: {name}")
 
 
+def _stage_stripped_libs(libDirs, stagingDir: str) -> str:
+    """Copy the shared libraries auditwheel will graft into *stagingDir* and strip the copies.
+
+    auditwheel renames each vendored library to ``<name>-<sha256[:8]>.so``, so the wheel only binds
+    usd-exchange's already-loaded OpenUSD when our copies are byte-identical to the ones its wheel
+    ships. usd-exchange strips before repairing (their tools/repoman/py_package.py), so an unstripped
+    copy hashes differently and the wheel loads a second, parallel OpenUSD -- every stage passed
+    across the boundary then misses UsdUtilsStageCache and operations silently do nothing.
+
+    The graft is also named after the symlink-resolved file (``libtbb.so.12`` -> ``libtbb.so.12.13``
+    -> ``libtbb-<hash>.so.12.13``), so symlinks are recreated, not dereferenced. A flattened
+    ``libtbb.so.12`` copy grafts as ``libtbb-<hash>.so.12``, which usd-exchange's TBB does not match,
+    and the process loads a second oneTBB that ignores the host's Work.SetConcurrencyLimit.
+
+    Stripping copies rather than the build tree keeps symbols in the packman drop and symstore, which
+    are packaged after this step. Strip must run before auditwheel's patchelf, not via
+    ``auditwheel repair --strip``, which can leave LOAD segments that are no longer page-aligned.
+    """
+    strippedDir = os.path.join(stagingDir, "stripped-libs")
+    os.makedirs(strippedDir, exist_ok=True)
+    stripped = 0
+    for libDir in libDirs:
+        for path in glob.glob(f"{libDir}/*.so*"):
+            real = os.path.realpath(path)
+            if not os.path.isfile(real):
+                continue
+            with open(real, "rb") as f:
+                if f.read(4) != b"\x7fELF":
+                    continue
+            # First directory wins for both names, matching the LD_LIBRARY_PATH order below.
+            realName = os.path.basename(real)
+            dest = os.path.join(strippedDir, realName)
+            if not os.path.lexists(dest):
+                shutil.copy2(real, dest)
+                omni.repo.man.run_process(["strip", dest], exit_on_error=True)
+                stripped += 1
+            link = os.path.join(strippedDir, os.path.basename(path))
+            if not os.path.lexists(link):
+                os.symlink(realName, link)
+    omni.repo.man.logger.info(f"Stripped {stripped} shared libraries into {strippedDir}")
+    return strippedDir
+
+
 def _smoke_test_wheel(wheel: str, stagingDir: str):
     """Install *wheel* into a throwaway virtual environment and run the smoke
     test, which imports the package (loading every operation plugin) and runs a
@@ -220,8 +263,10 @@ def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
             extra_libs_dir = os.path.abspath(os.path.realpath(f"{source}/extraLibs"))
             tokens = omni.repo.man.get_tokens()
             platform_target_abi = omni.repo.man.get_abi_platform_translation(tokens["platform"], tokens.get("abi", "2.35"))
+            # Stripped copies come first so auditwheel grafts those; see _stage_stripped_libs.
+            stripped_dir = _stage_stripped_libs([lib_dir, extra_libs_dir], stagingDir)
             env = os.environ.copy()
-            env["LD_LIBRARY_PATH"] = f"{lib_dir}:{extra_libs_dir}"
+            env["LD_LIBRARY_PATH"] = f"{stripped_dir}:{lib_dir}:{extra_libs_dir}"
             auditwheel_cmd = omni.repo.man.resolve_tokens("$root/tools/pyproject/auditwheel${shell_ext}")
             auditwheel_args = [auditwheel_cmd, "repair", wheel, "--plat", platform_target_abi, "-w", installDir]
             omni.repo.man.logger.info(" ".join(auditwheel_args))

@@ -2,9 +2,14 @@
   <!-- USD and Python are sourced from usd-deps.generated.packman.xml (run "repo usd" to regenerate). -->
   <import path="../deps/usd-deps.generated.packman.xml">
     <filter include="usd-${config}" />
+    <filter include="tbb-${config}" />
+    <filter include="materialx-${config}" />
     <filter include="python" />
   </import>
   <dependency name="usd-${config}" linkPath="../_build/target-deps/usd/${config}"/>
+  <!-- USD 26.08+ only; a filter matching nothing is a no-op for 25.x, which bundles both. -->
+  <dependency name="tbb-${config}" linkPath="../_build/target-deps/tbb/${config}"/>
+  <dependency name="materialx-${config}" linkPath="../_build/target-deps/materialx/${config}"/>
   <dependency name="python" linkPath="../_build/target-deps/python" />
 
   <!-- Carbonite SDK (header-only usage for logging/profiling macros) -->

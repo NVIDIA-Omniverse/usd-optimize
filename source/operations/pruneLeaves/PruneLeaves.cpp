@@ -212,12 +212,14 @@ OperationResult PruneLeavesOperation::executeImpl()
     // Add a scoped asset resolver cache to improve performance
     ArResolverScopedCache resolverScopedCache;
 
-    // Default to all prims, but optionally require them to be active.
-    Usd_PrimFlagsPredicate predicate = UsdPrimAllPrimsPredicate;
+    // Undefined prims (pure overs) compose to nothing, so they never count as content -- otherwise overs left
+    // behind by a removed reference target keep the referencing prim alive. Inactive prims are real defs and
+    // stay user-controlled via filterInactive.
+    Usd_PrimFlagsPredicate predicate = UsdPrimIsDefined;
 
     if (m_filterInactive)
     {
-        predicate = UsdPrimIsActive;
+        predicate = UsdPrimIsDefined && UsdPrimIsActive;
     }
 
     if (!m_prims.empty())

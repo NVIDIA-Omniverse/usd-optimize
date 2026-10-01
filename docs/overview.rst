@@ -72,7 +72,7 @@ A list of operations can be applied in a single call (a stack):
    results = UsdOptimizeCore.getInstance().executeConfig(context, config)
 
 
-The C++ public API in ``include/usd_optimize/core/UsdOptimize.h`` exposes the same
+The C++ public API in ``include/usd_optimize/core/Core.h`` exposes the same
 capabilities for native callers; see the :doc:`../api/api` documentation.
 
 Where to Go Next

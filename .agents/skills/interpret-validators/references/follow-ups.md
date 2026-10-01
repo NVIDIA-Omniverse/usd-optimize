@@ -97,6 +97,8 @@ re-run Steps 3 + 4 of `SKILL.md`.
 
 ## "Only check `<RuleName>`" (before a run)
 
-The driver doesn't expose a `--rule` flag. Tell the user we'll run the full
-default set and filter the CSV / summarizer output to that rule before
-presenting.
+Pass `-r <RuleName>` to the driver (repeatable). It strips only its own `--fix*`
+flags and forwards the rest to `nvidia_usd_validate`, which defines
+`-r` / `--rule` / `--enable-rule`. The name must match a registered rule exactly:
+argparse constrains it with `choices=`, so a typo is rejected rather than
+silently ignored.

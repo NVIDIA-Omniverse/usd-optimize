@@ -1,4 +1,27 @@
 {
+    "26.08": {
+        "_comment": "autouv-core ships both configs in one package, so it has no ${config} segment.",
+        "omnimesh_ops_usd": [
+            {
+                "version": "1.1.0-r6+${platform_target_abi}.${config}.gcc11-cuda12.4-usd26.08-py3.12",
+                "platforms": "manylinux_2_35_x86_64 manylinux_2_35_aarch64"
+            },
+            {
+                "version": "1.1.0-r6+${platform_target_abi}.${config}.cuda12.4-usd26.08-py3.12",
+                "platforms": "windows-x86_64"
+            }
+        ],
+        "autouv-core": [
+            {
+                "version": "1.0.2+main.59.45f7cff1.gl.${platform_target_abi}.usd26.08"
+            }
+        ],
+        "shrinkwrap_openvdb": [
+            {
+                "version": "13.0.1+mr5.5.9f112a34.gl.${platform_target_abi}.${config}.usd26-08"
+            }
+        ]
+    },
     "25.11": {
         "omnimesh_ops_usd": [
             {

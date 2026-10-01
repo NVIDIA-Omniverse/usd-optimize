@@ -33,7 +33,7 @@ Search this doc for keywords like `usdpy`, `PYTHONPATH`, `LD_LIBRARY_PATH`, `ent
 - **Public API surface** — what's importable.
 - **Purpose / Limitations / Troubleshooting** — scope summary, scope boundaries, common failure modes (PYTHONPATH, libusd alignment, validator plugin auto-loading).
 
-Companion skills: `build` (build from source instead), `validators` (run-time validator infrastructure), `run-validators` / `run-operations` (dev driver scripts that need a source build, NOT a drop).
+Companion skills: `build` (build from source instead), `run-validators` / `run-operations` (dev driver scripts that need a source build, NOT a drop).
 
 ## What's in a prebuilt drop
 
@@ -41,19 +41,19 @@ Companion skills: `build` (build from source instead), `validators` (run-time va
 | --- | --- |
 | `include/` | C++ public headers |
 | `lib/` | Compiled core and plugin libraries (Windows: `*.dll` + `*.lib`; Linux: `*.so`) plus `operation_mapping.json` (small deprecated-name alias table for `mapConfig()`, not the operation catalog) |
-| `python/` | `usd_optimize.*` Python bindings; bundled tests under `python/tests/test.python/` |
+| `python/` | `usd_optimize.*` Python bindings |
 | `usdpy/` | OpenUSD Python runtime (`pxr.*`) — the package brings its own USD |
-| `extraLibs/` | Third-party runtime libraries (Alembic, MaterialX, OpenSubdiv, TBB). **Windows** releases also ship the matching CPython runtime DLL (e.g. `python312.dll` for `py_3.12`). **Linux** releases do **not** bundle `libpython3.X.so.1.0` — it must come from the interpreter install (see Linux guide). |
+| `extraLibs/` | Third-party runtime libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic and OpenSubdiv), plus the matching CPython runtime on **both** platforms — `python312.dll` for `py_3.12` on Windows, `libpython3.X.so.1.0` on Linux. Consumers supply the interpreter, not the runtime library. |
 
 No Python interpreter is bundled — the consumer supplies one.
 
 ## Prerequisites
 
-1. **Python version must match the `py_<ver>` token in the package name.** The bundled `pxr` extension modules link against a specific CPython ABI; loading them under any other Python version fails at import time. On Windows the failure surfaces as `ImportError: Module use of python<XY>.dll conflicts with this version of Python.`; on Linux it surfaces as undefined-symbol or version-mismatch errors from the dynamic linker. The matching interpreter is the consumer's responsibility — see the OS-specific guide above.
+1. **Python version must match the `py_<ver>` token in the package name.** The bundled `pxr` extension modules are compiled against a specific CPython ABI. On Windows a mismatch surfaces at import as `ImportError: Module use of python<XY>.dll conflicts with this version of Python.` **On Linux, importing `pxr` does not catch it** — the drop bundles an exact-match `libpython3.X.so.1.0`, so the loader has nothing to object to and a `pxr` import can *appear* to succeed under the wrong interpreter; you may instead get an `undefined symbol: PyXxx_...` ImportError. Which of the two you hit depends on the interpreter and on which symbols a module touches, so neither outcome is guaranteed and a clean `pxr` import does not mean the interpreter is right. Importing `usd_optimize.core` does check, and raises an `ImportError` naming both ABIs. Running a mismatched interpreter is unsupported and untested; the matching one is the consumer's responsibility. See the OS-specific guide above.
 2. **`PYTHONPATH` must include both `python` and `usdpy`.** Missing `usdpy` produces `ModuleNotFoundError: No module named 'pxr'`.
 3. **The platform's library-search path must include both `lib` and `extraLibs`, set *before the interpreter starts*.** That's `PATH` on Windows and `LD_LIBRARY_PATH` on Linux. The path is consulted at module-load time only — exporting it after the Python process is running has no effect; restart the interpreter.
 
-**Linux — `libpython` on disk vs `ldconfig -p`.** Bundled `pxr` needs `libpython3.X.so.1.0` from your interpreter; `ldconfig -p` only reflects the linker **cache** and can be stale. Verify with the snippet in [`docs/install-prebuilt-linux.md`](../../../docs/install-prebuilt-linux.md) (Python prerequisites): set `PYLIBDIR` from `sysconfig.get_config_var("LIBDIR")`, `ls` there, and compare to `ldconfig -p | grep libpython…`. Interpretation: **(1)** no `.so` under `PYLIBDIR` → install shared `libpython` or rebuild Python with `--enable-shared`; **(2)** `.so` under `/usr/lib` or `/lib` (multiarch counts) but `ldconfig -p` empty → run **`sudo ldconfig`** once — avoid reinstall churn or redundant `LD_LIBRARY_PATH` when libs already sit in the default linker layout; **(3)** `.so` only under pyenv/conda-style prefixes → add that `PYLIBDIR` to `LD_LIBRARY_PATH` (conda activation usually does this).
+**Linux — `libpython` comes from the drop, not the interpreter.** Bundled `pxr` needs `libpython3.X.so.1.0`, and `extraLibs/` supplies it; it resolves from there as soon as `extraLibs` is on `LD_LIBRARY_PATH` (prerequisite 3). So a plain interpreter install is enough — no system `libpython` package, no `sudo ldconfig`, no `--enable-shared` rebuild. If you see `cannot open shared object file: libpython3.X.so.1.0`, the cause is a missing or late-exported `LD_LIBRARY_PATH`, not a missing package; see [`docs/install-prebuilt-linux.md`](../../../docs/install-prebuilt-linux.md).
 
 ## Smoke-check the install
 
@@ -84,7 +84,7 @@ If this prints `OK` the drop is healthy. Any positive op-registry count confirms
 ## What does NOT work in the drop
 
 - **`repo.sh build` / `repo.bat test`** — `repo.sh`/`repo.bat` is not shipped. The README's "Quickstart" applies to the source repo, not to the binary drop.
-- **`python/tests/test.python/run_discover.py`** — the bundled `test_validators_*.py` modules require PyPI **`usd-validation-nvidia`** (`usd_validation_nvidia`). Without it, imports fail before unittest runs. If **any** module fails to import, `run_discover.py` exits with code 1 **without executing tests**. Even with imports fixed, most modules still expect fixtures under `tests/data`. The self-contained cases in `test_core_python_bindings.py` (`test_executionContext`, `test_executionContext_reportPath_roundtrip`, `test_executionContext_reportPath_survives_executeOperation`, `test_usdOptimizeCore`, `test_operation`) match the smoke check above.
+- **The Python test suite** — `python/tests/` is not part of a drop. The suite and its fixtures are routed into a separate, unpublished archive (`usd_optimize_tests` in `repo.toml`), so there is no `run_discover.py` to run. Use the smoke check above to confirm a drop is healthy.
 
 ## Public API surface
 
@@ -94,7 +94,7 @@ The supported entry point for standalone consumers is the `UsdOptimizeCore` sing
 - `executeOperation(name, context, args)` — runs a single operation; returns one `(success, error, output)` tuple.
 - `mapConfig(config_json)` — applies the operation/argument renames in `lib/operation_mapping.json` (JSON string in, JSON string out) so older configs keep working.
 
-Operation keys accepted by `executeConfig` are the strings from `UsdOptimizeCore.getInstance().getOperations()` at runtime (count varies by build). Bundled tests under `python/tests/test.python/` illustrate descriptor JSON for many operations. `lib/operation_mapping.json` is only a small backward-compatibility alias table for `mapConfig()`, not the full operation list.
+Operation keys accepted by `executeConfig` are the strings from `UsdOptimizeCore.getInstance().getOperations()` at runtime (count varies by build). The bundled `config_presets/*.json` illustrate descriptor JSON for many operations. `lib/operation_mapping.json` is only a small backward-compatibility alias table for `mapConfig()`, not the full operation list.
 
 ## Purpose
 
@@ -116,10 +116,9 @@ The following are intentionally out of scope:
   require a source tree with `_build/<platform>/<config>/`; they will not
   work against a drop. (A drop ships its own `bin/usdOptimize` CLI for
   running operations.)
-- **Most bundled tests.** `run_discover.py` needs every `test_*.py` to
-  import cleanly first; missing **`usd-validation-nvidia`** breaks the
-  `test_validators_*.py` set immediately. Any import failure prevents the
-  unittest phase. Use the smoke check above as the supported install verification.
+- **The Python test suite.** It is not part of a drop — the suite and its
+  fixtures go to a separate, unpublished archive. Use the smoke check above
+  as the supported install verification.
 - **Mixing your own USD with the drop's `usdpy`.** `pxr` and the C++
   core must resolve to the same `libusd` build — point `PYTHONPATH`
   at the drop's `usdpy` and don't shadow it with another USD install.
@@ -132,7 +131,7 @@ The following are intentionally out of scope:
 | Symptom | Likely cause |
 | --- | --- |
 | At-import error naming a specific `python<XY>.dll` / `libpython<XY>.so` ABI mismatch | Interpreter version doesn't match the `py_<ver>` token. |
-| Linux: `ImportError: libpython3.X.so.1.0: cannot open shared object file` | Compare **`PYLIBDIR`/`ls`** vs **`ldconfig -p`** per [Linux prebuilt guide](../../../docs/install-prebuilt-linux.md): often stale cache (`sudo ldconfig`), pyenv/conda needs `LD_LIBRARY_PATH`, or missing `libpython` install — see troubleshooting there. |
+| Linux: `ImportError: libpython3.X.so.1.0: cannot open shared object file` | `extraLibs` missing from `LD_LIBRARY_PATH`, or exported after the interpreter started. The drop bundles this library — it is not a missing system package. |
 | Importing any `pxr.*` module fails to resolve a transitive native dependency (Windows: `DLL load failed`; Linux: `cannot open shared object file`) | Library-search path missing `lib` or `extraLibs`, or set after the process started. |
 | `ModuleNotFoundError: No module named 'pxr'` or `'usd_optimize'` | `PYTHONPATH` missing `usdpy` or `python` respectively. |
 | `getOperations()` returns `[]` | Plugin libraries in `lib/` failed to load — wrong-platform package, antivirus quarantine, or library-search-path issue. |

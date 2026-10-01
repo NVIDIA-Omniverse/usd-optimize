@@ -73,7 +73,7 @@ Skip this step entirely when `stripAnimation: false`.
   "operation": "merge",
   "meshPrimPaths": ["/World/Asset_proxy"],
   "considerMaterials": false,
-  "originalGeomOption": 0,
+  "originalGeomOption": 1,
   "mergePoint": 1,
   "rootPath": "MergedProxy"
 }
@@ -81,17 +81,17 @@ Skip this step entirely when `stripAnimation: false`.
 
 - `meshPrimPaths: ["<proxy_path>"]` scopes merge to the proxy subtree only — the source is left alone.
 - `considerMaterials: false` collapses everything into one mesh regardless of material binding. Use `true` if you need per-material geometry subsets on the proxy.
-- `originalGeomOption: 0` (Delete) cleans up the original meshes that participated in a merge group. Single-mesh boundaries (one mesh per parent) aren't merged at all and stay in place.
-- `mergePoint: 1` is `eXform` — display name **"Parent Xform"**. Each Xform-typed parent acts as a merge boundary, so meshes under one Xform consolidate together. This is the most aggressive practical default. Other useful values from `MergePointOption` (`source/core/src/geometry/SpatialClustering.h`): `0` = Stage (pseudo-root), `7` = Root Prim, `8` = Parent Prim (every prim is a boundary — most conservative), `9` = Original Prim.
+- `originalGeomOption: 1` (Delete) cleans up the pre-merge meshes inside the proxy that participated in a merge group. The enum is `0` = Ignore, `1` = Delete, `2` = Deactivate, `3` = Hide (`RemoveMethod` in `source/core/src/RemovePrims.h`); `1` is also the operation's default. `0` would leave those meshes in place, so the proxy would keep both the merged mesh and the copies it replaced. Single-mesh boundaries (one mesh per parent) aren't merged at all and stay in place regardless.
+- `mergePoint: 1` is `eXform` — display name **"Parent Xform"**. Each Xform-typed parent acts as a merge boundary, so meshes under one Xform consolidate together. This is the most aggressive practical choice for a proxy, which is why this recipe sets it explicitly — the operation's own default is `0` (Stage). Other useful values from `MergePointOption` (`source/core/src/geometry/SpatialClustering.h`): `0` = Stage (pseudo-root), `7` = Root Prim, `8` = Parent Prim (every prim is a boundary — most conservative), `9` = Original Prim.
 - `rootPath: "MergedProxy"` is **a leaf name, not a full path**. Internally `rootPath` is split into a relative `parentPath` (appended onto every merge boundary) and a `name` leaf — so passing `"/A/B/C"` gets you `<boundary>/B/C` on every output. Pass a single token unless you specifically want the prefix-append behavior.
 
 ### Step 3 variants (when the proxy still has too many prims)
 
-The default `mergePoint: 1` skips boundaries that contain only one mesh — those singletons stay in the proxy untouched, so the proxy ends up with `~merge_groups + ~singletons` prims. That's usually fine. Two variants tighten things further when needed:
+This recipe's `mergePoint: 1` skips boundaries that contain only one mesh — those singletons stay in the proxy untouched, so the proxy ends up with `~merge_groups + ~singletons` prims. That's usually fine. Two variants tighten things further when needed:
 
 | Variant | What it does | When to use |
 |---|---|---|
-| `"allowSingleMeshes": true` | Folds singleton-per-boundary meshes into the merge flow as one-mesh "merge groups." Each singleton gets a merged copy created next to it; with `originalGeomOption: 0` (Delete), the originals participate and get cleaned up. | The proxy still has lots of leftover unmerged geometry after Step 3 and you want every mesh to flow through merge → decimate uniformly. |
+| `"allowSingleMeshes": true` | Folds singleton-per-boundary meshes into the merge flow as one-mesh "merge groups." Each singleton gets a merged copy created next to it; with `originalGeomOption: 1` (Delete), the originals participate and get cleaned up. | The proxy still has lots of leftover unmerged geometry after Step 3 and you want every mesh to flow through merge → decimate uniformly. |
 | `"mergePoint": 7` (`eRootPrim`, "Root Prim") | Treats only root prims as merge boundaries, so the entire proxy subtree consolidates into a single merge group. | You want one mesh (or a small handful per material bucket) for the proxy and don't care about preserving the proxy's internal hierarchy. |
 | `"mergePoint": 0` (`eDefault`, "Stage" / pseudo-root) | Even wider — the pseudo-root is the only boundary. Result: one merge group across the proxy. | Same intent as `7` above, useful when the proxy isn't directly under a root prim. |
 
@@ -102,13 +102,13 @@ Caveat: very small meshes (a few faces each) won't decimate below their topologi
 ```json
 {
   "operation": "decimateMeshes",
-  "paths": ["/World/Asset_proxy//*"],
+  "paths": ["/World/Asset_proxy", "/World/Asset_proxy//*"],
   "reductionFactor": 25.0,
   "allowCutAndGlue": true
 }
 ```
 
-The `//*` suffix is an **SdfPathExpression** that matches all descendants of the proxy. A bare prim path (e.g. `"/World/Asset_proxy"`) matches only that single prim — and since the proxy root is a Scope/Xform, not a Mesh, decimate would find nothing to do. The `paths` argument accepts the full SdfPathExpression syntax (predicates like `{Mesh}`, glob patterns, etc.).
+Both entries are needed, because the proxy root can be either kind of prim. `//*` is an **SdfPathExpression** matching all *descendants* — required when the proxy root is a Scope/Xform, since a bare path would match only that non-Mesh prim and decimate would find nothing to do. The bare path is required when the source was itself a single Mesh, because then the proxy *is* the mesh and has no descendants to match. Listing both covers either shape; a mismatch is silent, with exit 0 and no log output at all. The `paths` argument accepts the full SdfPathExpression syntax (predicates like `{Mesh}`, glob patterns, etc.).
 
 `allowCutAndGlue: true` is the **Topology Simplification** mode. The merged proxy mesh frequently has discontinuous topology inherited from the inputs, so cut-and-glue gives the decimator room to improve quality at aggressive reductions. It costs more time but is almost always worth it for proxy generation.
 
@@ -184,6 +184,13 @@ with vset.GetVariantEditContext():
     UsdGeom.Imageable(stage.GetPrimAtPath(SOURCE_PATH)).GetPurposeAttr().Set(UsdGeom.Tokens.proxy)
     UsdGeom.Imageable(stage.GetPrimAtPath(PROXY_PATH)).GetPurposeAttr().Set(UsdGeom.Tokens.render)
 
+# Step 5 authored `purpose` directly on these two prims, and a local opinion
+# outranks a variant one: left in place, it makes the variant switch a silent no-op.
+# Clear both now that the variants carry them.
+# Step 5's descendant clears still stand, so each variant's value inherits down the subtree.
+for _path in (SOURCE_PATH, PROXY_PATH):
+    UsdGeom.Imageable(stage.GetPrimAtPath(_path)).GetPurposeAttr().Clear()
+
 vset.SetVariantSelection(DEFAULT_VARIANT)
 ```
 
@@ -199,8 +206,8 @@ shape only; never run a config that still contains `<base64 ...>` text.
 [
   {"operation": "pythonScript",   "python": "<base64 of step 1>"},
   {"operation": "pythonScript",   "python": "<base64 of step 2>"},
-  {"operation": "merge",          "meshPrimPaths": ["/World/Asset_proxy"], "considerMaterials": false, "originalGeomOption": 0, "mergePoint": 1, "rootPath": "MergedProxy"},
-  {"operation": "decimateMeshes", "paths": ["/World/Asset_proxy//*"], "reductionFactor": 25.0, "allowCutAndGlue": true},
+  {"operation": "merge",          "meshPrimPaths": ["/World/Asset_proxy"], "considerMaterials": false, "originalGeomOption": 1, "mergePoint": 1, "rootPath": "MergedProxy"},
+  {"operation": "decimateMeshes", "paths": ["/World/Asset_proxy", "/World/Asset_proxy//*"], "reductionFactor": 25.0, "allowCutAndGlue": true},
   {"operation": "printStats"},
   {"operation": "pythonScript",   "python": "<base64 of step 5>"},
   {"operation": "pythonScript",   "python": "<base64 of step 6>"}
@@ -238,12 +245,13 @@ results = UsdOptimizeCore.getInstance().executeConfig(context, config)
 if not all(ok for ok, _err, _out in results):
     raise RuntimeError("pipeline failed -- check Usd Optimize log")
 
-stage.Export(OUTPUT_USD)   # writes a new file; INPUT_USD is left untouched
+stage.GetRootLayer().Export(OUTPUT_USD)   # writes a new file; INPUT_USD is left untouched
 ```
 
 Two important properties:
 
-- The runner mutates the stage in memory. As long as you don't call `stage.Save()` or `stage.GetEditTarget().GetLayer().Save()`, the input USD on disk is untouched. `stage.Export(OUTPUT_USD)` writes the modified stage to a new file.
+- The runner mutates the stage in memory. As long as you don't call `stage.Save()` or `stage.GetEditTarget().GetLayer().Save()`, the input USD on disk is untouched. `stage.GetRootLayer().Export(OUTPUT_USD)` writes the modified stage to a new file.
+- **Use `GetRootLayer().Export()`, not `stage.Export()`.** `stage.Export()` writes the *flattened composed* stage, which resolves variant selections and discards the variant set itself — so with `setupVariantSet: true` the Step 6 variant set is silently missing from the output.
 - `pythonScript` script bodies passed inside the config must be base64-encoded (see encoding commands above).
 
 The Python environment for `executeConfig` requires Usd Optimize on `PYTHONPATH` and its native libs on `PATH` — defer to `.agents/skills/build/SKILL.md` for a source-tree build, or to a prebuilt-package install skill / repo install docs for a packaged runtime. Do not duplicate environment setup here.

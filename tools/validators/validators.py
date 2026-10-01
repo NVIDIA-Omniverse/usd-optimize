@@ -13,7 +13,12 @@
 - Non-destructive ``--fix``: opt-in and, by default, writes fixes to a new file
   (``--fix-output <path>`` or ``<stem>.fixed<ext>``) by copying the source and
   pointing the upstream in-place fixer at the copy. ``--fix-in-place`` (or
-  ``USD_OPTIMIZE_FIX_IN_PLACE=1``) mutates the source instead.
+  ``USD_OPTIMIZE_FIX_IN_PLACE=1``) mutates the source instead. An existing
+  destination is never replaced unless ``--fix-overwrite`` says so.
+
+The guards below all fail closed with exit 2. The rule they share: this wrapper
+does not quietly decide things about the user's filesystem -- it either does the
+safe thing or stops and says why.
 """
 
 import os
@@ -73,6 +78,18 @@ def _default_fixed_path(asset):
     return f"{root}.fixed{ext}"
 
 
+def _discard_fix_copy(out):
+    """Remove a ``--fix`` destination we created when the run failed before saving."""
+    try:
+        os.remove(out)
+    except OSError:
+        return
+    print(
+        f"error: validation failed before any fixes were saved; removed the unfixed copy at {out}",
+        file=sys.stderr,
+    )
+
+
 def main() -> int:
     import usd_optimize.validators
     from usd_validation_nvidia import cli_main
@@ -91,6 +108,9 @@ def main() -> int:
     in_place_flag = "--fix-in-place" in argv
     if in_place_flag:
         argv = [a for a in argv if a != "--fix-in-place"]
+    overwrite = "--fix-overwrite" in argv
+    if overwrite:
+        argv = [a for a in argv if a != "--fix-overwrite"]
     fix_output = None
     if "--fix-output" in argv:
         idx = argv.index("--fix-output")
@@ -104,6 +124,8 @@ def main() -> int:
         return _err("--fix-output requires --fix")
     if in_place_flag and not fixing:
         return _err("--fix-in-place requires --fix")
+    if overwrite and not fixing:
+        return _err("--fix-overwrite requires --fix")
     if fix_output is not None and in_place_flag:
         return _err("--fix-output cannot be combined with --fix-in-place")
 
@@ -115,6 +137,15 @@ def main() -> int:
     else:
         in_place = _env_truthy(os.environ.get("USD_OPTIMIZE_FIX_IN_PLACE"))
 
+    # Resolved mode, not the flag: in-place also arrives from the environment, where
+    # --fix-overwrite would otherwise be ignored while the source was mutated.
+    if overwrite and in_place:
+        return _err(
+            "--fix-overwrite cannot be combined with in-place fixing (--fix-in-place or "
+            "USD_OPTIMIZE_FIX_IN_PLACE=1), which writes to the source and has no destination file"
+        )
+
+    fix_copy = None
     if fixing and not in_place:
         assets = _find_assets(argv)
         if not assets:
@@ -142,9 +173,37 @@ def main() -> int:
                 "--fix-output resolves to the source asset; choose another path or "
                 "pass --fix-in-place to overwrite it deliberately"
             )
+        # Source first, so a refusal leaves no destination behind. os.access is False for a
+        # missing path too, so name that case rather than blaming permissions.
+        if not os.path.exists(asset):
+            return _err(f"--fix source does not exist: {asset}")
+        # copy2 preserves mode: a read-only source yields a copy upstream cannot save into,
+        # while still reporting the fix as applied.
+        if not os.access(asset, os.W_OK):
+            return _err(
+                f"--fix source is read-only: {asset}; the copy would inherit that and the "
+                "fix could not be saved. Make the source writable and re-run"
+            )
 
         os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
-        shutil.copy2(asset, out)  # copy2 keeps perms/mtime
+        # O_EXCL also reserves the name; a bare exists() check lets a racing run erase us.
+        reserved = False
+        if not overwrite:
+            try:
+                os.close(os.open(out, os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+                reserved = True
+            except FileExistsError:
+                return _err(
+                    f"--fix destination already exists and would be overwritten: {out}; "
+                    "choose another --fix-output, remove it, or pass --fix-overwrite"
+                )
+        try:
+            shutil.copy2(asset, out)
+        except OSError:
+            if reserved:
+                os.remove(out)  # no empty placeholder blocking the re-run
+            raise
+        fix_copy = out
         argv[asset_idx] = out  # redirect the in-place fixer at the copy; source preserved
         print(f"[run-validators] --fix writing fixes to a new file: {out}")
         print(f"[run-validators] original left untouched: {asset}")
@@ -154,7 +213,13 @@ def main() -> int:
         print(f"[run-validators] --fix-in-place: modifying {target} directly (no backup made)")
 
     sys.argv = [sys.argv[0], *argv]
-    return cli_main()
+    try:
+        return cli_main()
+    except Exception:
+        # Not SystemExit: upstream raises that for "issues found", a completed run.
+        if fix_copy is not None:
+            _discard_fix_copy(fix_copy)
+        raise
 
 
 if __name__ == "__main__":

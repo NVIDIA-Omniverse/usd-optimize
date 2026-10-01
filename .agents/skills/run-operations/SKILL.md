@@ -4,7 +4,7 @@ description: Run Usd Optimize operations on a USD asset with the usdOptimize CLI
 allowed-tools: Bash
 metadata:
   author: NVIDIA Corporation
-  version: "2.0.0"
+  version: "2.0.1"
   tags: [usd, optimization, operations, cli]
 ---
 
@@ -133,20 +133,25 @@ Code; `nohup`/`Start-Process` elsewhere) and return control.
 ```bash
 BIN=_build/linux-x86_64/release/bin/usdOptimize
 OUT=<output path>
-"$BIN" -i "<asset>" -c config_presets/memory-reduction.json -s -r -w "$OUT" > "$OUT.log" 2>&1
+"$BIN" -i "<asset>" -c config_presets/memory-reduction.json -s -w "$OUT" > "$OUT.log" 2>&1
 ```
 
 ```powershell
 $Bin = "_build\windows-x86_64\release\bin\usdOptimize.bat"
 $Out = "<output path>"
-& $Bin -i "<asset>" -c config_presets\memory-reduction.json -s -r -w $Out *> "$Out.log"
+& $Bin -i "<asset>" -c config_presets\memory-reduction.json -s -w $Out *> "$Out.log"
 ```
+
+Don't add `-r`, which moves the `-s` stats out of the log,
+into a `usdOptimize.*` report in the system temp directory,
+and prints the path of a second report that lacks them.
+Run `-r` as a separate pass if you need a report.
 
 Tell the user it is running and that you will report results when it finishes.
 
 ## Step 4 — Summarize and offer to re-validate
 
-Show the last ~40 lines of the log (the `-s` stats and `-r` report, per-op
+Show the last ~40 lines of the log (the `-s` stats, per-op
 timings, the final "UsdOptimize finished" line). Then:
 
 ```
@@ -165,6 +170,16 @@ specified: <key>`, exit 1), while a `-c` config file **warns and continues**,
 running the operation with the default. Verify keys against
 `docs/operations/<key>.rst`.
 
+**Exit 0 does not prove every operation ran.** With `-c`, an operation name the
+build cannot resolve is logged as `Could not find operation <name>`, skipped, and
+the run continues to a written output and exit 0. That is deliberate — one config
+can target several deployments, and the native CLI does not load the
+Python-plugin operations (`pythonScript`, `deleteHiddenPrims`,
+`removeUntypedPrims`, `moveMaterials`) that the wheel provides. The warning is
+logged where that operation would have run, so it may not appear in the last ~40
+lines above: search the whole log for `Could not find operation` before reporting
+success, and name any skipped operations to the user.
+
 ---
 
 ## Confirm before destructive ops
@@ -178,7 +193,7 @@ before running:
 | `decimateMeshes` | Permanently drops vertices. `reductionFactor` is a **percentage (0-100), not a fraction** — `0.5` means "keep 0.5%". | Whether the goal is preserving silhouette (use `maxMeanError`, `reductionFactor: 0.0`) or hitting a target rate (use `reductionFactor`). See `docs/operations/decimateMeshes.rst`. |
 | `removeSmallGeometry` | Removes meshes below a size threshold. | The threshold is appropriate for the target output size. |
 | `meshCleanup` with `makeManifold: true` | Repairs topology; can rearrange faces. | The user wants topology repair, not just welding/degenerate removal. |
-| `optimizeMaterials` with `convertToColor: true` | Replaces material networks with constant colors; loses shading. | Only enable if the user explicitly asked to flatten to colors. |
+| `optimizeMaterials` with `optimizeMaterialsMode: 1` ("Convert to color") | Replaces material networks with constant colors; loses shading. | Only enable if the user explicitly asked to flatten to colors. |
 | `merge` on instanced meshes | Expanding instances **increases** memory. | The meshes aren't scenegraph instances (or the trade-off is intended). |
 
 If the user is uncertain, fall back to `config_presets/safe-cleanup.json`.
@@ -208,6 +223,7 @@ a decision:
 | CLI exits non-zero mid-chain | An operation failed | Surface the failing op line from the log; check args against `docs/operations/<key>.rst`. |
 | Output written but stage looks unchanged | Op ran on an empty selection (wrong `paths`/prim type) | Use `inspect-asset` to confirm the stage has the targeted prims. |
 | Argument has no effect | Unknown key in a `-c` config — the op warns (`Unknown argument '<key>' ... ignoring it`) and runs with the default | Grep the log for `Unknown argument`; verify the key in `docs/operations/<key>.rst`. |
+| An operation in the chain never ran, at exit 0 | The build cannot resolve that operation name — `-c` logs `Could not find operation <name>`, skips it, and finishes normally | Grep the whole log for `Could not find operation`. If it is a Python-plugin op (`pythonScript`, `deleteHiddenPrims`, `removeUntypedPrims`, `moveMaterials`), run the config through the Python wheel — the native CLI cannot load them. |
 
 ## Purpose
 

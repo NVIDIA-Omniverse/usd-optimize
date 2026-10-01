@@ -28,6 +28,12 @@ project_with_location("usd_optimize.core")
         {target_deps.."/usd/%{config}/lib/usd", extra_dir.."/usd"}
     }
 
+    -- USD 26.08+ only: separate oneTBB/MaterialX packages, missed by the USD glob above.
+    repo_build.prebuild_copy{
+        {target_deps.."/tbb/%{config}/lib/*", extra_dir},
+        {target_deps.."/materialx/%{config}/lib/*", extra_dir},
+    }
+
     -- A couple of extra libs that are found in different places on windows.
     -- Glob tbb*.dll: USD 25.11 ships oneTBB (tbb12.dll), USD 25.05 classic TBB (tbb.dll).
     -- Glob MaterialX*.dll: usd_usdMtlx.dll comes from usd/lib, its MaterialX runtime from
@@ -36,6 +42,9 @@ project_with_location("usd_optimize.core")
         repo_build.prebuild_copy{
             {target_deps.."/usd/%{config}/bin/tbb*.dll", extra_dir},
             {target_deps.."/usd/%{config}/bin/MaterialX*.dll", extra_dir},
+            -- 26.08+ puts the .lib in lib/ but the .dll in bin/; without these, 0xC0000135.
+            {target_deps.."/tbb/%{config}/bin/tbb*.dll", extra_dir},
+            {target_deps.."/materialx/%{config}/bin/MaterialX*.dll", extra_dir},
             {target_deps.."/python/python"..string.gsub(PYTHON_VERSION, "%.", "")..".dll", extra_dir},
         }
     end

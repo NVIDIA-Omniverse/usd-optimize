@@ -1,0 +1,22 @@
+<project toolsVersion="5.6">
+  <!-- 26.08 splits oneTBB and MaterialX out of the bundled `usd.py312.<abi>.stock.<config>`;
+       versions match usd-exchange 3.0.0. Linux filters must be globs: abi = "2.35" makes packman
+       see `manylinux_2_35_x86_64`, and a filter matching nothing drops the dependency silently. -->
+  <dependency name="usd-${config}" linkPath="../_build/usd-deps/usd/${config}">
+    <package name="openusd" version="0.26.08-9-windows_v143_x86_64-dynamic-${config}-py312.no_imaging" platforms="windows-x86_64" />
+    <package name="openusd" version="0.26.08-9-${platform_target_abi}-dynamic-${config}-py312.no_imaging" platforms="linux-* manylinux_*" />
+  </dependency>
+  <dependency name="tbb-${config}" linkPath="../_build/usd-deps/tbb/${config}">
+    <package name="onetbb" version="2021.13.0-4-windows_v143_x86_64-${config}" platforms="windows-x86_64" />
+    <package name="onetbb" version="2021.13.0-4-${platform_target_abi}-${config}-gcc" platforms="linux-* manylinux_*" />
+  </dependency>
+  <dependency name="materialx-${config}" linkPath="../_build/usd-deps/materialx/${config}">
+    <package name="materialx" version="1.39.5-14-windows_v143_x86_64-${config}-py312" platforms="windows-x86_64" />
+    <package name="materialx" version="1.39.5-14-${platform_target_abi}-${config}-py312" platforms="linux-* manylinux_*" />
+  </dependency>
+  <!-- Do not bump past 3.12.12+nv2 while using ${platform_host}: python moved to ABI-declarative
+       names at 3.12.13, which that token cannot resolve on Linux. -->
+  <dependency name="python" linkPath="../_build/usd-deps/python">
+    <package name="python" version="3.12.12+nv2-${platform_host}" />
+  </dependency>
+</project>

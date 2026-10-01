@@ -4,7 +4,7 @@ description: Validate a USD asset with Usd Optimize's performance validators and
 allowed-tools: Bash
 metadata:
   author: NVIDIA Corporation
-  version: "4.0.0"
+  version: "4.1.1"
   tags: [usd, validation, performance]
 ---
 
@@ -51,8 +51,9 @@ One positional argument (the asset) plus optional flags:
 |---|---|
 | `ASSET` | Required. `.usd` / `.usda` / `.usdc` / `.usdz`, or a folder of them (read-only runs only — see Limitations). |
 | `-f` / `--fix` | **Opt-in.** Run `IssueFixer` on every fixable issue. Non-destructive by default: writes fixes to a **new file** (`<stem>.fixed<ext>`, or `--fix-output`); the source is untouched unless `--fix-in-place` (or `USD_OPTIMIZE_FIX_IN_PLACE=1`) is set. |
-| `--fix-output <PATH>` | Where `--fix` writes the fixed stage (default `<stem>.fixed<ext>` beside the source). |
+| `--fix-output <PATH>` | Where `--fix` writes the fixed stage (default `<stem>.fixed<ext>` beside the source). **Only the root layer is copied**, so a path outside the source's directory leaves relative sublayers, references and payloads pointing at their old locations — keep it beside the source unless the asset is self-contained. A relative `<PATH>` resolves against the **current directory**, not the asset's. |
 | `--fix-in-place` | Make `--fix` overwrite the **source** (destructive — confirm first). Env: `USD_OPTIMIZE_FIX_IN_PLACE=1`. |
+| `--fix-overwrite` | Allow `--fix` to replace an existing output file. Without it an existing destination is refused (exit 2) rather than overwritten, so a second `--fix` run over the same default path is an error until the first result is moved or removed. Rejected with `--fix-in-place`, which has no destination. |
 | `--csv-output <CSV>` | Write a per-issue CSV (all rules). |
 | `--json-output <JSON>` | Write the full validation result as JSON (`rules[].issues[]`). Carries the same issues as the CSV; `summarize_csv.py` reads either. |
 | `-r RULE` | Enable only a specific rule (repeatable). |
@@ -160,6 +161,18 @@ the process exits).
 `--fix-in-place` (or `USD_OPTIMIZE_FIX_IN_PLACE=1`) overwrites the source
 instead; it's destructive, so confirm with the user before using it.
 
+The **destination** is protected too: if it already exists the run stops with
+exit 2 before copying anything, because the copy happens up front and would
+otherwise destroy that file even on a run that fixes nothing. Move or remove the
+old output, pick a different `--fix-output`, or pass `--fix-overwrite` to replace
+it deliberately. Only the root layer is copied — see the `--fix-output` row in
+Usage before sending output to another directory.
+
+If the run itself fails before any fixes are saved, the copy is removed rather
+than left behind, so a `<stem>.fixed<ext>` that exists is one the fixer actually
+wrote. A run that completes and still reports issues is not a failure: its output
+is kept, because `--fix` cannot repair every rule.
+
 ### Long-running execution
 
 Validation on real assets takes minutes (occlusion and overlap checks are the
@@ -253,7 +266,10 @@ grep -c 'FixStatus.SUCCESS' "<artifact_dir>/run.log"
 
 If `--fix` was used, re-validate the file the fixes landed in — the
 `--fix-output` path (`<stem>.fixed<ext>` by default), or the source itself for
-`--fix-in-place` — to confirm the targeted rules dropped:
+`--fix-in-place` — to see what the targeted rules report now. Expect them to
+drop, but **the total can rise**: a fix changes the stage, and the rewritten
+geometry can legitimately trip rules that had nothing to report before. A higher
+count is a result to read, not a sign the run failed:
 
 ```bash
 tools/validators/run.sh "<the file you fixed>" --csv-output "$CSV"
@@ -267,7 +283,7 @@ Don't interpret the remaining issues here — that's `interpret-validators`.
 |---|---|---|
 | `Build not found at _build/...` | The repo isn't built | Point at the `build` skill; build first. |
 | Driver exits **1** and the log ends with a `Summary per Severity:` block | **Normal** — the run completed and found at least one issue. Warnings alone are enough; only a genuinely clean asset exits 0. | Not a failure. The CSV is complete — parse it as usual. |
-| Driver exits **2** | A wrapper flag guard rejected the command (e.g. `--fix` with no usable asset) | The `error:` line on stderr names the problem; fix the command and re-run. |
+| Driver exits **2** | **Nothing was validated.** Either a wrapper flag guard rejected the command — a misused flag combination, no single usable asset, a missing or read-only source, or an existing output file — or the `usd-validation-nvidia` install failed | The `error:` line on stderr names the problem. For a command problem, fix it and re-run; for a failed install, check network or proxy access (`HTTPS_PROXY`). Nothing was written, so there is no partial output to clean up. **Do not parse this as a result** — exit 1 is the "validated, found issues" case. |
 | Driver exits non-zero with **no** severity summary in the log | USD open error or plugin import error | Surface the last lines of `run.log`; don't parse a partial CSV. |
 | `usd-validation-nvidia` install fails in the wrapper | First-run pip install behind a proxy | Set `HTTPS_PROXY` / `HTTP_PROXY` and re-run. |
 | 0 Usd Optimize issues but base-rule issues present | The asset has no `UsdGeomMesh` content (references-only / materials-library / layout stage), so mesh rules find nothing | Expected — not a registration failure. Confirm with `inspect-asset` if unsure. |
@@ -292,8 +308,8 @@ Those remain after `--fix` and are the input to `interpret-validators`.
 ## Programmatic invocation
 
 ```python
-from usd_optimize.validators import register_all
 from usd_validation_nvidia import ValidationEngine, IssueFixer
+from usd_optimize.validators import register_all
 from pxr import Usd
 
 register_all()                         # register every Usd Optimize rule

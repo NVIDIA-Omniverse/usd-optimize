@@ -9,10 +9,10 @@ license-files = ["LICENSE"]
 requires-python = ">=3.12,<3.13"
 dependencies = [
   # The wheel binds usd-exchange's pxr runtime, so both must be the same OpenUSD version.
-  # wheel_usd_versions.json pins this wheel to OpenUSD 25.05; every published usd-exchange
-  # 2.x (2.0.1 - 2.3.0) ships 25.05, while 3.0.0 moved to 26.08. Raise with the wheel's pin.
-  "usd-exchange>=2.2,<3",
-  "usd-validation-nvidia>=1.21.0",
+  # wheel_usd_versions.json pins this wheel to OpenUSD 26.08; usd-exchange 3.x ships 26.08,
+  # while every 2.x (2.0.1 - 2.3.0) shipped 25.05. Raise with the wheel's pin.
+  "usd-exchange>=3.0.0,<4",
+  "usd-validation-nvidia>=1.22.0,<2",
 ]
 
 

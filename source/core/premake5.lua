@@ -25,7 +25,11 @@ project_with_location("usd_optimize.core")
     local extra_dir = "%{root}/_build/%{cfg.system}-%{cfg.platform}/%{config}/extraLibs"
     repo_build.prebuild_copy{
         {target_deps.."/usd/%{config}/lib/*", extra_dir},
-        {target_deps.."/usd/%{config}/lib/usd", extra_dir.."/usd"}
+        {target_deps.."/usd/%{config}/lib/usd", extra_dir.."/usd"},
+        -- usdShaders defines UsdPreviewSurface to Sdr and lives in plugin/usd. Copied by name:
+        -- on 25.x that dir also holds imaging and Alembic plugins we do not ship.
+        {target_deps.."/usd/%{config}/plugin/usd/usdShaders.*", extra_dir.."/usd"},
+        {target_deps.."/usd/%{config}/plugin/usd/usdShaders", extra_dir.."/usd/usdShaders"},
     }
 
     -- USD 26.08+ only: separate oneTBB/MaterialX packages, missed by the USD glob above.

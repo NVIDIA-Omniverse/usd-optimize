@@ -113,11 +113,19 @@ usually hides this; ``PYTHONUTF8=1`` is a harmless, safe default. See
 `PEP 540 <https://peps.python.org/pep-0540/>`__.
 
 **(Linux) Extra requirements for** ``./repo.sh py_package``. It needs
-``patchelf`` (``sudo apt-get install patchelf``) for ``auditwheel repair``, and
 outbound HTTPS/PyPI access — ``tools/pyproject/pybuild.sh`` pip-installs
-Poetry, auditwheel, and related tools into
+Poetry, auditwheel, patchelf, and related tools into
 ``_build/host-deps/py_package_venv/``. If that bootstrap fails partway, remove
 the venv and rerun: ``rm -rf _build/host-deps/py_package_venv``.
+
+The Linux wheel does not bundle OpenUSD, oneTBB, or MaterialX. The
+``usd-exchange`` wheel ships them under their original library names, the same
+names our binaries depend on, so packaging excludes them from
+``auditwheel repair``. At import, the package imports the ``pxr`` modules that
+load every library the core and the operation plugins need, and the loader
+reuses those by name wherever ``usd-exchange`` is installed. This requires
+``usd-exchange`` 3.0.1 or later; 3.0.0 named those libraries after content
+hashes. Windows packaging already excludes the corresponding DLLs.
 
 **(Linux x86_64) C++11 ABI** is enabled via
 ``premake.linux_x86_64_cxx_abi`` in ``repo.toml``.

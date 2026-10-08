@@ -97,19 +97,24 @@ def _assert_pypi_compatible_tag(wheel: str):
         raise RuntimeError(f"wheel has a non-manylinux tag; PyPI rejects bare linux_* tags: {name}")
 
 
+def _is_usd_exchange_lib(soname: str) -> bool:
+    """Whether usd-exchange's Linux wheel provides this library, so ours must not bundle it.
+
+    usd-exchange ships OpenUSD, oneTBB and MaterialX in ``usd_exchange.libs`` under the SONAMEs packman built them
+    with, which are exactly the names our binaries depend on. Bundling copies instead loads a second OpenUSD, so
+    stages passed across the boundary miss UsdUtilsStageCache and operations silently do nothing, and a second
+    oneTBB, which ignores the host's Work.SetConcurrencyLimit.
+    """
+    if soname.startswith("libusd_optimize"):
+        return False
+    return soname.startswith(("libusd_", "libtbb", "libMaterialX"))
+
+
 def _stage_stripped_libs(libDirs, stagingDir: str) -> str:
     """Copy the shared libraries auditwheel will graft into *stagingDir* and strip the copies.
 
-    auditwheel renames each vendored library to ``<name>-<sha256[:8]>.so``, so the wheel only binds
-    usd-exchange's already-loaded OpenUSD when our copies are byte-identical to the ones its wheel
-    ships. usd-exchange strips before repairing (their tools/repoman/py_package.py), so an unstripped
-    copy hashes differently and the wheel loads a second, parallel OpenUSD -- every stage passed
-    across the boundary then misses UsdUtilsStageCache and operations silently do nothing.
-
-    The graft is also named after the symlink-resolved file (``libtbb.so.12`` -> ``libtbb.so.12.13``
-    -> ``libtbb-<hash>.so.12.13``), so symlinks are recreated, not dereferenced. A flattened
-    ``libtbb.so.12`` copy grafts as ``libtbb-<hash>.so.12``, which usd-exchange's TBB does not match,
-    and the process loads a second oneTBB that ignores the host's Work.SetConcurrencyLimit.
+    Libraries usd-exchange provides are skipped, since the repair excludes them (see _is_usd_exchange_lib).
+    Symlinks are recreated, not dereferenced, so the grafts keep their versioned names.
 
     Stripping copies rather than the build tree keeps symbols in the packman drop and symstore, which
     are packaged after this step. Strip must run before auditwheel's patchelf, not via
@@ -121,7 +126,7 @@ def _stage_stripped_libs(libDirs, stagingDir: str) -> str:
     for libDir in libDirs:
         for path in glob.glob(f"{libDir}/*.so*"):
             real = os.path.realpath(path)
-            if not os.path.isfile(real):
+            if not os.path.isfile(real) or _is_usd_exchange_lib(os.path.basename(path)):
                 continue
             with open(real, "rb") as f:
                 if f.read(4) != b"\x7fELF":
@@ -258,7 +263,8 @@ def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
             # Repair the wheel by baking in the dependent shared libraries found in the
             # first-party lib/ tree and the runtime libraries in extraLibs/. This patches
             # the import tables of every binary in the wheel (extension module + the
-            # dlopen'd operation plugins) so it is self-contained.
+            # dlopen'd operation plugins). The libraries usd-exchange provides are
+            # excluded instead; the package's pxr imports load usd-exchange's copies.
             lib_dir = os.path.abspath(os.path.realpath(f"{source}/lib"))
             extra_libs_dir = os.path.abspath(os.path.realpath(f"{source}/extraLibs"))
             tokens = omni.repo.man.get_tokens()
@@ -267,8 +273,16 @@ def setup_repo_tool(parser: argparse.ArgumentParser, config: Dict) -> Callable:
             stripped_dir = _stage_stripped_libs([lib_dir, extra_libs_dir], stagingDir)
             env = os.environ.copy()
             env["LD_LIBRARY_PATH"] = f"{stripped_dir}:{lib_dir}:{extra_libs_dir}"
+            # every name, including the SONAME symlinks, since the exclusion matches the names our binaries depend on
+            excluded = sorted(
+                {os.path.basename(path) for libDir in (lib_dir, extra_libs_dir) for path in glob.glob(f"{libDir}/*.so*")
+                 if _is_usd_exchange_lib(os.path.basename(path))}
+            )
+            if not excluded:
+                raise RuntimeError(f"No usd-exchange provided libraries found in {lib_dir} or {extra_libs_dir}")
             auditwheel_cmd = omni.repo.man.resolve_tokens("$root/tools/pyproject/auditwheel${shell_ext}")
             auditwheel_args = [auditwheel_cmd, "repair", wheel, "--plat", platform_target_abi, "-w", installDir]
+            auditwheel_args += [arg for soname in excluded for arg in ("--exclude", soname)]
             omni.repo.man.logger.info(" ".join(auditwheel_args))
             omni.repo.man.run_process(auditwheel_args, exit_on_error=True, env=env)
         # the repair tool may retag the platform, so pick the repaired wheel by recency

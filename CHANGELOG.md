@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.1] - 2026-10-07
+### Changed
+- Move `omnimesh_ops_usd` to `1.1.0-r7` for USD 26.08 and 25.11, shrinking the drops and the
+  wheel: it embeds no sm_86 code (sm_86 GPUs run the sm_80 code) and PTX for sm_90 only.
+  25.05 stays on `1.1.0-r4`.
+- The Linux wheel no longer bundles OpenUSD or oneTBB; it uses usd-exchange's copies, which it
+  links by their original library names, and requires `usd-exchange>=3.0.1,<4`.
+
+### Fixed
+- Prebuilt packages and source builds: stage OpenUSD's `usdShaders` plugin, which defines
+  `UsdPreviewSurface` to Sdr. Without it `UsdShadeShaderSdrCompliance` failed every
+  `UsdPreviewSurface` shader and `MaterialUsdPreviewSurfaceChecker` could check none, so real
+  shader errors were indistinguishable from the false ones.
+- The Linux wheel no longer loads a second OpenUSD next to usd-exchange's, which left
+  operations on the caller's stage failing with "Stage id ... not found in UsdUtilsStageCache".
+
 ## [1.3.0] - 2026-09-30
 ### Added
 - OpenUSD 26.08 as a build target on windows-x86_64, linux-x86_64 and linux-aarch64,

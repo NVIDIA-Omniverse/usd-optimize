@@ -122,6 +122,16 @@ def _setup_windows_dll_dirs():
 # Before the import below, which would otherwise report a missing module.
 _check_python_abi()
 
+# The Linux wheel bundles no OpenUSD or oneTBB; its binaries depend on usd-exchange's libraries by their original
+# SONAMEs. Importing the pxr modules loads every library the core and the operation plugins need, and the loader then
+# reuses those already-loaded libraries by SONAME, wherever usd-exchange is installed. The operation plugins load
+# lazily, so this must cover their dependencies too, not only the core's. Other layouts (the build tree, the Kit
+# extension) locate their OpenUSD themselves, so only the installed wheel, identified by its usd_optimize.libs, needs it.
+if sys.platform.startswith("linux") and os.path.isdir(
+    os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../../usd_optimize.libs")
+):
+    from pxr import UsdGeom, UsdLux, UsdPhysics, UsdShade, UsdSkel, UsdUtils  # noqa: F401
+
 # try import the core implementation, if we're in a extension then we won't need to add the dll directories since
 # they will already be set up, otherwise we need to add them here so the import can find the required dlls
 try:

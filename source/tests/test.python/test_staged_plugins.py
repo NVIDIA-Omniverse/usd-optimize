@@ -4,7 +4,7 @@
 
 from unittest import TestCase
 
-from pxr import Plug
+from pxr import Plug, Sdr
 
 
 class Test_StagedPlugins(TestCase):
@@ -41,3 +41,9 @@ class Test_StagedPlugins(TestCase):
                 failures.append(f"{plugin.name} ({plugin.path}): {exc}")
 
         self.assertEqual(failures, [], msg="plugins failed to load:\n" + "\n".join(failures))
+
+    def test_usdshaders_is_staged(self):
+        """UsdPreviewSurface resolves in Sdr, so the Sdr validators check shaders instead of failing them all."""
+        # USD keeps usdShaders in plugin/usd, which copying its lib/ misses.
+        self.assertIsNotNone(Plug.Registry().GetPluginWithName("usdShaders"), msg="usdShaders is not staged")
+        self.assertTrue(Sdr.Registry().GetShaderNodeByIdentifier("UsdPreviewSurface"))

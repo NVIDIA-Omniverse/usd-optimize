@@ -3,11 +3,11 @@
         "_comment": "autouv-core ships both configs in one package, so it has no ${config} segment.",
         "omnimesh_ops_usd": [
             {
-                "version": "1.1.0-r6+${platform_target_abi}.${config}.gcc11-cuda12.4-usd26.08-py3.12",
+                "version": "1.1.0-r7+${platform_target_abi}.${config}.gcc11-cuda12.4-usd26.08-py3.12",
                 "platforms": "manylinux_2_35_x86_64 manylinux_2_35_aarch64"
             },
             {
-                "version": "1.1.0-r6+${platform_target_abi}.${config}.cuda12.4-usd26.08-py3.12",
+                "version": "1.1.0-r7+${platform_target_abi}.${config}.cuda12.4-usd26.08-py3.12",
                 "platforms": "windows-x86_64"
             }
         ],
@@ -25,11 +25,11 @@
     "25.11": {
         "omnimesh_ops_usd": [
             {
-                "version": "1.1.0-r4+${platform_target_abi}.${config}.gcc11-cuda12.4-usd25.11-py3.12",
+                "version": "1.1.0-r7+${platform_target_abi}.${config}.gcc11-cuda12.4-usd25.11-py3.12",
                 "platforms": "manylinux_2_35_x86_64 manylinux_2_35_aarch64"
             },
             {
-                "version": "1.1.0-r4+${platform_target_abi}.${config}.cuda12.4-usd25.11-py3.12",
+                "version": "1.1.0-r7+${platform_target_abi}.${config}.cuda12.4-usd25.11-py3.12",
                 "platforms": "windows-x86_64"
             }
         ],
@@ -45,6 +45,7 @@
         ]
     },
     "25.05": {
+        "_comment": "omnimesh_ops_usd stays on r4: r6+ links oneTBB (tbb12), but this USD ships TBB 2020 (tbb.dll).",
         "omnimesh_ops_usd": [
             {
                 "version": "1.1.0-r4+${platform_target_abi}.${config}.gcc11-cuda12.4-usd25.05-py3.12",

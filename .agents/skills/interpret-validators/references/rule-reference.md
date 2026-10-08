@@ -74,12 +74,15 @@ path even when the rule itself is upstream.
 - `UsdAsciiPerformanceChecker` — **T1.** Fires only on ASCII layers with large arrays.
   Fix by re-saving as crate: `usdcat -o out.usdc in.usda`.
   Re-running on the crate file clears it.
-- `UsdShadeShaderSdrCompliance` and `MaterialUsdPreviewSurfaceChecker` —
-  **known false positive in this build; dismiss, do not work them.**
-  Both report `UsdPreviewSurface` as unregistered with the Sdr Registry,
-  because the USD package we ship lacks the `usdShaders` plugin (`shaderDefs.usda`).
-  They fire on essentially every asset with a `UsdPreviewSurface` shader,
-  and say nothing about the asset itself.
+
+**Shaders (no Usd Optimize equivalent — manual fix):**
+
+- `UsdShadeShaderSdrCompliance` — a shader's `info:id` is not registered with Sdr
+  (a typo, or a shader library that is not installed), or an input's type differs
+  from its definition, e.g. `diffuseColor` authored as `float` instead of `color3f`.
+  T3 / manual.
+- `MaterialUsdPreviewSurfaceChecker` — checks `UsdPreviewSurface` inputs against
+  their definition, reporting the same kind of type mismatch. T3 / manual.
 
 **Geometry rules with Usd Optimize operation equivalents:**
 

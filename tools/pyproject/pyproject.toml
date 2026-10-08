@@ -11,7 +11,9 @@ dependencies = [
   # The wheel binds usd-exchange's pxr runtime, so both must be the same OpenUSD version.
   # wheel_usd_versions.json pins this wheel to OpenUSD 26.08; usd-exchange 3.x ships 26.08,
   # while every 2.x (2.0.1 - 2.3.0) shipped 25.05. Raise with the wheel's pin.
-  "usd-exchange>=3.0.0,<4",
+  # On Linux the wheel uses usd-exchange's OpenUSD and oneTBB by their original library
+  # names, which its wheels ship from 3.0.1; 3.0.0's are content-hashed (see py_package.py).
+  "usd-exchange>=3.0.1,<4",
   "usd-validation-nvidia>=1.22.0,<2",
 ]
 

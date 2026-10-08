@@ -47,7 +47,7 @@
 
 
     <script rel="preload" src="../_static/modal-table.js"></script>
-    <script src="../_static/documentation_options.js?v=96647119"></script>
+    <script src="../_static/documentation_options.js?v=f2aba15d"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scrollspy-patch.js?v=edc4054a"></script>
@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.3.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.3.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 30, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
 
 
   </head>
@@ -774,11 +774,18 @@ setx PYTHONUTF8 1       :: persist for new shells
 usually hides this; <code class="docutils literal notranslate"><span class="pre">PYTHONUTF8=1</span></code> is a harmless, safe default. See
 <a class="reference external" href="https://peps.python.org/pep-0540/">PEP 540</a>.</p>
 <p><strong>(Linux) Extra requirements for</strong> <code class="docutils literal notranslate"><span class="pre">./repo.sh</span> <span class="pre">py_package</span></code>. It needs
-<code class="docutils literal notranslate"><span class="pre">patchelf</span></code> (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">patchelf</span></code>) for <code class="docutils literal notranslate"><span class="pre">auditwheel</span> <span class="pre">repair</span></code>, and
 outbound HTTPS/PyPI access — <code class="docutils literal notranslate"><span class="pre">tools/pyproject/pybuild.sh</span></code> pip-installs
-Poetry, auditwheel, and related tools into
+Poetry, auditwheel, patchelf, and related tools into
 <code class="docutils literal notranslate"><span class="pre">_build/host-deps/py_package_venv/</span></code>. If that bootstrap fails partway, remove
 the venv and rerun: <code class="docutils literal notranslate"><span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">_build/host-deps/py_package_venv</span></code>.</p>
+<p>The Linux wheel does not bundle OpenUSD, oneTBB, or MaterialX. The
+<code class="docutils literal notranslate"><span class="pre">usd-exchange</span></code> wheel ships them under their original library names, the same
+names our binaries depend on, so packaging excludes them from
+<code class="docutils literal notranslate"><span class="pre">auditwheel</span> <span class="pre">repair</span></code>. At import, the package imports the <code class="docutils literal notranslate"><span class="pre">pxr</span></code> modules that
+load every library the core and the operation plugins need, and the loader
+reuses those by name wherever <code class="docutils literal notranslate"><span class="pre">usd-exchange</span></code> is installed. This requires
+<code class="docutils literal notranslate"><span class="pre">usd-exchange</span></code> 3.0.1 or later; 3.0.0 named those libraries after content
+hashes. Windows packaging already excludes the corresponding DLLs.</p>
 <p><strong>(Linux x86_64) C++11 ABI</strong> is enabled via
 <code class="docutils literal notranslate"><span class="pre">premake.linux_x86_64_cxx_abi</span></code> in <code class="docutils literal notranslate"><span class="pre">repo.toml</span></code>.</p>
 </section>
@@ -884,7 +891,7 @@ the venv and rerun: <code class="docutils literal notranslate"><span class="pre"
 </div>
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on Sep 30, 2026.
+  Last updated on Oct 07, 2026.
   <br/>
 </p></div>
       

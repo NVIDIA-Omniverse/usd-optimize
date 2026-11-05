@@ -47,7 +47,7 @@
 
 
     <script rel="preload" src="../_static/modal-table.js"></script>
-    <script src="../_static/documentation_options.js?v=f2aba15d"></script>
+    <script src="../_static/documentation_options.js?v=ea36c55f"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scrollspy-patch.js?v=edc4054a"></script>
@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.3.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.4.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 05, 2026"/>
 
 
   </head>
@@ -387,6 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/boxClip.html">Box Clip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/computeExtents.html">Compute Extents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/pivot.html">Compute Pivot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/operations/conformMeshes.html">Conform Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/countVertices.html">Count Vertices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/decimateMeshes.html">Decimate Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/deduplicateGeometry.html">Deduplicate Geometry</a></li>
@@ -405,6 +406,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/generateProjectionUVs.html">Generate Projection UVs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/generateScene.html">Generate Scene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/manifoldMeshes.html">Manifold Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs/operations/mergePhysicsBodyMeshes.html">Merge Physics Body Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/merge.html">Merge Static Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/mergeVertices.html">Merge Vertices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docs/operations/meshCleanup.html">Mesh Cleanup</a></li>
@@ -434,6 +436,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../docs/choosing-operations.html">Choosing Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docs/gpu-acceleration.html">GPU Acceleration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../docs/performance-validators.html">Performance Validators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../docs/python.html">Usd Optimize Python API</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="api.html">Usd Optimize C++ API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -534,7 +537,7 @@
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a7219d8c777ddf2e796eb56663b5b9a25.html">_getPivotXformOps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1abb3427195300d066fe9187f8e37769bd.html">_getPivotXformOps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a483ba75fb900da2019ce15798e62c55e.html">_getSizeFromSdfValueType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a8c2d115fd63ab82a172bdf7fa97f8978.html">_getTempFile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a8b76b9d8d85111ea2d386377af8f2598.html">_getTempFile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a8334c523fc5dde1e20707ae85c787a84.html">_getTransformFromToFuzzy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a90591da28badb76971e389ffd06d682d.html">_getUniqueChildPaths</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a8c30edb67c49890440950014d84dc468.html">_hasAuthoredTimeSamples</a></li>
@@ -544,6 +547,7 @@
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a2a6647a68e07a4c9e326010e8092bf6c.html">_hidePrims</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a5cd0700aca08ae8bbd6001eed04c77a2.html">_hsvToRgb</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1aa3034f06d2c223023691247c9f74fdc0.html">_isInheritableProperty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1acf9f5b59da62546644567d3c62cbdb1a.html">_isValidPathsArgument</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1ae3c17aa09f9ba18a68f7de64ea267beb.html">_jsonArrayToPybindList</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1aa7a29d8e68d538d26cfcfef7885e3858.html">_jsonObjectToPybindDict</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a6dfd3b658063c830c44ceda137329daf.html">_jsonValueToPybindObject</a></li>
@@ -605,7 +609,6 @@
 <li class="toctree-l4"><a class="reference internal" href="variable_namespaceusd__optimize_1a978ac2b15d5c0c4eafed74b0922ccf73.html">s_displayGroupMaterials</a></li>
 <li class="toctree-l4"><a class="reference internal" href="variable_namespaceusd__optimize_1acfccf35700f832aec0d743cbf6e30d4d.html">s_displayGroupStage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="variable_namespaceusd__optimize_1ac83cae8316dc53d7a6b4fa7715be424a.html">s_displayGroupUtilities</a></li>
-<li class="toctree-l4"><a class="reference internal" href="namespace_usd__optimize__tbbcompat.html">tbbcompat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1afdfff8670dc24bb4c47e2382f34f768f.html">usdOptimizeLog</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1ab052514ada104c58672e760b4520880a.html">usdOptimizeOperationCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="function_namespaceusd__optimize_1a33024a282630f0b69216ac5b37f334bf.html">usdOptimizeOperationDelete</a></li>
@@ -857,7 +860,7 @@
 </div>
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on Oct 07, 2026.
+  Last updated on Nov 05, 2026.
   <br/>
 </p></div>
       

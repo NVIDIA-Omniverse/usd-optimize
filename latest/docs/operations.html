@@ -47,7 +47,7 @@
 
 
     <script rel="preload" src="../_static/modal-table.js"></script>
-    <script src="../_static/documentation_options.js?v=f2aba15d"></script>
+    <script src="../_static/documentation_options.js?v=ea36c55f"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scrollspy-patch.js?v=edc4054a"></script>
@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.3.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.4.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 05, 2026"/>
 
 
   </head>
@@ -383,6 +383,7 @@
 <li class="toctree-l2"><a class="reference internal" href="operations/boxClip.html">Box Clip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/computeExtents.html">Compute Extents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/pivot.html">Compute Pivot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations/conformMeshes.html">Conform Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/countVertices.html">Count Vertices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/decimateMeshes.html">Decimate Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/deduplicateGeometry.html">Deduplicate Geometry</a></li>
@@ -401,6 +402,7 @@
 <li class="toctree-l2"><a class="reference internal" href="operations/generateProjectionUVs.html">Generate Projection UVs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/generateScene.html">Generate Scene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/manifoldMeshes.html">Manifold Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations/mergePhysicsBodyMeshes.html">Merge Physics Body Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/merge.html">Merge Static Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/mergeVertices.html">Merge Vertices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations/meshCleanup.html">Mesh Cleanup</a></li>
@@ -430,6 +432,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="choosing-operations.html">Choosing Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-acceleration.html">GPU Acceleration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="performance-validators.html">Performance Validators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="python.html">Usd Optimize Python API</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/api.html">Usd Optimize C++ API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -530,7 +533,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a7219d8c777ddf2e796eb56663b5b9a25.html">_getPivotXformOps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1abb3427195300d066fe9187f8e37769bd.html">_getPivotXformOps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a483ba75fb900da2019ce15798e62c55e.html">_getSizeFromSdfValueType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a8c2d115fd63ab82a172bdf7fa97f8978.html">_getTempFile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a8b76b9d8d85111ea2d386377af8f2598.html">_getTempFile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a8334c523fc5dde1e20707ae85c787a84.html">_getTransformFromToFuzzy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a90591da28badb76971e389ffd06d682d.html">_getUniqueChildPaths</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a8c30edb67c49890440950014d84dc468.html">_hasAuthoredTimeSamples</a></li>
@@ -540,6 +543,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a2a6647a68e07a4c9e326010e8092bf6c.html">_hidePrims</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a5cd0700aca08ae8bbd6001eed04c77a2.html">_hsvToRgb</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1aa3034f06d2c223023691247c9f74fdc0.html">_isInheritableProperty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1acf9f5b59da62546644567d3c62cbdb1a.html">_isValidPathsArgument</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1ae3c17aa09f9ba18a68f7de64ea267beb.html">_jsonArrayToPybindList</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1aa7a29d8e68d538d26cfcfef7885e3858.html">_jsonObjectToPybindDict</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a6dfd3b658063c830c44ceda137329daf.html">_jsonValueToPybindObject</a></li>
@@ -601,7 +605,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/variable_namespaceusd__optimize_1a978ac2b15d5c0c4eafed74b0922ccf73.html">s_displayGroupMaterials</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/variable_namespaceusd__optimize_1acfccf35700f832aec0d743cbf6e30d4d.html">s_displayGroupStage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/variable_namespaceusd__optimize_1ac83cae8316dc53d7a6b4fa7715be424a.html">s_displayGroupUtilities</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../api/namespace_usd__optimize__tbbcompat.html">tbbcompat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1afdfff8670dc24bb4c47e2382f34f768f.html">usdOptimizeLog</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1ab052514ada104c58672e760b4520880a.html">usdOptimizeOperationCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/function_namespaceusd__optimize_1a33024a282630f0b69216ac5b37f334bf.html">usdOptimizeOperationDelete</a></li>
@@ -675,12 +678,15 @@
   <section id="operations">
 <h1>Operations<a class="headerlink" href="#operations" title="Link to this heading">#</a></h1>
 <p>The following is the catalog of optimization operations provided by Usd Optimize.
-Each operation is identified by a string <strong>key</strong> (shown with each entry) and
+Each operation is identified by a string <strong>key</strong> (shown on each operation’s page) and
 declares a set of typed arguments that are supplied as a JSON object / Python
 dictionary.</p>
 <p>For almost every operation, a <code class="docutils literal notranslate"><span class="pre">paths</span></code> (or <code class="docutils literal notranslate"><span class="pre">meshPrimPaths</span></code> / <code class="docutils literal notranslate"><span class="pre">primPaths</span></code>)
 argument selects which prims to process. <strong>If left empty, the whole stage is
-processed.</strong> Path expressions are supported.</p>
+processed.</strong> Path expressions are supported. Prim paths with non-ASCII
+characters, such as <code class="docutils literal notranslate"><span class="pre">/World/Défaut</span></code>, work only when every entry is a plain
+prim path: a pattern such as <code class="docutils literal notranslate"><span class="pre">/World/Dé*</span></code>, or a non-ASCII path listed with
+any pattern, selects nothing.</p>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
 <p>Operations work against the current set of selected variants. To
@@ -724,61 +730,67 @@ Python interpreter. Invoking one of them from the native CLI reports
 <td><p>Compute and author the <code class="docutils literal notranslate"><span class="pre">extent</span></code> property for meshes.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="operations/pivot.html"><span class="doc">Compute Pivot</span></a></p></td>
-<td><p>Center mesh at centroid in canonical orientation.</p></td>
+<td><p>Center the pivot of each mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/countVertices.html"><span class="doc">Count Vertices</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/conformMeshes.html"><span class="doc">Conform Meshes</span></a></p></td>
+<td><p>Make meshes compatible with each other so that merge can combine them.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/countVertices.html"><span class="doc">Count Vertices</span></a></p></td>
 <td><p>Create a report of prims with excessive vertex counts.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/decimateMeshes.html"><span class="doc">Decimate Meshes</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/decimateMeshes.html"><span class="doc">Decimate Meshes</span></a></p></td>
 <td><p>Reduce tessellation density for mesh prims.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/deduplicateGeometry.html"><span class="doc">Deduplicate Geometry</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/deduplicateGeometry.html"><span class="doc">Deduplicate Geometry</span></a></p></td>
 <td><p>Convert identical meshes into instances.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/deduplicateHierarchies.html"><span class="doc">Deduplicate Hierarchies</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/deduplicateHierarchies.html"><span class="doc">Deduplicate Hierarchies</span></a></p></td>
 <td><p>Find duplicate prim hierarchies and replace duplicates with instances.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/deleteHiddenPrims.html"><span class="doc">Delete Hidden Prims [Python only]</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/deleteHiddenPrims.html"><span class="doc">Delete Hidden Prims [Python only]</span></a></p></td>
 <td><p>Deletes all prims that are constantly hidden.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/deletePrims.html"><span class="doc">Delete Prims</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/deletePrims.html"><span class="doc">Delete Prims</span></a></p></td>
 <td><p>Deletes prims from a stage.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/diceMeshes.html"><span class="doc">Dice Meshes</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/diceMeshes.html"><span class="doc">Dice Meshes</span></a></p></td>
 <td><p>Dice meshes to a given regular grid or an irregular one.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/editStageMetrics.html"><span class="doc">Edit Stage Metrics</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/editStageMetrics.html"><span class="doc">Edit Stage Metrics</span></a></p></td>
 <td><p>Set the <code class="docutils literal notranslate"><span class="pre">metersPerUnit</span></code> and/or <code class="docutils literal notranslate"><span class="pre">upAxis</span></code> of a stage.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/findCoincidingGeometry.html"><span class="doc">Find Coincident Geometry</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/findCoincidingGeometry.html"><span class="doc">Find Coincident Geometry</span></a></p></td>
 <td><p>Identify geometry that share the same location based on a tolerance metric.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/findFlatHierarchies.html"><span class="doc">Find Flat Hierarchies</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/findFlatHierarchies.html"><span class="doc">Find Flat Hierarchies</span></a></p></td>
 <td><p>Finds prims that have more than a specified number of children.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/findOccludedMeshes.html"><span class="doc">Find Occluded Meshes</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/findOccludedMeshes.html"><span class="doc">Find Occluded Meshes</span></a></p></td>
 <td><p>Finds meshes that are globally occluded meaning they are occluded from any camera that does not cross meshes in the scene.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/findOverlappingMeshes.html"><span class="doc">Find Overlapping Meshes</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/findOverlappingMeshes.html"><span class="doc">Find Overlapping Meshes</span></a></p></td>
 <td><p>Finds meshes that overlap with each other and displays the overlapping regions for selected meshes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/fitPrimitives.html"><span class="doc">Fit Primitives</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/fitPrimitives.html"><span class="doc">Fit Primitives</span></a></p></td>
 <td><p>Replace meshes in a stage with transformed primitive geometries (sphere, cylinder, cone, or cube) if they can be fit within tolerance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/flattenHierarchy.html"><span class="doc">Flatten Hierarchy</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/flattenHierarchy.html"><span class="doc">Flatten Hierarchy</span></a></p></td>
 <td><p>Finds and removes redundant Xforms to reduce prim count.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/generateNormals.html"><span class="doc">Generate Normals</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/generateNormals.html"><span class="doc">Generate Normals</span></a></p></td>
 <td><p>Generate normals for meshes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/generateProjectionUVs.html"><span class="doc">Generate Projection UVs</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/generateProjectionUVs.html"><span class="doc">Generate Projection UVs</span></a></p></td>
 <td><p>Generate <em>texture coordinates</em> for meshes using various projection methods.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="operations/generateScene.html"><span class="doc">Generate Scene</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/generateScene.html"><span class="doc">Generate Scene</span></a></p></td>
 <td><p>Generates a USD stage to use for benchmarking and testing using reference prims from the incoming stage.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="operations/manifoldMeshes.html"><span class="doc">Manifold Meshes</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="operations/manifoldMeshes.html"><span class="doc">Manifold Meshes</span></a></p></td>
 <td><p>Makes mesh Manifold.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="operations/mergePhysicsBodyMeshes.html"><span class="doc">Merge Physics Body Meshes</span></a></p></td>
+<td><p>Prepare and merge visual and collision meshes within each rigid body while preserving articulation. Analysis discovers candidate geometry and output scopes.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="operations/merge.html"><span class="doc">Merge Static Meshes</span></a></p></td>
 <td><p>Merge individual meshes.</p></td>
@@ -808,7 +820,7 @@ Python interpreter. Invoking one of them from the native CLI reports
 <td><p>Reparent internal scene-graph instance prototypes under a user-specified namespace.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="operations/primitivesToMeshes.html"><span class="doc">Primitives to Meshes</span></a></p></td>
-<td><p>Replace gprim types sphere, cylinder, cone, or cube in a stage with a mesh approximation.</p></td>
+<td><p>Replace gprim types sphere, cylinder, capsule, cone, or cube with a mesh approximation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="operations/pruneLeaves.html"><span class="doc">Prune Leaves</span></a></p></td>
 <td><p>Prune unnecessary leaf grouping prims (<code class="docutils literal notranslate"><span class="pre">Scope</span></code>, <code class="docutils literal notranslate"><span class="pre">Xform</span></code>) from a stage.</p></td>
@@ -944,7 +956,7 @@ Python interpreter. Invoking one of them from the native CLI reports
 </div>
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on Oct 07, 2026.
+  Last updated on Nov 05, 2026.
   <br/>
 </p></div>
       

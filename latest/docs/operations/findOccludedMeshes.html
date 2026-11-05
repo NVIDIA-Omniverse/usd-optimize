@@ -47,7 +47,7 @@
 
 
     <script rel="preload" src="../../_static/modal-table.js"></script>
-    <script src="../../_static/documentation_options.js?v=f2aba15d"></script>
+    <script src="../../_static/documentation_options.js?v=ea36c55f"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scrollspy-patch.js?v=edc4054a"></script>
@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.3.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.4.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 05, 2026"/>
 
 
   </head>
@@ -387,6 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="boxClip.html">Box Clip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="computeExtents.html">Compute Extents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pivot.html">Compute Pivot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conformMeshes.html">Conform Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="countVertices.html">Count Vertices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decimateMeshes.html">Decimate Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deduplicateGeometry.html">Deduplicate Geometry</a></li>
@@ -405,6 +406,7 @@
 <li class="toctree-l2"><a class="reference internal" href="generateProjectionUVs.html">Generate Projection UVs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generateScene.html">Generate Scene</a></li>
 <li class="toctree-l2"><a class="reference internal" href="manifoldMeshes.html">Manifold Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mergePhysicsBodyMeshes.html">Merge Physics Body Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="merge.html">Merge Static Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mergeVertices.html">Merge Vertices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="meshCleanup.html">Mesh Cleanup</a></li>
@@ -434,6 +436,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../choosing-operations.html">Choosing Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpu-acceleration.html">GPU Acceleration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../performance-validators.html">Performance Validators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../python.html">Usd Optimize Python API</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api/api.html">Usd Optimize C++ API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -534,7 +537,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a7219d8c777ddf2e796eb56663b5b9a25.html">_getPivotXformOps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1abb3427195300d066fe9187f8e37769bd.html">_getPivotXformOps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a483ba75fb900da2019ce15798e62c55e.html">_getSizeFromSdfValueType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8c2d115fd63ab82a172bdf7fa97f8978.html">_getTempFile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8b76b9d8d85111ea2d386377af8f2598.html">_getTempFile</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8334c523fc5dde1e20707ae85c787a84.html">_getTransformFromToFuzzy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a90591da28badb76971e389ffd06d682d.html">_getUniqueChildPaths</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a8c30edb67c49890440950014d84dc468.html">_hasAuthoredTimeSamples</a></li>
@@ -544,6 +547,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a2a6647a68e07a4c9e326010e8092bf6c.html">_hidePrims</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a5cd0700aca08ae8bbd6001eed04c77a2.html">_hsvToRgb</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1aa3034f06d2c223023691247c9f74fdc0.html">_isInheritableProperty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1acf9f5b59da62546644567d3c62cbdb1a.html">_isValidPathsArgument</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ae3c17aa09f9ba18a68f7de64ea267beb.html">_jsonArrayToPybindList</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1aa7a29d8e68d538d26cfcfef7885e3858.html">_jsonObjectToPybindDict</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a6dfd3b658063c830c44ceda137329daf.html">_jsonValueToPybindObject</a></li>
@@ -605,7 +609,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1a978ac2b15d5c0c4eafed74b0922ccf73.html">s_displayGroupMaterials</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1acfccf35700f832aec0d743cbf6e30d4d.html">s_displayGroupStage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/variable_namespaceusd__optimize_1ac83cae8316dc53d7a6b4fa7715be424a.html">s_displayGroupUtilities</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/namespace_usd__optimize__tbbcompat.html">tbbcompat</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1afdfff8670dc24bb4c47e2382f34f768f.html">usdOptimizeLog</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1ab052514ada104c58672e760b4520880a.html">usdOptimizeOperationCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/function_namespaceusd__optimize_1a33024a282630f0b69216ac5b37f334bf.html">usdOptimizeOperationDelete</a></li>
@@ -690,8 +693,9 @@ deleted; the bias is conservative, so a mesh is only reported when it is confide
 <h2>How it works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h2>
 <p>The scene is rasterized into a voxel grid and visibility is flood-filled from the exterior. A mesh is
 considered occluded when no exterior path reaches it. The check runs on GPU when <code class="docutils literal notranslate"><span class="pre">useGpu</span></code> is enabled
-(falling back to CPU if CUDA is unavailable) and on CPU otherwise; the GPU path is generally faster on
-large scenes.</p>
+(the default; it falls back to CPU if CUDA is unavailable or the GPU check fails) and on CPU otherwise. Leave
+it on: same meshes, much faster. Out of GPU memory, the CPU rerun is much slower; lower
+<code class="docutils literal notranslate"><span class="pre">maximumGridResolution</span></code> to stay on the GPU.</p>
 </section>
 <section id="tuning">
 <h2>Tuning<a class="headerlink" href="#tuning" title="Link to this heading">#</a></h2>
@@ -704,13 +708,16 @@ that finds smaller openings and flags fewer meshes as occluded. It acts as a tol
 an enclosure must be (e.g. 3.5 means ignore any opening smaller than 3.5 stage units). Scale it with
 <code class="docutils literal notranslate"><span class="pre">metersPerUnit</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">clustered</span></code> splits the stage into clusters of meshes with overlapping bounds and checks each cluster
-separately, improving both accuracy and performance.</p></li>
+separately, improving both accuracy and performance. Clustering runs on the CPU and its cost grows faster
+than the mesh count, so on scenes with thousands of meshes pass one sub-assembly’s meshes at a time in
+<code class="docutils literal notranslate"><span class="pre">paths</span></code> (mesh paths; a parent prim does not expand). Only meshes in <code class="docutils literal notranslate"><span class="pre">paths</span></code> occlude, so keep each mesh’s
+enclosure in the same selection. Turning <code class="docutils literal notranslate"><span class="pre">clustered</span></code> off is fast but misses most occluded meshes.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">checkTransparency</span></code> excludes meshes with opacity &lt; 1.0 from occlusion testing.</p></li>
 </ul>
 </section>
 <section id="starting-configurations">
 <h2>Starting configurations<a class="headerlink" href="#starting-configurations" title="Link to this heading">#</a></h2>
-<p>Standard analysis (defaults):</p>
+<p>Standard analysis:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="nt">&quot;operation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;findOccludedMeshes&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;clustered&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;checkTransparency&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}]</span>
 </pre></div>
 </div>
@@ -724,79 +731,65 @@ separately, improving both accuracy and performance.</p></li>
 <section id="meshes-used-for-occlusion-testing">
 <h3>Meshes used for occlusion testing<a class="headerlink" href="#meshes-used-for-occlusion-testing" title="Link to this heading">#</a></h3>
 <p>Meshes that are tested for occlusion as well as considered as occluders</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Name: <code class="docutils literal notranslate"><span class="pre">paths</span></code></p></li>
 <li><p>Type: <code class="docutils literal notranslate"><span class="pre">[string]</span></code></p></li>
 <li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">[]</span></code></p></li>
 </ul>
-</div></blockquote>
 </section>
 <section id="clustered">
 <h3>Clustered<a class="headerlink" href="#clustered" title="Link to this heading">#</a></h3>
 <p>Split the stage into clusters of meshes with overlapping bounding boxes and check visibility per cluster, improving both accuracy and performance by reducing the number of meshes compared at the same time</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Name: <code class="docutils literal notranslate"><span class="pre">clustered</span></code></p></li>
 <li><p>Type: <code class="docutils literal notranslate"><span class="pre">bool</span></code></p></li>
 <li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
 </ul>
-</div></blockquote>
 </section>
 <section id="minimum-gap-size">
 <h3>Minimum gap size<a class="headerlink" href="#minimum-gap-size" title="Link to this heading">#</a></h3>
 <p>The minimum gap size corresponding to the spacing of the background grid. Gaps smaller than this value are considered closed for occlusion culling. The actual grid spacing is max(minimumGapSize, maxDim/maximumGridResolution). Very small values defer to maximumGridResolution for spacing, producing a finer grid that detects smaller gaps and results in fewer meshes being flagged as occluded. It is essentially a tolerance for how sealed an enclosure needs to be: e.g. a value of 3.5 means ignore any opening smaller than 3.5 scene units when deciding if something is hidden</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Name: <code class="docutils literal notranslate"><span class="pre">minimumGapSize</span></code></p></li>
 <li><p>Type: <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
 <li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">0.01</span></code></p></li>
 <li><p>Min Value: <code class="docutils literal notranslate"><span class="pre">0.0</span></code></p></li>
 </ul>
-</div></blockquote>
 </section>
 <section id="maximum-grid-resolution">
 <h3>Maximum grid resolution<a class="headerlink" href="#maximum-grid-resolution" title="Link to this heading">#</a></h3>
 <p>The maximum number of cells along the longest axis of the grid used for visibility checking. This caps the grid resolution to prevent excessive memory and compute costs (the grid is 3D, so memory scales with the cube of resolution). A value of 500 is suitable for powerful GPUs, use smaller values for less powerful GPUs or CPUs</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Name: <code class="docutils literal notranslate"><span class="pre">maximumGridResolution</span></code></p></li>
 <li><p>Type: <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
 <li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">500</span></code></p></li>
 <li><p>Min Value: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
 </ul>
-</div></blockquote>
 </section>
 <section id="check-transparency">
 <h3>Check Transparency<a class="headerlink" href="#check-transparency" title="Link to this heading">#</a></h3>
 <p>Exclude meshes with opacity &lt; 1.0 from occlusion testing</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Name: <code class="docutils literal notranslate"><span class="pre">checkTransparency</span></code></p></li>
 <li><p>Type: <code class="docutils literal notranslate"><span class="pre">bool</span></code></p></li>
 <li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
 </ul>
-</div></blockquote>
 </section>
 <section id="action">
 <h3>Action<a class="headerlink" href="#action" title="Link to this heading">#</a></h3>
 <p>What to do with occluded meshes</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Name: <code class="docutils literal notranslate"><span class="pre">action</span></code></p></li>
 <li><p>Type: <code class="docutils literal notranslate"><span class="pre">int</span></code></p></li>
 <li><p>Default Value: <code class="docutils literal notranslate"><span class="pre">3</span></code></p></li>
-<li><dl class="simple">
-<dt>Enum Values:</dt><dd><ul>
+<li><p>Enum Values:</p>
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">1:</span> <span class="pre">Delete</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">2:</span> <span class="pre">Deactivate</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">3:</span> <span class="pre">Hide</span></code></p></li>
 </ul>
-</dd>
-</dl>
 </li>
 </ul>
-</div></blockquote>
 </section>
 </section>
 </section>
@@ -909,7 +902,7 @@ separately, improving both accuracy and performance.</p></li>
 </div>
       
         <div class="footer-item"><p class="last-updated">
-  Last updated on Oct 07, 2026.
+  Last updated on Nov 05, 2026.
   <br/>
 </p></div>
       

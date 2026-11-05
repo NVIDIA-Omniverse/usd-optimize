@@ -48,6 +48,11 @@ bool _resolvePrim(const PXR_NS::UsdStageWeakPtr& usdStage,
 /// \return A bool indicating whether the prim is valid to resolve.
 using ResolveFilter = std::function<bool(const PXR_NS::UsdPrim& prim, PXR_NS::UsdPrimRange::iterator& iterator)>;
 
+/// Whether every entry of \p paths is a valid path, as operations taking literal paths need, or together they parse
+/// as a path expression, as _resolveExpressionsToPrims needs.
+USD_OPTIMIZE_EXPORT
+bool _isValidPathsArgument(const std::vector<std::string>& paths);
+
 /// Resolve prim paths/expressions to UsdPrims.
 ///
 /// Iterates a prim and its descendants. If \p paths is populated, then all children

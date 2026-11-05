@@ -3,7 +3,7 @@
 #
 
 
-from pxr import Sdf, Usd, UsdGeom, UsdShade
+from pxr import Sdf, Usd, UsdGeom, UsdPhysics, UsdShade
 from usd_optimize.core import UsdOptimizeCore
 
 from .test_utils import Test_Operation, _get_context
@@ -115,6 +115,47 @@ class Test_Operation_Split_Meshes(Test_Operation):
             self.assertTrue(mesh)
             faces = mesh.GetFaceVertexCountsAttr().Get()
             self.assertEqual(len(faces), 6)
+
+    async def test_split_skips_physics_bodies(self):
+        # Traversing from above or at a physics body leaves its splittable meshes unchanged.
+        for api in (UsdPhysics.RigidBodyAPI, UsdPhysics.ArticulationRootAPI):
+            for paths in ([], ["/world"]):
+                with self.subTest(api=api.__name__, paths=paths):
+                    stage = self._open_stage("splitMeshes_various.usda")
+                    api.Apply(stage.GetPrimAtPath("/world"))
+                    before = stage.GetRootLayer().ExportToString()
+
+                    args = DEFAULT_ARGS.copy()
+                    args["paths"] = paths
+                    _, result = self._execute_command(args)
+                    self.assertTrue(result[0], result[1])
+
+                    self.assertEqual(stage.GetRootLayer().ExportToString(), before)
+
+    async def test_split_selected_below_physics_body(self):
+        # Selection below a physics body permits splitting, while nested physics bodies stay unchanged.
+        for api in (UsdPhysics.RigidBodyAPI, UsdPhysics.ArticulationRootAPI):
+            with self.subTest(api=api.__name__):
+                stage = self._open_stage("splitMeshes_various.usda")
+                path = "/world/twoPart/mesh"
+                api.Apply(stage.GetPrimAtPath("/world"))
+                nested = stage.DefinePrim("/world/twoPart/Nested", "Xform")
+                api.Apply(nested)
+                layer = stage.GetRootLayer()
+                self.assertTrue(Sdf.CopySpec(layer, path, layer, "/world/twoPart/Nested/mesh"))
+
+                args = DEFAULT_ARGS.copy()
+                args["paths"] = ["/world/twoPart"]
+                _, result = self._execute_command(args)
+                self.assertTrue(result[0], result[1])
+
+                self.assertFalse(stage.GetPrimAtPath(path).IsActive())
+                for part in ("mesh_part", "mesh_part_1"):
+                    mesh = UsdGeom.Mesh(stage.GetPrimAtPath(f"/world/twoPart/{part}"))
+                    self.assertTrue(mesh)
+                    self.assertEqual(len(mesh.GetFaceVertexCountsAttr().Get()), 6)
+                self.assertTrue(stage.GetPrimAtPath("/world/twoPart/Nested/mesh").IsActive())
+                self.assertFalse(stage.GetPrimAtPath("/world/twoPart/Nested/mesh_part"))
 
     async def test_unwelded_part(self):
         """A Mesh with unwelded vertices can be split in different ways based on the split collocated points argument"""

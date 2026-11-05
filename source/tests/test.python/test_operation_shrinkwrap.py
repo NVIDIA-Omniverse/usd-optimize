@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 _KEY_PATHS = "paths"
 _KEY_INPUT_MODE = "inputMode"
+_KEY_USE_STAGE_TIME_RANGE = "useStageTimeRange"
 _KEY_START_TIME = "startTime"
 _KEY_END_TIME = "endTime"
 _KEY_TIME_STEP = "timeStep"
@@ -110,6 +111,8 @@ def _temporal_args(output_path, paths, start=1.0, end=3.0, step=1.0):
             _KEY_ERODE: 0.0,
         }
     )
+    if start is not None or end is not None:
+        args[_KEY_USE_STAGE_TIME_RANGE] = False
     if start is not None:
         args[_KEY_START_TIME] = start
     if end is not None:
@@ -143,6 +146,23 @@ class Test_Operation_Shrinkwrap(Test_Operation):
         self.assertTrue(all(0 <= index < len(points) for index in face_vertex_indices))
 
         return mesh
+
+    def _shrinkwrap_cube(self, stage, lod_pyramid=False):
+        """Shrinkwrap /World/Cube in the given stage, asserting that the operation succeeds."""
+        args = {**DEFAULT_ARGS, _KEY_PATHS: ["/World/Cube"], _KEY_DIM: 64, _KEY_EXTRACT_LOD_PYRAMID: lod_pyramid}
+        success, result = self._execute_command(args, _get_context(stage))
+        self.assertTrue(success)
+        self.assertTrue(result[0], result[1])
+
+    def _assert_aligned(self, stage, output_path, source_path, time=0.0, tolerance=0.5):
+        """Assert that the output's world-space bounds match its source's."""
+        output = _world_range(stage, output_path, time)
+        source = _world_range(stage, source_path, time)
+        self.assertTrue(
+            Gf.IsClose(output.GetMin(), source.GetMin(), tolerance)
+            and Gf.IsClose(output.GetMax(), source.GetMax(), tolerance),
+            f"{output_path} {output} is not aligned with {source_path} {source}",
+        )
 
     async def test_shrinkwrap_with_dim(self):
         """Test shrinkwrap using grid dimension for resolution"""
@@ -401,6 +421,97 @@ class Test_Operation_Shrinkwrap(Test_Operation):
             f"Shrinkwrap may not be accounting for world-space transforms.",
         )
 
+    async def test_shrinkwrap_copies_source_xform_ops(self):
+        """Per Mesh outputs, LODs included, copy the source's xform ops, pivot included, and line up with it."""
+        stage = Usd.Stage.CreateInMemory()
+        UsdGeom.Xform.Define(stage, "/World").AddTranslateOp().Set(Gf.Vec3d(100, 0, 0))
+        source = UsdGeom.Xformable(_define_cube(stage, "/World/Cube"))
+        source.AddTranslateOp().Set(Gf.Vec3d(5, 2, 0))
+        source.AddTranslateOp(opSuffix="pivot").Set(Gf.Vec3d(1, 1, 0))
+        source.AddRotateXYZOp().Set(Gf.Vec3f(0, 0, 30))
+        source.AddScaleOp().Set(Gf.Vec3f(1, 2, 1))
+        source.AddTranslateOp(opSuffix="pivot", isInverseOp=True)
+
+        self._shrinkwrap_cube(stage, lod_pyramid=True)
+
+        source_ops = [(op.GetOpName(), op.Get()) for op in source.GetOrderedXformOps()]
+        source_to_world = UsdGeom.XformCache().GetLocalToWorldTransform(source.GetPrim())
+        outputs = [p for p in stage.GetPrimAtPath("/World").GetChildren() if p.GetName().startswith("Cube_shrinkwrap")]
+        self.assertGreater(len(outputs), 1, "Expected LOD outputs")
+        for output in outputs:
+            self._assert_valid_shrinkwrap_mesh(stage, output.GetPath())
+            output_ops = UsdGeom.Xformable(output).GetOrderedXformOps()
+            self.assertEqual([(op.GetOpName(), op.Get()) for op in output_ops], source_ops)
+            self.assertEqual(UsdGeom.XformCache().GetLocalToWorldTransform(output), source_to_world)
+        self._assert_aligned(stage, "/World/Cube_shrinkwrap", "/World/Cube")
+
+    async def test_shrinkwrap_output_follows_animated_source_xform(self):
+        """Time-sampled xform ops are copied too, so the output tracks its source."""
+        stage = Usd.Stage.CreateInMemory()
+        stage.SetStartTimeCode(1)
+        stage.SetEndTimeCode(3)
+        translate = UsdGeom.Xformable(_define_cube(stage, "/World/Cube")).AddTranslateOp()
+        translate.Set(Gf.Vec3d(-4, 0, 0), 1)
+        translate.Set(Gf.Vec3d(6, 0, 0), 3)
+
+        self._shrinkwrap_cube(stage)
+
+        for time in (1.0, 3.0):
+            self._assert_aligned(stage, "/World/Cube_shrinkwrap", "/World/Cube", time)
+
+    async def test_shrinkwrap_without_usable_source_xform_authors_no_ops(self):
+        """A source with no xform ops, or with a singular or near-singular transform, gets an output without any."""
+        for name, scale in (
+            ("no ops", None),
+            ("singular", Gf.Vec3d(1, 0, 1)),
+            ("near singular", Gf.Vec3d(1, 1e-100, 1)),
+        ):
+            with self.subTest(name):
+                stage = Usd.Stage.CreateInMemory()
+                UsdGeom.Xform.Define(stage, "/World").AddTranslateOp().Set(Gf.Vec3d(100, 0, 0))
+                source = UsdGeom.Xformable(_define_cube(stage, "/World/Cube"))
+                if scale is not None:
+                    source.AddScaleOp(UsdGeom.XformOp.PrecisionDouble).Set(scale)
+
+                self._shrinkwrap_cube(stage)
+
+                output = UsdGeom.Xformable(stage.GetPrimAtPath("/World/Cube_shrinkwrap"))
+                self.assertEqual(output.GetOrderedXformOps(), [])
+                self._assert_aligned(stage, "/World/Cube_shrinkwrap", "/World/Cube")
+
+    async def test_shrinkwrap_under_singular_parent_resets_xform_stack(self):
+        """Under a singular parent, the output keeps its world-space points and resets the xform stack."""
+        stage = Usd.Stage.CreateInMemory()
+        world = UsdGeom.Xform.Define(stage, "/World")
+        world.AddTranslateOp().Set(Gf.Vec3d(100, 0, 0))
+        world.AddScaleOp().Set(Gf.Vec3f(1, 0, 1))
+        _define_cube(stage, "/World/Cube")
+
+        self._shrinkwrap_cube(stage)
+
+        self.assertTrue(UsdGeom.Xformable(stage.GetPrimAtPath("/World/Cube_shrinkwrap")).GetResetXformStack())
+        self._assert_aligned(stage, "/World/Cube_shrinkwrap", "/World/Cube")
+
+    async def test_shrinkwrap_rerun_drops_previous_output_xform_ops(self):
+        """A rerun reuses the output prim, so ops copied by an earlier run must not outlive the source's."""
+        for name, scale in (("no ops", None), ("singular", Gf.Vec3f(1, 0, 1))):
+            with self.subTest(name):
+                stage = Usd.Stage.CreateInMemory()
+                UsdGeom.Xform.Define(stage, "/World").AddTranslateOp().Set(Gf.Vec3d(100, 0, 0))
+                source = UsdGeom.Xformable(_define_cube(stage, "/World/Cube"))
+                source.AddTranslateOp().Set(Gf.Vec3d(5, 2, 0))
+                self._shrinkwrap_cube(stage)
+
+                source.GetXformOpOrderAttr().Clear()
+                if scale is not None:
+                    source.AddScaleOp().Set(scale)
+                self._shrinkwrap_cube(stage)
+
+                output = UsdGeom.Xformable(stage.GetPrimAtPath("/World/Cube_shrinkwrap"))
+                self.assertEqual(output.GetOrderedXformOps(), [])
+                self.assertEqual(output.GetPrim().GetAuthoredPropertiesInNamespace("xformOp"), [])
+                self._assert_aligned(stage, "/World/Cube_shrinkwrap", "/World/Cube")
+
     async def test_temporal_combined_samples_midpoint_and_step(self):
         """Temporal mode includes intermediate motion and honors the configured step."""
         stage = Usd.Stage.CreateInMemory()
@@ -531,7 +642,7 @@ class Test_Operation_Shrinkwrap(Test_Operation):
         self.assertLess(range_at_1.GetMax()[0], 10.0)
 
     async def test_temporal_combined_uses_stage_range_and_includes_end(self):
-        """NaN defaults use stage metadata and include a non-divisible final endpoint."""
+        """By default the stage's time range is sampled, including a non-divisible final endpoint."""
         stage = Usd.Stage.CreateInMemory()
         stage.SetStartTimeCode(2)
         stage.SetEndTimeCode(5)
@@ -563,8 +674,7 @@ class Test_Operation_Shrinkwrap(Test_Operation):
         for name, args in cases:
             with self.subTest(name=name):
                 success, result = self._execute_command(args, _get_context(stage))
-                self.assertTrue(success)
-                self.assertFalse(result[0])
+                self.assertFalse(success)
 
     async def test_temporal_combined_preserves_existing_output_prim(self):
         stage = Usd.Stage.CreateInMemory()
@@ -575,8 +685,7 @@ class Test_Operation_Shrinkwrap(Test_Operation):
         args = _temporal_args("/ExistingOutput", ["/Cube"])
         success, result = self._execute_command(args, _get_context(stage))
 
-        self.assertTrue(success)
-        self.assertFalse(result[0])
+        self.assertFalse(success)
         preserved_output = UsdGeom.Mesh(stage.GetPrimAtPath("/ExistingOutput"))
         self.assertTrue(preserved_output)
         self.assertEqual(preserved_output.GetPointsAttr().Get(), original_points)

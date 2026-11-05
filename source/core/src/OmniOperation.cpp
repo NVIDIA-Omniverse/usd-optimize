@@ -7,7 +7,6 @@
 // Usd Optimize Core
 #include "usd_optimize/core/Core.h"
 #include "usd_optimize/core/ResolveSdfPaths.h"
-#include "usd_optimize/core/TbbCompat.h"
 #include "usd_optimize/core/UsdIncludes.h"
 #include "usd_optimize/core/Utils.h"
 
@@ -16,6 +15,9 @@
 
 // USD
 #include <pxr/usd/usd/primRange.h>
+
+// TBB
+#include <tbb/parallel_pipeline.h>
 
 // C++
 #include <thread>
@@ -217,7 +219,7 @@ OperationResult OmniOperation::executeImpl()
     std::atomic<size_t> primIndex = 0;
 
     auto processFilter = tbb::make_filter<void, ProcessedData*>(
-        tbbcompat::parallelFilterMode,
+        tbb::filter_mode::parallel,
         [&](tbb::flow_control& flowControl) -> ProcessedData*
         {
             size_t currentIndex = primIndex++;
@@ -249,7 +251,7 @@ OperationResult OmniOperation::executeImpl()
 
     // Write result back to stage
     auto outputFilter =
-        tbb::make_filter<ProcessedData*, void>(tbbcompat::serialOutOfOrderFilterMode,
+        tbb::make_filter<ProcessedData*, void>(tbb::filter_mode::serial_out_of_order,
                                                OutputFilter(getUsdStage(), &totalStats, std::this_thread::get_id()));
 
     // Build and execute the pipeline.

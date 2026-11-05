@@ -16,16 +16,16 @@ Prototypes Namespace
 
 Namespace where prototypes will be reparented
 
-    - Name: ``prototypesNamespace``
-    - Type: ``str``
-    - Default Value: ``"Prototypes"``
+- Name: ``prototypesNamespace``
+- Type: ``str``
+- Default Value: ``"Prototypes"``
 
 Preserve Hierarchy Levels
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The number of the prototype's immediate ancestors to retain when reparenting.
 
-    - Name: ``hierarchyLevels``
-    - Type: ``int``
-    - Default Value: ``0``
+- Name: ``hierarchyLevels``
+- Type: ``int``
+- Default Value: ``0``
 

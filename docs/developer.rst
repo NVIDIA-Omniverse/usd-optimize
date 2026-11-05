@@ -116,7 +116,9 @@ usually hides this; ``PYTHONUTF8=1`` is a harmless, safe default. See
 outbound HTTPS/PyPI access — ``tools/pyproject/pybuild.sh`` pip-installs
 Poetry, auditwheel, patchelf, and related tools into
 ``_build/host-deps/py_package_venv/``. If that bootstrap fails partway, remove
-the venv and rerun: ``rm -rf _build/host-deps/py_package_venv``.
+the venv and rerun: ``rm -rf _build/host-deps/py_package_venv``. Run it on a
+glibc 2.35 host, for example Ubuntu 22.04: on a newer glibc,
+``auditwheel repair`` fails with "too-recent versioned symbols".
 
 The Linux wheel does not bundle OpenUSD, oneTBB, or MaterialX. The
 ``usd-exchange`` wheel ships them under their original library names, the same

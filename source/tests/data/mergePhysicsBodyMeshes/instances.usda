@@ -1,0 +1,58 @@
+#usda 1.0
+
+def Xform "DirectVisuals"
+{
+    def Xform "link" (prepend apiSchemas = ["PhysicsRigidBodyAPI"])
+    {
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @instance_sources.usda@</DirectVisuals>
+        ) {}
+    }
+}
+
+def Xform "NestedVisuals"
+{
+    def Xform "link" (prepend apiSchemas = ["PhysicsRigidBodyAPI"])
+    {
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @instance_sources.usda@</NestedVisuals>
+        ) {}
+    }
+}
+
+def Xform "DirectColliders"
+{
+    def Xform "link" (prepend apiSchemas = ["PhysicsRigidBodyAPI"])
+    {
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @instance_sources.usda@</DirectColliders>
+        ) {}
+    }
+}
+
+def Xform "NestedColliders"
+{
+    def Xform "link" (prepend apiSchemas = ["PhysicsRigidBodyAPI"])
+    {
+        def Xform "visuals" (
+            instanceable = true
+            prepend references = @instance_sources.usda@</NestedColliders>
+        ) {}
+    }
+}
+
+def Xform "IgnoredOpinions" (prepend apiSchemas = ["PhysicsRigidBodyAPI"])
+{
+    def Xform "Visuals" (
+        instanceable = true
+        prepend references = @instance_sources.usda@</IgnoredVisuals>
+    ) {}
+}
+
+def Xform "UnsafeNested" (
+    instanceable = true
+    prepend references = @instance_sources.usda@</NestedBody>
+) {}

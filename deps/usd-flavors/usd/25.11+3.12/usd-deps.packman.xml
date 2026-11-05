@@ -1,0 +1,9 @@
+<project toolsVersion="5.6">
+  <!-- Shadows repo_usd's 25.11 template (same USD package) to ship a newer Python than repo_usd pins. -->
+  <dependency name="usd-${config}" linkPath="../_build/usd-deps/usd/${config}">
+    <package name="usd.py312.${platform_target_abi}.stock.${config}" version="0.25.11-gl.18041+v25.11.363a7c8d" />
+  </dependency>
+  <dependency name="python" linkPath="../_build/usd-deps/python">
+    <package name="python" version="3.12.16+nv1-${platform_target_abi}" />
+  </dependency>
+</project>

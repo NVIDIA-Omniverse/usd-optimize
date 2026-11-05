@@ -23,7 +23,7 @@ class OccludedMeshesChecker(BaseUsdOptimizeChecker):
 
     OPERATION_NAME: str = "findOccludedMeshes"
     PARAMETERS: ClassVar[Mapping[str, Parameter]] = {
-        "USE_GPU": ParameterFromOpArg("useGpu", default=False),
+        "USE_GPU": ParameterFromOpArg("useGpu", default=True),
         "CHECK_TRANSPARENCY": ParameterFromOpArg("checkTransparency", default=True),
         "CLUSTERED": ParameterFromOpArg("clustered"),
         "MINIMUM_GAP_SIZE": ParameterFromOpArg("minimumGapSize"),
@@ -35,7 +35,7 @@ class OccludedMeshesChecker(BaseUsdOptimizeChecker):
         cls,
         usdStage: Usd.Stage,
         _: Usd.Prim,
-        use_gpu: bool = False,
+        use_gpu: bool = True,
         check_transparency: bool = True,
         clustered: bool = True,
         minimum_gap_size: float = 0.01,

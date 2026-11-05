@@ -1,0 +1,11 @@
+#usda 1.0
+(
+    defaultPrim = "Part"
+)
+
+def Xform "Part"
+{
+    def Mesh "M"
+    {
+    }
+}

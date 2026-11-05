@@ -1049,7 +1049,7 @@ void _batchedSplitIntoXformAndChild(const UsdStageWeakPtr& stage, const SdfPathV
 }
 
 
-std::string _getTempFile(const std::string& prefix, const std::string& suffix)
+std::string _getTempFile(const std::string& prefix)
 {
     std::string tmpDir = ArchGetTmpDir();
 
@@ -1059,22 +1059,15 @@ std::string _getTempFile(const std::string& prefix, const std::string& suffix)
         tmpDir = "/tmp"; // LCOV_EXCL_LINE
     }
 
-    static std::atomic<int> nCalls(1);
-    const int n = nCalls++;
-#if defined(_MSC_VER)
-    int pid = _getpid();
-#else
-    int pid = getpid();
-#endif
-
-    if (n == 1)
+    // Create the file, with a unique name, rather than only choosing a name.
+    std::string path;
+    const int fd = ArchMakeTmpFile(tmpDir, prefix, &path);
+    if (fd < 0)
     {
-        return ArchStringPrintf("%s/%s.%d%s", tmpDir.c_str(), prefix.c_str(), pid, suffix.c_str());
+        return std::string(); // LCOV_EXCL_LINE
     }
-    else
-    {
-        return ArchStringPrintf("%s/%s.%d.%d%s", tmpDir.c_str(), prefix.c_str(), pid, n, suffix.c_str());
-    }
+    ArchCloseFile(fd);
+    return path;
 }
 
 

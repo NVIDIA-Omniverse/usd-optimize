@@ -3,7 +3,7 @@
 #
 
 
-from pxr import Gf, Sdf, Usd, UsdGeom, UsdShade, Vt
+from pxr import Gf, Sdf, Usd, UsdGeom, UsdPhysics, UsdShade, Vt
 
 from .test_utils import Test_Operation, _get_context, _get_meshes, _get_test_data_file_path
 
@@ -17,6 +17,7 @@ MERGE_POINT_KINDMODEL = 5  # Use the first parent of kind model
 MERGE_POINT_KINDSUBCOMPONENT = 6  # Use the first parent of kind subcomponent
 MERGE_POINT_ROOTPRIM = 7  # Use root prims
 MERGE_POINT_PARENTPRIM = 8  # Use parent prims
+MERGE_POINT_ORIGINALPRIM = 9  # Original prim
 
 # Default arguments for the command
 DEFAULT_ARGS = {
@@ -711,6 +712,28 @@ class Test_Operation_Merge(Test_Operation):
         imageable = UsdGeom.Imageable(prim)
         result, reason = UsdGeom.Subset.ValidateFamily(imageable, UsdGeom.Tokens.face, UsdShade.Tokens.materialBind)
         self.assertTrue(result)
+
+    async def test_merge_sameMaterialSubsets(self):
+        """Test that every face keeps its material when several subsets resolve to the same material"""
+        # Unit quads centered at y = 0.5 and at these x: TwoSubsets 0.5 and 1.5 (two MatA subsets),
+        # SubsetAndUnassigned 3.5 and 4.5 (a MatA subset and an unassigned face on a MatA mesh),
+        # OverlappingSubsets 6.5 and 7.5 (MatA subsets [0, 1] and [1]: an unrestricted family may overlap) and 8.5 (MatB)
+        stage = self._open_stage("mergeSameMaterialSubsets.usda")
+        success, result = self._execute_command(DEFAULT_ARGS)
+        self.assertTrue(success)
+        self.assertEqual(len(result[2]), 1)
+
+        mesh = UsdGeom.Mesh(stage.GetPrimAtPath(result[2][0]))
+        points = mesh.GetPointsAttr().Get()
+        counts = mesh.GetFaceVertexCountsAttr().Get()
+        indices = mesh.GetFaceVertexIndicesAttr().Get()
+        centers = [sum(points[i][0] for i in indices[4 * face : 4 * face + 4]) / 4 for face in range(len(counts))]
+        faces = {}
+        for subset in UsdShade.MaterialBindingAPI(mesh.GetPrim()).GetMaterialBindSubsets():
+            material = UsdShade.MaterialBindingAPI(subset.GetPrim()).GetDirectBinding().GetMaterialPath().name
+            faces[material] = sorted(centers[i] for i in subset.GetIndicesAttr().Get())
+        self.assertEqual(faces, {"MatA": [0.5, 1.5, 3.5, 4.5, 6.5, 7.5], "MatB": [8.5]})
+        self.assertEqual(len(counts), 7)
 
     async def test_merge_geomsubsetCollision(self):
         """Test an edge case with material naming that can cause a naming collision when merging multiple meshes with
@@ -1776,3 +1799,253 @@ class Test_Operation_Merge(Test_Operation):
         alignedRange = worldBBox.ComputeAlignedRange()
         expectedRange = Gf.Range3d(Gf.Vec3d(-350.0, -50.0, -250.0), Gf.Vec3d(-50.0, 50.0, 50.0))
         self.assertEqual(alignedRange, expectedRange)
+
+    async def test_merge_log_counts_merged_meshes(self):
+        """Test that the merge log counts only the meshes that were merged"""
+        cases = (
+            ("doubleSided_input.usda", 2),  # the mesh with doubleSided = 1 does not merge
+            ("geomSubset_materialBinding.usda", 6),  # meshes with material subsets count once each
+        )
+        for name, merged in cases:
+            with self.subTest(name=name):
+                context = _get_context(self._open_stage(name), report=True)
+                _, result = self._execute_command(DEFAULT_ARGS.copy(), context=context)
+                self.assertTrue(result[0], result[1])
+                with open(context.reportPath) as f:
+                    self.assertIn(f"INFO|MERGE|Merged {merged} meshes into 1 mesh\n", f.readlines())
+
+    async def test_merge_instance_does_not_follow_external_reference_locally(self):
+        """Test that merging an instance of another file leaves a prim at the same path on this stage alone"""
+        # The second instance's reference has no asset path, but is authored in the other file.
+        for instance in ("/World/ExternalInst", "/World/NestedInst/Inst"):
+            with self.subTest(instance=instance):
+                stage = self._open_stage("mergeExternalInstance.usda")
+
+                args = DEFAULT_ARGS.copy()
+                args["meshPrimPaths"] = [instance]
+                _, result = self._execute_command(args)
+                self.assertTrue(result[0], result[1])
+
+                self.assertTrue(stage.GetPrimAtPath("/Part/L1"))
+                self.assertTrue(stage.GetPrimAtPath("/Part/L2"))
+                self.assertFalse(stage.GetPrimAtPath("/Part/merged"))
+
+    async def test_merge_physics_mesh_original_prim(self):
+        # A physics Mesh stays unchanged and is reported as skipped with the Original Prim merge point.
+        for api in (UsdPhysics.RigidBodyAPI, UsdPhysics.ArticulationRootAPI):
+            with self.subTest(api=api.__name__):
+                stage = self._open_stage("mergeXform.usda")
+                path = "/World/Foo/Cube"
+                api.Apply(stage.GetPrimAtPath(path))
+                before = stage.GetRootLayer().ExportToString()
+                context = _get_context(stage, report=True)
+
+                args = DEFAULT_ARGS.copy()
+                args["meshPrimPaths"] = [path]
+                args["mergePoint"] = MERGE_POINT_ORIGINALPRIM
+                _, result = self._execute_command(args, context=context)
+                self.assertTrue(result[0], result[1])
+
+                self.assertEqual(stage.GetRootLayer().ExportToString(), before)
+                with open(context.reportPath) as f:
+                    lines = [line.split("|MERGE|")[1].rstrip("\n") for line in f if "|MERGE|" in line]
+                self.assertIn(f"Not merged (physics body): {path}", lines)
+
+    async def test_merge_selected_below_physics_body(self):
+        # Selection below a physics body permits merging, while nested physics bodies stay unchanged.
+        for api in (UsdPhysics.RigidBodyAPI, UsdPhysics.ArticulationRootAPI):
+            with self.subTest(api=api.__name__):
+                stage = self._open_stage("mergeXform.usda")
+                api.Apply(stage.GetPrimAtPath("/World"))
+                nested = stage.DefinePrim("/World/Foo/Nested", "Xform")
+                api.Apply(nested)
+                layer = stage.GetRootLayer()
+                for name in ("Cube", "Cube_01"):
+                    self.assertTrue(Sdf.CopySpec(layer, f"/World/Foo/{name}", layer, f"/World/Foo/Nested/{name}"))
+
+                args = DEFAULT_ARGS.copy()
+                args["meshPrimPaths"] = ["/World/Foo"]
+                args["mergePoint"] = MERGE_POINT_XFORM
+                _, result = self._execute_command(args)
+                self.assertTrue(result[0], result[1])
+
+                self.assertTrue(stage.GetPrimAtPath("/World/Foo/merged"))
+                for name in ("Cube", "Cube_01"):
+                    self.assertFalse(stage.GetPrimAtPath(f"/World/Foo/{name}"))
+                    self.assertTrue(stage.GetPrimAtPath(f"/World/Foo/Nested/{name}"))
+                self.assertFalse(stage.GetPrimAtPath("/World/Foo/Nested/merged"))
+
+    def _skipped_meshes_report(self, prepare=None, usda="mergeSkippedMeshes.usda", **args):
+        """Merge a test scene with a report, and return the report's MERGE lines"""
+        stage = self._open_stage(usda)
+        if prepare:
+            prepare(stage)
+        context = _get_context(stage, report=True)
+        _, result = self._execute_command({**DEFAULT_ARGS, "mergePoint": MERGE_POINT_XFORM, **args}, context=context)
+        self.assertTrue(result[0], result[1])
+        with open(context.reportPath) as f:
+            return [line.split("|MERGE|")[1].rstrip("\n") for line in f if "|MERGE|" in line]
+
+    async def test_merge_logs_skipped_meshes(self):
+        """Test that the report names each prim merge leaves unmerged, with the reason, whether
+        merge keeps, deletes or deactivates the meshes it merged"""
+        for originalGeomOption in (0, 1, 2):
+            with self.subTest(originalGeomOption=originalGeomOption):
+                lines = self._skipped_meshes_report(originalGeomOption=originalGeomOption)
+
+                self.assertEqual(
+                    sorted(line for line in lines if line.startswith("Not merged")),
+                    [
+                        "Not merged (below SkelRoot): /World/Skel",
+                        "Not merged (below camera or material): /World/Cam",
+                        "Not merged (below invisible prim): /World/Hidden",
+                        "Not merged (below point instancer): /World/PI",
+                        "Not merged (has child prims): /World/Kids",
+                        "Not merged (inside instance): /World/Inst",
+                        "Not merged (no matching mesh in its merge boundary): /World/Odd",
+                        "Not merged (only mesh in its merge boundary): /World/Solo/M",
+                        "Not merged (physics body): /World/Articulation",
+                        "Not merged (physics body): /World/RigidBody",
+                        "Not merged (resets transform stack): /World/Reset",
+                        "Not merged (time-sampled transform): /World/Anim",
+                        "Not merged (time-sampled visibility): /World/Blink",
+                    ],
+                )
+                self.assertIn(
+                    "Left meshes unmerged at 13 prims; generate a report or use verbose logging to see why", lines
+                )
+
+    async def test_merge_logs_skipped_meshes_selected(self):
+        """Test that selected prims are reported once, and an instance selected on its own is reported"""
+        # Merge does not follow the instance's prepended reference, so its meshes are not merged.
+        lines = self._skipped_meshes_report(meshPrimPaths=["/World/InternalInst"])
+        self.assertEqual(
+            [line for line in lines if line.startswith(("Not merged", "Left meshes"))],
+            [
+                "Not merged (inside instance): /World/InternalInst",
+                "Left meshes unmerged at 1 prim; generate a report or use verbose logging to see why",
+            ],
+        )
+
+        # An instance whose reference merges at its source is still logged when another arc adds meshes to it.
+        def add_payload(stage):
+            payload = Sdf.Payload(_get_test_data_file_path("mergeSkippedMeshesPart.usda"), "/Part")
+            stage.GetPrimAtPath("/World/InternalInst").GetPayloads().AddPayload(payload)
+
+        lines = self._skipped_meshes_report(prepare=add_payload)
+        self.assertIn("Not merged (inside instance): /World/InternalInst", lines)
+
+        # A skipped prim with no mesh below it, such as an ordinary material, is not logged.
+        lines = self._skipped_meshes_report(prepare=lambda stage: stage.DefinePrim("/World/Looks/Steel", "Material"))
+        self.assertFalse([line for line in lines if "/World/Looks" in line])
+        self.assertIn("Left meshes unmerged at 13 prims; generate a report or use verbose logging to see why", lines)
+
+        # /World/Anim is skipped on both visits but logged once.
+        lines = self._skipped_meshes_report(meshPrimPaths=["/World", "/World/Anim"])
+        self.assertEqual(sum(line.endswith(": /World/Anim") for line in lines), 1)
+        self.assertTrue(any(line.startswith("Left meshes unmerged at 13 prims;") for line in lines))
+
+    async def test_merge_logs_instance_of_other_file(self):
+        """Test that an instance whose reference is authored in another file is logged, though this stage has a
+        prim at the reference's path that merges"""
+        lines = self._skipped_meshes_report(usda="mergeExternalInstance.usda")
+        self.assertIn("Not merged (inside instance): /World/NestedInst/Inst", lines)
+
+    async def test_merge_nonuniform_scale_normals(self):
+        # Merging nonuniformly scaled meshes transforms built-in and primvar normals by the inverse transpose.
+        stage = self._open_stage("mergeNormalsTransform.usda")
+        scale = Gf.Matrix4d().SetScale(Gf.Vec3d(2, 1, 1))
+        for mesh in _get_meshes(stage):
+            UsdGeom.Xformable(mesh).AddTransformOp().Set(scale)
+
+        _, result = self._execute_command({**DEFAULT_ARGS, "mergePoint": MERGE_POINT_PARENTPRIM})
+
+        self.assertTrue(result[0], result[1])
+        merged_meshes = _get_meshes(stage)
+        self.assertEqual(len(merged_meshes), 1)
+        normals = UsdGeom.PrimvarsAPI(merged_meshes[0]).GetPrimvar("normals").ComputeFlattened()
+        self.assertEqual(len(normals), 6)
+        expected_normal = Gf.Vec3f(0.5, 1, 0).GetNormalized()
+        for normal in normals:
+            self.assertTrue(Gf.IsClose(normal, expected_normal, 1e-5), f"{normal} != {expected_normal}")
+
+    async def test_merge_shear_normals(self):
+        # Merging sheared meshes transforms built-in and primvar normals by the inverse transpose.
+        stage = self._open_stage("mergeNormalsTransform.usda")
+        shear = Gf.Matrix4d(1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+        for mesh in _get_meshes(stage):
+            UsdGeom.Xformable(mesh).AddTransformOp().Set(shear)
+
+        _, result = self._execute_command({**DEFAULT_ARGS, "mergePoint": MERGE_POINT_PARENTPRIM})
+
+        self.assertTrue(result[0], result[1])
+        merged_meshes = _get_meshes(stage)
+        self.assertEqual(len(merged_meshes), 1)
+        normals = UsdGeom.PrimvarsAPI(merged_meshes[0]).GetPrimvar("normals").ComputeFlattened()
+        self.assertEqual(len(normals), 6)
+        expected_normal = Gf.Vec3f(1, 0, 0)
+        for normal in normals:
+            self.assertTrue(Gf.IsClose(normal, expected_normal, 1e-5), f"{normal} != {expected_normal}")
+
+    async def test_merge_reflection_normals(self):
+        # Merging reflected meshes preserves the inverse-transpose normal sign for both authored sources.
+        stage = self._open_stage("mergeNormalsTransform.usda")
+        reflection = Gf.Matrix4d().SetScale(Gf.Vec3d(-1, 1, 1))
+        for mesh in _get_meshes(stage):
+            UsdGeom.Xformable(mesh).AddTransformOp().Set(reflection)
+
+        _, result = self._execute_command({**DEFAULT_ARGS, "mergePoint": MERGE_POINT_PARENTPRIM})
+
+        self.assertTrue(result[0], result[1])
+        merged_meshes = _get_meshes(stage)
+        self.assertEqual(len(merged_meshes), 1)
+        normals = UsdGeom.PrimvarsAPI(merged_meshes[0]).GetPrimvar("normals").ComputeFlattened()
+        self.assertEqual(len(normals), 6)
+        expected_normal = Gf.Vec3f(-1, 1, 0).GetNormalized()
+        for normal in normals:
+            self.assertTrue(Gf.IsClose(normal, expected_normal, 1e-5), f"{normal} != {expected_normal}")
+
+    async def test_merge_instances_merge_their_prototype_once(self):
+        """Test that a prototype reached through several instances has its meshes merged only once"""
+        stage = self._open_stage("mergeInstancesOfOnePrototype.usda")
+
+        _, result = self._execute_command(DEFAULT_ARGS.copy())
+        self.assertTrue(result[0], result[1])
+
+        merged = UsdGeom.Mesh(stage.GetPrimAtPath("/World/Thing/merged"))
+        self.assertEqual(len(merged.GetPointsAttr().Get()), 6)
+        self.assertTrue(stage.GetPrimAtPath("/World/Inst1/merged").IsInstanceProxy())
+
+    async def test_merge_point_instancer_prototype_reached_directly_stays_in_prototype(self):
+        """Test that a point instancer's prototype outside the instancer is merged once, inside the prototype"""
+        for file in ("mergePointInstancerOutsidePrototype.usda", "mergePointInstancerInLibrary.usda"):
+            with self.subTest(file=file):
+                stage = self._open_stage(file)
+
+                _, result = self._execute_command(DEFAULT_ARGS.copy())
+                self.assertTrue(result[0], result[1])
+
+                merged = UsdGeom.Mesh(stage.GetPrimAtPath("/World/Protos/A/merged"))
+                self.assertEqual(len(merged.GetPointsAttr().Get()), 6)
+                self.assertFalse(stage.GetPrimAtPath("/merged"))
+
+    async def test_merge_point_instancer_mesh_prototype_stays(self):
+        """Test that a mesh a point instancer targets directly is left in place"""
+        stage = self._open_stage("mergePointInstancerMeshPrototype.usda")
+
+        _, result = self._execute_command(DEFAULT_ARGS.copy())
+        self.assertTrue(result[0], result[1])
+
+        self.assertTrue(stage.GetPrimAtPath("/World/Protos/A/M1"))
+        merged = UsdGeom.Mesh(stage.GetPrimAtPath("/merged"))
+        self.assertEqual(len(merged.GetPointsAttr().Get()), 6)
+
+    async def test_merge_point_instancer_mesh_prototype_original_prim(self):
+        """Test that merging the whole stage at Original Prim leaves a point instancer's mesh prototype in place"""
+        stage = self._open_stage("pointInstancerMeshPrototype.usda")
+
+        _, result = self._execute_command({**DEFAULT_ARGS, "mergePoint": MERGE_POINT_ORIGINALPRIM})
+        self.assertTrue(result[0], result[1])
+
+        mesh = UsdGeom.Mesh(stage.GetPrimAtPath("/PointInstancer/Mesh"))
+        self.assertEqual(len(mesh.GetPointsAttr().Get()), 8)

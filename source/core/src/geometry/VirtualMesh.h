@@ -28,6 +28,11 @@ namespace usd_optimize
 ///   VirtualMeshes (i.e. merging).
 /// * An empty invalid mesh with no data.
 ///
+/// When merging coordinate frames, point3f[], vector3f[], and normal3f[] primvars are transformed as points, vectors,
+/// or normalized inverse-transpose normals. Named normals retain their normal semantics.
+/// Colors and untyped float3 arrays remain unchanged; a tangent name alone does not imply a spatial role.
+/// This transform applies to default values; time-sampled primvar transforms are not supported.
+///
 /// VirtualMeshes are designed for performance so its important to note that this class uses reference counting - The
 /// copy constructor and assignment operator do not copy the data of the VirtualMesh, they only increment the reference
 /// counter to the internal data. Copy-on-write is used where possible when making subsets/supersets to avoid doing any

@@ -1,0 +1,664 @@
+#usda 1.0
+
+def Xform "CompatibleMeshes"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "NestedBodies"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "Nested" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "IndexedPrimvars"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Xform "Parts"
+        {
+            token[] primvars:label = ["part"] (
+                interpolation = "constant"
+            )
+
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                texCoord2f[] primvars:st = [(0, 0), (1, 1)] (
+                    interpolation = "vertex"
+                )
+                int[] primvars:st:indices = [0, 1, 0]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                texCoord2f[] primvars:st = [(0, 0), (1, 1)] (
+                    interpolation = "vertex"
+                )
+                int[] primvars:st:indices = [0, 1, 0]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "JointColliderFrame"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "Target" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMassAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f physics:centerOfMass = (0, 0, 0)
+            float3 physics:diagonalInertia = (1, 1, 1)
+            float physics:mass = 1
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+            double3 xformOp:translate = (3, 4, 5)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+
+            def Mesh "Visual"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def PhysicsFixedJoint "Joint"
+    {
+        rel physics:body1 = </JointColliderFrame/Body/Target>
+        point3f physics:localPos1 = (1, 2, 3)
+    }
+}
+
+def Xform "RetainedPrimvarFrame"
+{
+    def Mesh "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        token[] primvars:label = ["body"] (
+            interpolation = "constant"
+        )
+        uniform token subdivisionScheme = "none"
+
+        def Mesh "Compatible"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "Unmerged"
+        {
+            uniform bool doubleSided = 1
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "BlockedPrimvar"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        token[] primvars:label = ["body"] (
+            interpolation = "constant"
+        )
+
+        def Xform "Parts"
+        {
+            token[] primvars:label = None (
+                interpolation = "constant"
+            )
+
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "TransformedVisuals"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        double3 xformOp:translate = (3, 4, 5)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def "Parts"
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+                double3 xformOp:translate = (1, 2, 3)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "SelectedSubtrees"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def "Left"
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+
+        def "Right"
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def Xform "OtherBody" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "ColliderVisuals"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "ColliderA" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMassAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            float physics:mass = 2
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "ColliderB" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMassAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            float physics:mass = 2
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "BodyMeshJoint"
+{
+    def Mesh "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+        double3 xformOp:translate = (3, 4, 5)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Mesh "Child"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def PhysicsFixedJoint "Joint"
+    {
+        rel physics:body1 = </BodyMeshJoint/Body>
+    }
+}
+
+def Xform "UnsupportedPrimvar"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            double[] primvars:precision = [1.5]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "MaterialPurposes"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            rel material:binding:full = </MaterialPurposes/Materials/Afull>
+            rel material:binding:preview = </MaterialPurposes/Materials/Apreview>
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            rel material:binding:full = </MaterialPurposes/Materials/Bfull>
+            rel material:binding:preview = </MaterialPurposes/Materials/Bpreview>
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def "Materials"
+    {
+        def Material "Afull"
+        {
+        }
+
+        def Material "Apreview"
+        {
+        }
+
+        def Material "Bfull"
+        {
+        }
+
+        def Material "Bpreview"
+        {
+        }
+    }
+}
+
+def Xform "RenderMaterials"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            rel material:binding = </RenderMaterials/Materials/A>
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            rel material:binding = </RenderMaterials/Materials/B>
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def "Materials"
+    {
+        def Material "A"
+        {
+        }
+
+        def Material "B"
+        {
+        }
+    }
+}
+
+def Xform "MissingPrimvars"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            color3f[] primvars:tint = [(1, 0, 0)] (
+                interpolation = "constant"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "DoubleSided"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A"
+        {
+            uniform bool doubleSided = 1
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "InvalidPrimvarDefaults"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            float[] primvars:weight = [1] (
+                interpolation = "constant"
+            )
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "Singleton"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "OnlyMesh"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "PartsAsset"
+{
+    def Xform "Body" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def "Parts"
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "ReferencedAsset"
+{
+    def Xform "Asset" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "A" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            rel material:binding = </ReferencedAsset/Asset/Materials/A>
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def "Materials"
+        {
+            def Material "A"
+            {
+            }
+
+            def Material "B"
+            {
+            }
+        }
+
+        def Mesh "B" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            rel material:binding = </ReferencedAsset/Asset/Materials/B>
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "NestedAssembly"
+{
+    def Xform "Asset"
+    {
+        def "Child" (
+            instanceable = true
+            prepend references = </CompatibleMeshes/Body>
+        )
+        {
+        }
+    }
+}

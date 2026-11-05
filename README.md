@@ -1,6 +1,6 @@
 # Usd Optimize — Developer Library
 
-Usd Optimize is a USD scene optimization library: a broad set of operations for processing and optimizing Universal Scene Description (USD) stages. A published package includes C++ headers, Python bindings, and prebuilt libraries so you can embed Usd Optimize in your own applications and pipelines — **without installing Omniverse Kit**.
+Usd Optimize is a USD scene optimization library: a broad set of operations for processing and optimizing Universal Scene Description (USD) stages. A published package includes C++ headers, Python bindings, and prebuilt libraries so you can embed Usd Optimize in your own applications and pipelines — **without installing Omniverse Kit**. To compile against the C++ headers you also supply OpenUSD, Carbonite, CPython, TBB and pybind11 headers; the [install guides](#prebuilt-packages) list the versions.
 
 > This project is currently not accepting contributions.
 
@@ -28,7 +28,7 @@ After cloning this repository (see [Requirements](#requirements) for the C++ too
 ./repo.sh test
 ```
 
-`./repo.sh ci format` checks formatting the way CI does. OpenUSD, Python, premake, and other build-time dependencies are fetched automatically via Packman during `build` — no manual install required.
+`./repo.sh format --verify` checks formatting the way CI does. OpenUSD, Python, premake, and other build-time dependencies are fetched automatically via Packman during `build` — no manual install required.
 
 To consume a **published binary drop** instead of building from source, follow the install guide for [Windows](docs/install-prebuilt-windows.md) or [Linux (x86_64, aarch64)](docs/install-prebuilt-linux.md).
 
@@ -83,7 +83,7 @@ Prefer not to build from source? Consume a **published binary drop** — C++ hea
 | `bin/` | The `usdOptimize` command-line tool |
 | `python/` | Python bindings and modules |
 | `usdpy/` | USD Python runtime modules |
-| `extraLibs/` | Third-party dependency libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic and OpenSubdiv) |
+| `extraLibs/` | Third-party dependency libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic, Imath, OpenSubdiv and zlib) |
 | `config_presets/` | Ready-made operation stacks for `usdOptimize -c` |
 | `docs/` | The documentation set, including the per-OS install guides |
 | `.agents/` | Task-specific skill files (`.agents/skills/<name>/SKILL.md`) |
@@ -95,6 +95,8 @@ Prefer not to build from source? Consume a **published binary drop** — C++ hea
 | --- | --- |
 | Windows | x86_64 |
 | Linux | x86_64, aarch64 |
+
+Linux needs glibc 2.35 or newer, for example Ubuntu 22.04.
 
 | Component | Version |
 | --- | --- |
@@ -117,7 +119,7 @@ The wheel is always built against **USD 26.08** — matching the `usd-exchange` 
 
 `--test` installs the freshly built wheel into a throwaway virtualenv and runs an import + operation smoke test.
 
-Three USD versions are supported — **25.05**, **25.11** and **26.08**; the default for `./repo.sh build` is the `usd_ver` token in `repo.toml`. All supported flavors use Python 3.12. Flavors are defined in `deps/usd_flavors.json`. To build against a non-default version, pass the flavor/version tokens:
+Two USD versions are supported — **25.11** and **26.08**; the default for `./repo.sh build` is the `usd_ver` token in `repo.toml`. All supported flavors use Python 3.12. Flavors are defined in `deps/usd_flavors.json`. To build against a non-default version, pass the flavor/version tokens:
 
 ```bash
 ./repo.sh --set-token usd_flavor:usd --set-token usd_ver:26.08 build -r

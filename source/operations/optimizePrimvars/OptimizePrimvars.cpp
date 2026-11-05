@@ -7,7 +7,6 @@
 // Usd Optimize
 #include <usd_optimize/core/Core.h>
 #include <usd_optimize/core/ResolveSdfPaths.h>
-#include <usd_optimize/core/TbbCompat.h>
 #include <usd_optimize/core/Utils.h>
 
 // Carbonite
@@ -15,6 +14,9 @@
 
 // USD
 #include <pxr/usd/usdGeom/primvarsAPI.h>
+
+// TBB
+#include <tbb/parallel_for_each.h>
 
 // C++
 #include <memory>
@@ -83,7 +85,7 @@ std::string OptimizePrimvarsOperation::getDocumentation() const
     return "Run operations to optimize primvars in the stage. This tool can "
            "convert flat primvars to indexed, or indexed primvars to "
            "flattened. It can also attempt to simplify primvars. For example "
-           "if a primvar is authored as faceVarying (a value per vertex), but "
+           "if a primvar is authored as faceVarying (a value per face-vertex), but "
            "all the values are equal, this can be simplified to ``constant`` "
            "interpolation. Or if all the values for each face are equal, it "
            "could be reduced to ``uniform`` interpolation.\n\nFlattening "
@@ -855,112 +857,112 @@ OperationResult OptimizePrimvarsOperation::executeAnalysisImpl()
     PrimvarIssues issues;
 
     std::vector<UsdPrim> iterPrims = { getUsdStage()->GetPseudoRoot() };
-    tbbcompat::parallelForEach(iterPrims.begin(),
-                               iterPrims.end(),
-                               [&issues](const UsdPrim& prim, tbbcompat::Feeder<UsdPrim>& feeder)
+    tbb::parallel_for_each(iterPrims.begin(),
+                           iterPrims.end(),
+                           [&issues](const UsdPrim& prim, tbb::feeder<UsdPrim>& feeder)
+                           {
+                               if (prim.IsInstanceProxy())
                                {
-                                   if (prim.IsInstanceProxy())
-                                   {
-                                       return;
-                                   }
+                                   return;
+                               }
 
-                                   // Queue all children for traversal via parallel_for_each
-                                   const auto& children = prim.GetChildren();
-                                   for (const auto& child : children)
-                                   {
-                                       feeder.add(child);
-                                   }
+                               // Queue all children for traversal via parallel_for_each
+                               const auto& children = prim.GetChildren();
+                               for (const auto& child : children)
+                               {
+                                   feeder.add(child);
+                               }
 
-                                   UsdGeomPrimvarsAPI primvarsAPI(prim);
-                                   if (primvarsAPI)
-                                   {
-                                       const auto& primvars = primvarsAPI.GetPrimvarsWithAuthoredValues();
+                               UsdGeomPrimvarsAPI primvarsAPI(prim);
+                               if (primvarsAPI)
+                               {
+                                   const auto& primvars = primvarsAPI.GetPrimvarsWithAuthoredValues();
 
-                                       for (const auto& primvar : primvars)
+                                   for (const auto& primvar : primvars)
+                                   {
+
+                                       const auto& typeName = primvar.GetTypeName();
+
+                                       // No need to index or check constant primvars
+                                       if (primvar.GetInterpolation() == UsdGeomTokens->constant)
                                        {
-
-                                           const auto& typeName = primvar.GetTypeName();
-
-                                           // No need to index or check constant primvars
-                                           if (primvar.GetInterpolation() == UsdGeomTokens->constant)
-                                           {
-                                               continue;
-                                           }
-
-                                           // For anything non-constant, the type should be an array
-                                           if (!typeName.IsArray())
-                                           {
-                                               issues.nonArray.addIssue(primvar);
-                                               continue;
-                                           }
-
-                                           // For simple type arrays, we don't need to check for indexing
-                                           // The assumption being they use optimized storage and take up less space
-                                           // than larger types, meaning the indexing doesn't add as much value.
-                                           auto findTypeIt = s_simpleTypes.find(primvar.GetTypeName().GetAsToken());
-                                           if (findTypeIt != s_simpleTypes.end())
-                                           {
-                                               continue;
-                                           }
-
-                                           // OM-123165: usdSkel related primvars cannot be indexed in the same way as a
-                                           // regular primvar.
-                                           static TfToken _primvarsSkelToken("primvars:skel");
-                                           if (primvar.GetNamespace() == _primvarsSkelToken)
-                                           {
-                                               continue;
-                                           }
-
-                                           // Per AssetValidator: "ComputeFlattened in most USD version does not work
-                                           // correctly with elementSize > 1"
-                                           if (primvar.GetElementSize() > 1)
-                                           {
-                                               continue;
-                                           }
-
-                                           // For anything that made it this far, check for issues
-                                           USD_OPTIMIZE_IF_FILTER_TYPE(SdfValueTypeNames->HalfArray, GfHalf)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->FloatArray, float)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->DoubleArray, double)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->StringArray, std::string)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Int2Array, GfVec2i)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Int3Array, GfVec3i)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Int4Array, GfVec4i)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Half2Array, GfVec2h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Half3Array, GfVec3h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Half4Array, GfVec4h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Float2Array, GfVec2f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Float3Array, GfVec3f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Float4Array, GfVec4f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Double2Array, GfVec2d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Double3Array, GfVec3d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Double4Array, GfVec4d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Point3fArray, GfVec3f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Point3dArray, GfVec3d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Vector3hArray, GfVec3h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Vector3fArray, GfVec3f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Vector3dArray, GfVec3d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Normal3hArray, GfVec3h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Normal3fArray, GfVec3f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Normal3dArray, GfVec3d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color3hArray, GfVec3h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color3fArray, GfVec3f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color3dArray, GfVec3d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color4hArray, GfVec4h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color4fArray, GfVec4f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color4dArray, GfVec4d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Matrix3dArray, GfMatrix3d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Matrix4dArray, GfMatrix4d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Frame4dArray, GfMatrix4d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord2hArray, GfVec2h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord2fArray, GfVec2f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord2dArray, GfVec2d)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord3hArray, GfVec3h)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord3fArray, GfVec3f)
-                                           USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord3dArray, GfVec3d)
+                                           continue;
                                        }
+
+                                       // For anything non-constant, the type should be an array
+                                       if (!typeName.IsArray())
+                                       {
+                                           issues.nonArray.addIssue(primvar);
+                                           continue;
+                                       }
+
+                                       // For simple type arrays, we don't need to check for indexing
+                                       // The assumption being they use optimized storage and take up less space
+                                       // than larger types, meaning the indexing doesn't add as much value.
+                                       auto findTypeIt = s_simpleTypes.find(primvar.GetTypeName().GetAsToken());
+                                       if (findTypeIt != s_simpleTypes.end())
+                                       {
+                                           continue;
+                                       }
+
+                                       // OM-123165: usdSkel related primvars cannot be indexed in the same way as a
+                                       // regular primvar.
+                                       static TfToken _primvarsSkelToken("primvars:skel");
+                                       if (primvar.GetNamespace() == _primvarsSkelToken)
+                                       {
+                                           continue;
+                                       }
+
+                                       // Per AssetValidator: "ComputeFlattened in most USD version does not work
+                                       // correctly with elementSize > 1"
+                                       if (primvar.GetElementSize() > 1)
+                                       {
+                                           continue;
+                                       }
+
+                                       // For anything that made it this far, check for issues
+                                       USD_OPTIMIZE_IF_FILTER_TYPE(SdfValueTypeNames->HalfArray, GfHalf)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->FloatArray, float)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->DoubleArray, double)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->StringArray, std::string)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Int2Array, GfVec2i)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Int3Array, GfVec3i)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Int4Array, GfVec4i)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Half2Array, GfVec2h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Half3Array, GfVec3h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Half4Array, GfVec4h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Float2Array, GfVec2f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Float3Array, GfVec3f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Float4Array, GfVec4f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Double2Array, GfVec2d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Double3Array, GfVec3d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Double4Array, GfVec4d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Point3fArray, GfVec3f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Point3dArray, GfVec3d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Vector3hArray, GfVec3h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Vector3fArray, GfVec3f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Vector3dArray, GfVec3d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Normal3hArray, GfVec3h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Normal3fArray, GfVec3f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Normal3dArray, GfVec3d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color3hArray, GfVec3h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color3fArray, GfVec3f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color3dArray, GfVec3d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color4hArray, GfVec4h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color4fArray, GfVec4f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Color4dArray, GfVec4d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Matrix3dArray, GfMatrix3d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Matrix4dArray, GfMatrix4d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->Frame4dArray, GfMatrix4d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord2hArray, GfVec2h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord2fArray, GfVec2f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord2dArray, GfVec2d)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord3hArray, GfVec3h)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord3fArray, GfVec3f)
+                                       USD_OPTIMIZE_ELIF_FILTER_TYPE(SdfValueTypeNames->TexCoord3dArray, GfVec3d)
                                    }
-                               });
+                               }
+                           });
 
     bool log = getContext()->generateReport || getContext()->verbose;
 

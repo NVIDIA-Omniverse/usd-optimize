@@ -1,0 +1,38 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+)
+
+# ExternalInst references /Part in another file, and so does NestedInst/Inst through a reference authored there. This
+# stage also has a /Part, which is unrelated to both.
+def Xform "World"
+{
+    def Xform "ExternalInst" (
+        instanceable = true
+        add references = @./mergeExternalInstancePart.usda@</Part>
+    )
+    {
+    }
+
+    def Xform "NestedInst" (
+        prepend references = @./mergeExternalInstancePart.usda@</Nested>
+    )
+    {
+    }
+}
+
+def Xform "Part"
+{
+    def Mesh "L1"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+    }
+    def Mesh "L2"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+    }
+}

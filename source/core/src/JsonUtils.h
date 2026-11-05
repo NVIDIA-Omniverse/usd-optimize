@@ -8,6 +8,9 @@
 #include "usd_optimize/core/UsdIncludes.h"
 #include "usd_optimize/core/Utils.h"
 
+// USD
+#include <pxr/base/js/json.h>
+
 // TBB
 #include <tbb/concurrent_vector.h>
 

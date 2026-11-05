@@ -40,7 +40,8 @@ from usd_optimize.validators.base_usd_optimize_checker import (
     _AssetValidatorParameter,
     _parameter_type,
 )
-from usd_validation_nvidia import ParameterMapping, ParameterType, ValidationEngine
+from usd_validation_nvidia import ParameterMapping, ParameterType, UserParameter, ValidationEngine
+from usd_validation_nvidia.capabilities import Parameters
 
 
 @dataclass(frozen=True)
@@ -225,7 +226,7 @@ class TestRealCheckerIntegration(TestCase):
     def test_occluded_meshes_checker_declares_all_five_parameters(self):
         defs = {d.display_name: d for d in OccludedMeshesChecker.get_parameter_definitions()}
         for name, expected_default, expected_type in (
-            ("USE_GPU", False, ParameterType.BOOL),
+            ("USE_GPU", True, ParameterType.BOOL),
             ("CHECK_TRANSPARENCY", True, ParameterType.BOOL),
             ("CLUSTERED", True, ParameterType.BOOL),
             ("MINIMUM_GAP_SIZE", 0.01, ParameterType.FLOAT),
@@ -310,18 +311,25 @@ class TestRealCheckerIntegration(TestCase):
         rule = OccludedMeshesChecker(
             parameters=_make_mapping(
                 {
-                    "USE_GPU": True,
+                    "USE_GPU": False,
                     "MINIMUM_GAP_SIZE": 0.5,
                     "UsdOptimizeOccludedMeshesChecker.MAXIMUM_GRID_RESOLUTION": 1000.0,
                 }
             )
         )
         args = rule._effective_args()
-        self.assertEqual(args["useGpu"], True)
+        self.assertEqual(args["useGpu"], False)
         self.assertEqual(args["checkTransparency"], True)  # untouched default
         self.assertEqual(args["clustered"], True)  # untouched default
         self.assertEqual(args["minimumGapSize"], 0.5)
         self.assertEqual(args["maximumGridResolution"], 1000.0)
+
+    def test_requirement_parameter_does_not_override_rule_default(self):
+        # VG.003 declares USE_GPU=False; the rule's default (True) wins over it, and a user value wins over both.
+        mapping = ParameterMapping([Parameters.USE_GPU])
+        self.assertEqual(OccludedMeshesChecker(parameters=mapping)._effective_args()["useGpu"], True)
+        mapping.add(UserParameter(parameter=Parameters.USE_GPU, assigned_value=False))
+        self.assertEqual(OccludedMeshesChecker(parameters=mapping)._effective_args()["useGpu"], False)
 
 
 class TestFixerParameterHookup(TestCase):

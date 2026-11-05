@@ -478,3 +478,46 @@ class Test_Operation_DecimateMeshes(Test_Operation):
         # test to be expanded when time samples are better handled in the operation
         # _execute_json asserts success of execution
         self._execute_json(stage, "decimateSceneByHalfSingleThreaded.json")
+
+    def _build_unicode_grid_stage(self, prim_name):
+        """Create an in-memory stage with a single 162-face grid mesh at /World/<prim_name>."""
+        stage = Usd.Stage.CreateInMemory()
+        path = "/World/" + prim_name
+        mesh = UsdGeom.Mesh.Define(stage, path)
+        mesh.GetPointsAttr().Set([(x, y, 0) for y in range(10) for x in range(10)])
+        indices = []
+        for y in range(9):
+            for x in range(9):
+                i = y * 10 + x
+                indices.extend([i, i + 1, i + 11, i, i + 11, i + 10])
+        mesh.GetFaceVertexCountsAttr().Set([3] * 162)
+        mesh.GetFaceVertexIndicesAttr().Set(indices)
+        mesh.GetSubdivisionSchemeAttr().Set("none")
+        self._current_stage = stage
+        return stage, mesh
+
+    def _decimate_explicit_path(self, prim_name):
+        """Run decimateMeshes on an explicit single prim path and return the resulting face count."""
+        stage, mesh = self._build_unicode_grid_stage(prim_name)
+        args = dict(DEFAULT_ARGS)
+        args["paths"] = ["/World/" + prim_name]
+        args["reductionFactor"] = 10.0
+        args["maxMeanError"] = 0.0
+        _, result = self._execute_command(args)
+        self.assertTrue(result[0], f"decimateMeshes reported failure for {ascii(prim_name)}")
+        return len(mesh.GetFaceVertexCountsAttr().Get())
+
+    async def test_decimate_non_ascii_prim_path(self):
+        """Explicit non-ASCII prim paths must decimate like the ASCII control."""
+        ascii_faces = self._decimate_explicit_path("Defaut")
+        self.assertLess(ascii_faces, 162, "ASCII control mesh was not decimated")
+
+        for prim_name in ("Défaut", "漢字"):
+            with self.subTest(prim_name=ascii(prim_name)):
+                faces = self._decimate_explicit_path(prim_name)
+                self.assertLess(
+                    faces,
+                    162,
+                    f"mesh at non-ASCII path {ascii(prim_name)} was not decimated "
+                    f"(faces still {faces}); ASCII control decimated to {ascii_faces}",
+                )

@@ -439,37 +439,38 @@ public:
         return true;
     }
 
-    // Returns a new instance of Primvar data that is rotated if it represents normals
-    PrimvarData rotateNormals(const GfMatrix4d& rotationMatrix) const
+    /// Transform stored point, vector, and normal values into the destination frame, retaining their USD roles.
+    /// Untyped triples and colors have no spatial transform; named normals retain their existing normal semantics.
+    PrimvarData transformSpatialValues(const GfMatrix4d& matrix, const GfMatrix4d& normalMatrix) const
     {
-        // make a copy of this data but ensure the flattened cache is cleared
-        PrimvarData rotatedPrimvar = *this;
-        rotatedPrimvar.m_flattenedCache = VtValue();
-
-        // only do any rotation for normals with a valid type
-        if (m_isNormals && m_attrData.m_typeName.GetType().IsA<VtVec3fArray>())
+        const auto& role = m_attrData.m_typeName.GetRole();
+        const bool normal = m_isNormals || role == SdfValueRoleNames->Normal;
+        const bool point = role == SdfValueRoleNames->Point;
+        if ((!normal && !point && role != SdfValueRoleNames->Vector) ||
+            !m_attrData.m_defaultValue.IsHolding<VtVec3fArray>())
         {
-            // TODO: support for time-sampled normals
-            // create new data for the rotated default normals
-            if (!m_attrData.m_defaultValue.IsEmpty())
-            {
-                VtVec3fArray normals = m_attrData.m_defaultValue.UncheckedGet<VtVec3fArray>();
-                VtVec3fArray rotatedNormals;
-                rotatedNormals.reserve(normals.size());
-                for (const GfVec3f& normal : normals)
-                {
-                    GfVec3f rotated(rotationMatrix.Transform(normal));
-                    rotated.Normalize();
-                    rotatedNormals.push_back(rotated);
-                }
-                // update the values on the new primvar
-                rotatedPrimvar.m_attrData.m_defaultValue = VtValue(rotatedNormals);
-            }
-
-            // Time-sampled normals rotation is not yet implemented (see TODO above).
+            return *this;
         }
 
-        return rotatedPrimvar;
+        // make a copy of this data but ensure the flattened cache is cleared
+        PrimvarData transformedPrimvar = *this;
+        transformedPrimvar.m_flattenedCache = VtValue();
+        VtVec3fArray values = m_attrData.m_defaultValue.UncheckedGet<VtVec3fArray>();
+        for (auto& value : values)
+        {
+            if (normal)
+            {
+                value = GfVec3f(normalMatrix.TransformDir(value));
+                value.Normalize();
+            }
+            else
+            {
+                value = GfVec3f(point ? matrix.Transform(value) : matrix.TransformDir(value));
+            }
+        }
+        transformedPrimvar.m_attrData.m_defaultValue = VtValue(std::move(values));
+        // Time-sampled primvar transforms remain unsupported.
+        return transformedPrimvar;
     }
 
     // Resets the data of this PrimvarData object to the given values - this clears the flattened cache.
@@ -1305,7 +1306,7 @@ public:
     // world data
     GfMatrix4d m_localToWorldTransform;
     GfMatrix4d m_rootLocalToWorldTransform;
-    GfMatrix4d m_rotationMatrix;
+    GfMatrix4d m_normalMatrix;
     bool m_extentComputed = false;
     VtVec3fArray m_worldExtent;
 
@@ -1559,14 +1560,30 @@ public:
 
                     VtIntArray subsetFaceIndices;
                     materialBindSubset.GetIndicesAttr().Get(&subsetFaceIndices);
-                    materialSubsets[boundMaterial.GetPath()] = subsetFaceIndices;
+                    // append, since several subsets can be bound to the same material
+                    VtIntArray& materialFaceIndices = materialSubsets[boundMaterial.GetPath()];
+                    for (int faceIndex : subsetFaceIndices)
+                    {
+                        materialFaceIndices.push_back(faceIndex);
+                    }
+                }
+                // overlapping subsets must not repeat a face: newSubset takes a full-length list as the whole mesh
+                for (auto& materialSubset : materialSubsets)
+                {
+                    VtIntArray& faces = materialSubset.second;
+                    std::sort(faces.begin(), faces.end());
+                    faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
                 }
                 // we also need to record the unassigned faces (if there are any) as a subset
                 VtIntArray faceIndices =
                     UsdGeomSubset::GetUnassignedIndices(materialBindSubsets, int(faceVertexCounts.size()));
                 if (!faceIndices.empty())
                 {
-                    materialSubsets[boundMaterialPath] = faceIndices;
+                    VtIntArray& materialFaceIndices = materialSubsets[boundMaterialPath];
+                    for (int faceIndex : faceIndices)
+                    {
+                        materialFaceIndices.push_back(faceIndex);
+                    }
                     unassignedSubset = boundMaterialPath;
                 }
             }
@@ -3151,16 +3168,8 @@ private:
             if (applyTransform)
             {
                 targetMatrix = targetMatrix * m_rootLocalToWorldTransform.GetInverse();
-                // we need to extract and store the rotation matrix on the child VirtualMesh so we can use it to rotate
-                // normals when primvars are merged since we're applying to the transform to the geometry
-                GfVec3d scaleVecUnused{ 1.0, 1.0, 1.0 };
-                GfVec3d translationVecUnused;
-                GfMatrix4d scaleOrientMatUnused, perspMatUnused;
-                targetMatrix.Factor(&scaleOrientMatUnused,
-                                    &scaleVecUnused,
-                                    &child.pImpl->m_rotationMatrix, // extract into output parameter
-                                    &translationVecUnused,
-                                    &perspMatUnused);
+                // Normals transform by the inverse transpose, including non-uniform scale and shear.
+                child.pImpl->m_normalMatrix = targetMatrix.GetInverse().GetTranspose();
             }
 
             // process subdivision surface values first so offsets are correct
@@ -3296,14 +3305,14 @@ private:
                 }
             }
 
-            // collect primvars (and ensure any primvars that are normals are rotated if needed)
+            // Transform spatial primvars when geometry changes coordinate frames.
             for (const auto& [primvarName, primvarData] : childPrimvars)
             {
-                // do we need a version of the primvar that is rotated as normals or just as is?
-                if (applyTransform && primvarData.m_isNormals)
+                if (applyTransform)
                 {
                     primvars[primvarName].push_back(
-                        std::make_pair(primvarData.rotateNormals(child.pImpl->m_rotationMatrix), child));
+                        std::make_pair(primvarData.transformSpatialValues(targetMatrix, child.pImpl->m_normalMatrix),
+                                       child));
                 }
                 else
                 {

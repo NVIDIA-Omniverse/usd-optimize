@@ -15,6 +15,10 @@ A fuzzy comparison mode is also available: its similarity measure is independent
 based on relative shape deviation, with CPU and GPU implementations. The operation deduplicates
 point-based geometry (meshes, basis curves, etc.); in fuzzy mode only meshes are supported.
 
+In fuzzy mode the hidden ``useGpu`` argument runs the comparison on the GPU. Leave it off: it is no faster,
+and it can group meshes that differ by more than ``tolerance``, so deduplication would swap in the wrong
+geometry. Either comparison can miss rotated copies: the CPU of irregular meshes, the GPU of box-shaped ones.
+
 This is **mesh-level** deduplication: it matches individual gprims, not whole sub-trees. To collapse
 duplicate assemblies (entire prim hierarchies), run :doc:`Deduplicate Hierarchies<deduplicateHierarchies>`
 first, then this operation to catch any remaining loose duplicate meshes.
@@ -66,98 +70,102 @@ Geometry to De-duplicate
 
 Optional list of prim paths to consider
 
-    - Name: ``meshPrimPaths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``meshPrimPaths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Tolerance
 ^^^^^^^^^
 
 Acceptable point position change during deduplication. The value is a stage unit in worldspace
 
-    - Name: ``tolerance``
-    - Type: ``float``
-    - Default Value: ``0.001``
+- Name: ``tolerance``
+- Type: ``float``
+- Default Value: ``0.001``
 
 Method
 ^^^^^^
 
 Method used to conform meshes that are duplicates
 
-    - Name: ``duplicateMethod``
-    - Type: ``int``
-    - Default Value: ``2``
-    - Enum Values:
-        - ``0: Copy Values``
-        - ``1: Reference``
-        - ``2: Instanceable Reference``
-        - ``3: Set Attribute``
-        - ``4: Point Instancer``
+- Name: ``duplicateMethod``
+- Type: ``int``
+- Default Value: ``2``
+- Enum Values:
+
+  - ``0: Copy Values``
+  - ``1: Reference``
+  - ``2: Instanceable Reference``
+  - ``3: Set Attribute``
+  - ``4: Point Instancer``
+
 
 Point Instancer Location
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Where to author the PointInstancer for each duplicate set
 
-    - Name: ``pointInstancerLocation``
-    - Type: ``int``
-    - Default Value: ``0``
-    - Enum Values:
-        - ``0: Common Root``
-        - ``1: Custom Path``
+- Name: ``pointInstancerLocation``
+- Type: ``int``
+- Default Value: ``0``
+- Enum Values:
+
+  - ``0: Common Root``
+  - ``1: Custom Path``
+
 
 Parent Path
 ^^^^^^^^^^^
 
 Prim path to author the PointInstancer under. Created as an Xform if it does not exist.
 
-    - Name: ``pointInstancerParentPath``
-    - Type: ``str``
-    - Default Value: ``""``
+- Name: ``pointInstancerParentPath``
+- Type: ``str``
+- Default Value: ``""``
 
 Minimum Duplicates
 ^^^^^^^^^^^^^^^^^^
 
 Minimum number of duplicates a set must contain for a PointInstancer to be created. Sets with fewer duplicates are left untouched.
 
-    - Name: ``minimumDuplicates``
-    - Type: ``int``
-    - Default Value: ``2``
-    - Min Value: ``2.0``
+- Name: ``minimumDuplicates``
+- Type: ``int``
+- Default Value: ``2``
+- Min Value: ``2.0``
 
 Ignore Attributes
 ^^^^^^^^^^^^^^^^^
 
 Optional list of attributes to ignore. This list can be explicit attributes, or if ending with a ':' can ignore namespaces.
 
-    - Name: ``ignoreAttributes``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``ignoreAttributes``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Fuzzy mode
 ^^^^^^^^^^
 
 When enabled, uses shape comparison to find duplicates that differ in tessellation or have baked-in point offsets
 
-    - Name: ``fuzzy``
-    - Type: ``bool``
-    - Default Value: ``False``
+- Name: ``fuzzy``
+- Type: ``bool``
+- Default Value: ``False``
 
 Allow Scaling
 ^^^^^^^^^^^^^
 
 When enabled, fuzzy comparison will factor out uniform scaling
 
-    - Name: ``allowScaling``
-    - Type: ``bool``
-    - Default Value: ``False``
+- Name: ``allowScaling``
+- Type: ``bool``
+- Default Value: ``False``
 
 Consider Deep Transforms
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Look for duplicates where the points values have been uniformly transformed
 
-    - Name: ``considerDeepTransforms``
-    - Type: ``bool``
-    - Default Value: ``True``
+- Name: ``considerDeepTransforms``
+- Type: ``bool``
+- Default Value: ``True``
 

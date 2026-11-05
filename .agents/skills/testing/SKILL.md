@@ -1,6 +1,7 @@
 ---
 name: testing
 description: Run all tests or individual tests for Usd Optimize (repo.sh on Linux, repo.bat on Windows). Use for unit, binding, and coverage runs.
+license: Apache-2.0
 allowed-tools: Shell
 metadata:
   author: NVIDIA Corporation

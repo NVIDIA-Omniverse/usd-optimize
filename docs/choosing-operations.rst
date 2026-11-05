@@ -100,10 +100,9 @@ Optimize Skeleton Roots
 #######################
 
 A good option if you have rigged characters that use ``UsdSkel``.
-:doc:`Optimize Skeleton Roots<operations/optimizeSkelRoots>` merges all meshes on a skeleton
-into a single mesh, which can greatly improve character playback speed by
-optimizing for GPU skinning. As with merging static meshes, this will not
-significantly reduce memory usage.
+:doc:`Optimize Skeleton Roots<operations/optimizeSkelRoots>` merges the meshes on a skeleton,
+which can greatly improve character playback speed by optimizing for GPU skinning.
+As with merging static meshes, this will not significantly reduce memory usage.
 
 .. Note:: Reducing the memory a stage consumes can also speed up load and
    evaluation, since less data needs to be read and processed.
@@ -216,8 +215,8 @@ and downstream workflows:
 Compute Pivot
 #############
 
-:doc:`Compute Pivot<operations/pivot>` places the parent transform at the center
-of an object's bounding box, making it easier to interact with the object
+:doc:`Compute Pivot<operations/pivot>` places the pivot at the center
+of an object, making it easier to interact with the object
 because the transform manipulator is centered on it. Some tools generate scenes
 where the transform sits at the origin, far from the actual vertices, making
 precise manipulation difficult.

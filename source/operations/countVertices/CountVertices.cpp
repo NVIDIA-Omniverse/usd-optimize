@@ -5,7 +5,6 @@
 
 // Usd Optimize Core
 #include <usd_optimize/core/Core.h>
-#include <usd_optimize/core/TbbCompat.h>
 #include <usd_optimize/core/Utils.h>
 
 // Carbonite
@@ -15,6 +14,7 @@
 #include <pxr/usd/usd/primRange.h>
 
 #include <tbb/combinable.h>
+#include <tbb/parallel_for_each.h>
 
 PXR_NAMESPACE_USING_DIRECTIVE
 
@@ -116,33 +116,33 @@ OperationResult CountVerticesOperation::executeImpl()
 
     std::vector<UsdPrim> prims = { getUsdStage()->GetPseudoRoot() };
 
-    tbbcompat::parallelForEach(prims.begin(),
-                               prims.end(),
-                               [&](const UsdPrim& prim, tbbcompat::Feeder<UsdPrim>& feeder)
+    tbb::parallel_for_each(prims.begin(),
+                           prims.end(),
+                           [&](const UsdPrim& prim, tbb::feeder<UsdPrim>& feeder)
+                           {
+                               const auto& children = prim.GetAllChildren();
+                               for (const auto& child : children)
                                {
-                                   const auto& children = prim.GetAllChildren();
-                                   for (const auto& child : children)
+                                   feeder.add(child);
+                               }
+
+                               auto& _counters = counters.local();
+
+                               UsdGeomMesh mesh(prim);
+                               if (mesh)
+                               {
+                                   VtIntArray faceVertexIndices;
+                                   mesh.GetFaceVertexIndicesAttr().Get(&faceVertexIndices);
+
+                                   // Record anything greater than high - we will bucket them appropriately in the
+                                   // output.
+                                   const uint64_t total = faceVertexIndices.size();
+                                   if (total >= m_levelHigh)
                                    {
-                                       feeder.add(child);
+                                       _counters.data.insert(std::make_pair(prim.GetPrimPath(), total));
                                    }
-
-                                   auto& _counters = counters.local();
-
-                                   UsdGeomMesh mesh(prim);
-                                   if (mesh)
-                                   {
-                                       VtIntArray faceVertexIndices;
-                                       mesh.GetFaceVertexIndicesAttr().Get(&faceVertexIndices);
-
-                                       // Record anything greater than high - we will bucket them appropriately in the
-                                       // output.
-                                       const uint64_t total = faceVertexIndices.size();
-                                       if (total >= m_levelHigh)
-                                       {
-                                           _counters.data.insert(std::make_pair(prim.GetPrimPath(), total));
-                                       }
-                                   }
-                               });
+                               }
+                           });
 
     Counters sum = counters.combine(std::plus<Counters>());
 

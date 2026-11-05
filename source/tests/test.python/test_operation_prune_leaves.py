@@ -403,3 +403,22 @@ class Test_Operation_Prune_Leaves_Command(Test_Operation):
         _, result = self._execute_command({"pruneMode": 0}, context)
         self.assertTrue(result[0])
         self.assertTrue("analysis" in result[2])
+
+    async def test_PruneLeaves_keeps_relationship_targets(self):
+        """Empty grouping prims that a relationship targets are in use, so neither they nor their parents are pruned,
+        unless preserveRelationshipTargets is off."""
+        for preserve in (True, False):
+            stage = Usd.Stage.CreateInMemory()
+            UsdGeom.Xform.Define(stage, "/World/Frame")
+            UsdGeom.Xform.Define(stage, "/World/Holder")
+            UsdGeom.Scope.Define(stage, "/World/Holder/Target")
+            UsdGeom.Xform.Define(stage, "/World/Empty")
+            consumer = stage.DefinePrim("/World/Consumer")
+            consumer.CreateRelationship("custom:frames").SetTargets(["/World/Frame", "/World/Holder/Target"])
+
+            args = {"paths": [], "pruneMode": 1, "preserveRelationshipTargets": preserve}
+            _, result = self._execute_command(args, _get_context(stage))
+            self.assertTrue(result[0])
+            self.assertEqual(bool(stage.GetPrimAtPath("/World/Frame")), preserve)
+            self.assertEqual(bool(stage.GetPrimAtPath("/World/Holder/Target")), preserve)
+            self.assertFalse(stage.GetPrimAtPath("/World/Empty"))

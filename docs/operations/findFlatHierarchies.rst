@@ -16,25 +16,25 @@ Paths
 
 Optional list of prim paths to consider
 
-    - Name: ``paths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``paths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Max Children
 ^^^^^^^^^^^^
 
 The maximum number of children a prim can have until it is considered a flat hierarchy.
 
-    - Name: ``maxChildren``
-    - Type: ``int``
-    - Default Value: ``500``
+- Name: ``maxChildren``
+- Type: ``int``
+- Default Value: ``500``
 
 Consider All Children
 ^^^^^^^^^^^^^^^^^^^^^
 
 Whether to consider all children or only active, loaded, defined, non-abstract children.
 
-    - Name: ``considerAllChildren``
-    - Type: ``bool``
-    - Default Value: ``True``
+- Name: ``considerAllChildren``
+- Type: ``bool``
+- Default Value: ``True``
 

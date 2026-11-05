@@ -1,6 +1,7 @@
 ---
 name: inspect-asset
 description: Quick USD stage inspection — reports stage info, prim counts, mesh statistics, materials, animation, and scene scale. Use before optimizing.
+license: Apache-2.0
 allowed-tools: Shell, Read
 metadata:
   author: NVIDIA Corporation

@@ -48,6 +48,7 @@ private:
 
     // Input sampling
     InputMode m_inputMode;
+    bool m_useStageTimeRange;
     double m_startTime;
     double m_endTime;
     double m_timeStep;

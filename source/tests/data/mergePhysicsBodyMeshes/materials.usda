@@ -1,0 +1,146 @@
+#usda 1.0
+
+def Xform "BindingAPIs" (prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"])
+{
+    float physics:mass = 1
+    point3f physics:centerOfMass = (0, 0, 0)
+    float3 physics:diagonalInertia = (1, 1, 1)
+    def Material "Material" {}
+    def Mesh "A" (prepend apiSchemas = ["PhysicsCollisionAPI"])
+    {
+        uniform token purpose = "guide"
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        uniform token subdivisionScheme = "none"
+    }
+    def Mesh "B" (prepend apiSchemas = ["PhysicsCollisionAPI"])
+    {
+        uniform token purpose = "guide"
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        uniform token subdivisionScheme = "none"
+    }
+}
+
+def Xform "IgnoredSubset" (prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"])
+{
+    float physics:mass = 1
+    point3f physics:centerOfMass = (0, 0, 0)
+    float3 physics:diagonalInertia = (1, 1, 1)
+    def Material "Material" (prepend apiSchemas = ["PhysicsMaterialAPI"]) {}
+    def Material "IgnoredMaterial" (prepend apiSchemas = ["PhysicsMaterialAPI"]) {}
+    def Mesh "A" (prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"])
+    {
+        uniform token purpose = "guide"
+        rel material:binding:physics = </IgnoredSubset/Material>
+        uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        uniform token subdivisionScheme = "none"
+        def GeomSubset "IgnoredBinding"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            custom rel material:binding:physics = </IgnoredSubset/IgnoredMaterial>
+        }
+    }
+    def Mesh "B" (prepend apiSchemas = ["PhysicsCollisionAPI", "MaterialBindingAPI"])
+    {
+        uniform token purpose = "guide"
+        rel material:binding:physics = </IgnoredSubset/Material>
+        uniform token subsetFamily:materialBind:familyType = "nonOverlapping"
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        uniform token subdivisionScheme = "none"
+        def GeomSubset "IgnoredBinding"
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            custom rel material:binding:physics = </IgnoredSubset/IgnoredMaterial>
+        }
+    }
+}
+
+def Xform "SubsetBinding" (prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"])
+{
+    float physics:mass = 1
+    point3f physics:centerOfMass = (0, 0, 0)
+    float3 physics:diagonalInertia = (1, 1, 1)
+    def Material "Material" (prepend apiSchemas = ["PhysicsMaterialAPI"]) {}
+    def Mesh "A" (prepend apiSchemas = ["PhysicsCollisionAPI"])
+    {
+        uniform token purpose = "guide"
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        uniform token subdivisionScheme = "none"
+        def GeomSubset "Faces" (prepend apiSchemas = ["MaterialBindingAPI"])
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            rel material:binding:physics = </SubsetBinding/Material>
+        }
+    }
+    def Mesh "B" (prepend apiSchemas = ["PhysicsCollisionAPI"])
+    {
+        uniform token purpose = "guide"
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        uniform token subdivisionScheme = "none"
+        def GeomSubset "Faces" (prepend apiSchemas = ["MaterialBindingAPI"])
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            rel material:binding:physics = </SubsetBinding/Material>
+        }
+    }
+}
+
+def Xform "RenderSubsets" (prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"])
+{
+    float physics:mass = 1
+    point3f physics:centerOfMass = (0, 0, 0)
+    float3 physics:diagonalInertia = (1, 1, 1)
+    def Scope "Materials"
+    {
+        def Material "Red" {}
+        def Material "Blue" {}
+    }
+    def Mesh "Red" (prepend apiSchemas = ["PhysicsCollisionAPI"])
+    {
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        uniform token subdivisionScheme = "none"
+        def GeomSubset "Red" (prepend apiSchemas = ["MaterialBindingAPI"])
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            rel material:binding = </RenderSubsets/Materials/Red>
+        }
+    }
+    def Mesh "Blue" (prepend apiSchemas = ["PhysicsCollisionAPI"])
+    {
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        uniform token subdivisionScheme = "none"
+        def GeomSubset "Blue" (prepend apiSchemas = ["MaterialBindingAPI"])
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            rel material:binding = </RenderSubsets/Materials/Blue>
+        }
+    }
+}

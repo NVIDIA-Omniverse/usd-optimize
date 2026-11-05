@@ -3,11 +3,13 @@
 #
 
 
-from pxr import Gf, UsdGeom, UsdShade
+from pxr import Gf, Sdf, Usd, UsdGeom, UsdShade
 
 from .test_utils import Test_Operation, _get_context
 
 MODE_DEDUPLICATE = 0
+MODE_CONVERT_TO_COLOR = 1
+MODE_REMOVE_UNBOUND = 2
 MODE_DEDUPLICATE_PRIMVAR = 3
 
 DEFAULT_ARGS = {"materialPrimPaths": [], "optimizeMaterialsMode": MODE_DEDUPLICATE}
@@ -196,6 +198,74 @@ class Test_Operation_Optimize_Materials(Test_Operation):
         self.assertEqual(bound("CubeInstanceA"), bound("CubeInstanceB"))
 
         self.assertEqual(_count_materials(stage), 4)
+
+    async def test_DeduplicateMaterialsEveryBindingPurpose(self):
+        """Purpose-specific and collection bindings to a removed duplicate are rebound to the kept material"""
+        stage = Usd.Stage.CreateInMemory()
+        for name in ("A", "B"):
+            material = UsdShade.Material.Define(stage, f"/World/Looks/{name}")
+            shader = UsdShade.Shader.Define(stage, f"/World/Looks/{name}/Shader")
+            shader.CreateIdAttr("UsdPreviewSurface")
+            material.CreateSurfaceOutput().ConnectToSource(shader.ConnectableAPI(), "surface")
+        duplicate = UsdShade.Material(stage.GetPrimAtPath("/World/Looks/B"))
+
+        for purpose in ("physics", "preview", "full", UsdShade.Tokens.allPurpose):
+            cube = UsdGeom.Cube.Define(stage, f"/World/{purpose or 'all'}").GetPrim()
+            UsdShade.MaterialBindingAPI.Apply(cube).Bind(duplicate, materialPurpose=purpose)
+        world = stage.GetPrimAtPath("/World")
+        collection = Usd.CollectionAPI.Apply(world, "group")
+        collection.GetIncludesRel().AddTarget("/World/physics")
+        UsdShade.MaterialBindingAPI.Apply(world).Bind(collection, duplicate, "group")
+
+        _, result = self._execute_command(DEFAULT_ARGS.copy(), context=_get_context(stage))
+        self.assertTrue(result[0])
+        self.assertFalse(stage.GetPrimAtPath("/World/Looks/B"))
+        rels = [rel for prim in stage.Traverse() for rel in prim.GetAuthoredRelationships()]
+        bindings = [rel for rel in rels if UsdShade.MaterialBindingAPI.CanContainPropertyName(rel.GetName())]
+        self.assertEqual(len(bindings), 5)
+        for rel in bindings:
+            self.assertIn(Sdf.Path("/World/Looks/A"), rel.GetTargets(), rel.GetPath())
+        group_binding = UsdShade.MaterialBindingAPI(world).GetCollectionBindingRel("group")
+        self.assertEqual(group_binding.GetTargets(), [collection.GetCollectionPath(), Sdf.Path("/World/Looks/A")])
+
+    async def test_OtherModesKeepMaterialsBindingsStillTarget(self):
+        """Convert to color, Remove unbound and Deduplicate with primvars keep materials that other bindings target"""
+        for mode in (MODE_CONVERT_TO_COLOR, MODE_REMOVE_UNBOUND, MODE_DEDUPLICATE_PRIMVAR):
+            stage = Usd.Stage.CreateInMemory()
+            for name in ("A", "B"):
+                material = UsdShade.Material.Define(stage, f"/World/Looks/{name}")
+                shader = UsdShade.Shader.Define(stage, f"/World/Looks/{name}/Shader")
+                shader.CreateIdAttr("UsdPreviewSurface")
+                shader.CreateInput("diffuseColor", Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(0.8, 0.1, 0.1))
+                material.CreateSurfaceOutput().ConnectToSource(shader.ConnectableAPI(), "surface")
+                cube = UsdGeom.Cube.Define(stage, f"/World/{name}").GetPrim()
+                UsdShade.MaterialBindingAPI.Apply(cube).Bind(material)
+            looks_b = UsdShade.Material(stage.GetPrimAtPath("/World/Looks/B"))
+            physics_only = UsdShade.Material.Define(stage, "/World/Physics/P")
+            physics_only.GetPrim().CreateAttribute("physics:staticFriction", Sdf.ValueTypeNames.Float).Set(0.5)
+            base = UsdShade.Material.Define(stage, "/World/Physics/Base")
+            base.GetPrim().CreateAttribute("physics:dynamicFriction", Sdf.ValueTypeNames.Float).Set(0.25)
+            referencing = UsdShade.Material.Define(stage, "/World/Physics/R")
+            referencing.GetPrim().GetReferences().AddInternalReference(base.GetPath())
+            for name, material in (("ColliderB", looks_b), ("ColliderP", physics_only), ("ColliderR", referencing)):
+                collider = UsdGeom.Cube.Define(stage, f"/World/{name}").GetPrim()
+                UsdShade.MaterialBindingAPI.Apply(collider).Bind(material, materialPurpose="physics")
+            world = stage.GetPrimAtPath("/World")
+            collection = Usd.CollectionAPI.Apply(world, "group")
+            UsdShade.MaterialBindingAPI.Apply(world).Bind(collection, looks_b, "group")
+
+            args = DEFAULT_ARGS.copy()
+            args["optimizeMaterialsMode"] = mode
+            _, result = self._execute_command(args, context=_get_context(stage))
+            self.assertTrue(result[0])
+            rels = [rel for prim in stage.Traverse() for rel in prim.GetAuthoredRelationships()]
+            bindings = [rel for rel in rels if UsdShade.MaterialBindingAPI.CanContainPropertyName(rel.GetName())]
+            targets = [target for rel in bindings for target in rel.GetTargets() if target.IsPrimPath()]
+            self.assertTrue(targets)
+            for target in targets:
+                material = stage.GetPrimAtPath(target)
+                self.assertTrue(material and material.IsActive(), (mode, target))
+            self.assertEqual(referencing.GetPrim().GetAttribute("physics:dynamicFriction").Get(), 0.25, mode)
 
     async def test_OptimizeMaterials(self):
         """Test various material optimizations"""

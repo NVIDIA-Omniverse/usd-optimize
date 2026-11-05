@@ -1,6 +1,7 @@
 ---
 name: run-operations
 description: Run Usd Optimize operations on a USD asset with the usdOptimize CLI, using inline ops or a preset/JSON config. Use when applying optimizations or fixing issues interpret-validators flagged.
+license: Apache-2.0
 allowed-tools: Bash
 metadata:
   author: NVIDIA Corporation
@@ -119,8 +120,9 @@ no path was given, ask which USD file to optimize.
 Pick exactly one: inline `-o`/`-a` (one or two ops), a preset
 `-c config_presets/<name>.json`, or a custom config file you write. For
 argument names, types, and defaults, read the operation's
-`docs/operations/<key>.rst`. Empty `paths` (or `meshPrimPaths`) means "process
-the whole stage"; pass explicit prim paths to scope an op.
+`docs/operations/<key>.rst` (GPU settings: `docs/gpu-acceleration.rst`).
+Empty `paths` (or `meshPrimPaths`) means "process the whole stage"; pass
+explicit prim paths to scope an op.
 
 ## Step 3 — Run the CLI
 

@@ -13,12 +13,14 @@
 
 // USD
 #include <pxr/usd/sdf/pathExpressionEval.h>
+#include <pxr/usd/sdf/pathPattern.h>
 #include <pxr/usd/usd/collectionPredicateLibrary.h>
 #include <pxr/usd/usd/primRange.h>
 #include <pxr/usd/usdGeom/camera.h>
 #include <pxr/usd/usdLux/lightAPI.h>
 
 // C++
+#include <algorithm>
 #include <iostream>
 
 PXR_NAMESPACE_USING_DIRECTIVE
@@ -103,6 +105,42 @@ struct PathToObj
 };
 
 
+// Literal prim paths skip SdfPathExpression's text grammar, which rejects non-ASCII prim names.
+static SdfPathExpression _makePathExpression(const std::vector<std::string>& paths)
+{
+    for (const std::string& path : paths)
+    {
+        if (!SdfPath::IsValidPathString(path) || !SdfPath(path).IsAbsoluteRootOrPrimPath())
+        {
+            // Entries may split one expression, so any pattern parses the joined list; non-ASCII paths in it fail.
+            return SdfPathExpression(TfStringJoin(paths, " "));
+        }
+    }
+
+    SdfPathExpression expression;
+
+    for (const std::string& path : paths)
+    {
+        SdfPathExpression atom = SdfPathExpression::MakeAtom(SdfPathPattern(SdfPath(path)));
+
+        expression = expression.IsEmpty() ?
+                         std::move(atom) :
+                         SdfPathExpression::MakeOp(SdfPathExpression::Union, std::move(expression), std::move(atom));
+    }
+
+    return expression;
+}
+
+
+bool _isValidPathsArgument(const std::vector<std::string>& paths)
+{
+    return std::all_of(paths.begin(),
+                       paths.end(),
+                       [](const std::string& path) { return SdfPath::IsValidPathString(path); }) ||
+           !_makePathExpression(paths).IsEmpty();
+}
+
+
 using PathExprEval = SdfPathExpressionEval<UsdObject>;
 
 struct MatchEval
@@ -146,12 +184,11 @@ std::vector<UsdPrim> _resolveExpressionsToPrims(const UsdPrim& rootPrim,
     std::unique_ptr<MatchEval> eval = nullptr;
     if (!paths.empty())
     {
-        std::string joined = TfStringJoin(paths, " ");
-        SdfPathExpression expression(joined);
+        SdfPathExpression expression = _makePathExpression(paths);
 
         if (expression.IsEmpty())
         {
-            USD_OPTIMIZE_LOG_ERROR("Invalid Expression: %s", joined.c_str());
+            USD_OPTIMIZE_LOG_ERROR("Invalid Expression: %s", TfStringJoin(paths, " ").c_str());
             return {};
         }
 

@@ -174,7 +174,7 @@ Uses Usd Optimize to analyze a scene checking for occluded meshes.
 **Parameters:** 
 
 
-- `USE_GPU`: Choose whether to use GPU or CPU algorithm. Default: `False`. 
+- `USE_GPU`: Choose whether to use GPU or CPU algorithm. Default: `True`. 
 - `CHECK_TRANSPARENCY`: Exclude meshes with opacity < 1.0 from occlusion testing. Default: `True`. 
 - `CLUSTERED`: Split the stage into clusters of meshes with overlapping bounding boxes and check visibility per cluster, improving both accuracy and performance by reducing the number of meshes compared at the same time. Default: `True`. 
 - `MINIMUM_GAP_SIZE`: The minimum gap size corresponding to the spacing of the background grid. Gaps smaller than this value are considered closed for occlusion culling. The actual grid spacing is max(minimumGapSize, maxDim/maximumGridResolution). Very small values defer to maximumGridResolution for spacing, producing a finer grid that detects smaller gaps and results in fewer meshes being flagged as occluded. It is essentially a tolerance for how sealed an enclosure needs to be: e.g. a value of 3.5 means ignore any opening smaller than 3.5 scene units when deciding if something is hidden. Default: `0.01`. 

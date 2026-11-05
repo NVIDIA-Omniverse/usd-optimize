@@ -36,15 +36,6 @@ function add_usd(lib_names)
 end
 
 
-function usd_version_number(version)
-    local major, minor = tostring(version):match("^(%d+)%.(%d+)")
-    if major == nil or minor == nil then
-        return 0
-    end
-    return tonumber(major) * 100 + tonumber(minor)
-end
-
-
 -- Project helper that sets common defaults
 function project_common(project_name)
     project(project_name)
@@ -92,12 +83,6 @@ workspace(_OPTIONS["solution-name"])
     flags { "FatalCompileWarnings", "MultiProcessorCompile", "UndefinedIdentifiers", "NoIncrementalLink" }
 
     cppdialect "c++17"
-
-    -- older versions of USD ship with an older TBB that has some deprecated APIs.
-    -- Suppress those warnings when building against those versions.
-    if usd_version_number(USD_VERSION) < 2511 then
-        defines { "TBB_SUPPRESS_DEPRECATED_MESSAGES=1" }
-    end
 
     -- Windows platform settings
     filter { "system:windows" }

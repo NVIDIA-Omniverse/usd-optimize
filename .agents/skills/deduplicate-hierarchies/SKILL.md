@@ -1,6 +1,7 @@
 ---
 name: deduplicate-hierarchies
 description: Collapse duplicate prim hierarchies into instanceable internal references. Use when deduplicating subtrees or folding repeated prims into prototypes.
+license: Apache-2.0
 allowed-tools: Bash, Read
 metadata:
   author: NVIDIA Corporation

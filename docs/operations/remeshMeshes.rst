@@ -16,28 +16,28 @@ Meshes to Remesh
 
 Optional list of prim paths/expressions to remesh
 
-    - Name: ``paths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``paths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Gradation
 ^^^^^^^^^
 
 The gradation for the remesh, affecting how many triangles are generated. [Note: this parameter will likely be replaced by something else]
 
-    - Name: ``gradation``
-    - Type: ``float``
-    - Default Value: ``0``
-    - Min Value: ``0.0``
-    - Max Value: ``0.5``
+- Name: ``gradation``
+- Type: ``float``
+- Default Value: ``0``
+- Min Value: ``0.0``
+- Max Value: ``0.5``
 
 Maximum Error
 ^^^^^^^^^^^^^
 
 Maximum error for the remesh.
 
-    - Name: ``maxError``
-    - Type: ``float``
-    - Default Value: ``0.1``
-    - Min Value: ``0.0``
+- Name: ``maxError``
+- Type: ``float``
+- Default Value: ``0.1``
+- Min Value: ``0.0``
 

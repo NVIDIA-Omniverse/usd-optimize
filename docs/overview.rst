@@ -4,9 +4,9 @@ Overview
 **Usd Optimize** is a standalone C++ and Python library that performs scene
 optimization at the `OpenUSD <https://openusd.org/>`_ level. It provides a broad
 set of operations for processing and optimizing USD stages: reducing memory
-usage, improving load, times, lowering prim and mesh counts, and cleaning up
+usage, improving load times, lowering prim and mesh counts, and cleaning up
 geometry and materials. This allows complex scenes to be converted into more
-lightweight representations that, load, evaluate, and render more quickly.
+lightweight representations that load, evaluate, and render more quickly.
 
 Key Concepts
 ------------
@@ -82,6 +82,8 @@ Where to Go Next
   their arguments, with JSON configuration examples.
 * :doc:`choosing-operations` — guidance on *which* operations to apply for a
   given problem (memory, interactive performance, load time).
+* :doc:`gpu-acceleration` — which operations run on the GPU, and when to
+  change their GPU settings.
 * :doc:`performance-validators` — validation rules that analyze a stage and
   flag the optimizations that would benefit it.
 * :doc:`python` — the Python API reference.

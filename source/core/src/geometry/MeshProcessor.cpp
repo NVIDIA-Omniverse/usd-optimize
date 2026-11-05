@@ -7,6 +7,7 @@
 // Usd Optimize Core
 #include "usd_optimize/core/Core.h"
 #include "usd_optimize/core/Log.h"
+#include "usd_optimize/core/geometry/MeshTraversal.h"
 #include "usd_optimize/core/geometry/MeshValidation.h"
 
 // USD
@@ -60,6 +61,7 @@ struct SubsetMap
 
 
 // Traverse from one or more starting prims to find static mesh prims.
+// Explicit starts below a physics body opt in; physics roots at or below each start still prune their subtrees.
 static std::vector<UsdPrim> _findStaticMeshes(const std::vector<UsdPrim>& startPrims)
 {
     // The API schemas we support. Some things we don't want to split, this is a
@@ -102,6 +104,13 @@ static std::vector<UsdPrim> _findStaticMeshes(const std::vector<UsdPrim>& startP
 
             // Certain prim types we can prune to avoid even recursing into them.
             if (prim.IsA<UsdGeomCamera>() || prim.IsA<UsdShadeMaterial>() || prim.IsA<UsdSkelRoot>())
+            {
+                iter.PruneChildren();
+                continue;
+            }
+
+            // Applied physics body APIs also exclude the prim and its descendants.
+            if (_isPhysicsBodyRoot(prim))
             {
                 iter.PruneChildren();
                 continue;

@@ -626,6 +626,22 @@ public:
             return;
         }
 
+        // value blocks can't be read as attrType below, so set them aside while the other values are transformed
+        const bool blockedDefault = attrSpec->GetDefaultValue().IsHolding<SdfValueBlock>();
+        if (blockedDefault)
+        {
+            attrSpec->ClearDefaultValue();
+        }
+        std::vector<double> blockedTimes;
+        for (const auto& timeSample : attrSpec->GetTimeSampleMap())
+        {
+            if (timeSample.second.IsHolding<SdfValueBlock>())
+            {
+                blockedTimes.push_back(timeSample.first);
+                layer->EraseTimeSample(attrSpec->GetPath(), timeSample.first);
+            }
+        }
+
         const TfType attrType = attrSpec->GetTypeName().GetType();
 
         if (m_doScale)
@@ -945,6 +961,15 @@ public:
                                        attrSpec->GetTypeName().GetAsToken().GetString());
                 }
             }
+        }
+
+        if (blockedDefault)
+        {
+            attrSpec->SetDefaultValue(VtValue(SdfValueBlock()));
+        }
+        for (const double time : blockedTimes)
+        {
+            layer->SetTimeSample(attrSpec->GetPath(), time, VtValue(SdfValueBlock()));
         }
 
         return;
@@ -2461,7 +2486,7 @@ EditStageMetricsOperation::EditStageMetricsOperation()
         "ignoreKitCameras",
         "Ignore Kit Cameras",
         kDisplayTypeBool,
-        "Whether to ignore the special Kit viewport cameras (such as persp, front, top, right) when changing stage metrics.\n Note: in UI mode the viewport applies its own correction to the viewport cameras, but in batch mode this should be disabled to ensure the cameras are corrected.",
+        "Whether to ignore the special Kit viewport cameras (such as persp, front, top, right) when changing stage metrics. Note: in UI mode the viewport applies its own correction to the viewport cameras, but in batch mode this should be disabled to ensure the cameras are corrected.",
         m_ignoreKitCameras);
 
     addArgument(
@@ -2480,29 +2505,29 @@ std::string EditStageMetricsOperation::getDocumentation() const
 {
     return "This operation changes the ``metersPerUnit`` and/or ``upAxis`` of a stage's active edit target layer "
            "by updating the layer's metadata and applying relevant transformations to attributes that represent "
-           "world space units so that they reflect the new ``metersPerUnit/upAxis``."
+           "world space units so that they reflect the new ``metersPerUnit/upAxis``. "
            "The operation is designed to only modify attributes that represent a world space value in the stage's "
            "active edit layer. This means prims/attributes that exist in the scene from external references or "
            "sublayers will not be affected by the operation.\n\n"
            "An overview of some specifics about how the operation will affect attributes or xformOps in the "
-           "stage:\n"
-           "    - When changing the ``metersPerUnit`` of prims that are a defined schema that have inferred "
+           "stage:\n\n"
+           "- When changing the ``metersPerUnit`` of prims that are a defined schema that have inferred "
            "attributes values that don't need to be defined. For example a Cube prim has a ``size`` attribute "
            "that does not need to be defined, and if it is not the cube will have a value of ``2.0``. When "
            "changing the ``metersPerUnit``, the operation needs to create this ``size`` attribute in order to "
            "scale its inferred value of ``2.0``. These inferred attributes will only be created if they represent "
            "world space values and the prim of the attribute exists as a concrete ``def`` in the active edit "
            "layer.\n"
-           "    - When changing the ``upAxis`` of prims that don't have geometry that can be rotated, the operation "
+           "- When changing the ``upAxis`` of prims that don't have geometry that can be rotated, the operation "
            "will add an additional `xformOp:rotateX:upAxisCorrection` attribute to correct the rotation of the "
            "prim.\n"
-           "    - When changing the ``upAxis`` of transforms and collapseXforms is enabled, the Edit Stage Metrics "
+           "- When changing the ``upAxis`` of transforms and collapseXforms is enabled, the Edit Stage Metrics "
            "operation will collapse a prim's ``xformOp`` stack into a single matrix ``xformOp``. This creates a "
            "few cases with surprising behavior, for example if the edit stage layer contains an ``over`` on a "
            "single ``xformOp`` in a stack of ``xformOps`` on a prim in the underlying sublayer/reference, this "
            "will cause the entire ``xformOp`` stack to have its up axis transformed even though only a part of "
            "the stack exists in the active edit layer.\n"
-           "    - When ``stopAtSkeletonRoot`` is enabled, the operation stops scaling and changing the basis at the "
+           "- When ``stopAtSkeletonRoot`` is enabled, the operation stops scaling and changing the basis at the "
            "root prim (``SkelRoot``) of a skeleton. Rather than processing every prim in the skeleton hierarchy "
            "individually, a single scale and/or rotation ``xformOp`` is prepended to the skeleton root's xform as the "
            "outermost transform so that the metrics correction is applied to the entire skeleton at once, and the "

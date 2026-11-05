@@ -88,6 +88,4 @@ class Test_Operation_Count_Verts(Test_Operation):
         args["extreme"] = 10
         success, result = self._execute_command(args, context=context)
 
-        # Command should succeed, but Usd Optimize result should be false
-        self.assertTrue(success)
-        self.assertFalse(result[0])
+        self.assertFalse(success)

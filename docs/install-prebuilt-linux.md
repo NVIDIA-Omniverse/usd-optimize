@@ -14,12 +14,12 @@ If you are building Usd Optimize from source, see the top-level [README](../READ
 
 | Directory | Purpose |
 | --- | --- |
-| `include/` | C++ public headers (`usd_optimize/core/`) |
+| `include/` | C++ public headers (`usd_optimize/core/`). Compiling against them needs third-party headers that the package does not ship; see [Compiling against the headers](#compiling-against-the-headers) |
 | `lib/` | Prebuilt shared libraries (`libusd_optimize.core.so`, plugin `.so` files, `operation_mapping.json` — deprecated-name aliases for `mapConfig()`, not the list of operations) |
 | `bin/` | The `usdOptimize` command-line tool |
 | `python/` | Python bindings (`usd_optimize.core`) |
 | `usdpy/` | OpenUSD Python runtime modules (`pxr.*`) — the package brings its own USD |
-| `extraLibs/` | Third-party runtime libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic and OpenSubdiv) and the matching CPython runtime (`libpython3.X.so.1.0`) |
+| `extraLibs/` | Third-party runtime libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic, Imath, OpenSubdiv and zlib) and the matching CPython runtime (`libpython3.X.so.1.0`) |
 | `config_presets/` | Ready-made operation stacks for `usdOptimize -c` |
 | `docs/` | This guide and the rest of the documentation set |
 | `.agents/` | Task-specific skill files (`.agents/skills/<name>/SKILL.md`) |
@@ -30,6 +30,10 @@ Two notable differences from the Windows drop:
 - The Linux drop **does** bundle `libpython3.X.so.1.0`, in `extraLibs/`. The bundled `pxr` modules link against it dynamically and resolve it from there once `extraLibs` is on `LD_LIBRARY_PATH` ([step 3](#3-set-environment-variables)), so you do **not** have to install a shared `libpython` yourself.
 
 ## Prerequisites
+
+### glibc 2.35 or newer
+
+The package needs glibc 2.35 or newer, for example Ubuntu 22.04; `ldd --version` prints yours.
 
 ### Python — must match the package name
 
@@ -188,7 +192,31 @@ if not all(ok for ok, _err, _out in results):
 stage.Save()
 ```
 
-Valid **`operation`** strings are whatever the loaded plugins register — enumerate them at runtime with `UsdOptimizeCore.getInstance().getOperations()` (the exact count varies by build). The bundled `config_presets/*.json` show descriptor JSON for many operations. **`lib/operation_mapping.json` is not that catalog:** it only lists deprecated operation keys and a few legacy argument renames for `UsdOptimizeCore.getInstance().mapConfig()`, so keys such as `merge`, `deletePrims`, or `decimateMeshes` will not appear there. The full per-operation argument reference is in the [Usd Optimize user manual](https://docs.omniverse.nvidia.com/extensions/latest/ext_scene-optimizer/user-manual.html).
+Valid **`operation`** strings are whatever the loaded plugins register — enumerate them at runtime with `UsdOptimizeCore.getInstance().getOperations()` (the exact count varies by build). The bundled `config_presets/*.json` show descriptor JSON for many operations. **`lib/operation_mapping.json` is not that catalog:** it only lists deprecated operation keys and a few legacy argument renames for `UsdOptimizeCore.getInstance().mapConfig()`, so keys such as `merge`, `deletePrims`, or `decimateMeshes` will not appear there. The full per-operation argument reference is in the [Usd Optimize operations reference](https://nvidia-omniverse.github.io/usd-optimize/latest/docs/operations.html).
+
+### Compiling against the headers
+
+`include/usd_optimize/core/` holds the C++ API, and `Core.h` declares the `UsdOptimizeCore` singleton. These headers include headers from five dependencies that the package does **not** ship. Put them on your include path, at the versions this package was built with:
+
+| Dependency | Version |
+| --- | --- |
+| OpenUSD | The `usd_<ver>` token in the package name |
+| Carbonite SDK | 210.1.4 |
+| CPython | The `py_3.X` token in the package name |
+| TBB | The release whose runtime ships in `extraLibs/`: oneTBB 2021.13.0 in USD 25.11 and 26.08 packages |
+| pybind11 | 2.11.1, needed only by `PybindUtils.h` |
+
+`PACKAGE-LICENSES/THIRD_PARTY_NOTICES.md` records the exact OpenUSD, oneTBB, Carbonite and pybind11 packages of the default (USD 26.08) build. `MeshToolsCommon.h` and `OmniOperation.h` are internal to the bundled operation plugins and need libraries that the package does not include, so they are not part of the C++ API; don't include them.
+
+For example, with `<package>` standing for the extracted package and each other `<...>` for the root of that dependency's installation:
+
+```bash
+g++ -std=c++17 -c my_app.cpp \
+    -I <package>/include \
+    -I <openusd>/include -I <carbonite>/include \
+    -I <tbb>/include -I <pybind11>/include \
+    -I <python>/include/python3.12
+```
 
 ## Notes on Testing a Drop
 
@@ -217,6 +245,9 @@ Your interpreter does not match the package's `py_<version>` token. Install the 
 
 **`ImportError: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: version 'GLIBCXX_X.X.XX' not found`**
 The `libstdc++.so.6` on the target is older than what the package was built against. Update `libstdc++` (e.g. via `gcc-13`/`libstdc++6` on Ubuntu), or run on a newer base image.
+
+**`version 'GLIBC_2.XX' not found (required by <library>)`**
+If `ldd --version` prints a glibc older than 2.35, run on glibc 2.35 or newer. Otherwise `<library>` was built for a newer glibc; replace it with one built for your system.
 
 **`ModuleNotFoundError: No module named 'usd_optimize'` or `'pxr'`**
 `PYTHONPATH` is missing `python` or `usdpy`. Both directories must be on `PYTHONPATH`.

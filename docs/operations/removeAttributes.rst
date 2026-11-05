@@ -20,28 +20,30 @@ Prim Paths
 
 A list of prim paths to consider
 
-    - Name: ``paths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``paths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Mode
 ^^^^
 
 What to do with matching attributes
 
-    - Name: ``mode``
-    - Type: ``int``
-    - Default Value: ``0``
-    - Enum Values:
-        - ``0: Remove``
-        - ``1: Block``
+- Name: ``mode``
+- Type: ``int``
+- Default Value: ``0``
+- Enum Values:
+
+  - ``0: Remove``
+  - ``1: Block``
+
 
 Attributes
 ^^^^^^^^^^
 
 A list of attributes or namespaces to remove
 
-    - Name: ``attributes``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``attributes``
+- Type: ``[string]``
+- Default Value: ``[]``
 

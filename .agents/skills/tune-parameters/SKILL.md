@@ -1,6 +1,7 @@
 ---
 name: tune-parameters
 description: "[EXPERIMENTAL] Interactive parameter tuning for a Usd Optimize operation. Use to iterate on op parameters, or to extend an operation's getDocumentation() with tuning guidance."
+license: Apache-2.0
 allowed-tools: Read, Glob, Edit, Write, Bash
 metadata:
   author: NVIDIA Corporation

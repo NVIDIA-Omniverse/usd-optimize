@@ -109,7 +109,16 @@ static void _mergeSkinnedMeshes(ExecutionContext* context, const UsdStageWeakPtr
         UsdShadeMaterialBindingAPI::CollectionQueryCache collQueryCache;
         for (const UsdPrim& prim : skinnedMeshPrims)
         {
-            virtualMeshes.emplace_back(prim, xformCache, bindingsCache, collQueryCache);
+            VirtualMesh virtualMesh(prim, xformCache, bindingsCache, collQueryCache);
+
+            // Merge splits meshes with material subsets per material, which is not supported for skinned meshes.
+            if (!virtualMesh.getMaterialSubsets().empty())
+            {
+                USD_OPTIMIZE_LOG_WARN("Prim: %s is a skinned mesh with material subsets; skipping.",
+                                      prim.GetPath().GetAsString().c_str());
+                continue;
+            }
+            virtualMeshes.push_back(virtualMesh);
         }
 
         // Bucket the meshes based on the ability for them to be merged
@@ -163,9 +172,12 @@ std::string OptimizeSkelRootsOperation::getDocumentation() const
            "skeleton. This can greatly improve character playback speed by "
            "optimizing scenes for GPU skinning computation.\n\nThis is a good "
            "option to try if you have rigged characters that use "
-           "``UsdGeomSkel``. It will merge all meshes on the skeleton into a "
-           "single mesh. Similar to merge static meshes, this will not "
-           "significantly reduce memory usage.";
+           "``UsdSkel``. Only meshes with matching attributes, primvars "
+           "and applied schemas are merged together, "
+           "so a skeleton can keep several meshes. "
+           "Meshes with blend shapes or material GeomSubsets are not merged. "
+           "Similar to merge static meshes, "
+           "this will not significantly reduce memory usage.";
 }
 
 

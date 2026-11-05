@@ -18,28 +18,30 @@ Prim Paths
 
 A list of prim path expressions to consider
 
-    - Name: ``paths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``paths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Mode
 ^^^^
 
 What to do with unused attributes
 
-    - Name: ``mode``
-    - Type: ``int``
-    - Default Value: ``0``
-    - Enum Values:
-        - ``0: Remove``
-        - ``1: Block``
+- Name: ``mode``
+- Type: ``int``
+- Default Value: ``0``
+- Enum Values:
+
+  - ``0: Remove``
+  - ``1: Block``
+
 
 UV Attributes
 ^^^^^^^^^^^^^
 
 A list of custom UV attribute names to check
 
-    - Name: ``attributes``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``attributes``
+- Type: ``[string]``
+- Default Value: ``[]``
 

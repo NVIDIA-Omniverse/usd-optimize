@@ -189,6 +189,10 @@ A fuzzy comparison mode is also available: its similarity measure is independent
 based on relative shape deviation, with CPU and GPU implementations. The operation deduplicates
 point-based geometry (meshes, basis curves, etc.); in fuzzy mode only meshes are supported.
 
+In fuzzy mode the hidden ``useGpu`` argument runs the comparison on the GPU. Leave it off: it is no faster,
+and it can group meshes that differ by more than ``tolerance``, so deduplication would swap in the wrong
+geometry. Either comparison can miss rotated copies: the CPU of irregular meshes, the GPU of box-shaped ones.
+
 This is **mesh-level** deduplication: it matches individual gprims, not whole sub-trees. To collapse
 duplicate assemblies (entire prim hierarchies), run :doc:`Deduplicate Hierarchies<deduplicateHierarchies>`
 first, then this operation to catch any remaining loose duplicate meshes.

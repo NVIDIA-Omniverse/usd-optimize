@@ -115,18 +115,36 @@ as possible. Decimation uses QEM (Quadric Error Metrics) edge-collapse simplific
 in order of least geometric error and the mesh is locally re-triangulated after each collapse. CPU
 (parallel and sequential) and GPU paths are selected automatically based on vertex count thresholds.
 
+Output mesh structure
+---------------------
+
+Each targeted mesh goes through three steps; the first two always run:
+
+1. Colocated vertices are merged and degenerate faces are removed.
+2. The mesh is triangulated.
+3. If the ``reductionFactor`` or ``maxMeanError`` requires decimation, edges are collapsed until a stop
+   condition is reached. ``reductionFactor`` applies to the vertex count after step 1.
+
+As a result:
+
+- Output is always triangles.
+- Step 1 means that the vertex count can drop even if no decimation is performed.
+- Step 2 doubles a quad mesh's face count, so face count can stay level or even rise as vertices fall.
+- Flat or symmetric regions have many edges of equal cost, so small differences in input locations or
+  numbering can change the result.
+
 Choosing a stop condition
 --------------------------
 
 ``reductionFactor`` and ``maxMeanError`` are the two stop conditions; either can be used alone or together
 (whichever is reached first stops decimation of a given mesh). Set one to ``0.0`` to disable it.
 
-- **Prefer ``maxMeanError`` for silhouette-preserving decimation.** It bounds the geometric error, so the
-  decimator stops before visible features are lost. This is the recommended default: set a non-zero
-  ``maxMeanError`` and ``reductionFactor`` to ``0.0``.
-- **Use ``reductionFactor`` only to hit a target reduction rate** (e.g. a memory budget or a fixed LOD
-  level). It is a percentage in the range 0-100, **not** a fraction: ``50`` keeps 50% of the vertices,
-  while ``0.5`` keeps 0.5% and destroys the mesh. Values below 10 typically ruin the silhouette.
+- **Prefer an error bound for silhouette-preserving decimation.** ``maxMeanError`` bounds the geometric
+  error, so the decimator stops before visible features are lost. This is the recommended default: set a
+  non-zero ``maxMeanError`` and ``reductionFactor`` to ``0.0``.
+- **Use a reduction rate only to hit a fixed target** (e.g. a memory budget or a fixed LOD level).
+  ``reductionFactor`` is a percentage in the range 0-100, **not** a fraction: ``50`` keeps 50% of the
+  vertices, while ``0.5`` keeps 0.5% and destroys the mesh. Values below 10 typically ruin the silhouette.
 
 Use float literals for these float arguments; some bindings reject an integer ``0``.
 
@@ -151,7 +169,8 @@ Important defaults and footguns
   more aggressively. ``allowCutAndGlue`` permits topology changes for better quality at aggressive
   reduction.
 - The GPU path requires CUDA and engages above ``gpuVertexCountThreshold`` (default 500K vertices); a CPU
-  parallel path engages above ``cpuVertexCountThreshold`` (default 100K).
+  parallel path engages above ``cpuVertexCountThreshold`` (default 100K). Keep both defaults: the GPU pays
+  off only on large meshes, and forcing small meshes onto it has caused intermittent aborts.
 
 Decimation rewrites the vertex data of the targeted meshes. On stages with references, payloads, or
 scenegraph instances this writes overrides on the composed stage while the source asset stays high-poly;

@@ -1,6 +1,7 @@
 ---
 name: debug-operation
 description: Triage a failing Usd Optimize operation. Use when an op errors, silently no-ops, or returns unexpected output.
+license: Apache-2.0
 allowed-tools: Shell, Read, Grep, Glob
 metadata:
   author: NVIDIA Corporation

@@ -5,7 +5,6 @@
 #include "usd_optimize/core/Stats.h"
 
 // Usd Optimize Core
-#include "usd_optimize/core/TbbCompat.h"
 #include "usd_optimize/core/Utils.h"
 #include "usd_optimize/core/geometry/DisjointSet.h"
 #include "usd_optimize/core/geometry/MeshProcessor.h"
@@ -17,6 +16,7 @@
 
 // TBB
 #include <tbb/combinable.h>
+#include <tbb/parallel_for_each.h>
 
 PXR_NAMESPACE_USING_DIRECTIVE
 
@@ -277,7 +277,7 @@ StatCountersUPtr _collectSceneStats(const UsdStageWeakPtr& usdStage, const StatA
     UsdShadeMaterialBindingAPI::BindingsCache bindingsCache;
     UsdShadeMaterialBindingAPI::CollectionQueryCache collQueryCache;
 
-    // Object to be fed to parallel_do
+    // Object to be fed to parallel_for_each
     struct ParallelTask
     {
         UsdPrim prim;
@@ -304,10 +304,10 @@ StatCountersUPtr _collectSceneStats(const UsdStageWeakPtr& usdStage, const StatA
 
     tbb::combinable<StatCounters> counters;
 
-    tbbcompat::parallelForEach(
+    tbb::parallel_for_each(
         prims.begin(),
         prims.end(),
-        [&](const ParallelTask& task, tbbcompat::Feeder<ParallelTask>& feeder)
+        [&](const ParallelTask& task, tbb::feeder<ParallelTask>& feeder)
         {
             const UsdPrim& prim = task.prim;
             TfToken visibility = task.visibility;
@@ -328,7 +328,7 @@ StatCountersUPtr _collectSceneStats(const UsdStageWeakPtr& usdStage, const StatA
 
             const auto& children = prim.GetFilteredChildren(predicate);
 
-            // Queue all children for traversal via parallel_do
+            // Queue all children for traversal via parallel_for_each
             for (const auto& child : children)
             {
                 feeder.add({ child, visibility });

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import json
 import os
 import tempfile
 import unittest
@@ -104,6 +105,13 @@ class TestCorePythonBindings(unittest.TestCase):
         self.assertIsNone(result[2])
 
         context.remove_stage()
+
+    def test_argument_metadata_is_strict_json(self):
+        """UIs read argument metadata as JSON, which cannot represent NaN or infinity defaults."""
+        so_core = UsdOptimizeCore.getInstance()
+        for operation in so_core.getOperations():
+            with self.subTest(operation=operation):
+                json.dumps(so_core.getOperationArguments(operation), allow_nan=False)
 
     def test_operation(self):
         """

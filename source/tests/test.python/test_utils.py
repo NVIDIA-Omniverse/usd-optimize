@@ -99,15 +99,15 @@ class _AwaitableNone:
 def _execute_operation(operation, args, context):
     """Execute a named Usd Optimize operation using UsdOptimizeCore directly.
 
-    Returns ``(True, result_tuple)`` where
+    Returns ``(success, result_tuple)`` where
     ``result_tuple = (success, error_or_none, extra_or_none)``.
 
-    The outer ``True`` is always returned.  Actual operation success or failure
-    is reported inside *result_tuple[0]*.
+    The outer ``success`` is the operation's own success, ``result_tuple[0]``,
+    so ``self.assertTrue(success)`` fails when the operation fails.
     """
     so_core = UsdOptimizeCore.getInstance()
     result = so_core.executeOperation(operation, context, args)
-    return True, result
+    return bool(result[0]), result
 
 
 class Test_Operation(unittest.TestCase, metaclass=_CombinedMeta):
@@ -162,11 +162,9 @@ class Test_Operation(unittest.TestCase, metaclass=_CombinedMeta):
         stage most recently returned by ``_open_stage``.  If no stage has
         been opened, an empty anonymous stage is created as a fallback.
 
-        Returns ``(True, result_tuple)`` where
-        ``result_tuple = (success, error_or_none, extra_or_none)``.
-
-        The outer ``True`` is always returned.  Actual operation success or
-        failure is reported inside *result_tuple[0]*.
+        Returns ``(success, result_tuple)`` where
+        ``result_tuple = (success, error_or_none, extra_or_none)``; the outer
+        ``success`` is the operation's own success, ``result_tuple[0]``.
         """
         if self.OPERATION == "Undefined":
             raise RuntimeError("OPERATION not set — subclass must define OPERATION")

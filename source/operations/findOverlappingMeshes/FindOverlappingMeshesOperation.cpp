@@ -314,7 +314,13 @@ std::string FindOverlappingMeshesOperation::getDocumentation() const
            "intersections with other meshes. This is updated as the mesh is "
            "moved or scaled, allowing the user to quickly fix overlapping "
            "meshes in the scene.  This also works with multiple selected "
-           "meshes or primitives with mesh descendants in the scene hierarchy.";
+           "meshes or primitives with mesh descendants in the scene hierarchy.\n\n"
+           "Detection runs on the GPU when ``useGpu`` is set (the default) and CUDA is available.  Leave it on: it "
+           "is faster than ``useParallelCpu``, by far on large assets, but can miss meshes that only touch a "
+           "neighbour.  Without CUDA it falls back to the CPU, so set ``useParallelCpu``.  If the GPU code fails, "
+           "the operation logs an error and reports no overlaps instead of falling back to the CPU.  Assets with "
+           "tens of millions of "
+           "faces can take a very long time, on the GPU or with ``useParallelCpu``.";
 }
 
 std::string FindOverlappingMeshesOperation::getAuthor() const

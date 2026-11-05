@@ -18,7 +18,7 @@ Python Script
 
 The Python script to execute.
 
-    - Name: ``python``
-    - Type: ``str``
-    - Default Value: ``"cHJpbnQoIkhlbGxvIHdvcmxkISIp"``
+- Name: ``python``
+- Type: ``str``
+- Default Value: ``"cHJpbnQoIkhlbGxvIHdvcmxkISIp"``
 

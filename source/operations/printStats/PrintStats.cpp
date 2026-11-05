@@ -310,11 +310,14 @@ StatsOperation::StatsOperation()
                 "Should points that are collocated be considered part of a disjoint mesh",
                 m_splitCollocated);
 
-    addArgument("time",
-                "Time",
-                kDisplayTypeFloat,
-                "Collect stats at the specified time (default nan means UsdTimeCode::Default)",
-                m_time);
+    addArgument("useDefaultTime",
+                "Use Default Time",
+                kDisplayTypeBool,
+                "Collect stats at UsdTimeCode::Default. Disable to set Time.",
+                m_useDefaultTime);
+
+    addArgument("time", "Time", kDisplayTypeFloat, "Time code to collect stats at when Use Default Time is disabled.", m_time)
+        .setVisibleIf("not useDefaultTime");
 }
 
 
@@ -405,9 +408,7 @@ OperationResult StatsOperation::executeImpl()
     args.setCountPrimvars(m_countPrimvars);
     args.setSplitCollocated(m_splitCollocated);
 
-    // Set Time. Note: our default, quiet_NaN, is actually what UsdTimeCode uses
-    // for ::Default() - so we can just wrap m_time
-    args.setTimeCode(UsdTimeCode(m_time));
+    args.setTimeCode(m_useDefaultTime ? UsdTimeCode::Default() : UsdTimeCode(m_time));
 
     // Legacy - we never had proper op args for these, they just ran off "verbose".
     if (getContext()->verbose)

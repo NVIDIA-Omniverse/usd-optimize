@@ -139,6 +139,10 @@ exclude_paths = [
 test_root = "${root}/_build/${platform}/${config}"
 default_suite = ["cpp", "python"]
 archive_pattern = "${root}/_build/packages/usd_optimize_tests*.${config}.*"
+# Run every test in each CI job. repo_test splits the tests across jobs when GitLab sets CI_NODE_INDEX/TOTAL, as
+# it does for the USD version matrix, so each USD version ran only part of them. This turns off only that split.
+# It does not slow testing down: the USD version jobs still run side by side, and no job runs its tests differently.
+disable_auto_parallelization = true
 
 [repo_test.suites.cpp]
 kind = "catch2"
@@ -242,6 +246,10 @@ files_exclude = [
     ["**.exp"],
     ["**.sym"],
 ]
+# mesh_tools_lib ships with debug info (47 MB, 20 MB stripped).
+"release".files_strip = [
+    ["lib/libmesh_tools_lib.so"],
+]
 
 # Test-only archive. Superset of the shipping package's runtime, plus the
 # catch2/python test wrappers, the test binary, and the test data tree.
@@ -315,6 +323,8 @@ sphinx_exclude_patterns = [
     "SECURITY.md",
     "THIRD_PARTY_NOTICES.md",
     "VERSION.md",
+    # Fixture usage notes stay with the test inputs.
+    "source/tests/data/*/README.md",
     # Install guides are not wired into the toctree
     "docs/install-prebuilt-linux.md",
     "docs/install-prebuilt-windows.md",
@@ -348,10 +358,6 @@ library_paths = [
     "${root}/_build/${platform}/${config}/lib",
     "${root}/_build/${platform}/${config}/extraLibs",
     "${root}/_build/target-deps/usd/${config}/lib",
-    # Only needed for USD 25.05: that Windows package keeps its third-party
-    # runtime DLLs (TBB, Imath, OpenEXR, ...) in usd/bin rather than usd/lib,
-    # so usd_tf.dll can't resolve tbb.dll without it. No-op on 25.11.
-    "${root}/_build/target-deps/usd/${config}/bin",
 ]
 python_paths = [
     "${root}/_build/${platform}/${config}/python",

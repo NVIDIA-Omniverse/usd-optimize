@@ -1,6 +1,7 @@
 ---
 name: writing-skills
 description: Author or revise a Usd Optimize skill (.agents/skills/{name}/SKILL.md). Use when adding, restructuring, or reviewing a skill so it matches house conventions and is registered in the index.
+license: Apache-2.0
 allowed-tools: Shell, Read, Write, Edit, Glob, Grep
 metadata:
   author: NVIDIA Corporation
@@ -122,6 +123,7 @@ Copy this shape (see the full **Frontmatter reference** below for each field):
 ---
 name: <name>
 description: {what it does}. Use when {trigger}.
+license: Apache-2.0
 allowed-tools: Shell, Read, Write, Glob, Grep
 metadata:
   author: NVIDIA Corporation
@@ -225,6 +227,7 @@ Manual checklist:
 |---|---|---|---|
 | `name` | yes | `compare-stages` | `kebab-case`; **must** equal the directory name. Drives `/<name>`. |
 | `description` | yes | `Structured diff between two USD stages. Use when comparing before/after optimization.` | What + when, one sentence. This is how agents pick the skill. No angle brackets: a `<placeholder>` parses as an XML tag and fails validation. |
+| `license` | yes | `Apache-2.0` | Same SPDX ID as the header comment; skill catalogs read the license from the frontmatter. |
 | `allowed-tools` | recommended | `Shell, Read, Write, Glob, Grep` | Comma-separated Claude Code tool names the skill needs. |
 | `metadata.author` | recommended | `NVIDIA Corporation` | Default author unless the user specifies otherwise. |
 | `metadata.version` | recommended | `"1.0.0"` | Quoted string, **under `metadata`**: a root-level `version` is not in the schema and is ignored. Start at `1.0.0`; bump on meaningful change. |

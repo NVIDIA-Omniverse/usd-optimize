@@ -443,15 +443,12 @@ USD_OPTIMIZE_EXPORT
 void _batchedSplitIntoXformAndChild(const PXR_NS::UsdStageWeakPtr& stage, const std::vector<PXR_NS::SdfPath>& primPaths);
 
 
-/// Adapted from ArchMakeTmpFileName (pxr/base/arch).  The original uses /var/tmp which
-/// is not automatically cleaned up; we override to /tmp to avoid accumulating stale files.
-/// Alternatives (tmpnam, mkstemp, boost::filesystem) are either unsafe, non-portable,
-/// or add an unwanted link dependency.
+/// Creates a new, empty temporary file with ArchMakeTmpFile and returns its path, or an empty string on failure.
+/// Uses /tmp rather than ArchGetTmpDir()'s /var/tmp, which is not automatically cleaned up.
 ///
-/// \param prefix Filename prefix (name before the pid)
-/// \param suffix Filename suffix (name after the pid)
+/// \param prefix Filename prefix (name before the unique suffix)
 USD_OPTIMIZE_EXPORT
-std::string _getTempFile(const std::string& prefix, const std::string& suffix);
+std::string _getTempFile(const std::string& prefix);
 
 /// Calculates the UV scaling value to apply for UV generation tasks.
 /// The scaling value is based on the `scaleFactor` multiplied by the distance `scaleUnits` in relation to the distance

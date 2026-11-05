@@ -16,21 +16,23 @@ Prim Paths
 
 A list of prim paths to consider
 
-    - Name: ``primPaths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``primPaths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Function
 ^^^^^^^^
 
 The type of function to run
 
-    - Name: ``function``
-    - Type: ``int``
-    - Default Value: ``0``
-    - Enum Values:
-        - ``0: Deinstance``
-        - ``2: Unbind Materials``
-        - ``3: Set Instanceable``
-        - ``4: Flatten Instances``
+- Name: ``function``
+- Type: ``int``
+- Default Value: ``0``
+- Enum Values:
+
+  - ``0: Deinstance``
+  - ``2: Unbind Materials``
+  - ``3: Set Instanceable``
+  - ``4: Flatten Instances``
+
 

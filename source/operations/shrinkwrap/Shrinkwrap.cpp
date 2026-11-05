@@ -50,8 +50,9 @@ ShrinkwrapOperation::ShrinkwrapOperation()
                 "Convert meshes to a level set volume and extract a watertight mesh. "
                 "Useful for closing holes, simplifying topology, and creating LODs.")
     , m_inputMode(InputMode::ePerMesh)
-    , m_startTime(std::numeric_limits<double>::quiet_NaN())
-    , m_endTime(std::numeric_limits<double>::quiet_NaN())
+    , m_useStageTimeRange(true)
+    , m_startTime(0.0)
+    , m_endTime(0.0)
     , m_timeStep(1.0)
     , m_connectTimeSamples(true)
     , m_dim(512)
@@ -78,19 +79,26 @@ ShrinkwrapOperation::ShrinkwrapOperation()
             { InputMode::eTemporalCombined, "Temporal Combined" },
         });
 
+    addArgument("useStageTimeRange",
+                "Use Stage Time Range",
+                kDisplayTypeBool,
+                "Sample from the stage's start time code to its end time code. Disable to set Start Time and End Time.",
+                m_useStageTimeRange)
+        .setVisibleIf("inputMode == 1");
+
     addArgument("startTime",
                 "Start Time",
                 kDisplayTypeFloat,
-                "First time code to sample. NaN uses the stage start time code.",
+                "First time code to sample when Use Stage Time Range is disabled.",
                 m_startTime)
-        .setVisibleIf("inputMode == 1");
+        .setVisibleIf("inputMode == 1 and not useStageTimeRange");
 
     addArgument("endTime",
                 "End Time",
                 kDisplayTypeFloat,
-                "Last time code to sample. NaN uses the stage end time code.",
+                "Last time code to sample when Use Stage Time Range is disabled.",
                 m_endTime)
-        .setVisibleIf("inputMode == 1");
+        .setVisibleIf("inputMode == 1 and not useStageTimeRange");
 
     addArgument("timeStep",
                 "Time Step",
@@ -187,8 +195,11 @@ Input modes
 The default ``Per Mesh`` mode processes each selected mesh independently at ``UsdTimeCode::Default`` and
 writes a sibling output for each mesh. ``Temporal Combined`` mode evaluates every selected mesh across an
 inclusive time range, combines all samples in world space, and writes one static swept-envelope mesh at
-``outputPath``. ``startTime`` and ``endTime`` default to the stage time range when left as NaN. The end
-time is always included even when ``timeStep`` does not land on it exactly.
+``outputPath``. It samples the stage's time range by default; disable ``useStageTimeRange`` to sample from
+``startTime`` to ``endTime`` instead. The end time is always included even when ``timeStep`` does not land
+on it exactly.
+``Per Mesh`` outputs copy their source's transform ops, pivot included, so each lines up with its source
+in world space.
 
 Temporal combined output is a discrete sampled envelope, not an analytical continuous sweep. A smaller
 ``timeStep`` captures fast, rotating, or nonlinear motion more faithfully, but memory and processing cost
@@ -248,7 +259,7 @@ Tuning order
 
 1. Set ``voxelSize`` for the target detail level (start small and increase until cost is acceptable).
 2. Increase ``erode`` to close larger gaps and holes.
-3. Adjust ``threshold`` to shift the extracted iso-surface inward or outward.
+3. Raise ``threshold`` to close more holes and gaps.
 4. Raise ``adaptivity`` to thin out triangles on flat areas (costs containment margin in
    ``Temporal Combined`` mode; see `Input modes`_).
 
@@ -288,8 +299,8 @@ Motion envelope over a fixed time range (``Temporal Combined`` mode):
 
 .. code-block:: json
 
-    [{"operation": "shrinkwrap", "inputMode": 1, "startTime": 1, "endTime": 48, "timeStep": 1,
-      "connectTimeSamples": true, "outputPath": "/World/Envelope", "voxelSize": 0.05}]
+    [{"operation": "shrinkwrap", "inputMode": 1, "useStageTimeRange": false, "startTime": 1, "endTime": 48,
+      "timeStep": 1, "connectTimeSamples": true, "outputPath": "/World/Envelope", "voxelSize": 0.05}]
 )DOC";
 }
 
@@ -647,6 +658,50 @@ bool runShrinkwrap(const ShrinkwrapMesh& inputMesh,
 }
 
 
+// Inverts `toWorld` for authoring the meshes' points. Fails when it is singular or the inverse takes a point
+// out of float range, as a near-zero scale can.
+bool invertForPoints(const GfMatrix4d& toWorld, const std::vector<ShrinkwrapMesh>& meshes, GfMatrix4d& fromWorld)
+{
+    double determinant = 0.0;
+    fromWorld = toWorld.GetInverse(&determinant);
+    if (determinant == 0.0)
+    {
+        return false;
+    }
+    for (const ShrinkwrapMesh& mesh : meshes)
+    {
+        for (const auto& point : mesh.points)
+        {
+            const GfVec3f local(fromWorld.Transform(GfVec3d(point[0], point[1], point[2])));
+            if (!std::isfinite(local[0]) || !std::isfinite(local[1]) || !std::isfinite(local[2]))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+// Copies the source's xform ops and op order onto the target, time samples included.
+void copyXformOps(const UsdPrim& source, const UsdPrim& target)
+{
+    const UsdGeomXformable xformable(source);
+    const UsdAttribute opOrder = xformable.GetXformOpOrderAttr();
+    if (!opOrder.HasAuthoredValue())
+    {
+        return;
+    }
+
+    bool resetsXformStack = false;
+    for (const UsdGeomXformOp& op : xformable.GetOrderedXformOps(&resetsXformStack))
+    {
+        op.GetAttr().FlattenTo(target);
+    }
+    opOrder.FlattenTo(target);
+}
+
+
 void authorMesh(const UsdStageWeakPtr& stage,
                 const SdfPath& targetPath,
                 const ShrinkwrapMesh& outputMesh,
@@ -656,6 +711,12 @@ void authorMesh(const UsdStageWeakPtr& stage,
 {
     UsdGeomMesh targetMesh = UsdGeomMesh::Define(stage, targetPath);
     targetMesh.GetSubdivisionSchemeAttr().Set(UsdGeomTokens->none);
+    // Define reuses the prim an earlier run wrote, so remove its xform ops before any are copied again.
+    for (const UsdProperty& op : targetMesh.GetPrim().GetAuthoredPropertiesInNamespace("xformOp"))
+    {
+        targetMesh.GetPrim().RemoveProperty(op.GetName());
+    }
+    UsdGeomXformable(targetMesh).ClearXformOpOrder();
     if (resetXformStack)
     {
         UsdGeomXformable(targetMesh).SetResetXformStack(true);
@@ -805,25 +866,41 @@ OperationResult ShrinkwrapOperation::executeImpl()
                 continue;
             }
 
-            GfMatrix4d parentWorldToLocal(1.0);
-            const UsdPrim parent = prim.GetParent();
-            if (parent && parent != getUsdStage()->GetPseudoRoot())
+            // The output copies the source's xform ops, so its points are authored in the source's local space.
+            // When that space cannot hold them, e.g. under a zero scale, they go in the parent's space without ops,
+            // or in world space with !resetXformStack! when the parent's space cannot hold them either.
+            GfMatrix4d worldToLocal;
+            const bool copyOps =
+                invertForPoints(xformCache.GetLocalToWorldTransform(prim), result.lodMeshes, worldToLocal);
+            bool resetXformStack = false;
+            if (!copyOps)
             {
-                parentWorldToLocal = xformCache.GetLocalToWorldTransform(parent).GetInverse();
+                USD_OPTIMIZE_LOG_VERBOSE("Shrinkwrap: %s: (near-)singular transform, so its xform ops are not copied",
+                                         label.c_str());
+                resetXformStack =
+                    !invertForPoints(xformCache.GetParentToWorldTransform(prim), result.lodMeshes, worldToLocal);
+                if (resetXformStack)
+                {
+                    worldToLocal = GfMatrix4d(1.0);
+                }
             }
             for (size_t lod = 0; lod < result.lodMeshes.size(); ++lod)
             {
                 const std::string suffix = lod == 0 ? "_shrinkwrap" : "_shrinkwrap_lod" + std::to_string(lod);
                 const SdfPath targetPath =
                     prim.GetPath().GetParentPath().AppendChild(TfToken(prim.GetName().GetString() + suffix));
-                authorMesh(getUsdStage(), targetPath, result.lodMeshes[lod], parentWorldToLocal, false, label);
+                authorMesh(getUsdStage(), targetPath, result.lodMeshes[lod], worldToLocal, resetXformStack, label);
+                if (copyOps)
+                {
+                    copyXformOps(prim, getUsdStage()->GetPrimAtPath(targetPath));
+                }
             }
         }
         return { true };
     }
 
-    const double startTime = std::isnan(m_startTime) ? getUsdStage()->GetStartTimeCode() : m_startTime;
-    const double endTime = std::isnan(m_endTime) ? getUsdStage()->GetEndTimeCode() : m_endTime;
+    const double startTime = m_useStageTimeRange ? getUsdStage()->GetStartTimeCode() : m_startTime;
+    const double endTime = m_useStageTimeRange ? getUsdStage()->GetEndTimeCode() : m_endTime;
     if (!std::isfinite(startTime) || !std::isfinite(endTime) || !std::isfinite(m_timeStep) || m_timeStep <= 0.0)
     {
         return { false, getCStr("Temporal sample range and timeStep must be finite, and timeStep must be positive") };

@@ -1,6 +1,7 @@
 ---
 name: new-operation
 description: Scaffold a new Usd Optimize operation plugin (C++ source, premake, test, guide, optional validator). Use to add a new op or plugin.
+license: Apache-2.0
 allowed-tools: Shell, Read, Write, Glob, Grep
 metadata:
   author: NVIDIA Corporation

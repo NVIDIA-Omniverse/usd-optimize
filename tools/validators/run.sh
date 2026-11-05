@@ -22,7 +22,7 @@ export PYTHONPATH=$BUILD_DIR/python:$USD_DIR/lib/python${PYTHONPATH:+:$PYTHONPAT
 
 # pip enforces the floor; a presence check would skip an older install.
 # Exit 2 = nothing was validated, matching validators.py's guards; 1 means "issues found".
-if ! "$PYTHON" -m pip install --quiet --disable-pip-version-check "usd-validation-nvidia>=1.22.0,<2"; then
+if ! "$PYTHON" -m pip install --quiet --disable-pip-version-check --break-system-packages "usd-validation-nvidia>=1.22.0,<2"; then
     echo "usd-validation-nvidia install failed -- nothing was validated. Set HTTPS_PROXY if behind a proxy." >&2
     exit 2
 fi

@@ -19,6 +19,12 @@ PXR_NAMESPACE_USING_DIRECTIVE
 namespace usd_optimize
 {
 
+// Unlike the default predicate, this allows undefined and abstract prims
+static const Usd_PrimFlagsPredicate s_predicate = UsdPrimIsActive && UsdPrimIsLoaded;
+// skip an `over` itself: an override, often incomplete by design, rather than a mesh to process
+static const ResolveFilter s_filter = [](const UsdPrim& prim, UsdPrimRange::iterator&)
+{ return prim.HasDefiningSpecifier(); };
+
 
 static void _getTimeSamplesForAttributes(const UsdPrim& prim,
                                          const TfTokenVector& attributes,
@@ -118,7 +124,8 @@ size_t _computeExtents(const UsdStageWeakPtr& usdStage, const std::vector<std::s
 {
     // Resolve paths to prims
     bool meshesOnly = false;
-    const std::vector<UsdPrim>& prims = _resolveExpressionsToPrims(usdStage, meshPrimPaths, meshesOnly);
+    const std::vector<UsdPrim>& prims =
+        _resolveExpressionsToPrims(usdStage->GetPseudoRoot(), meshPrimPaths, meshesOnly, true, s_predicate, s_filter);
 
     // Compute extents for the prims
     return _computeExtents(prims);
@@ -160,7 +167,8 @@ std::vector<std::string> _findPrimsMissingExtents(const UsdStageWeakPtr& usdStag
                                                   const std::vector<std::string>& meshPrimPaths)
 {
     bool meshesOnly = false;
-    const std::vector<UsdPrim>& prims = _resolveExpressionsToPrims(usdStage, meshPrimPaths, meshesOnly);
+    const std::vector<UsdPrim>& prims =
+        _resolveExpressionsToPrims(usdStage->GetPseudoRoot(), meshPrimPaths, meshesOnly, true, s_predicate, s_filter);
     return _findPrimsMissingExtents(prims);
 }
 

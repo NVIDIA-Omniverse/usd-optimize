@@ -3,9 +3,10 @@
 #
 
 
+import itertools
 import json
 
-from pxr import UsdGeom, UsdShade
+from pxr import Sdf, Usd, UsdGeom, UsdShade
 from usd_optimize.core import UsdOptimizeCore
 
 from .test_utils import Test_Operation, _get_context, _get_meshes, _get_test_data_file_path
@@ -417,6 +418,20 @@ class Test_Operation_Misc(Test_Operation):
         after_meshes = _get_meshes(stage)
         self.assertEqual(len(after_meshes), 1)
 
+    async def test_printStats_time(self):
+        """Points are read at UsdTimeCode::Default unless useDefaultTime is off, then at time."""
+        stage = Usd.Stage.CreateInMemory()
+        UsdGeom.Mesh.Define(stage, "/Mesh").CreatePointsAttr().Set([(0, 0, 0), (1, 0, 0), (0, 1, 0)], 1)
+        context = _get_context(stage)
+
+        def vertices(args):
+            success, _, output = UsdOptimizeCore.getInstance().executeOperation("printStats", context, args)
+            self.assertTrue(success)
+            return output["analysis"]["vertices"]
+
+        self.assertEqual(vertices({}), 0)
+        self.assertEqual(vertices({"useDefaultTime": False, "time": 1}), 3)
+
     async def test_executeConfig(self):
         # json file has settings for every operation.
         # This primarily tests the jsonReader interface itself (eg arg counts)
@@ -433,6 +448,21 @@ class Test_Operation_Misc(Test_Operation):
         json = """[{"foo": "bar"}]"""
         status = self._execute_json_string(stage, json)
         self.assertFalse(status[0][0])
+
+    async def test_invalidPathsExpression(self):
+        """Test that a `paths` value that is neither paths nor a path expression fails the operation"""
+        stage = self._open_stage("extentsTest.usda")
+        for paths in (['["/World/CubeNoExtent"]'], ["not a path!!"], [""]):
+            with self.subTest(paths=paths):
+                context = _get_context(stage)
+                result = UsdOptimizeCore.getInstance().executeOperation("computeExtents", context, {"paths": paths})
+                self.assertFalse(result[0])
+
+        # A valid path passes even when no path expression would, such as a non-ASCII attribute path
+        result = UsdOptimizeCore.getInstance().executeOperation(
+            "optimizeTimeSamples", _get_context(stage), {"attributePaths": ["/World/Défaut.points"]}
+        )
+        self.assertTrue(result[0])
 
     async def test_Normals(self):
         # Test case is a file with a scene with two meshes containing primvar:normals.
@@ -581,6 +611,37 @@ class Test_Operation_Misc(Test_Operation):
 
         extentAt5 = list(deformingPoints.GetAttribute("extent").Get(5.0))
         self.assertEqual(extentAt5, [(-10.0, -10.0, -10.0), (10.0, 10.0, 10.0)])
+
+    async def test_normalsAndExtentsUnderOverRoot(self):
+        """Test generateNormals and computeExtents on a mesh under an undefined or abstract root, and on an override"""
+
+        def run(operation, specifier, paths):
+            stage = Usd.Stage.CreateInMemory()
+            mesh = UsdGeom.Mesh.Define(stage, "/Proto/Mesh")
+            points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            mesh.GetPointsAttr().Set(points)
+            mesh.GetFaceVertexCountsAttr().Set([3])
+            mesh.GetFaceVertexIndicesAttr().Set([0, 1, 2])
+            # An `over` mesh with only points: an override, incomplete by design, which no operation may touch
+            override = stage.OverridePrim("/Proto/Override")
+            override.SetTypeName("Mesh")
+            UsdGeom.Mesh(override).CreatePointsAttr(points)
+            stage.GetPrimAtPath("/Proto").SetSpecifier(specifier)
+            if operation:
+                context = _get_context(stage)
+                result = UsdOptimizeCore.getInstance().executeOperation(operation, context, {"paths": paths})
+                self.assertTrue(result[0])
+            self.assertEqual(list(stage.GetRootLayer().GetPrimAtPath("/Proto/Override").properties.keys()), ["points"])
+            self.assertIsNotNone(override.GetAttribute("points").Get())
+            return sorted((a.GetName(), str(a.Get())) for a in mesh.GetPrim().GetAttributes() if a.HasAuthoredValue())
+
+        before = run(None, Sdf.SpecifierDef, [])
+        for operation, paths in itertools.product(("computeExtents", "generateNormals"), ([], ["/Proto/Mesh"])):
+            expected = run(operation, Sdf.SpecifierDef, paths)
+            self.assertNotEqual(expected, before)
+            for specifier in (Sdf.SpecifierOver, Sdf.SpecifierClass):
+                with self.subTest(operation=operation, paths=paths, specifier=specifier):
+                    self.assertEqual(run(operation, specifier, paths), expected)
 
     async def test_executeJson(self):
         """Test the JSON parser by JSON string"""

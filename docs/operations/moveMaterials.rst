@@ -18,16 +18,16 @@ Materials Root
 
 The prim path that all materials will be moved under.
 
-    - Name: ``materialsPath``
-    - Type: ``str``
-    - Default Value: ``"/World/Looks"``
+- Name: ``materialsPath``
+- Type: ``str``
+- Default Value: ``"/World/Looks"``
 
 Make Root Default
 ^^^^^^^^^^^^^^^^^
 
 Whether the root of materialsPath should be set as the default prim if the stage has no defaultPrim set.
 
-    - Name: ``makeRootDefault``
-    - Type: ``bool``
-    - Default Value: ``True``
+- Name: ``makeRootDefault``
+- Type: ``bool``
+- Default Value: ``True``
 

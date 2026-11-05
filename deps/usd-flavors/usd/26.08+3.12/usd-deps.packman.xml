@@ -14,9 +14,7 @@
     <package name="materialx" version="1.39.5-14-windows_v143_x86_64-${config}-py312" platforms="windows-x86_64" />
     <package name="materialx" version="1.39.5-14-${platform_target_abi}-${config}-py312" platforms="linux-* manylinux_*" />
   </dependency>
-  <!-- Do not bump past 3.12.12+nv2 while using ${platform_host}: python moved to ABI-declarative
-       names at 3.12.13, which that token cannot resolve on Linux. -->
   <dependency name="python" linkPath="../_build/usd-deps/python">
-    <package name="python" version="3.12.12+nv2-${platform_host}" />
+    <package name="python" version="3.12.16+nv1-${platform_target_abi}" />
   </dependency>
 </project>

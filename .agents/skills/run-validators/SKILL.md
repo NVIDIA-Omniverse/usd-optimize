@@ -1,6 +1,7 @@
 ---
 name: run-validators
 description: Validate a USD asset with Usd Optimize's performance validators and auto-apply fixes with --fix. Use when checking or repairing a USD.
+license: Apache-2.0
 allowed-tools: Bash
 metadata:
   author: NVIDIA Corporation
@@ -59,7 +60,7 @@ One positional argument (the asset) plus optional flags:
 | `-r RULE` | Enable only a specific rule (repeatable). |
 | `-D RULE` | Disable a specific rule (repeatable). |
 | `-c CATEGORY` | Enable only a specific category (repeatable). |
-| `--parameter NAME=VALUE` | Override a rule parameter (repeatable). |
+| `--parameter NAME=VALUE` | Override a rule parameter (repeatable). Per-rule GPU settings: `docs/gpu-acceleration.rst`. |
 | `-v` / `--verbose` | Upstream's verbosity flag. Raises upstream's log level **and** makes count-only rules emit one issue per failing prim (see below). Repeatable — `-vv` for DEBUG logging. |
 | `-p PREDICATE` | Filter output by severity: `IsError`, `IsFailure`, `IsWarning`. |
 | `--group-by requirement\|rule_name` | Group output by requirement or rule. |

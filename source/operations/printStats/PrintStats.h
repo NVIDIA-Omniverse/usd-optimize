@@ -7,9 +7,6 @@
 // Usd Optimize Core
 #include <usd_optimize/core/Operation.h>
 
-// C++
-#include <limits>
-
 
 namespace usd_optimize
 {
@@ -50,7 +47,8 @@ protected:
 private:
     bool m_countPrimvars = false;
     bool m_splitCollocated = false;
-    double m_time = std::numeric_limits<double>::quiet_NaN();
+    bool m_useDefaultTime = true;
+    double m_time = 0.0;
 };
 
 } // namespace usd_optimize

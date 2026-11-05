@@ -107,6 +107,7 @@ private:
     std::vector<PXR_NS::UsdPrim> m_prims;
     bool m_filterInactive = false;
     bool m_preserveUnloadedPayloads = true;
+    bool m_preserveRelationshipTargets = true;
 
     /// Per-prototype memoization of "does this prototype contain only leaf grouping prims", keyed by prototype path.
     /// Populated lazily during traversal by prototypeAllLeaves() and cleared at the start of each run, since the

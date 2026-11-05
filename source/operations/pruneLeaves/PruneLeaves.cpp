@@ -110,6 +110,13 @@ PruneLeavesOperation::PruneLeavesOperation()
                 "Do not prune leaf prims that carry an unloaded payload (they may contribute content once loaded). "
                 "Disable to prune them anyway.",
                 m_preserveUnloadedPayloads);
+
+    addArgument("preserveRelationshipTargets",
+                "Preserve Relationship Targets",
+                kDisplayTypeBool,
+                "Do not prune leaf prims that a relationship targets, or that contain one (pruning them would leave the "
+                "relationship dangling). Disable to prune them anyway.",
+                m_preserveRelationshipTargets);
 }
 
 
@@ -235,6 +242,33 @@ OperationResult PruneLeavesOperation::executeImpl()
     {
         // Find any unnecessary leaf primitives, using the pseudo root as the start point.
         findLeaves(getUsdStage()->GetPseudoRoot(), UsdTraverseInstanceProxies(predicate), leaves);
+    }
+
+    // A prim that a relationship targets is in use however empty it is, so keep any leaf that is or holds one
+    if (m_preserveRelationshipTargets && !leaves.empty())
+    {
+        SdfPathSet targets;
+        for (const UsdPrim& prim : getUsdStage()->TraverseAll())
+        {
+            for (const UsdRelationship& rel : prim.GetAuthoredRelationships())
+            {
+                SdfPathVector relTargets;
+                rel.GetTargets(&relTargets);
+                for (const SdfPath& target : relTargets)
+                {
+                    targets.insert(target.GetPrimPath());
+                }
+            }
+        }
+
+        leaves.erase(std::remove_if(leaves.begin(),
+                                    leaves.end(),
+                                    [&targets](const UsdPrim& leaf)
+                                    {
+                                        auto it = targets.lower_bound(leaf.GetPath());
+                                        return it != targets.end() && it->HasPrefix(leaf.GetPath());
+                                    }),
+                     leaves.end());
     }
 
     // We now have the leaves so for analysis we can return a report.

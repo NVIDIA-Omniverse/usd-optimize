@@ -70,6 +70,14 @@ prims that reset the xform stack, and prims with a time sampled transform or vis
 )DOC";
 
 
+/// A prim that discoverMergeBoundaries left out of merging, and why. The prim is either a mesh or the root of a subtree
+/// whose meshes were all left out for the same reason.
+struct SkippedPrim
+{
+    PXR_NS::SdfPath path;
+    std::string reason;
+};
+
 /// Simple struct the provides a lookup from merge boundary paths to the mesh prims that are are candidates for merging
 /// within that boundary. And provides lookup from mesh prim paths to their respective merge boundary paths
 struct MergeBoundaryLookup
@@ -78,6 +86,8 @@ struct MergeBoundaryLookup
     std::map<PXR_NS::SdfPath, std::vector<PXR_NS::UsdPrim>> parentToPrims;
     // map from mesh prim paths to the parent/merge boundary paths they are under
     std::map<PXR_NS::SdfPath, PXR_NS::SdfPath> primToParent;
+    // meshes, and roots of subtrees of meshes, that are left out of merging
+    std::vector<SkippedPrim> skipped;
 };
 
 /// Constants

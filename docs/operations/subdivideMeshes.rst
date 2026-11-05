@@ -21,50 +21,52 @@ Meshes to subdivide
 
 Optional list of prim paths to consider
 
-    - Name: ``paths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``paths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 GPU face count threshold
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 When a mesh will more than this number of faces after subdivision, use GPU algorithm
 
-    - Name: ``gpuFaceCountThreshold``
-    - Type: ``int``
-    - Default Value: ``4000``
-    - Min Value: ``0.0``
+- Name: ``gpuFaceCountThreshold``
+- Type: ``int``
+- Default Value: ``4000``
+- Min Value: ``0.0``
 
 Maximum face count
 ^^^^^^^^^^^^^^^^^^
 
 If the subdivided mesh would have more than this number of faces, it will not be generated
 
-    - Name: ``faceCountLimit``
-    - Type: ``int``
-    - Default Value: ``2000000``
-    - Min Value: ``4.0``
+- Name: ``faceCountLimit``
+- Type: ``int``
+- Default Value: ``2000000``
+- Min Value: ``4.0``
 
 Subdivision Method
 ^^^^^^^^^^^^^^^^^^
 
 Which subdivision method to use
 
-    - Name: ``method``
-    - Type: ``int``
-    - Default Value: ``0``
-    - Enum Values:
-        - ``0: Catmull-Clark``
-        - ``1: Loop``
+- Name: ``method``
+- Type: ``int``
+- Default Value: ``0``
+- Enum Values:
+
+  - ``0: Catmull-Clark``
+  - ``1: Loop``
+
 
 Subdivision Iteration Count
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The number of times to subdivide
 
-    - Name: ``iterationCount``
-    - Type: ``int``
-    - Default Value: ``1``
-    - Min Value: ``1.0``
-    - Max Value: ``10.0``
+- Name: ``iterationCount``
+- Type: ``int``
+- Default Value: ``1``
+- Min Value: ``1.0``
+- Max Value: ``10.0``
 

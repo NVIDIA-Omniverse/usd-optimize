@@ -9,7 +9,6 @@
 #include <usd_optimize/core/JsonUtils.h>
 #include <usd_optimize/core/RemovePrims.h>
 #include <usd_optimize/core/ResolveSdfPaths.h>
-#include <usd_optimize/core/TbbCompat.h>
 #include <usd_optimize/core/Utils.h>
 
 // Carbonite
@@ -25,6 +24,7 @@
 
 // TBB
 #include <tbb/enumerable_thread_specific.h>
+#include <tbb/parallel_for_each.h>
 
 PXR_NAMESPACE_USING_DIRECTIVE
 
@@ -65,6 +65,61 @@ static void _deleteMaterials(const UsdStageWeakPtr& usdStage, const std::vector<
         SdfChangeBlock changeBlock;
         _deletePrims(usdStage, prims, true);
     }
+}
+
+
+// Drops every material that a binding of any purpose, or a collection binding, still targets, and every material that
+// one of those references, so that deleting the rest leaves no binding or reference dangling.
+static void _excludeBoundMaterials(const UsdStageWeakPtr& usdStage, std::vector<UsdPrim>& materials)
+{
+    SdfPathSet targets;
+    std::mutex targetsMutex;
+
+    std::vector<UsdPrim> iterPrims = { usdStage->GetPseudoRoot() };
+    tbb::parallel_for_each(iterPrims.begin(),
+                           iterPrims.end(),
+                           [&](const UsdPrim& prim, tbb::feeder<UsdPrim>& feeder)
+                           {
+                               for (const auto& child : prim.GetAllChildren())
+                               {
+                                   feeder.add(child);
+                               }
+
+                               for (const auto& rel : prim.GetAuthoredRelationships())
+                               {
+                                   if (UsdShadeMaterialBindingAPI::CanContainPropertyName(rel.GetName()))
+                                   {
+                                       SdfPathVector relTargets;
+                                       rel.GetTargets(&relTargets);
+                                       std::lock_guard<std::mutex> lock(targetsMutex);
+                                       targets.insert(relTargets.begin(), relTargets.end());
+                                   }
+                               }
+                           });
+
+    SdfPathSet referenced;
+    for (const auto& path : targets)
+    {
+        const auto prim = path.IsPrimPath() ? usdStage->GetPrimAtPath(path) : UsdPrim();
+        if (!prim || !prim.IsA<UsdShadeMaterial>())
+        {
+            continue;
+        }
+
+        for (const auto& arc : UsdPrimCompositionQuery(prim).GetCompositionArcs())
+        {
+            if (arc.GetArcType() == PcpArcTypeReference || arc.GetArcType() == PcpArcTypePayload)
+            {
+                referenced.insert(arc.GetTargetNode().GetPath());
+            }
+        }
+    }
+    targets.insert(referenced.begin(), referenced.end());
+
+    materials.erase(std::remove_if(materials.begin(),
+                                   materials.end(),
+                                   [&](const UsdPrim& material) { return targets.count(material.GetPath()) > 0; }),
+                    materials.end());
 }
 
 
@@ -214,39 +269,39 @@ bool OptimizeMaterialsOperation::removeUnboundMaterials(const std::vector<UsdPri
     std::mutex allMaterialsMutex;
 
     std::vector<UsdPrim> iterMaterials = { getUsdStage()->GetPseudoRoot() };
-    tbbcompat::parallelForEach(iterMaterials.begin(),
-                               iterMaterials.end(),
-                               [&](const UsdPrim& prim, tbbcompat::Feeder<UsdPrim>& feeder)
+    tbb::parallel_for_each(iterMaterials.begin(),
+                           iterMaterials.end(),
+                           [&](const UsdPrim& prim, tbb::feeder<UsdPrim>& feeder)
+                           {
+                               // Don't need to worry about instance proxies. We will find instance proxies that are
+                               // bound and resolve them back to their base material.
+                               if (prim.IsInstanceProxy())
                                {
-                                   // Don't need to worry about instance proxies. We will find instance proxies that are
-                                   // bound and resolve them back to their base material.
-                                   if (prim.IsInstanceProxy())
+                                   return;
+                               }
+
+                               const auto& children = prim.GetChildren();
+
+                               // Queue all children for traversal via parallel_for_each
+                               for (const auto& child : children)
+                               {
+                                   feeder.add(child);
+                               }
+
+                               if (prim.IsA<UsdShadeMaterial>())
+                               {
+                                   // If this material has some kind of composition then just ignore it, this will
+                                   // filter out materials that are instances or references etc. We just want to
+                                   // resolve back to the base definition.
+                                   if (_hasComposition(prim))
                                    {
                                        return;
                                    }
 
-                                   const auto& children = prim.GetChildren();
-
-                                   // Queue all children for traversal via parallel_for_each
-                                   for (const auto& child : children)
-                                   {
-                                       feeder.add(child);
-                                   }
-
-                                   if (prim.IsA<UsdShadeMaterial>())
-                                   {
-                                       // If this material has some kind of composition then just ignore it, this will
-                                       // filter out materials that are instances or references etc. We just want to
-                                       // resolve back to the base definition.
-                                       if (_hasComposition(prim))
-                                       {
-                                           return;
-                                       }
-
-                                       std::lock_guard<std::mutex> lock(allMaterialsMutex);
-                                       allMaterials.insert(prim);
-                                   }
-                               });
+                                   std::lock_guard<std::mutex> lock(allMaterialsMutex);
+                                   allMaterials.insert(prim);
+                               }
+                           });
 
     UsdShadeMaterialBindingAPI::BindingsCache bindingsCache;
     UsdShadeMaterialBindingAPI::CollectionQueryCache collQueryCache;
@@ -255,63 +310,63 @@ bool OptimizeMaterialsOperation::removeUnboundMaterials(const std::vector<UsdPri
     // in the scene we can filter that down by removing any that are bound. This should leave us with just unused
     // materials.
     std::vector<UsdPrim> iterPrims = { getUsdStage()->GetPseudoRoot() };
-    tbbcompat::parallelForEach(
-        iterPrims.begin(),
-        iterPrims.end(),
-        [&](const UsdPrim& prim, tbbcompat::Feeder<UsdPrim>& feeder)
-        {
-            // Don't need to check materials or their children
-            if (prim.IsA<UsdShadeMaterial>())
-            {
-                return;
-            }
+    tbb::parallel_for_each(iterPrims.begin(),
+                           iterPrims.end(),
+                           [&](const UsdPrim& prim, tbb::feeder<UsdPrim>& feeder)
+                           {
+                               // Don't need to check materials or their children
+                               if (prim.IsA<UsdShadeMaterial>())
+                               {
+                                   return;
+                               }
 
-            const auto& children = prim.GetFilteredChildren(UsdTraverseInstanceProxies(UsdPrimAllPrimsPredicate));
+                               const auto& children =
+                                   prim.GetFilteredChildren(UsdTraverseInstanceProxies(UsdPrimAllPrimsPredicate));
 
-            // Queue all children for traversal via parallel_for_each
-            for (const auto& child : children)
-            {
-                feeder.add(child);
-            }
+                               // Queue all children for traversal via parallel_for_each
+                               for (const auto& child : children)
+                               {
+                                   feeder.add(child);
+                               }
 
-            UsdShadeMaterialBindingAPI bindingAPI(prim);
-            auto boundMaterial = bindingAPI.ComputeBoundMaterial(&bindingsCache, &collQueryCache);
+                               UsdShadeMaterialBindingAPI bindingAPI(prim);
+                               auto boundMaterial = bindingAPI.ComputeBoundMaterial(&bindingsCache, &collQueryCache);
 
-            // Nothing bound, no need to continue.
-            if (!boundMaterial)
-            {
-                return;
-            }
+                               // Nothing bound, no need to continue.
+                               if (!boundMaterial)
+                               {
+                                   return;
+                               }
 
-            const auto& materialPrim = boundMaterial.GetPrim();
+                               const auto& materialPrim = boundMaterial.GetPrim();
 
-            // This material is used so remove it from the delete queue
-            {
-                std::lock_guard<std::mutex> lock(allMaterialsMutex);
-                allMaterials.erase(materialPrim);
-            }
+                               // This material is used so remove it from the delete queue
+                               {
+                                   std::lock_guard<std::mutex> lock(allMaterialsMutex);
+                                   allMaterials.erase(materialPrim);
+                               }
 
-            // Check if the material references/instances something. If so, we need to erase its
-            // targets from the set of materials. This lets us avoid deleting materials that aren't
-            // bound directly, but that eg have an instance of themselves bound.
-            UsdPrimCompositionQuery compositionQuery(materialPrim);
-            for (const auto& arc : compositionQuery.GetCompositionArcs())
-            {
-                // Right now specifically just looks for "references" and "payloads"
-                const PcpArcType& arcType = arc.GetArcType();
-                if (arcType == PcpArcTypeReference || arcType == PcpArcTypePayload)
-                {
-                    // Get the actual target - this is the base material we want to avoid deleting,
-                    // as it is used indirectly by this reference.
-                    const auto& target = getUsdStage()->GetPrimAtPath(arc.GetTargetNode().GetPath());
-                    if (target)
-                    {
-                        std::lock_guard<std::mutex> lock(allMaterialsMutex);
-                        allMaterials.erase(target);
-                    }
-                }
-            }
-        });
+                               // Check if the material references/instances something. If so, we need to erase its
+                               // targets from the set of materials. This lets us avoid deleting materials that aren't
+                               // bound directly, but that eg have an instance of themselves bound.
+                               UsdPrimCompositionQuery compositionQuery(materialPrim);
+                               for (const auto& arc : compositionQuery.GetCompositionArcs())
+                               {
+                                   // Right now specifically just looks for "references" and "payloads"
+                                   const PcpArcType& arcType = arc.GetArcType();
+                                   if (arcType == PcpArcTypeReference || arcType == PcpArcTypePayload)
+                                   {
+                                       // Get the actual target - this is the base material we want to avoid deleting,
+                                       // as it is used indirectly by this reference.
+                                       const auto& target = getUsdStage()->GetPrimAtPath(arc.GetTargetNode().GetPath());
+                                       if (target)
+                                       {
+                                           std::lock_guard<std::mutex> lock(allMaterialsMutex);
+                                           allMaterials.erase(target);
+                                       }
+                                   }
+                               }
+                           });
 
     // Final step: delete any materials that were not found to be used.
     if (!allMaterials.empty())
@@ -320,6 +375,8 @@ bool OptimizeMaterialsOperation::removeUnboundMaterials(const std::vector<UsdPri
         materialsToDelete.reserve(allMaterials.size());
         materialsToDelete.insert(materialsToDelete.begin(), allMaterials.begin(), allMaterials.end());
 
+        // ComputeBoundMaterial() above resolves only the all-purpose binding
+        _excludeBoundMaterials(getUsdStage(), materialsToDelete);
         _deleteMaterials(getUsdStage(), materialsToDelete);
 
         std::ostringstream oss;
@@ -696,44 +753,44 @@ static void _findSpecializeTargets(const UsdStageWeakPtr& usdStage, std::set<Sdf
     std::mutex insertMutex;
 
     std::vector<UsdPrim> iterPrims = { usdStage->GetPseudoRoot() };
-    tbbcompat::parallelForEach(iterPrims.begin(),
-                               iterPrims.end(),
-                               [&](const UsdPrim& prim, tbbcompat::Feeder<UsdPrim>& feeder)
+    tbb::parallel_for_each(iterPrims.begin(),
+                           iterPrims.end(),
+                           [&](const UsdPrim& prim, tbb::feeder<UsdPrim>& feeder)
+                           {
+                               // Only need to check materials
+                               if (prim.IsA<UsdShadeMaterial>())
                                {
-                                   // Only need to check materials
-                                   if (prim.IsA<UsdShadeMaterial>())
+                                   UsdPrimCompositionQuery compositionQuery(prim);
+                                   for (const auto& arc : compositionQuery.GetCompositionArcs())
                                    {
-                                       UsdPrimCompositionQuery compositionQuery(prim);
-                                       for (const auto& arc : compositionQuery.GetCompositionArcs())
+                                       const PcpArcType& arcType = arc.GetArcType();
+                                       if (arcType == PcpArcTypeSpecialize)
                                        {
-                                           const PcpArcType& arcType = arc.GetArcType();
-                                           if (arcType == PcpArcTypeSpecialize)
+
+                                           const SdfPath& targetPath = arc.GetTargetNode().GetPath();
+                                           if (!targetPath.IsEmpty())
                                            {
+                                               std::lock_guard lock(insertMutex);
+                                               targets.insert(targetPath);
 
-                                               const SdfPath& targetPath = arc.GetTargetNode().GetPath();
-                                               if (!targetPath.IsEmpty())
+                                               if (sources)
                                                {
-                                                   std::lock_guard lock(insertMutex);
-                                                   targets.insert(targetPath);
-
-                                                   if (sources)
-                                                   {
-                                                       sources->insert(prim.GetPrimPath());
-                                                   }
+                                                   sources->insert(prim.GetPrimPath());
                                                }
                                            }
                                        }
                                    }
-                                   else
+                               }
+                               else
+                               {
+                                   // Don't need to recurse in to materials, so only add children if
+                                   // not a material
+                                   for (const auto& child : prim.GetAllChildren())
                                    {
-                                       // Don't need to recurse in to materials, so only add children if
-                                       // not a material
-                                       for (const auto& child : prim.GetAllChildren())
-                                       {
-                                           feeder.add(child);
-                                       }
+                                       feeder.add(child);
                                    }
-                               });
+                               }
+                           });
 }
 
 
@@ -1370,9 +1427,10 @@ bool OptimizeMaterialsOperation::convertToPrimvars(const std::vector<UsdPrim>& p
         }
     }
 
-    // Delete the old materials
+    // Delete the old materials. Only their all-purpose direct bindings were rebound.
     if (!oldMaterials.empty())
     {
+        _excludeBoundMaterials(stage, oldMaterials);
         _deleteMaterials(stage, oldMaterials);
     }
 
@@ -1406,6 +1464,9 @@ bool OptimizeMaterialsOperation::optimizeMaterials(const std::vector<UsdPrim>& p
 
     // Duplicate material to first instance of a material, this controls what will be rebound
     std::map<SdfPath, SdfPath> rebind;
+
+    // Material binding relationships of every purpose, including collection bindings
+    std::vector<UsdRelationship> bindingRels;
 
     // Map of material to its instanced boundary path
     std::map<UsdPrim, SdfPath> materialsToPaths;
@@ -1509,13 +1570,22 @@ bool OptimizeMaterialsOperation::optimizeMaterials(const std::vector<UsdPrim>& p
             // Check for a direct bind. We don't want to rebind child prims that don't have a direct binding,
             // or we end up binding more prims that inherit a material and didn't originally have a direct
             // binding.
-            //
-            // TODO: Deal with collection bindings
             auto directBind = bindingAPI.GetDirectBinding();
 
             if (directBind.GetMaterial())
             {
                 bound[directBind.GetMaterialPath()].push_back(prim);
+            }
+
+            if (willBindMaterials)
+            {
+                for (const auto& rel : prim.GetAuthoredRelationships())
+                {
+                    if (UsdShadeMaterialBindingAPI::CanContainPropertyName(rel.GetName()))
+                    {
+                        bindingRels.push_back(rel);
+                    }
+                }
             }
         }
     }
@@ -1614,6 +1684,9 @@ bool OptimizeMaterialsOperation::optimizeMaterials(const std::vector<UsdPrim>& p
             // Mark for delete
             materialsToDelete.push_back(getUsdStage()->GetPrimAtPath(it.first));
         }
+
+        // Only the all-purpose direct bindings were replaced by colors
+        _excludeBoundMaterials(getUsdStage(), materialsToDelete);
     }
     else if (!rebind.empty())
     {
@@ -1622,18 +1695,29 @@ bool OptimizeMaterialsOperation::optimizeMaterials(const std::vector<UsdPrim>& p
 
         SdfChangeBlock changeBlock;
 
-        for (const auto& it : rebind)
+        // Retarget rather than Bind(): it is substantially faster, and it keeps each binding's purpose
+        for (const auto& rel : bindingRels)
         {
-            auto findIt = bound.find(it.first);
-            if (findIt != bound.end())
+            SdfPathVector targets;
+            rel.GetTargets(&targets);
+            bool retarget = false;
+            for (auto& target : targets)
             {
-                for (const auto& prim : findIt->second)
+                auto findIt = rebind.find(target);
+                if (findIt != rebind.end())
                 {
-                    // Manually create target relationship (this is substantially faster than using Bind())
-                    prim.CreateRelationship(UsdShadeTokens->materialBinding).SetTargets({ it.second });
+                    target = findIt->second;
+                    retarget = true;
                 }
             }
+            if (retarget)
+            {
+                rel.SetTargets(targets);
+            }
+        }
 
+        for (const auto& it : rebind)
+        {
             // Queue the duplicate material for delete. Note that this will delete the duplicate regardless of whether
             // anything was bound to it, so that it also cleans up unused duplicates.
             materialsToDelete.push_back(getUsdStage()->GetPrimAtPath(it.first));
@@ -1730,10 +1814,10 @@ OperationResult OptimizeMaterialsOperation::executeAnalysisImpl()
     };
 
     std::vector<UsdPrim> iterPrims = { getUsdStage()->GetPseudoRoot() };
-    tbbcompat::parallelForEach(
+    tbb::parallel_for_each(
         iterPrims.begin(),
         iterPrims.end(),
-        [&](const UsdPrim& prim, tbbcompat::Feeder<UsdPrim>& feeder)
+        [&](const UsdPrim& prim, tbb::feeder<UsdPrim>& feeder)
         {
             // Queue all children for traversal via parallel_for_each
             // Skip children of Materials though - we don't need to check shaders etc.

@@ -58,6 +58,19 @@ public:
     bool getSupportsAnalysis() const override;
 
 protected:
+    PXR_NS::Usd_PrimFlagsPredicate primFlagsPredicate() const override
+    {
+        // Unlike the default predicate, this allows undefined and abstract prims
+        return PXR_NS::UsdPrimIsActive && PXR_NS::UsdPrimIsLoaded;
+    }
+
+    ResolveFilter resolveFilter() override
+    {
+        // skip an `over` itself: an override, often incomplete by design, rather than a mesh to process
+        return [filter = OmniOperation::resolveFilter()](const PXR_NS::UsdPrim& prim, PXR_NS::UsdPrimRange::iterator& it)
+        { return prim.HasDefiningSpecifier() && filter(prim, it); };
+    }
+
     /// Process
     ProcessedData* processMesh(const PXR_NS::UsdPrim& prim, tbb::task_group_context&) override;
 

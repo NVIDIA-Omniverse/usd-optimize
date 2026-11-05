@@ -1,0 +1,161 @@
+#usda 1.0
+
+def Material "Material"
+{
+}
+
+def Xform "AttributeTypes" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+)
+{
+    def Mesh "A"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        custom point3f measurement = (1, 2, 3)
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "B"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        custom color3f measurement = (1, 2, 3)
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+}
+
+def Xform "SubsetCustomArrays" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+)
+{
+    def Mesh "A" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3, 3]
+        int[] faceVertexIndices = [0, 1, 2, 1, 3, 2]
+        custom float[] inertiaMatrix = [1, 0, 0, 0, 1, 0, 0, 0, 1] (
+            customData = {
+                string source = "asset importer"
+            }
+        )
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 1, 0)]
+        uniform token subdivisionScheme = "none"
+
+        def GeomSubset "FirstFace" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            rel material:binding = </Material>
+        }
+    }
+
+    def Mesh "B" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3, 3]
+        int[] faceVertexIndices = [0, 1, 2, 1, 3, 2]
+        custom float[] inertiaMatrix = [1, 0, 0, 0, 1, 0, 0, 0, 1] (
+            customData = {
+                string source = "asset importer"
+            }
+        )
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 1, 0)]
+        uniform token subdivisionScheme = "none"
+
+        def GeomSubset "FirstFace" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            rel material:binding = </Material>
+        }
+    }
+}
+
+def Xform "SubsetPrimvars" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+)
+{
+    def Mesh "A" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3, 3]
+        int[] faceVertexIndices = [0, 1, 2, 1, 3, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 1, 0)]
+        int[] primvars:faceId = [10, 20] (
+            interpolation = "uniform"
+        )
+        uniform token subdivisionScheme = "none"
+
+        def GeomSubset "FirstFace" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            rel material:binding = </Material>
+        }
+    }
+
+    def Mesh "B" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3, 3]
+        int[] faceVertexIndices = [0, 1, 2, 1, 3, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 1, 0)]
+        int[] primvars:faceId = [10, 20] (
+            interpolation = "uniform"
+        )
+        uniform token subdivisionScheme = "none"
+
+        def GeomSubset "FirstFace" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token elementType = "face"
+            uniform token familyName = "materialBind"
+            int[] indices = [0]
+            rel material:binding = </Material>
+        }
+    }
+}
+
+def Xform "WholeMeshPrimvars" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+)
+{
+    def Mesh "A"
+    {
+        int[] faceVertexCounts = [3, 3]
+        int[] faceVertexIndices = [0, 1, 2, 1, 3, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 1, 0)]
+        int[] primvars:faceId = [10, 20] (
+            interpolation = "uniform"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "B"
+    {
+        int[] faceVertexCounts = [3, 3]
+        int[] faceVertexIndices = [0, 1, 2, 1, 3, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 1, 0)]
+        int[] primvars:faceId = [10, 20] (
+            interpolation = "uniform"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+}

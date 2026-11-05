@@ -5,6 +5,8 @@
 
 Entry point for any coding agent (Claude Code, Codex/GPT, etc.) working in this repository. `CLAUDE.md` is a regular file that imports this one (`@AGENTS.md`) so Claude Code reads it automatically; non-Claude agents read `AGENTS.md` directly. Either way, this is the single source of truth. (`.claude`/`.codex` are optional, user-created symlinks to `.agents` — not committed; see [Skills](#skills).)
 
+> **Reading this inside a published binary drop?** This file covers the source repository. Its `repo.sh` / `repo.bat` build and test commands don't apply to a drop; follow `README.md` and `docs/install-prebuilt-<os>.md` instead.
+
 ## Project Overview
 
 Usd Optimize is a standalone C++ library providing 45+ USD scene optimization operations (geometry, materials, hierarchy, analysis) with a plugin system and Python bindings.

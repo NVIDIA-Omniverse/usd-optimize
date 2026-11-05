@@ -16,7 +16,7 @@ Meshes To Process
 
 Optional list of prim paths to consider
 
-    - Name: ``paths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``paths``
+- Type: ``[string]``
+- Default Value: ``[]``
 

@@ -12,12 +12,12 @@ If you are building Usd Optimize from source, see the top-level [README](../READ
 
 | Directory | Purpose |
 | --- | --- |
-| `include/` | C++ public headers (`usd_optimize/core/`) |
+| `include/` | C++ public headers (`usd_optimize/core/`). Compiling against them needs third-party headers that the package does not ship; see [Compiling against the headers](#compiling-against-the-headers) |
 | `lib/` | Prebuilt DLLs and Windows import libraries (`usd_optimize.core.dll`, plugin DLLs, `operation_mapping.json` — deprecated-name aliases for `mapConfig()`, not the list of operations) |
 | `bin/` | The `usdOptimize` command-line tool |
 | `python/` | Python bindings (`usd_optimize.core`) |
 | `usdpy/` | OpenUSD Python runtime modules (`pxr.*`) — the package brings its own USD |
-| `extraLibs/` | Third-party runtime libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic and OpenSubdiv) and the matching CPython runtime DLL (e.g. `python312.dll` for `py_3.12`) |
+| `extraLibs/` | Third-party runtime libraries (MaterialX, TBB; USD 25.x drops additionally carry Alembic, Imath, OpenSubdiv and zlib) and the matching CPython runtime DLL (e.g. `python312.dll` for `py_3.12`) |
 | `config_presets/` | Ready-made operation stacks for `usdOptimize -c` |
 | `docs/` | This guide and the rest of the documentation set |
 | `.agents/` | Task-specific skill files (`.agents/skills/<name>/SKILL.md`) |
@@ -179,7 +179,31 @@ if not all(ok for ok, _err, _out in results):
 stage.Save()
 ```
 
-Valid **`operation`** strings are whatever the loaded plugins register — enumerate them at runtime with `UsdOptimizeCore.getInstance().getOperations()` (the exact count varies by build). The bundled `config_presets/*.json` show descriptor JSON for many operations. **`lib/operation_mapping.json` is not that catalog:** it only lists deprecated operation keys and a few legacy argument renames for `UsdOptimizeCore.getInstance().mapConfig()`, so keys such as `merge`, `deletePrims`, or `decimateMeshes` will not appear there. The full per-operation argument reference is in the [Usd Optimize user manual](https://docs.omniverse.nvidia.com/extensions/latest/ext_scene-optimizer/user-manual.html).
+Valid **`operation`** strings are whatever the loaded plugins register — enumerate them at runtime with `UsdOptimizeCore.getInstance().getOperations()` (the exact count varies by build). The bundled `config_presets/*.json` show descriptor JSON for many operations. **`lib/operation_mapping.json` is not that catalog:** it only lists deprecated operation keys and a few legacy argument renames for `UsdOptimizeCore.getInstance().mapConfig()`, so keys such as `merge`, `deletePrims`, or `decimateMeshes` will not appear there. The full per-operation argument reference is in the [Usd Optimize operations reference](https://nvidia-omniverse.github.io/usd-optimize/latest/docs/operations.html).
+
+### Compiling against the headers
+
+`include/usd_optimize/core/` holds the C++ API, and `Core.h` declares the `UsdOptimizeCore` singleton. These headers include headers from five dependencies that the package does **not** ship. Put them on your include path, at the versions this package was built with:
+
+| Dependency | Version |
+| --- | --- |
+| OpenUSD | The `usd_<ver>` token in the package name |
+| Carbonite SDK | 210.1.4 |
+| CPython | The `py_3.X` token in the package name |
+| TBB | The release whose runtime ships in `extraLibs/`: oneTBB 2021.13.0 (`tbb12.dll`) in USD 25.11 and 26.08 packages |
+| pybind11 | 2.11.1, needed only by `PybindUtils.h` |
+
+`PACKAGE-LICENSES/THIRD_PARTY_NOTICES.md` records the exact OpenUSD, oneTBB, Carbonite and pybind11 packages of the default (USD 26.08) build. `MeshToolsCommon.h` and `OmniOperation.h` are internal to the bundled operation plugins and need libraries that the package does not include, so they are not part of the C++ API; don't include them.
+
+For example, from an x64 Developer Command Prompt for Visual Studio, with `<package>` standing for the extracted package and each other `<...>` for the root of that dependency's installation:
+
+```bat
+cl /std:c++17 /EHsc /permissive- /c my_app.cpp ^
+    /I <package>\include ^
+    /I <openusd>\include /I <carbonite>\include ^
+    /I <tbb>\include /I <pybind11>\include ^
+    /I <python>\include
+```
 
 ## Notes on Testing a Drop
 

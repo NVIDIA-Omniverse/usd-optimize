@@ -278,6 +278,7 @@ public:
 
     // Names of attributes where the presence of an authored value will be considered in the prim info hash.
     std::set<TfToken> m_authoredAttributes;
+    std::function<VtDictionary(const VirtualMesh&)> m_compatibilityProvider;
 
     // Names of attributes that will not be considered in the prim info hash.
     std::set<TfToken> m_ignoreAttrNames;
@@ -403,6 +404,10 @@ private:
         hash = TfHash::Combine(hash, VtHashValue(preBucket.authoredAttributes));
         hash = TfHash::Combine(hash, VtHashValue(preBucket.boundMaterialPath));
         hash = TfHash::Combine(hash, VtHashValue(preBucket.parentPath));
+        if (!preBucket.compatibilityValues.empty())
+        {
+            hash = TfHash::Combine(hash, VtHashValue(preBucket.compatibilityValues));
+        }
 
         // Store the hash (which makes this bucket valid).
         preBucket.hash = hash;
@@ -464,6 +469,11 @@ private:
                 if (m_considerMaterials)
                 {
                     _collectMaterialBindingInfo(preBucket, bindingsCache, collQueryCache);
+                }
+
+                if (m_compatibilityProvider)
+                {
+                    preBucket.compatibilityValues = m_compatibilityProvider(mesh);
                 }
 
                 // Hash the pre-bucket
@@ -839,6 +849,13 @@ void Bucketer::SetConsiderMaterials(bool considerMaterials)
 void Bucketer::SetConsiderPrimAttributes(bool value)
 {
     pImpl->m_considerPrimAttributes = value;
+}
+
+
+/// Include caller-resolved values when comparing mesh compatibility.
+void Bucketer::SetCompatibilityProvider(std::function<VtDictionary(const VirtualMesh&)> provider)
+{
+    pImpl->m_compatibilityProvider = std::move(provider);
 }
 
 

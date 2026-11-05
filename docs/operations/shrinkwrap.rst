@@ -19,8 +19,11 @@ Input modes
 The default ``Per Mesh`` mode processes each selected mesh independently at ``UsdTimeCode::Default`` and
 writes a sibling output for each mesh. ``Temporal Combined`` mode evaluates every selected mesh across an
 inclusive time range, combines all samples in world space, and writes one static swept-envelope mesh at
-``outputPath``. ``startTime`` and ``endTime`` default to the stage time range when left as NaN. The end
-time is always included even when ``timeStep`` does not land on it exactly.
+``outputPath``. It samples the stage's time range by default; disable ``useStageTimeRange`` to sample from
+``startTime`` to ``endTime`` instead. The end time is always included even when ``timeStep`` does not land
+on it exactly.
+``Per Mesh`` outputs copy their source's transform ops, pivot included, so each lines up with its source
+in world space.
 
 Temporal combined output is a discrete sampled envelope, not an analytical continuous sweep. A smaller
 ``timeStep`` captures fast, rotating, or nonlinear motion more faithfully, but memory and processing cost
@@ -80,7 +83,7 @@ Tuning order
 
 1. Set ``voxelSize`` for the target detail level (start small and increase until cost is acceptable).
 2. Increase ``erode`` to close larger gaps and holes.
-3. Adjust ``threshold`` to shift the extracted iso-surface inward or outward.
+3. Raise ``threshold`` to close more holes and gaps.
 4. Raise ``adaptivity`` to thin out triangles on flat areas (costs containment margin in
    ``Temporal Combined`` mode; see `Input modes`_).
 
@@ -120,8 +123,8 @@ Motion envelope over a fixed time range (``Temporal Combined`` mode):
 
 .. code-block:: json
 
-    [{"operation": "shrinkwrap", "inputMode": 1, "startTime": 1, "endTime": 48, "timeStep": 1,
-      "connectTimeSamples": true, "outputPath": "/World/Envelope", "voxelSize": 0.05}]
+    [{"operation": "shrinkwrap", "inputMode": 1, "useStageTimeRange": false, "startTime": 1, "endTime": 48,
+      "timeStep": 1, "connectTimeSamples": true, "outputPath": "/World/Envelope", "voxelSize": 0.05}]
 
 
 Arguments
@@ -132,106 +135,117 @@ Meshes to Shrinkwrap
 
 Optional list of prim paths/expressions to shrinkwrap
 
-    - Name: ``paths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``paths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Input Mode
 ^^^^^^^^^^
 
 Process each mesh at default time, or combine all selected meshes sampled over a time range
 
-    - Name: ``inputMode``
-    - Type: ``int``
-    - Default Value: ``0``
-    - Enum Values:
-        - ``0: Per Mesh``
-        - ``1: Temporal Combined``
+- Name: ``inputMode``
+- Type: ``int``
+- Default Value: ``0``
+- Enum Values:
+
+  - ``0: Per Mesh``
+  - ``1: Temporal Combined``
+
+
+Use Stage Time Range
+^^^^^^^^^^^^^^^^^^^^
+
+Sample from the stage's start time code to its end time code. Disable to set Start Time and End Time.
+
+- Name: ``useStageTimeRange``
+- Type: ``bool``
+- Default Value: ``True``
 
 Start Time
 ^^^^^^^^^^
 
-First time code to sample. NaN uses the stage start time code.
+First time code to sample when Use Stage Time Range is disabled.
 
-    - Name: ``startTime``
-    - Type: ``float``
-    - Default Value: ``nan``
+- Name: ``startTime``
+- Type: ``float``
+- Default Value: ``0``
 
 End Time
 ^^^^^^^^
 
-Last time code to sample. NaN uses the stage end time code.
+Last time code to sample when Use Stage Time Range is disabled.
 
-    - Name: ``endTime``
-    - Type: ``float``
-    - Default Value: ``nan``
+- Name: ``endTime``
+- Type: ``float``
+- Default Value: ``0``
 
 Time Step
 ^^^^^^^^^
 
 Interval between temporal samples. The end time is always sampled.
 
-    - Name: ``timeStep``
-    - Type: ``float``
-    - Default Value: ``1``
-    - Min Value: ``1.1754943508222875e-38``
+- Name: ``timeStep``
+- Type: ``float``
+- Default Value: ``1``
+- Min Value: ``1.1754943508222875e-38``
 
 Connect Time Samples
 ^^^^^^^^^^^^^^^^^^^^
 
 Fill motion between topology-compatible adjacent samples with swept triangle prisms
 
-    - Name: ``connectTimeSamples``
-    - Type: ``bool``
-    - Default Value: ``True``
+- Name: ``connectTimeSamples``
+- Type: ``bool``
+- Default Value: ``True``
 
 Output Path
 ^^^^^^^^^^^
 
 Required new absolute prim path for the combined static shrinkwrap mesh
 
-    - Name: ``outputPath``
-    - Type: ``str``
-    - Default Value: ``""``
+- Name: ``outputPath``
+- Type: ``str``
+- Default Value: ``""``
 
 Voxel Size
 ^^^^^^^^^^
 
 Explicit voxel size. Smaller values produce finer detail but use more memory. Set to 0 to use Grid Dimension instead.
 
-    - Name: ``voxelSize``
-    - Type: ``float``
-    - Default Value: ``0.1``
-    - Min Value: ``0.0``
+- Name: ``voxelSize``
+- Type: ``float``
+- Default Value: ``0.1``
+- Min Value: ``0.0``
 
 Erosion Steps
 ^^^^^^^^^^^^^
 
 Number of erosion steps. Controls how much the level set can shrink/erode the shape.
 
-    - Name: ``erode``
-    - Type: ``float``
-    - Default Value: ``8``
-    - Min Value: ``0.0``
+- Name: ``erode``
+- Type: ``float``
+- Default Value: ``8``
+- Min Value: ``0.0``
 
 Closing Threshold
 ^^^^^^^^^^^^^^^^^
 
 Size of the largest geometric feature or gap beyond which the algorithm should erode no further. Higher values close more holes and gaps in the mesh.
 
-    - Name: ``threshold``
-    - Type: ``float``
-    - Default Value: ``0``
-    - Min Value: ``0.0``
+- Name: ``threshold``
+- Type: ``float``
+- Default Value: ``0``
+- Min Value: ``0.0``
 
 Adaptive Meshing Threshold
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Controls adaptive meshing. 0 = no adaptive meshing (uniform tessellation), 1 = most adaptive (fewest triangles).
 
-    - Name: ``adaptivity``
-    - Type: ``float``
-    - Default Value: ``0``
-    - Min Value: ``0.0``
-    - Max Value: ``1.0``
+- Name: ``adaptivity``
+- Type: ``float``
+- Default Value: ``0``
+- Min Value: ``0.0``
+- Max Value: ``1.0``
 

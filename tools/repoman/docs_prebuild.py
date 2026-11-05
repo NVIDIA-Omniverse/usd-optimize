@@ -79,10 +79,6 @@ def _runtime_paths(root: str):
         os.path.join(build, "lib"),
         os.path.join(build, "extraLibs"),
         os.path.join(usd, "lib"),
-        # Only needed for USD 25.05: that Windows package keeps its third-party
-        # runtime DLLs (TBB, Imath, OpenEXR, ...) in usd/bin rather than usd/lib,
-        # so usd_tf.dll can't resolve tbb.dll without it. No-op on 25.11.
-        os.path.join(usd, "bin"),
     ]
     return python_paths, library_paths
 
@@ -140,7 +136,7 @@ def _ensure_validation_package(python: str, env: dict) -> None:
     """
     print(f"[docs_prebuild] ensuring {_VALIDATION_PACKAGE} in bundled interpreter")
     result = subprocess.run(
-        [python, "-m", "pip", "install", "--disable-pip-version-check", _VALIDATION_PACKAGE],
+        [python, "-m", "pip", "install", "--disable-pip-version-check", "--break-system-packages", _VALIDATION_PACKAGE],
         env=env,
         capture_output=True,
         text=True,
@@ -352,17 +348,18 @@ def _gen_operations_docs(root: str):
             for arg in op["args"]:
                 op_doc += f"{arg['displayName']}\n{'^' * len(arg['displayName'])}\n\n"
                 op_doc += f"{arg['description']}\n\n"
-                op_doc += f"{indent}- Name: ``{arg['name']}``\n"
-                op_doc += f"{indent}- Type: ``{arg['type']}``\n"
-                op_doc += f"{indent}- Default Value: ``{arg['defaultValue']}``\n"
+                op_doc += f"- Name: ``{arg['name']}``\n"
+                op_doc += f"- Type: ``{arg['type']}``\n"
+                op_doc += f"- Default Value: ``{arg['defaultValue']}``\n"
                 if arg.get("enums") is not None:
-                    op_doc += f"{indent}- Enum Values:\n"
+                    op_doc += "- Enum Values:\n\n"
                     for enum in arg["enums"]:
-                        op_doc += f"{indent}{indent}- ``{enum[1]}: {enum[0]}``\n"
+                        op_doc += f"  - ``{enum[1]}: {enum[0]}``\n"
+                    op_doc += "\n"
                 if arg.get("min") is not None:
-                    op_doc += f"{indent}- Min Value: ``{arg['min']}``\n"
+                    op_doc += f"- Min Value: ``{arg['min']}``\n"
                 if arg.get("max") is not None:
-                    op_doc += f"{indent}- Max Value: ``{arg['max']}``\n"
+                    op_doc += f"- Max Value: ``{arg['max']}``\n"
                 op_doc += "\n"
         op_docs[op_key] = op_doc
 

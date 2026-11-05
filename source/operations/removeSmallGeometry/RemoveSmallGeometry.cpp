@@ -49,9 +49,10 @@ RemoveSmallGeometryOperation::RemoveSmallGeometryOperation()
         "detectionMethod",
         "Detection Method",
         kDisplayTypeEnum,
-        "Method that will be used for detecting small geometry.\n"
-        " - World Space: Small geometry is determine by checking the maximum size side of extent bounds against an absolute world space value. \n"
-        " - Percentage: Small geometry is determine by checking the maximum size side of the extent bounds against a percentage threshold of the scene's median extent size.",
+        "Method that will be used for detecting small geometry. World Space: small geometry is determined by checking "
+        "the maximum size side of extent bounds against an absolute world space value. Percentage: small geometry is "
+        "determined by checking the maximum size side of the extent bounds against a percentage threshold of the "
+        "scene's median extent size.",
         m_detectionMethod);
     detectArg.setEnumValues<DetectionMethod>({
         { DetectionMethod::eWorldSpace, "World Space" },
@@ -75,8 +76,7 @@ std::string RemoveSmallGeometryOperation::getDocumentation() const
 {
     return "This operation will find and remove small or degenerate geometry "
            "in the scene. Degenerate geometry are prims with an extent size of "
-           "0.0, whereas small geometry is defined by a percentage size of the "
-           "overall scene's median extent size.";
+           "0.0, whereas small geometry is at or below ``threshold``.";
 }
 
 

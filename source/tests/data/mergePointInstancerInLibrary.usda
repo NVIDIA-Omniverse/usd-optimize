@@ -1,0 +1,55 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+)
+
+# The instancer sits in an `over` library that an instance references, and its prototype is a visible prim that
+# comes first, so a full-stage merge reaches the prototype directly before the instancer.
+def Xform "World"
+{
+    def Xform "Protos"
+    {
+        def Xform "A"
+        {
+            def Mesh "M1"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            }
+            def Mesh "M2"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 1), (1, 0, 1), (0, 1, 1)]
+            }
+        }
+    }
+
+    def Xform "Inst" (
+        instanceable = true
+        add references = </Library/Proto>
+    )
+    {
+    }
+
+    def Mesh "Other"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 5), (1, 0, 5), (0, 1, 5)]
+    }
+}
+
+over "Library"
+{
+    def Xform "Proto"
+    {
+        def PointInstancer "PI"
+        {
+            rel prototypes = </World/Protos/A>
+            int[] protoIndices = [0, 0]
+            point3f[] positions = [(5, 0, 0), (10, 0, 0)]
+        }
+    }
+}

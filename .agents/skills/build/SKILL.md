@@ -1,6 +1,7 @@
 ---
 name: build
 description: Build Usd Optimize from source via repo.sh (Linux) or repo.bat (Windows). Use when compiling the repo, switching configs, or selecting a USD flavor.
+license: Apache-2.0
 allowed-tools: Shell
 metadata:
   author: NVIDIA Corporation

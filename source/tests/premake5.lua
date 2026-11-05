@@ -156,7 +156,7 @@ set PYTHONPATH=%%TEST_PY_PATH%%;%%PYTHONPATH%%
         -- bundled Python. pip enforces the floor; a presence check would skip an
         -- older install.
         local win_ensure_av = string.format([[
-%s -m pip install --quiet --disable-pip-version-check "usd-validation-nvidia>=1.22.0,<2"
+%s -m pip install --quiet --disable-pip-version-check --break-system-packages "usd-validation-nvidia>=1.22.0,<2"
 ]], win_python_bin)
         -- Forward extra args (%*) to run_discover.py so callers can run
         -- individual tests, e.g.:
@@ -218,7 +218,7 @@ export PYTHONPATH=%s${PYTHONPATH:+:$PYTHONPATH}
         -- bundled Python. pip enforces the floor; a presence check would skip an
         -- older install.
         local ensure_av = string.format([[
-%s -m pip install --quiet --disable-pip-version-check "usd-validation-nvidia>=1.22.0,<2"
+%s -m pip install --quiet --disable-pip-version-check --break-system-packages "usd-validation-nvidia>=1.22.0,<2"
 ]], python_bin)
         -- Forward extra args ("$@") to run_discover.py so callers can run
         -- individual tests, e.g.:
@@ -271,11 +271,6 @@ local python_lib_paths = {
     "lib",
     "extraLibs",
     "../../target-deps/usd/$CONFIG/lib",
-    -- Only needed for USD 25.05: that Windows package keeps its third-party
-    -- runtime DLLs (TBB, Imath, OpenEXR, ...) in usd/bin rather than usd/lib,
-    -- so usd_tf.dll can't resolve tbb.dll without it. No-op on 25.11. (The cpp
-    -- test runner's extra_env_paths above already includes bin.)
-    "../../target-deps/usd/$CONFIG/bin",
 }
 
 local python_py_paths = {

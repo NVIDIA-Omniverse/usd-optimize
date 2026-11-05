@@ -11,6 +11,8 @@
 #include "usd_optimize/core/geometry/Cluster.h"
 #include "usd_optimize/core/geometry/VirtualMesh.h"
 
+#include <functional>
+
 
 namespace usd_optimize
 {
@@ -30,6 +32,7 @@ struct PreBucket
     PXR_NS::VtDictionary authoredAttributes;
     PXR_NS::SdfPath boundMaterialPath;
     PXR_NS::SdfPath parentPath;
+    PXR_NS::VtDictionary compatibilityValues;
     int spatialCluster = INVALID_CLUSTER;
 
     PreBucket() = delete;
@@ -75,6 +78,11 @@ public:
     ///
     /// Defaults to False during construction.
     void SetConsiderPrimAttributes(bool value);
+
+    /// Add operation-specific resolved properties to the compatibility key.
+    /// The provider can be called in parallel and must not edit the stage. Properties it resolves should be
+    /// excluded from generic attribute comparison with AddIgnoreAttributeNames or AddIgnoreAttributeNamespaces.
+    void SetCompatibilityProvider(std::function<PXR_NS::VtDictionary(const VirtualMesh&)> provider);
 
     /// Add names to the list of attributes whose values influences the bucketing logic
     void AddValueAttributes(const PXR_NS::TfTokenVector& names);

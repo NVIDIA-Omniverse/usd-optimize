@@ -1,0 +1,67 @@
+#usda 1.0
+
+def Xform "World" (
+    doc = "Two triangles with matching primvars in different coordinate frames."
+)
+{
+    double3 xformOp:translate = (100, 50, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate"]
+
+    def Mesh "Original"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+        point3f[] primvars:rest = [(1, 1, 0), (0, 0, 0), (1, 0, 0)] (
+            interpolation = "vertex"
+        )
+        vector3f[] primvars:tangents = [(1, 1, 0), (1, 0, 0)] (
+            interpolation = "vertex"
+        )
+        int[] primvars:tangents:indices = [0, 1, 0]
+        normal3f[] primvars:surfaceNormal = [(0.70710677, 0.70710677, 0)] (
+            interpolation = "constant"
+        )
+        normal3f[] primvars:normals = [(0.70710677, 0.70710677, 0), (0.70710677, 0.70710677, 0), (0.70710677, 0.70710677, 0)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(0.2, 0.4, 0.6)] (
+            interpolation = "constant"
+        )
+        float3[] primvars:customTriple = [(1, 1, 0)] (
+            interpolation = "constant"
+        )
+    }
+
+    def Mesh "Transformed"
+    {
+        double3 xformOp:translate = (10, 0, 0)
+        float xformOp:rotateZ = 90
+        float3 xformOp:scale = (2, 1, 1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+        point3f[] primvars:rest = [(1, 1, 0), (0, 0, 0), (1, 0, 0)] (
+            interpolation = "vertex"
+        )
+        vector3f[] primvars:tangents = [(1, 1, 0), (1, 0, 0)] (
+            interpolation = "vertex"
+        )
+        int[] primvars:tangents:indices = [0, 1, 0]
+        normal3f[] primvars:surfaceNormal = [(0.70710677, 0.70710677, 0)] (
+            interpolation = "constant"
+        )
+        normal3f[] primvars:normals = [(0.70710677, 0.70710677, 0), (0.70710677, 0.70710677, 0), (0.70710677, 0.70710677, 0)] (
+            interpolation = "vertex"
+        )
+        color3f[] primvars:displayColor = [(0.2, 0.4, 0.6)] (
+            interpolation = "constant"
+        )
+        float3[] primvars:customTriple = [(1, 1, 0)] (
+            interpolation = "constant"
+        )
+    }
+}

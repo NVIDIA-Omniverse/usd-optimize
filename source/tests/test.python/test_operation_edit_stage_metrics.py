@@ -1122,6 +1122,29 @@ class Test_Operation_EditStageMetrics(Test_Operation):
         self._execute_json(stage_new, CONFIG_SCALE_TO_METERS_AND_UP_AXIS_Z)
         self._assert_world_space_points_are_scaled_and_rotated(stage_old, stage_new, 0.01, Y_TO_Z_ROTATION)
 
+    async def test_scaleAndYtoZBlockedValues(self):
+        """
+        Tests that a blocked default and a blocked time sample, on different attributes, stay blocked while the other
+        values and the points are transformed.
+        """
+        stage_old, stage_new = self._open_stages(SIMPLE_GEO_TEST_FILE)
+        mesh = UsdGeom.Mesh(stage_new.GetPrimAtPath("/World/SimpleGeo"))
+        normals = mesh.GetNormalsAttr()
+        normals.Block()
+        normals.Set([Gf.Vec3f(0, 1, 0)], 1)
+        velocities = mesh.GetVelocitiesAttr()
+        velocities.Set([Gf.Vec3f(0, 1, 0)], 1)
+        velocities.Set(Sdf.ValueBlock(), 2)
+        status = self._execute_json(stage_new, CONFIG_SCALE_TO_METERS_AND_UP_AXIS_Z)
+        self.assertTrue(status[0][0])
+        self._assert_world_space_points_are_scaled_and_rotated(stage_old, stage_new, 0.01, Y_TO_Z_ROTATION)
+        self.assertIsNone(normals.Get())
+        self.assertEqual(normals.GetTimeSamples(), [1])
+        self._assert_vec3_array_rotated([Gf.Vec3f(0, 1, 0)], normals.Get(1), Y_TO_Z_ROTATION)
+        self.assertEqual(velocities.GetTimeSamples(), [1, 2])
+        self._assert_vec3_array_rotated([Gf.Vec3f(0, 0.01, 0)], velocities.Get(1), Y_TO_Z_ROTATION)
+        self.assertIsNone(velocities.Get(2))
+
     async def test_scaleAndZtoYGeoWithTRSAndPivot(self):
         """
         Tests that changing the meters per unit and the up axis from Z to Y works both scales and rotates the resolved

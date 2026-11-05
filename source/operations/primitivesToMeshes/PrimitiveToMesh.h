@@ -66,6 +66,8 @@ private:
         omo::SphereMeshParameters sphereParameters;
         bool convertCylinders = true;
         omo::CylinderMeshParameters cylinderParameters;
+        bool convertCapsules = true;
+        omo::CapsuleMeshParameters capsuleParameters;
         bool convertCones = true;
         omo::ConeMeshParameters coneParameters;
         bool convertCubes = true;
@@ -84,12 +86,14 @@ private:
         {
             sphereCount = 0;
             cylinderCount = 0;
+            capsuleCount = 0;
             coneCount = 0;
             cubeCount = 0;
         }
 
         std::atomic<size_t> sphereCount;
         std::atomic<size_t> cylinderCount;
+        std::atomic<size_t> capsuleCount;
         std::atomic<size_t> coneCount;
         std::atomic<size_t> cubeCount;
     };

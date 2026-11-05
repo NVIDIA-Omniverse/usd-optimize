@@ -7,6 +7,7 @@
 // Usd Optimize Core
 #include "usd_optimize/core/Core.h"
 #include "usd_optimize/core/Log.h"
+#include "usd_optimize/core/ResolveSdfPaths.h"
 #include "usd_optimize/core/Utils.h"
 
 // carb
@@ -532,6 +533,16 @@ bool Operation::populateExecutionArguments(const JsObject& args)
             }
         }
 
+        // A value that is neither paths nor a path expression would be skipped while the operation reports success.
+        if (argDescription->getDisplayType() == kDisplayTypePrimPaths &&
+            !_isValidPathsArgument(value.GetArrayOf<std::string>()))
+        {
+            USD_OPTIMIZE_LOG_ERROR("Argument '%s' is not a valid path or path expression: %s",
+                                   it.first.c_str(),
+                                   TfStringJoin(value.GetArrayOf<std::string>(), " ").c_str());
+            return false;
+        }
+
         if (!setArg(value, argDescription))
         {
             // LCOV_EXCL_START
@@ -615,7 +626,7 @@ OperationResult Operation::execute(ExecutionContext* context, const JsObject& ar
         }
         else
         {
-            reportPath = _getTempFile("usdOptimize", "");
+            reportPath = _getTempFile("usdOptimize");
         }
 
         // Create Report object

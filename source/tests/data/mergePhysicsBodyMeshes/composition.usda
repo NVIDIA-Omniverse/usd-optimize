@@ -1,0 +1,70 @@
+#usda 1.0
+
+def Xform "SelectedInstances"
+{
+    def "Selected" (
+        instanceable = true
+        prepend references = @execution.usda@</CompatibleMeshes/Body>
+    )
+    {
+    }
+    def "Other" (
+        instanceable = true
+        prepend references = @execution.usda@</CompatibleMeshes/Body>
+    )
+    {
+    }
+}
+
+def Xform "SingleInstance"
+{
+    def "Selected" (
+        instanceable = true
+        prepend references = @execution.usda@</Singleton/Body>
+    )
+    {
+    }
+}
+
+def Xform "InsideInstance"
+{
+    def "Instance" (
+        instanceable = true
+        prepend references = @execution.usda@</PartsAsset/Body>
+    )
+    {
+    }
+}
+
+def Xform "ReferencedGeometry"
+{
+    def "Robot" (
+        prepend references = @execution.usda@</ReferencedAsset/Asset>
+    )
+    {
+    }
+}
+
+def Xform "PayloadLoading"
+{
+    def "Unloaded" (
+        prepend payload = @execution.usda@</CompatibleMeshes/Body>
+    )
+    {
+    }
+    def "Loaded" (
+        prepend references = @execution.usda@</CompatibleMeshes/Body>
+    )
+    {
+    }
+}
+
+def Xform "NestedInstances"
+{
+    def "Instance" (
+        instanceable = true
+        prepend references = @execution.usda@</NestedAssembly/Asset>
+    )
+    {
+    }
+}

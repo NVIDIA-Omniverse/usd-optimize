@@ -7,6 +7,7 @@
 // Usd Optimize Core
 #include "usd_optimize/core/Core.h"
 #include "usd_optimize/core/ResolveSdfPaths.h"
+#include "usd_optimize/core/geometry/MeshTraversal.h"
 
 // Carbonite
 #include <carb/profiler/Profile.h>
@@ -14,6 +15,7 @@
 // USD
 #include <pxr/usd/kind/registry.h>
 #include <pxr/usd/usd/modelAPI.h>
+#include <pxr/usd/usd/primCompositionQuery.h>
 #include <pxr/usd/usd/primRange.h>
 #include <pxr/usd/usdGeom/camera.h>
 #include <pxr/usd/usdGeom/pointInstancer.h>
@@ -33,7 +35,6 @@ namespace usd_optimize
 TF_DEFINE_PRIVATE_TOKENS(
     _tokens,
     ((clustered, "clustered"))
-    ((references, "references"))
 );
 // LCOV_EXCL_STOP
 // clang-format on
@@ -238,6 +239,9 @@ static bool _hasUnmergeableChildren(const UsdPrim& prim)
 /// Generally speaking invisible prims are skipped and the traversal pruned. If an explicit path to
 /// a prim is specified, however, we can enable traversing it. This is to aid in supporting geometry
 /// or prototype libraries that contain meshes to be referenced elsewhere and may be hidden.
+///
+/// Physics body exclusions apply from \p startPrim downward. An explicit start below a physics body opts in,
+/// while a physics root at or below that start still prunes its subtree.
 //
 /// \param usdStage The USD stage
 /// \param startPrim The prim to start traversing from
@@ -263,11 +267,21 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
     // is a mesh - in that case we don't want to do anything.
     if (rootPrim.GetTypeName() == UsdGeomTokens->Mesh)
     {
+        if (_isPhysicsBodyRoot(startPrim))
+        {
+            lookup.skipped.push_back({ startPrim.GetPath(), "physics body" });
+            return;
+        }
+
         // if we're using original prim merge point we need to ensure any root mesh is explicitly included in the lookup
         // since meshes map to themselves as their own merge boundary
         if (mergePoint == MergePointOption::eOriginalPrim)
         {
-            resolvedPrimsSet->insert(rootPrim);
+            // A full-stage traversal passes no set.
+            if (resolvedPrimsSet)
+            {
+                resolvedPrimsSet->insert(rootPrim);
+            }
             lookup.primToParent[rootPrim.GetPath()] = rootPrim.GetPath();
         }
         return;
@@ -302,16 +316,32 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
             continue;
         }
 
+        // Physics APIs can be applied directly to a Mesh, so check before accepting meshes.
+        if (_isPhysicsBodyRoot(prim))
+        {
+            lookup.skipped.push_back({ prim.GetPath(), "physics body" });
+            iter.PruneChildren();
+            continue;
+        }
+
         // Perform Mesh related checks.
         if (prim.IsA<UsdGeomMesh>())
         {
             // Prune children as we never want to try and merge anything that lives below a Mesh.
             iter.PruneChildren();
 
+            // A mesh that is itself a prototype must stay where its instances find it.
+            if (instancedPrims.count(prim))
+            {
+                lookup.skipped.push_back({ prim.GetPath(), "prototype" });
+                continue;
+            }
+
             // If the mesh has children that are not understood by Merge it should be skipped. Otherwise the state of
             // the scene may change when the mesh is removed.
             if (_hasUnmergeableChildren(prim))
             {
+                lookup.skipped.push_back({ prim.GetPath(), "has child prims" });
                 continue;
             }
 
@@ -324,8 +354,14 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
             UsdGeomXformable xformable(prim);
             if (xformable)
             {
-                if (xformable.TransformMightBeTimeVarying() || xformable.GetResetXformStack())
+                if (xformable.TransformMightBeTimeVarying())
                 {
+                    lookup.skipped.push_back({ prim.GetPath(), "time-sampled transform" });
+                    continue;
+                }
+                if (xformable.GetResetXformStack())
+                {
+                    lookup.skipped.push_back({ prim.GetPath(), "resets transform stack" });
                     continue;
                 }
             }
@@ -334,6 +370,7 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
             UsdGeomImageable imageable(prim);
             if (imageable && imageable.GetVisibilityAttr().ValueMightBeTimeVarying())
             {
+                lookup.skipped.push_back({ prim.GetPath(), "time-sampled visibility" });
                 continue;
             }
 
@@ -347,6 +384,12 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
                     boundaryPath = prim.GetPath();
                 }
 
+                // Skip a mesh found already: every instance of a prototype leads back to the same meshes.
+                if (!lookup.primToParent.try_emplace(prim.GetPath(), boundaryPath).second)
+                {
+                    continue;
+                }
+
                 // Found a valid mesh to include.
                 // Find or create the output vector in the map now that we have something to add.
                 if (resolvedPrims == nullptr)
@@ -355,7 +398,6 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
                 }
 
                 resolvedPrims->push_back(prim);
-                lookup.primToParent[prim.GetPath()] = boundaryPath;
             }
 
             // Completed processing the Mesh.
@@ -367,6 +409,7 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
         // Certain prim types we can prune to avoid even recursing into them.
         if (prim.IsA<UsdGeomCamera>() || prim.IsA<UsdShadeMaterial>())
         {
+            lookup.skipped.push_back({ prim.GetPath(), "below camera or material" });
             iter.PruneChildren();
             continue;
         }
@@ -376,6 +419,7 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
         // merging those meshes is likely acceptable.
         if (prim.IsA<UsdSkelRoot>())
         {
+            lookup.skipped.push_back({ prim.GetPath(), "below SkelRoot" });
             iter.PruneChildren();
             continue;
         }
@@ -394,6 +438,7 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
                 {
                     if (visibility == UsdGeomTokens->invisible)
                     {
+                        lookup.skipped.push_back({ prim.GetPath(), "below invisible prim" });
                         iter.PruneChildren();
                         continue;
                     }
@@ -405,20 +450,29 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
         // instancing and see if we can merge there.
         if (prim.IsInstance())
         {
-            SdfReferenceListOp references;
-            if (prim.GetMetadata(_tokens->references, &references))
+            const auto arcs = UsdPrimCompositionQuery::GetDirectReferences(prim).GetCompositionArcs();
+            if (!arcs.empty())
             {
-                const auto& added = references.GetAddedItems();
-
-                // Find added reference. Currently only deals with first.
-                if (!added.empty())
+                // Follow only the first "add" reference, and only if it targets this stage's own layers. A reference
+                // authored in another file targets a prim in that file, even when it has no asset path.
+                const auto added = std::find_if(arcs.begin(),
+                                                arcs.end(),
+                                                [](const UsdPrimCompositionQueryArc& arc)
+                                                {
+                                                    SdfReferenceEditorProxy editor;
+                                                    SdfReference ref;
+                                                    return arc.GetIntroducingListEditor(&editor, &ref) &&
+                                                           editor.GetAddedItems().Count(ref) > 0;
+                                                });
+                if (added != arcs.end() &&
+                    added->GetTargetNode().GetLayerStack() == prim.GetPrimIndex().GetRootNode().GetLayerStack())
                 {
-                    const SdfReference& ref = added.front();
-                    const UsdPrim& _prim = usdStage->GetPrimAtPath(ref.GetPrimPath());
+                    const UsdPrim& _prim = usdStage->GetPrimAtPath(added->GetTargetNode().GetPath());
 
                     // Verify the prim exists
                     if (!_prim)
                     {
+                        lookup.skipped.push_back({ prim.GetPath(), "inside instance" });
                         continue;
                     }
 
@@ -432,11 +486,18 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
                                 mergePoint,
                                 skipInvisible);
                 }
+                else
+                {
+                    lookup.skipped.push_back({ prim.GetPath(), "inside instance" });
+                }
 
                 // Something instanceable that references something else - prune here.
                 iter.PruneChildren();
                 continue;
             }
+
+            // Discovery does not traverse an instance without references.
+            lookup.skipped.push_back({ prim.GetPath(), "inside instance" });
         }
 
         // If this prim is a point instancer we should not traverse past it, but instead start a new traversal for each
@@ -471,7 +532,8 @@ static void _findMeshes(const UsdStageWeakPtr& usdStage,
                             skipInvisible);
             }
 
-            // Point Instancer that has prototypes - prune here.
+            // Point Instancer that has prototypes - prune here. Meshes below it that are not prototypes are not merged.
+            lookup.skipped.push_back({ prim.GetPath(), "below point instancer" });
             iter.PruneChildren();
             continue;
         }
@@ -798,6 +860,25 @@ MergeBoundaryLookup SpatialClustering::discoverMergeBoundaries(const UsdStageWea
     // Cache instanced prims so we don't merge outside their boundaries.
     std::set<UsdPrim> instancedPrims;
     _findInstancedPrims(stage, instancedPrims);
+
+    // A point instancer's prototypes are boundaries too, so a prototype also reached outside its instancer keeps its
+    // meshes. Overs and classes are scanned as well, since discovery reaches them through instance references.
+    for (const UsdPrim& prim : UsdPrimRange(stage->GetPseudoRoot(), UsdPrimIsActive && UsdPrimIsLoaded))
+    {
+        const UsdGeomPointInstancer pointInstancer(prim);
+        SdfPathVector prototypePaths;
+        if (pointInstancer && pointInstancer.GetPrototypesRel().GetTargets(&prototypePaths))
+        {
+            for (const SdfPath& path : prototypePaths)
+            {
+                const UsdPrim& prototypePrim = stage->GetPrimAtPath(path);
+                if (prototypePrim)
+                {
+                    instancedPrims.insert(prototypePrim);
+                }
+            }
+        }
+    }
 
     // Quickly convert explicit paths to prims, or else use the pseudo root (which is a full traversal).
     // Also check if there are any regexes specified. For any explicit paths, record any that are invisible.

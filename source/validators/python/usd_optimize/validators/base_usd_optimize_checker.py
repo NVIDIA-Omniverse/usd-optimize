@@ -13,6 +13,7 @@ from typing import Any, Callable, ClassVar, Dict, Iterable, List, Mapping, Optio
 from pxr import Usd
 from usd_optimize.core import analysis
 from usd_validation_nvidia import BaseRuleChecker, ParameterType, ValidationEngine
+from usd_validation_nvidia.capabilities import Parameters as _RequirementParameters
 
 try:
     from usd_validation_nvidia import multiprocess_safe
@@ -271,7 +272,8 @@ class BaseUsdOptimizeChecker(BaseRuleChecker):
                 entry = (
                     mapping.get(lookup) if hasattr(mapping, "get") else (mapping[lookup] if lookup in mapping else None)
                 )
-                if entry is None or isinstance(entry, _AssetValidatorParameter):
+                # A requirement's spec value is upstream's generic default; the rule's own default wins over it.
+                if entry is None or isinstance(entry, (_AssetValidatorParameter, _RequirementParameters)):
                     continue
                 assigned = getattr(entry, "assigned_value", None)
                 if assigned is not None:

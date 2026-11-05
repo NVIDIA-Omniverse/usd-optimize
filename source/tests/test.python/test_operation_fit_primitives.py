@@ -274,6 +274,18 @@ class Test_Operation_PrimitiveFit(Test_Operation):
                 defined_count += 1
         self.assertEqual(defined_count, 3)
 
+    async def test_huge_division_counts_are_capped(self):
+        """INT_MAX divisions overflowed OmniMesh's 32-bit face and corner counts and crashed"""
+
+        for argument in [name for name in DEFAULT_ARGS if name.endswith("Divisions")]:
+            stage = self._open_stage("mesh_shapes_textured.usda")
+            args = DEFAULT_ARGS.copy()
+            args["generateMeshes"] = True
+            args[argument] = 2**31 - 1
+            success, _ = self._execute_command(args)
+            self.assertTrue(success, argument)
+            self.assertEqual(len(_get_meshes(stage)), 6, argument)
+
     async def test_primitive_fit_failure_for_hollow_mesh(self):
         """Test primitive fit failure for hollow mesh"""
 

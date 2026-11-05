@@ -117,8 +117,9 @@ TEST_CASE("Operation Logging")
 
     SUBCASE("Test reporting functions")
     {
-        // Get unique temp file name
-        std::string reportPath = _getTempFile("usd-optimize-unit.tests", "");
+        // Get a new, unique temp file
+        std::string reportPath = _getTempFile("usd-optimize-unit.tests");
+        CHECK(std::ifstream(reportPath).good());
 
         auto report = new Report(reportPath);
         REQUIRE(report);
@@ -637,10 +638,9 @@ TEST_CASE("Test Split Meshes")
         REQUIRE(operation);
 
         // Put the same path in twice, to cover skipping already seen prims
-        // Also adds an invalid SdfPath to test nothing fails.
         std::string json = R"(
             {
-                "paths": ["/World", "/World", "!"],
+                "paths": ["/World", "/World"],
                 "method": 0
             }
          )";
@@ -934,6 +934,56 @@ TEST_CASE("Test path expression wildcards")
     // Assert result
     auto prims = _resolveExpressionsToPrims(stage, inputExpressions, meshesOnly, reverse);
     CHECK_EQ(primsToPaths(prims), outputPaths);
+}
+
+
+TEST_CASE("Test unicode path expressions")
+{
+    // Explicit UTF-8 bytes so the literals do not depend on the narrow execution charset.
+    const std::string eAcutePath =
+        "/World/D\xC3\xA9"
+        "faut";
+    const std::string cjkPath = "/World/\xE6\xBC\xA2\xE5\xAD\x97";
+
+    UsdStageRefPtr stage = UsdStage::CreateInMemory();
+    stage->DefinePrim(SdfPath("/World"), TfToken("Xform"));
+    stage->DefinePrim(SdfPath("/World/Defaut"), TfToken("Mesh"));
+    stage->DefinePrim(SdfPath(eAcutePath), TfToken("Mesh"));
+    stage->DefinePrim(SdfPath(cjkPath), TfToken("Mesh"));
+
+    constexpr bool meshesOnly = true;
+    constexpr bool reverse = false;
+
+    std::vector<std::string> inputExpressions;
+    std::vector<std::string> outputPaths;
+
+    SUBCASE("Test ascii control")
+    {
+        inputExpressions = { "/World/Defaut" };
+        outputPaths = { "/World/Defaut" };
+    }
+
+    SUBCASE("Test non-ascii latin-1 prim name")
+    {
+        inputExpressions = { eAcutePath };
+        outputPaths = { eAcutePath };
+    }
+
+    SUBCASE("Test non-ascii cjk prim name")
+    {
+        inputExpressions = { cjkPath };
+        outputPaths = { cjkPath };
+    }
+
+    SUBCASE("Test mixed ascii and non-ascii prim names")
+    {
+        inputExpressions = { "/World/Defaut", eAcutePath };
+        outputPaths = { "/World/Defaut", eAcutePath };
+    }
+
+    const std::vector<UsdPrim>& result = _resolveExpressionsToPrims(stage, inputExpressions, meshesOnly, reverse);
+
+    CHECK_EQ(primsToPaths(result), outputPaths);
 }
 
 

@@ -36,11 +36,8 @@ class Test_Operation_Remove_Attributes(Test_Operation):
 
         success, result = self._execute_command(self.args, context=self.context)
 
-        # Command succeeds
-        self.assertTrue(success)
-
         # Operation should not succeed
-        self.assertFalse(result[0])
+        self.assertFalse(success)
 
     async def test_remove_invalid_attributes(self):
         """Test operation with invalid attributes"""
@@ -48,11 +45,8 @@ class Test_Operation_Remove_Attributes(Test_Operation):
         self.args["attributes"] = ["1234abcd", "#*!"]
         success, result = self._execute_command(self.args, context=self.context)
 
-        # Command succeeds
-        self.assertTrue(success)
-
         # Operation should not succeed
-        self.assertFalse(result[0])
+        self.assertFalse(success)
 
     async def test_remove_no_attributes_found(self):
         """Test operation with valid attributes but no matches"""

@@ -321,8 +321,7 @@ class Test_Operation_BoxClip(Test_Operation):
 
         success, result = self._execute_command(args)
 
-        # The operation should execute successfully.
-        self.assertTrue(success)
+        self.assertFalse(success)
 
         # Parts have been clipped away
         for i, prim in enumerate(mesh_prims):
@@ -347,8 +346,7 @@ class Test_Operation_BoxClip(Test_Operation):
 
         success, result = self._execute_command(args)
 
-        # The operation should execute successfully.
-        self.assertTrue(success)
+        self.assertFalse(success)
 
         expected_clipped_prim_paths = [
             "/World/Cube",

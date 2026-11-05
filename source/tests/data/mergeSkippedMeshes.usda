@@ -1,0 +1,168 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+)
+
+# A mesh or subtree for most reasons merge leaves meshes unmerged. /World/A and /World/B merge, as do the meshes of
+# /World/Lib/Proto and /World/PI/Protos/Proto. Meshes that are skipped before bucketing have no geometry.
+def Xform "World"
+{
+    def Mesh "A"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+    }
+    def Mesh "B"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+    }
+    def Mesh "Odd"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform bool doubleSided = 1
+    }
+    def Mesh "Anim"
+    {
+        double3 xformOp:translate.timeSamples = {
+            0: (0, 0, 0),
+            1: (1, 0, 0),
+        }
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+    }
+    def Mesh "Reset"
+    {
+        uniform token[] xformOpOrder = ["!resetXformStack!"]
+    }
+    def Mesh "Blink"
+    {
+        token visibility.timeSamples = {
+            0: "inherited",
+            1: "invisible",
+        }
+    }
+    def Mesh "Kids"
+    {
+        def Xform "Child"
+        {
+        }
+    }
+
+    def Xform "Solo"
+    {
+        def Mesh "M"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        }
+    }
+
+    def Xform "Hidden"
+    {
+        token visibility = "invisible"
+
+        def Mesh "H"
+        {
+        }
+    }
+
+    def SkelRoot "Skel"
+    {
+        def Mesh "S"
+        {
+        }
+    }
+
+    def Xform "RigidBody" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "M"
+        {
+        }
+    }
+
+    def Xform "Articulation" (
+        prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        def Mesh "M"
+        {
+        }
+    }
+
+    def Camera "Cam"
+    {
+        def Mesh "CamMesh"
+        {
+        }
+    }
+
+    # An instance of another file.
+    def Xform "Inst" (
+        instanceable = true
+        prepend references = @./mergeSkippedMeshesPart.usda@
+    )
+    {
+    }
+
+    # Merged in place, so the instance that references it is not reported.
+    def Xform "Lib"
+    {
+        def Xform "Proto"
+        {
+            def Mesh "P1"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            }
+            def Mesh "P2"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            }
+        }
+    }
+    def Xform "InternalInst" (
+        instanceable = true
+        prepend references = </World/Lib/Proto>
+    )
+    {
+    }
+
+    # Its prototypes merge; its other child is not merged.
+    def PointInstancer "PI"
+    {
+        rel prototypes = </World/PI/Protos/Proto>
+
+        def Mesh "Extra"
+        {
+        }
+
+        def Xform "Protos"
+        {
+            def Xform "Proto"
+            {
+                def Mesh "R1"
+                {
+                    int[] faceVertexCounts = [3]
+                    int[] faceVertexIndices = [0, 1, 2]
+                    point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                }
+                def Mesh "R2"
+                {
+                    int[] faceVertexCounts = [3]
+                    int[] faceVertexIndices = [0, 1, 2]
+                    point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                }
+            }
+        }
+    }
+}

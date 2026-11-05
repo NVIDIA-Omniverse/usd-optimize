@@ -1,6 +1,7 @@
 ---
 name: prebuilt-package
 description: Install and verify a prebuilt Usd Optimize package (no source build, no repo.sh). Use for binary-drop deployments.
+license: Apache-2.0
 allowed-tools: Shell
 metadata:
   author: NVIDIA Corporation
@@ -39,7 +40,7 @@ Companion skills: `build` (build from source instead), `run-validators` / `run-o
 
 | Directory | Contents |
 | --- | --- |
-| `include/` | C++ public headers |
+| `include/` | C++ public headers. Compiling against them also needs OpenUSD, Carbonite, CPython, TBB and pybind11 headers, which the drop does not ship; each install guide's "Compiling against the headers" section lists the versions. `MeshToolsCommon.h` and `OmniOperation.h` are internal to the operation plugins, so don't include them |
 | `lib/` | Compiled core and plugin libraries (Windows: `*.dll` + `*.lib`; Linux: `*.so`) plus `operation_mapping.json` (small deprecated-name alias table for `mapConfig()`, not the operation catalog) |
 | `python/` | `usd_optimize.*` Python bindings |
 | `usdpy/` | OpenUSD Python runtime (`pxr.*`) — the package brings its own USD |
@@ -52,6 +53,7 @@ No Python interpreter is bundled — the consumer supplies one.
 1. **Python version must match the `py_<ver>` token in the package name.** The bundled `pxr` extension modules are compiled against a specific CPython ABI. On Windows a mismatch surfaces at import as `ImportError: Module use of python<XY>.dll conflicts with this version of Python.` **On Linux, importing `pxr` does not catch it** — the drop bundles an exact-match `libpython3.X.so.1.0`, so the loader has nothing to object to and a `pxr` import can *appear* to succeed under the wrong interpreter; you may instead get an `undefined symbol: PyXxx_...` ImportError. Which of the two you hit depends on the interpreter and on which symbols a module touches, so neither outcome is guaranteed and a clean `pxr` import does not mean the interpreter is right. Importing `usd_optimize.core` does check, and raises an `ImportError` naming both ABIs. Running a mismatched interpreter is unsupported and untested; the matching one is the consumer's responsibility. See the OS-specific guide above.
 2. **`PYTHONPATH` must include both `python` and `usdpy`.** Missing `usdpy` produces `ModuleNotFoundError: No module named 'pxr'`.
 3. **The platform's library-search path must include both `lib` and `extraLibs`, set *before the interpreter starts*.** That's `PATH` on Windows and `LD_LIBRARY_PATH` on Linux. The path is consulted at module-load time only — exporting it after the Python process is running has no effect; restart the interpreter.
+4. **Linux: glibc 2.35 or newer.** The Linux drops target glibc 2.35 (for example Ubuntu 22.04) on both x86_64 and aarch64; on an older glibc, loading can fail with `version 'GLIBC_2.XX' not found`.
 
 **Linux — `libpython` comes from the drop, not the interpreter.** Bundled `pxr` needs `libpython3.X.so.1.0`, and `extraLibs/` supplies it; it resolves from there as soon as `extraLibs` is on `LD_LIBRARY_PATH` (prerequisite 3). So a plain interpreter install is enough — no system `libpython` package, no `sudo ldconfig`, no `--enable-shared` rebuild. If you see `cannot open shared object file: libpython3.X.so.1.0`, the cause is a missing or late-exported `LD_LIBRARY_PATH`, not a missing package; see [`docs/install-prebuilt-linux.md`](../../../docs/install-prebuilt-linux.md).
 

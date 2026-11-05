@@ -182,3 +182,27 @@ class Test_Operation_Optimize_Skel_Roots(Test_Operation):
         # Basic test that things roughly worked (tested properly in test_command)
         meshes = [x for x in stage.Traverse() if x.GetTypeName() == "Mesh"]
         self.assertEqual(len(meshes), 13)
+
+    async def test_material_subsets_not_merged(self):
+        """Test that skinned meshes with material subsets are left unmerged instead of split"""
+        skipped = ["MixedMaterialSubsets", "NoFamilyNameSubsets", "SameMaterialSubsets"]
+        cases = [
+            # The plain meshes still merge.
+            ((), skipped + ["merged"], 8),
+            # Nothing merges when every mesh on the skeleton is skipped.
+            (("PlainA", "PlainB"), skipped, 6),
+        ]
+        for inactive, expected_names, expected_faces in cases:
+            with self.subTest(inactive=inactive):
+                stage = self._open_stage("skelRootMaterialSubsets.usda")
+                for name in inactive:
+                    stage.GetPrimAtPath(f"/World/Character/{name}").SetActive(False)
+                _, result = self._execute_command(dict())
+                self.assertTrue(result[0])
+
+                meshes = [UsdGeom.Mesh(x) for x in stage.Traverse() if x.IsA(UsdGeom.Mesh)]
+                self.assertEqual(sorted(x.GetPrim().GetName() for x in meshes), expected_names)
+                self.assertEqual(sum(len(x.GetFaceVertexCountsAttr().Get()) for x in meshes), expected_faces)
+                for mesh in meshes:
+                    indices = UsdSkel.BindingAPI(mesh).GetJointIndicesPrimvar()
+                    self.assertEqual(len(indices.Get()), len(mesh.GetPointsAttr().Get()) * indices.GetElementSize())

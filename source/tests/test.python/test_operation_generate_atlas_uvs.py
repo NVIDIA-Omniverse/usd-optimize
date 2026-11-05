@@ -3,9 +3,9 @@
 #
 
 
-from pxr import Usd, UsdGeom
+from pxr import Gf, Usd, UsdGeom
 
-from .test_utils import Test_Operation
+from .test_utils import Test_Operation, _get_meshes
 
 
 def _tot_st_count(stage):
@@ -123,3 +123,19 @@ class Test_Operation_Atlas_UVs(Test_Operation):
 
         # asserts success of execution
         self.assertTrue(success)
+
+    async def test_non_finite_points(self):
+        """A mesh with a NaN point is skipped instead of crashing the process; the others still get UVs."""
+        stage = self._open_stage("meshNoUVs.usd")
+        good = UsdGeom.Mesh(_get_meshes(stage)[0])
+        bad = UsdGeom.Mesh.Define(stage, "/Bad")
+        bad.CreateFaceVertexCountsAttr(good.GetFaceVertexCountsAttr().Get())
+        bad.CreateFaceVertexIndicesAttr(good.GetFaceVertexIndicesAttr().Get())
+        points = list(good.GetPointsAttr().Get())
+        points[0] = Gf.Vec3f(float("nan"), 0, 0)
+        bad.CreatePointsAttr(points)
+
+        self._execute_json(stage, "generateAtlasUVs.json")
+
+        self.assertTrue(UsdGeom.PrimvarsAPI(good).HasPrimvar("st"))
+        self.assertFalse(UsdGeom.PrimvarsAPI(bad).HasPrimvar("st"))

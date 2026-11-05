@@ -21,16 +21,16 @@ Paths To Process
 
 Optional list of prim paths to consider
 
-    - Name: ``paths``
-    - Type: ``[string]``
-    - Default Value: ``[]``
+- Name: ``paths``
+- Type: ``[string]``
+- Default Value: ``[]``
 
 Identity Only
 ^^^^^^^^^^^^^
 
 Only remove Xforms that do not contribute any transformation values to the hierarchy
 
-    - Name: ``identity``
-    - Type: ``bool``
-    - Default Value: ``False``
+- Name: ``identity``
+- Type: ``bool``
+- Default Value: ``False``
 

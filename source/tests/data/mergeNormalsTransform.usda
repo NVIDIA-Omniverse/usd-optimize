@@ -1,0 +1,26 @@
+#usda 1.0
+
+def Xform "World"
+{
+    def Mesh "BuiltInNormals"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        normal3f[] normals = [(0.70710677, 0.70710677, 0), (0.70710677, 0.70710677, 0), (0.70710677, 0.70710677, 0)] (
+            interpolation = "vertex"
+        )
+        point3f[] points = [(0, 0, 0), (0, 0, 1), (1, -1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "PrimvarNormals"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 2), (0, 0, 3), (1, -1, 2)]
+        normal3f[] primvars:normals = [(0.70710677, 0.70710677, 0), (0.70710677, 0.70710677, 0), (0.70710677, 0.70710677, 0)] (
+            interpolation = "vertex"
+        )
+        uniform token subdivisionScheme = "none"
+    }
+}

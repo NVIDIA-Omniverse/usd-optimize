@@ -1,6 +1,7 @@
 ---
 name: compare-stages
 description: Diff two USD stages by prim/mesh/vertex/material count, file size, and validator summary. Use for before/after optimization comparisons.
+license: Apache-2.0
 allowed-tools: Shell, Read
 metadata:
   author: NVIDIA Corporation

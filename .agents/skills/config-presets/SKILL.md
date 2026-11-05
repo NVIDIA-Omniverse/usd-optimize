@@ -1,6 +1,7 @@
 ---
 name: config-presets
 description: Choose and run a ready-made preset operation stack from config_presets/. Use when you want a known-good starting point for a common optimization goal rather than assembling a custom config.
+license: Apache-2.0
 allowed-tools: Shell, Read
 metadata:
   author: NVIDIA Corporation

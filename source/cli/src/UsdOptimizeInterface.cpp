@@ -14,11 +14,13 @@
 
 // USD
 #include <pxr/base/js/utils.h>
+#include <pxr/base/tf/stringUtils.h>
 #include <pxr/usd/usd/primRange.h>
 #include <pxr/usd/usdUtils/stageCache.h>
 
 // C++
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -54,6 +56,23 @@ static JsArray transformValue(const std::string& value, F&& func)
 }
 
 
+// Accept the spelling that `usdOptimize -h` prints (true/false, in any case) as well as 1 and 0.
+static bool parseBool(const std::string& arg, const std::string& value)
+{
+    const std::string lowerValue = TfStringToLower(value);
+    if (lowerValue == "true" || lowerValue == "false")
+    {
+        return lowerValue == "true";
+    }
+
+    if (value == "1" || value == "0")
+    {
+        return value == "1";
+    }
+    throw std::invalid_argument(arg + " takes true, false, 1 or 0, not \"" + value + "\"");
+}
+
+
 static void setArg(const Argument* argument, JsObject& command, const std::string& arg, const std::string& value)
 {
     // Get the default value from the argument definition.
@@ -66,7 +85,7 @@ static void setArg(const Argument* argument, JsObject& command, const std::strin
     }
     else if (defaultValue.IsBool())
     {
-        command[arg] = JsValue(static_cast<bool>(std::stoi(value)));
+        command[arg] = JsValue(parseBool(arg, value));
     }
     else if (defaultValue.IsInt())
     {
@@ -158,11 +177,10 @@ void parseArgs(int argc, char** argv, Args& args)
 
             // As a (small) convenience allow adding a "true" bool argument by just specifying
             // the argument with no value
-            if (parts.size() == 1 && argument->getIsBool())
+            if (value.find('=') == std::string::npos && argument->getIsBool())
             {
                 // No try/catch here - it is a valid argument, it is a bool, and we're just
-                // setting it to true. If you need to set to false, then you need to use the
-                // regular arg=0 syntax.
+                // setting it to true. To set it to false, use arg=false (or arg=0).
                 setArg(argument, command, parts[0], "1");
                 continue;
             }

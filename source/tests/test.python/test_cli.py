@@ -18,7 +18,7 @@ import subprocess
 import tempfile
 import unittest
 
-from pxr import Usd
+from pxr import Usd, UsdGeom
 
 from .test_utils import _get_test_data_file_path
 
@@ -243,6 +243,47 @@ class Test_Cli(unittest.TestCase):
         # Coerced to an int, not the string "12345".
         self.assertEqual(commands[0]["high"], 12345)
 
+    def test_bool_argument_values(self):
+        """Bool arguments take the ``true``/``false`` that ``-h`` prints, in any case, as well as 1 and 0.
+
+        NVBug 6429822: ``true`` and ``false`` used to abort with an internal ``stoi`` error.
+        """
+        import json
+
+        cases = [("true", True), ("false", False), ("True", True), ("FALSE", False), ("1", True), ("0", False)]
+        for value, expected in cases:
+            with self.subTest(value=value):
+                out = self._tmp_path(f"bool_{value}.json")
+                result = self._run(
+                    "-o", "deduplicateGeometry", "-a", f"considerDeepTransforms={value}", "-j", out, self._stage_path()
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
+                with open(out) as f:
+                    self.assertIs(json.load(f)[0]["considerDeepTransforms"], expected)
+
+    def test_invalid_bool_argument_value(self):
+        """A value that is not a boolean is rejected by argument name, not with an internal ``stoi`` error."""
+        for value in ("maybe", "1maybe", "2"):
+            with self.subTest(value=value):
+                result = self._run(
+                    "-o", "deduplicateGeometry", "-a", f"considerDeepTransforms={value}", self._stage_path()
+                )
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("considerDeepTransforms takes true, false, 1 or 0", result.stderr)
+                self.assertNotIn("stoi", result.stderr)
+
+        # An empty value is not the bare-name shortcut for true.
+        result = self._run("-o", "deduplicateGeometry", "-a", "considerDeepTransforms=", self._stage_path())
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("invalid argument value specified: considerDeepTransforms=", result.stderr)
+
+    def test_invalid_paths_expression(self):
+        """A ``paths`` value that isn't a path expression fails the run instead of writing an unchanged stage."""
+        out = self._tmp_path("invalid_paths.usda")
+        result = self._run("-o", "computeExtents", "-a", 'paths=["/World"]', "-w", out, self._stage_path())
+        self.assertEqual(result.returncode, 1)
+        self.assertFalse(os.path.exists(out))
+
     def test_write_output_stage(self):
         """``-w`` exports a usable output stage."""
         out = self._tmp_path("out.usda")
@@ -253,3 +294,19 @@ class Test_Cli(unittest.TestCase):
         # The exported file must be a valid, openable USD stage.
         stage = Usd.Stage.Open(out)
         self.assertIsNotNone(stage)
+
+    def test_find_occluded_meshes_falls_back_to_cpu(self):
+        """``findOccludedMeshes`` reruns on the CPU when the GPU check fails.
+
+        With PTX JIT off, the GPU check fails on any GPU but Turing (mesh_tools ships Turing code only).
+        """
+        out = self._tmp_path("out.usda")
+        env = dict(os.environ, CUDA_DISABLE_PTX_JIT="1", CUDA_CACHE_DISABLE="1")
+        args = ["-o", "findOccludedMeshes", "-a", "useGpu=1", "-a", "minimumGapSize=4", "-w", out]
+        result = subprocess.run(
+            [_CLI, *args, self._stage_path("hiddenMesh.usda")], env=env, capture_output=True, text=True
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        stage = Usd.Stage.Open(out)
+        prim = stage.GetPrimAtPath("/root/hidden/hidden")
+        self.assertEqual(UsdGeom.Imageable(prim).ComputeVisibility(), UsdGeom.Tokens.invisible)

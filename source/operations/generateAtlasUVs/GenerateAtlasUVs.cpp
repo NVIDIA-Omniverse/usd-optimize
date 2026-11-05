@@ -8,6 +8,7 @@
 #include <usd_optimize/core/Core.h>
 #include <usd_optimize/core/ResolveSdfPaths.h>
 #include <usd_optimize/core/Utils.h>
+#include <usd_optimize/core/geometry/MeshValidation.h>
 
 // AutoUV (minimal API — Eigen-free headers)
 #include <array>
@@ -88,6 +89,12 @@ static bool computeUVs(const UsdGeomMesh& mesh,
     {
         // USD mesh is empty, nothing to do
         error = "Empty mesh";
+        return false;
+    }
+
+    // autouv crashes or hangs on NaN/Inf points.
+    if (!validateMeshTopology(points, faceVertexCounts, faceVertexIndices, &error))
+    {
         return false;
     }
 

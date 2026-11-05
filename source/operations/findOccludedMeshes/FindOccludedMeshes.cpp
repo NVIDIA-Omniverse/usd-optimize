@@ -110,8 +110,9 @@ How it works
 
 The scene is rasterized into a voxel grid and visibility is flood-filled from the exterior. A mesh is
 considered occluded when no exterior path reaches it. The check runs on GPU when ``useGpu`` is enabled
-(falling back to CPU if CUDA is unavailable) and on CPU otherwise; the GPU path is generally faster on
-large scenes.
+(the default; it falls back to CPU if CUDA is unavailable or the GPU check fails) and on CPU otherwise. Leave
+it on: same meshes, much faster. Out of GPU memory, the CPU rerun is much slower; lower
+``maximumGridResolution`` to stay on the GPU.
 
 Tuning
 ------
@@ -124,13 +125,16 @@ Tuning
   an enclosure must be (e.g. 3.5 means ignore any opening smaller than 3.5 stage units). Scale it with
   ``metersPerUnit``.
 - ``clustered`` splits the stage into clusters of meshes with overlapping bounds and checks each cluster
-  separately, improving both accuracy and performance.
+  separately, improving both accuracy and performance. Clustering runs on the CPU and its cost grows faster
+  than the mesh count, so on scenes with thousands of meshes pass one sub-assembly's meshes at a time in
+  ``paths`` (mesh paths; a parent prim does not expand). Only meshes in ``paths`` occlude, so keep each mesh's
+  enclosure in the same selection. Turning ``clustered`` off is fast but misses most occluded meshes.
 - ``checkTransparency`` excludes meshes with opacity < 1.0 from occlusion testing.
 
 Starting configurations
 -----------------------
 
-Standard analysis (defaults):
+Standard analysis:
 
 .. code-block:: json
 
@@ -227,7 +231,7 @@ OperationResult FindOccludedMeshesOperation::executeImpl()
         return { true };
     }
 
-    bool OK = true;
+    bool OK = false;
 
     VisCheckerParams params;
     params.clustered = m_clustered;
@@ -262,8 +266,12 @@ OperationResult FindOccludedMeshesOperation::executeImpl()
     {
         VisCheckerGPU visChecker;
         OK = visChecker.check(*stage, params);
+        if (!OK)
+        {
+            USD_OPTIMIZE_LOG_WARN("GPU check failed. Falling back to CPU.");
+        }
     }
-    else
+    if (!OK)
     {
         VisCheckerCPU visChecker;
         OK = visChecker.check(*stage, params);

@@ -3,13 +3,16 @@ Operations
 ==========
 
 The following is the catalog of optimization operations provided by Usd Optimize.
-Each operation is identified by a string **key** (shown with each entry) and
+Each operation is identified by a string **key** (shown on each operation's page) and
 declares a set of typed arguments that are supplied as a JSON object / Python
 dictionary.
 
 For almost every operation, a ``paths`` (or ``meshPrimPaths`` / ``primPaths``)
 argument selects which prims to process. **If left empty, the whole stage is
-processed.** Path expressions are supported.
+processed.** Path expressions are supported. Prim paths with non-ASCII
+characters, such as ``/World/Défaut``, work only when every entry is a plain
+prim path: a pattern such as ``/World/Dé*``, or a non-ASCII path listed with
+any pattern, selects nothing.
 
 .. Caution:: Operations work against the current set of selected variants. To
    optimize multiple variants, apply optimizations to each variant
@@ -37,6 +40,7 @@ processed.** Path expressions are supported.
     Box Clip <operations/boxClip>
     Compute Extents <operations/computeExtents>
     Compute Pivot <operations/pivot>
+    Conform Meshes <operations/conformMeshes>
     Count Vertices <operations/countVertices>
     Decimate Meshes <operations/decimateMeshes>
     Deduplicate Geometry <operations/deduplicateGeometry>
@@ -55,6 +59,7 @@ processed.** Path expressions are supported.
     Generate Projection UVs <operations/generateProjectionUVs>
     Generate Scene <operations/generateScene>
     Manifold Meshes <operations/manifoldMeshes>
+    Merge Physics Body Meshes <operations/mergePhysicsBodyMeshes>
     Merge Static Meshes <operations/merge>
     Merge Vertices <operations/mergeVertices>
     Mesh Cleanup <operations/meshCleanup>
@@ -92,7 +97,8 @@ processed.** Path expressions are supported.
     :doc:`Auto UV Unwrap<operations/generateAtlasUVs>`                       Generate *texture coordinates* for meshes using unwrap methods with low distortion.
     :doc:`Box Clip<operations/boxClip>`                                      Clips mesh prims to the provided world-space axis-aligned bounding-box.
     :doc:`Compute Extents<operations/computeExtents>`                        Compute and author the ``extent`` property for meshes.
-    :doc:`Compute Pivot<operations/pivot>`                                   Center mesh at centroid in canonical orientation.
+    :doc:`Compute Pivot<operations/pivot>`                                   Center the pivot of each mesh.
+    :doc:`Conform Meshes<operations/conformMeshes>`                          Make meshes compatible with each other so that merge can combine them.
     :doc:`Count Vertices<operations/countVertices>`                          Create a report of prims with excessive vertex counts.
     :doc:`Decimate Meshes<operations/decimateMeshes>`                        Reduce tessellation density for mesh prims.
     :doc:`Deduplicate Geometry<operations/deduplicateGeometry>`              Convert identical meshes into instances.
@@ -111,6 +117,7 @@ processed.** Path expressions are supported.
     :doc:`Generate Projection UVs<operations/generateProjectionUVs>`         Generate *texture coordinates* for meshes using various projection methods.
     :doc:`Generate Scene<operations/generateScene>`                          Generates a USD stage to use for benchmarking and testing using reference prims from the incoming stage.
     :doc:`Manifold Meshes<operations/manifoldMeshes>`                        Makes mesh Manifold.
+    :doc:`Merge Physics Body Meshes<operations/mergePhysicsBodyMeshes>`      Prepare and merge visual and collision meshes within each rigid body while preserving articulation. Analysis discovers candidate geometry and output scopes.
     :doc:`Merge Static Meshes<operations/merge>`                             Merge individual meshes.
     :doc:`Merge Vertices<operations/mergeVertices>`                          This operation merges vertices that are closer to one another than a given tolerance, followed by removing any degenerate faces and optionally making the resulting mesh be manifold and/or removing any isolated vertices.
     :doc:`Mesh Cleanup<operations/meshCleanup>`                              Applies various cleanups to meshes.
@@ -120,7 +127,7 @@ processed.** Path expressions are supported.
     :doc:`Optimize Skeleton Roots<operations/optimizeSkelRoots>`             Merge all meshes for meshes attached to a skeleton. This can greatly improve character playback speed by optimizing scenes for GPU skinning computation.
     :doc:`Optimize Time Samples<operations/optimizeTimeSamples>`             Remove redundant time-samples from attributes in a stage.
     :doc:`Organize Prototypes<operations/organizePrototypes>`                Reparent internal scene-graph instance prototypes under a user-specified namespace.
-    :doc:`Primitives to Meshes<operations/primitivesToMeshes>`               Replace gprim types sphere, cylinder, cone, or cube in a stage with a mesh approximation.
+    :doc:`Primitives to Meshes<operations/primitivesToMeshes>`               Replace gprim types sphere, cylinder, capsule, cone, or cube with a mesh approximation.
     :doc:`Prune Leaves<operations/pruneLeaves>`                              Prune unnecessary leaf grouping prims (``Scope``, ``Xform``) from a stage.
     :doc:`Python Script [Python only]<operations/pythonScript>`              Execute a user defined python script with access to the current USD stage.
     :doc:`RTX Mesh Count<operations/rtxMeshCount>`                           Analysis operation for counting the number of RTX Meshes in the stage and how many are unique.

@@ -1,5 +1,116 @@
 # Changelog
 
+## [1.4.0] - 2026-11-05
+### Added
+- `docs/gpu-acceleration.rst`: which operations and validator rules to run on the GPU, and the
+  caveats.
+- `conformMeshes` operation: run before `merge`, it makes meshes that `merge` would group together
+  compatible, so `merge` combines them. It generates UVs that some meshes lack, and normals unless the meshes are
+  subdivision surfaces, renames `st`/`st0` UV sets to a common name, adds primvars that only some meshes have (with a
+  caller-supplied or neutral default), and sets `doubleSided` to true where it differs. It groups meshes as `merge`
+  does, so a mesh is never changed to match one `merge` keeps apart for another reason, and it logs every change and
+  every difference it cannot reconcile.
+- `merge`: logs where it left meshes unmerged and why, such as a time-sampled transform, an
+  invisible parent or an instance. Meshes skipped together are logged once under their common
+  prim. These lines go to the report and, with the verbose flag, the console; one INFO line says
+  how many there are.
+- `mergePhysicsBodyMeshes` operation: merges compatible visual meshes within each rigid body,
+  keeping body, joint and articulation frames. Collision shapes are kept; `mergeColliders` merges compatible
+  mesh colliders and combines their explicit mass properties. Instances are left unchanged unless `instanceMode`
+  makes selected ones local. It can generate missing normals and UVs, fill missing primvars and reconcile
+  `doubleSided` first, and it reports each mesh it leaves unmerged and why.
+- `primitivesToMeshes` converts capsules as well, unless the new `convertCapsules` argument is off;
+  `capsuleRadialDivisions`, `capsuleLengthDivisions` and `capsuleCapDivisions` set their mesh detail.
+
+### Changed
+- Linux release packages: `libmesh_tools_lib.so` is stripped, saving 27 MB.
+- Release packages: the bundled Python library (`python312.dll`, `libpython3.12.so.1.0`) moves from 3.12.12 to
+  3.12.16 for its security fixes.
+- `decimateMeshes` documentation: new "Output mesh structure" section covering the steps every
+  targeted mesh goes through and their effect on vertex and face counts.
+- `findOccludedMeshes`: when the GPU check fails, for example out of GPU memory or on a GPU its
+  kernels were not built for, it reruns on the CPU instead of failing.
+- Performance validators: a rule's own parameter defaults now apply over usd-validation-nvidia's
+  requirement defaults (`--parameter` still overrides both). `OccludedMeshesChecker` therefore runs on
+  the GPU by default and uses `CHECK_TRANSPARENCY=True` as documented, so meshes behind transparent
+  geometry are no longer reported as occluded.
+- `shrinkwrap`: `Temporal Combined` uses the stage's time range unless the new `useStageTimeRange` is off, replacing
+  the NaN time defaults that hid Shrinkwrap's arguments in UIs. Configs that set `startTime` or `endTime` must turn
+  it off and give both.
+- `printStats` collects stats at `UsdTimeCode::Default` unless the new `useDefaultTime` is off, replacing the
+  NaN `time` default. Configs that set `time` must turn it off.
+- Move `omnimesh_ops_usd` to `1.2.0-r1` for USD 26.08 and 25.11.
+
+### Removed
+- USD 25.05 builds and drops, and the `TbbCompat.h` header that existed only for them. Build against
+  USD 25.11 or 26.08.
+
+### Fixed
+- Reports written without a `reportPath` go to a new temporary file created by `ArchMakeTmpFile`.
+- Mesh merging transforms `point3f[]`, `vector3f[]` and `normal3f[]` primvars into the merged frame, not just `normals`.
+- `optimizeSkelRoots`: skinned meshes with material GeomSubsets are now left unmerged,
+  with a warning. Merging split them by material, which dropped faces and wrote
+  joint influence arrays that OpenUSD cannot skin, while still reporting success.
+- `merge` no longer drops faces when several of a mesh's material subsets, or a subset and the rest of the mesh,
+  share a material.
+- `merge` and `split`: skip prims with `PhysicsRigidBodyAPI` or `PhysicsArticulationRootAPI`
+  and their descendants during mesh discovery. Explicitly selecting a descendant allows processing
+  below that point; nested physics body roots are still skipped.
+- `decimateMeshes` documentation: two "Choosing a stop condition" headings showed literal double
+  backticks, because RST does not render literals inside bold text. Reworded so the literals sit outside
+  the bold.
+- `shrinkwrap`: `Per Mesh` outputs now copy their source's xform ops, pivot included.
+  They were baked into the parent's space with no ops, which left the pivot at the parent's origin.
+  Under a zero-scale parent the output now resets the xform stack instead of getting infinite points.
+- `merge`: "Merged N meshes" counts only the meshes that were merged, not every mesh considered.
+- `optimizeMaterials` deduplication rebinds purpose-specific bindings, such as `material:binding:physics`,
+  and collection bindings to the material it keeps. It rebound only the all-purpose binding, so the others
+  still targeted the duplicate it removed, and physics materials were silently lost.
+- `optimizeMaterials` Convert to color, Remove unbound and Deduplicate with primvars no longer delete a material
+  that a purpose-specific binding, such as `material:binding:physics`, or a collection binding still targets. The
+  binding was left dangling, and Remove unbound deleted every material that was bound only for physics.
+- `primitivesToMeshes` and `fitPrimitives` cap their division arguments at 1000.
+- `primitivesToMeshes` converts primitives defined in a sublayer. They kept their Cube, Sphere, Cylinder or Cone
+  type, although the log reported them as replaced.
+- `primitivesToMeshes` no longer leaves the meshes it creates without an extent. It blocked the
+  extent, which also hid the prototype's, so every converted primitive added one `ExtentsChecker`
+  failure in `usd-validation-nvidia`.
+- `generateNormals` and `computeExtents` process meshes below an `over` or `class` prim, such as the prototypes
+  instances reference, instead of skipping them. A mesh that is itself an `over` is still skipped.
+- `pruneLeaves` keeps empty `Xform` and `Scope` prims that a relationship targets, such as an OmniGraph node's
+  `inputs:targetPrims`, along with any leaf that contains one. Deleting them left the relationship dangling.
+  Turning off the new `preserveRelationshipTargets` argument prunes them anyway.
+- `generateAtlasUVs` skips meshes with NaN or infinite points, which crashed or hung it. USD 25.11 builds
+  now use the autouv-core that 26.08 builds already had, so Windows debug builds no longer abort in it.
+- `merge`: selecting an instance whose reference targets a prim in another file no longer merges an unrelated
+  prim at the same path on the current stage.
+- `merge`: merging the whole stage no longer copies a prototype's meshes once per instance into its merged
+  mesh, when the instances use `add references`.
+- `merge`: a point instancer's prototype outside the instancer is merged once, inside the prototype, and a prototype
+  that is a single mesh stays where it is. It was merged twice, or into the stage's merged mesh, which left the
+  instancer with nothing to draw.
+- `merge` and `conformMeshes` no longer crash at the Original Prim merge point when a point instancer's
+  prototype is a mesh.
+- `merge`: normals of meshes with a non-uniform scale or shear are transformed correctly into the merged mesh.
+  Only the rotation was applied to them, so they were no longer perpendicular to the surface.
+- Prebuilt drops: the install guides now list the third-party headers that the C++ headers need
+  (OpenUSD, Carbonite, CPython, TBB and pybind11), and `JsonUtils.h` includes the OpenUSD
+  header that declares `JsWriteToString`, so it also compiles on its own under GCC.
+- Docs: Linux needs glibc 2.35 or newer, and building the Linux wheel needs a glibc 2.35 host.
+- Operations given explicit prim paths containing non-ASCII characters, such as `/World/Défaut`, no
+  longer silently do nothing: literal prim paths are no longer run through `SdfPathExpression`'s
+  ASCII-only text grammar, so they resolve the same as ASCII ones.
+- Operations fail without running when a path argument, such as `paths`, is not a valid path or path expression,
+  instead of reporting success.
+- `usdOptimize -a`: bool arguments take `true` and `false` in any case, as well as `1` and `0`, and reject
+  any other value. `true` and `false` used to fail with "failed to set argument: stoi".
+- `THIRD_PARTY_NOTICES.md` lists the third-party code the drops ship inside other packages: the CPython
+  runtime library, with bzip2, liblzma and zlib built into the Linux one and HACL* into the Windows one,
+  and in the 25.11 drops OpenUSD's Alembic, Imath, OpenSubdiv and zlib and oneTBB's hwloc. It said CPython
+  is not redistributed.
+- `editStageMetrics` no longer crashes or fails when changing the up axis of a stage with a blocked attribute value,
+  such as `normals = None`.
+
 ## [1.3.1] - 2026-10-07
 ### Changed
 - Move `omnimesh_ops_usd` to `1.1.0-r7` for USD 26.08 and 25.11, shrinking the drops and the

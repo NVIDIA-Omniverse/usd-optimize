@@ -26,7 +26,7 @@ set "PATH=%BUILD_DIR%\bin;%BUILD_DIR%\lib;%BUILD_DIR%\extraLibs;%USD_DIR%\bin;%U
 set "PYTHONPATH=%BUILD_DIR%\python;%USD_DIR%\lib\python;%PYTHONPATH%"
 
 rem pip enforces the floor; a presence check would skip an older install.
-"%PYTHON%" -m pip install --quiet --disable-pip-version-check "usd-validation-nvidia>=1.22.0,<2"
+"%PYTHON%" -m pip install --quiet --disable-pip-version-check --break-system-packages "usd-validation-nvidia>=1.22.0,<2"
 rem Exit 2 = nothing was validated, matching validators.py's guards; 1 means "issues found".
 if errorlevel 1 (
     echo usd-validation-nvidia install failed -- nothing was validated. Set HTTPS_PROXY if behind a proxy. 1>&2

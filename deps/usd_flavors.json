@@ -2,12 +2,6 @@
     "flavors": [
         {
             "usd_flavor": "usd",
-            "usd_ver": "25.05",
-            "python_ver": "3.12",
-            "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64"]
-        },
-        {
-            "usd_flavor": "usd",
             "usd_ver": "25.11",
             "python_ver": "3.12",
             "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64"]

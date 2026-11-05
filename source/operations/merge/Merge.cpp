@@ -11,6 +11,13 @@
 // Carbonite
 #include <carb/profiler/Profile.h>
 
+// USD
+#include <pxr/usd/usd/primCompositionQuery.h>
+#include <pxr/usd/usd/primRange.h>
+
+// C++
+#include <set>
+
 PXR_NAMESPACE_USING_DIRECTIVE
 
 USD_OPTIMIZE_PLUGIN_INIT(usd_optimize::MergeOperation);
@@ -31,6 +38,110 @@ TF_DEFINE_PRIVATE_TOKENS(
 
 /// Constants
 constexpr const char* s_categoryMerge = "MERGE";
+
+
+// Check whether a mesh below a prim, including inside instances, was left out, ignoring the prims in \p excluded and
+// the meshes below them.
+static bool _hasMeshLeftOut(const UsdPrim& prim, const std::set<SdfPath>& excluded)
+{
+    UsdPrimRange range(prim, UsdTraverseInstanceProxies(UsdPrimIsActive && UsdPrimIsLoaded));
+    for (auto iter = range.begin(); iter != range.end(); ++iter)
+    {
+        if (*iter != prim && excluded.count(iter->GetPath()))
+        {
+            iter.PruneChildren();
+            continue;
+        }
+        if (iter->IsA<UsdGeomMesh>())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+// Check whether discovery reached an instance's meshes where they are defined: the instance's only arcs are references
+// to prims on this stage, and discovery found or skipped a prim below each of them. \p excluded holds those prims.
+static bool _sourcesReached(const UsdPrim& instance, const std::set<SdfPath>& excluded)
+{
+    // Other arcs on the instance can add meshes that are not below any reference.
+    if (instance.HasAuthoredPayloads() || instance.HasAuthoredInherits() || instance.HasAuthoredSpecializes() ||
+        instance.HasVariantSets())
+    {
+        return false;
+    }
+    // As in discovery: a reference authored in another file targets a prim in that file, even with no asset path.
+    const auto arcs = UsdPrimCompositionQuery::GetDirectReferences(instance).GetCompositionArcs();
+    for (const UsdPrimCompositionQueryArc& arc : arcs)
+    {
+        const SdfPath target = arc.GetTargetNode().GetPath();
+        auto findIt = excluded.lower_bound(target);
+        if (arc.GetTargetNode().GetLayerStack() != instance.GetPrimIndex().GetRootNode().GetLayerStack() ||
+            findIt == excluded.end() || !findIt->HasPrefix(target))
+        {
+            return false;
+        }
+    }
+    return !arcs.empty();
+}
+
+
+// Log each prim merge left out, and why. The lines are verbose: they go to the report and, with the verbose flag, to
+// the console. One INFO line says how many there are. \p merged holds the source paths of the meshes that merged.
+static void _logSkippedMeshes(const UsdStageWeakPtr& stage,
+                              const MergeBoundaryLookup& lookup,
+                              const std::vector<VirtualMesh>& output,
+                              const std::set<SdfPath>& merged)
+{
+    std::vector<SkippedPrim> skipped = lookup.skipped;
+
+    // Meshes accounted for on their own, such as a point instancer's prototypes, do not make a skipped prim worth
+    // logging: those merge wrote, those discovery found, and those skipped for their own reason.
+    std::set<SdfPath> excluded;
+    for (const VirtualMesh& mesh : output)
+    {
+        excluded.insert(mesh.getDestinationPath());
+    }
+
+    // Meshes that discovery found but that did not merge with another mesh are skipped too.
+    for (const auto& [boundary, prims] : lookup.parentToPrims)
+    {
+        for (const UsdPrim& prim : prims)
+        {
+            excluded.insert(prim.GetPath());
+            if (!merged.count(prim.GetPath()))
+            {
+                skipped.push_back({ prim.GetPath(),
+                                    prims.size() == 1 ? "only mesh in its merge boundary" :
+                                                        "no matching mesh in its merge boundary" });
+            }
+        }
+    }
+    for (const SkippedPrim& prim : lookup.skipped)
+    {
+        excluded.insert(prim.path);
+    }
+
+    std::set<SdfPath> logged;
+    for (const auto& [path, reason] : skipped)
+    {
+        const UsdPrim prim = stage->GetPrimAtPath(path);
+        if (!prim || logged.count(path) || (prim.IsInstance() && _sourcesReached(prim, excluded)) ||
+            !_hasMeshLeftOut(prim, excluded))
+        {
+            continue;
+        }
+        logged.insert(path);
+        USD_OPTIMIZE_LOG_VERBOSE("Not merged (%s): %s", reason.c_str(), path.GetAsString().c_str());
+    }
+    if (!logged.empty())
+    {
+        USD_OPTIMIZE_LOG_INFO("Left meshes unmerged at %s prim%s; generate a report or use verbose logging to see why",
+                              std::to_string(logged.size()).c_str(),
+                              logged.size() == 1 ? "" : "s");
+    }
+}
 
 
 MergeOperation::MergeOperation()
@@ -83,6 +194,14 @@ edge used by exactly one face). Connectivity is transitive, so a chain of
 abutting meshes collapses into one, while meshes that share no seam are left
 untouched. This targets bad CAD output where a single part is exported as
 several abutting pieces, such as a washer split into two half-rings.
+
+Meshes left unmerged
+--------------------
+
+Merge says how many prims it left meshes unmerged at. Generate a report, or
+enable verbose logging, to see each one and why, for example
+``Not merged (time-sampled transform): /World/Anim``. Meshes skipped together,
+such as those below an invisible prim, are listed once under that prim.
 
 Recommended pipelines
 ---------------------
@@ -193,12 +312,24 @@ OperationResult MergeOperation::executeImpl()
         }
     }
 
+    // Count the meshes that merged, by source path: a mesh with material subsets is a child once per subset.
+    std::set<SdfPath> merged;
+    for (const VirtualMesh& mesh : m_clustering.getOutput())
+    {
+        for (const VirtualMesh& child : mesh.getSupersetChildren())
+        {
+            merged.insert(child.getSourcePath());
+        }
+    }
+
     const auto plural = [](size_t count) { return count == 1 ? "" : "es"; };
     USD_OPTIMIZE_LOG_INFO("Merged %s mesh%s into %s mesh%s",
-                          std::to_string(virtualMeshes.size()).c_str(),
-                          plural(virtualMeshes.size()),
+                          std::to_string(merged.size()).c_str(),
+                          plural(merged.size()),
                           std::to_string(mergedPrims.size()).c_str(),
                           plural(mergedPrims.size()));
+
+    _logSkippedMeshes(getUsdStage(), meshLookup, m_clustering.getOutput(), merged);
 
     // Create result
     OperationResult result{ true, nullptr, nullptr };

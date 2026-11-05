@@ -412,7 +412,7 @@ constexpr const char* s_category = "PIVOT";
 
 
 PivotOperation::PivotOperation()
-    : Operation("pivot", "Compute Pivot", "Center mesh at centroid in canonical orientation.")
+    : Operation("pivot", "Compute Pivot", "Center the pivot of each mesh.")
 {
 
     addArgument("meshPrimPaths",
@@ -438,8 +438,8 @@ PivotOperation::PivotOperation()
 
 std::string PivotOperation::getDocumentation() const
 {
-    return "Compute Pivot will place the parent transform at the center of the "
-           "bounding box of the target mesh, think of this as creating a "
+    return "Compute Pivot will place the pivot at the center of the target "
+           "mesh, think of this as creating a "
            "center pivot in other DCC tools.\nThis makes it easier to interact "
            "with objects in the scene because the transform manipulator is "
            "centered on the object.\n\nSome tools generate scenes where the "

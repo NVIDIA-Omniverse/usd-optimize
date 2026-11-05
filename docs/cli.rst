@@ -51,16 +51,17 @@ CLI usage is as follows:
       -w [ --write ] filename             The output stage to write
 
     Available Operations:
-    boxClip                  computeExtents            countVertices          decimateMeshes
-    deduplicateGeometry      deduplicateHierarchies    deletePrims            diceMeshes
-    editStageMetrics         findCoincidingGeometry    findFlatHierarchies    findOccludedMeshes
-    findOverlappingMeshes    fitPrimitives             flattenHierarchy       generateAtlasUVs
-    generateNormals          generateProjectionUVs     generateScene          manifoldMeshes
-    merge                    mergeVertices             meshCleanup            optimizeMaterials
-    optimizePrimvars         optimizeSkelRoots         optimizeTimeSamples    organizePrototypes
-    pivot                    primitivesToMeshes        printStats             pruneLeaves
-    remeshMeshes             removeAttributes          removePrims            removeSmallGeometry
-    removeUnusedUVs          rtxMeshCount              shrinkwrap             sparseMeshes
-    splitMeshes              subdivideMeshes           triangulateMeshes      utilityFunction
+    boxClip                computeExtents           conformMeshes             countVertices
+    decimateMeshes         deduplicateGeometry      deduplicateHierarchies    deletePrims
+    diceMeshes             editStageMetrics         findCoincidingGeometry    findFlatHierarchies
+    findOccludedMeshes     findOverlappingMeshes    fitPrimitives             flattenHierarchy
+    generateAtlasUVs       generateNormals          generateProjectionUVs     generateScene
+    manifoldMeshes         merge                    mergePhysicsBodyMeshes    mergeVertices
+    meshCleanup            optimizeMaterials        optimizePrimvars          optimizeSkelRoots
+    optimizeTimeSamples    organizePrototypes       pivot                     primitivesToMeshes
+    printStats             pruneLeaves              remeshMeshes              removeAttributes
+    removePrims            removeSmallGeometry      removeUnusedUVs           rtxMeshCount
+    shrinkwrap             sparseMeshes             splitMeshes               subdivideMeshes
+    triangulateMeshes      utilityFunction
 
 .. GENERATED_DOCS_END

@@ -207,28 +207,32 @@ PrimitiveFitOperation::PrimitiveFitOperation()
                          kDisplayTypeInt,
                          "The number of longitudinal divisions in which to divide spheres.  Must be at least 3.",
                          m_meshParameters.sphereParameters.n_radial)
-                 .setMin(3),
+                 .setMin(3)
+                 .setMax(s_maxPrimitiveDivisions),
 
              addArgument("sphereLatitudeDivisions",
                          "Sphere latitude divisions",
                          kDisplayTypeInt,
                          "The number of latitudinal divisions in which to divide spheres.  Must be at least 2.",
                          m_meshParameters.sphereParameters.n_axial)
-                 .setMin(2),
+                 .setMin(2)
+                 .setMax(s_maxPrimitiveDivisions),
 
              addArgument("cylinderWallDivisions",
                          "Cylinder wall divisions",
                          kDisplayTypeInt,
                          "The number of divisions to make around the cylinder wall.  Must be at least 3.",
                          m_meshParameters.cylinderParameters.n_radial)
-                 .setMin(3),
+                 .setMin(3)
+                 .setMax(s_maxPrimitiveDivisions),
 
              addArgument("cylinderLatitudeDivisions",
                          "Cylinder length divisions",
                          kDisplayTypeInt,
                          "The number of end-to-end divisions to make along the cylinder.  Must be positive.",
                          m_meshParameters.cylinderParameters.n_axial)
-                 .setMin(1),
+                 .setMin(1)
+                 .setMax(s_maxPrimitiveDivisions),
 
              addArgument("cylinderEndcaps",
                          "Generate cylinder endcaps",
@@ -241,14 +245,16 @@ PrimitiveFitOperation::PrimitiveFitOperation()
                          kDisplayTypeInt,
                          "The number of divisions to make around the side of the cone.  Must be at least 3.",
                          m_meshParameters.coneParameters.n_radial)
-                 .setMin(3),
+                 .setMin(3)
+                 .setMax(s_maxPrimitiveDivisions),
 
              addArgument("coneLengthDivisions",
                          "Cone length divisions",
                          kDisplayTypeInt,
                          "The number of divisions to make along the length of the cone.  Must be positive.",
                          m_meshParameters.coneParameters.n_axial)
-                 .setMin(1),
+                 .setMin(1)
+                 .setMax(s_maxPrimitiveDivisions),
 
              addArgument("coneBases",
                          "Generate cone bases",
@@ -275,8 +281,9 @@ scene scale:
   relative to the mesh size. Lower it to accept only close fits, raise it to fit more loosely.
 - ``volumeTolerance`` (default ``0.01``) is the allowed relative difference in enclosed volume.
 
-A mesh is replaced only when it passes both. ``gpuFaceCountThreshold`` selects the GPU path above a face
-count (``0`` keeps everything on CPU).
+A mesh is replaced only when it passes both. ``gpuFaceCountThreshold`` selects the GPU path for meshes with
+at least that many faces (``0``, the default, keeps everything on CPU). On a GPU host use ``100000``: above
+it the GPU is faster with the same fits, and below it the CPU is as fast.
 
 Footguns
 --------
@@ -483,16 +490,13 @@ ProcessedData* PrimitiveFitOperation::processMesh(const UsdPrim& prim, tbb::task
     {
         if (primType != PrimitiveType::None)
         {
-            static const char* prim_names[] = { "sphere", "cylinder", "cone", "cube" };
-            static_assert(std::size(prim_names) == omo::PrimitiveType::Count,
-                          "prim_names array must cover every PrimitiveType");
             if (getContext()->verbose)
             {
                 USD_OPTIMIZE_LOG_VERBOSE("Prim: %s\n[%s] %zu faces -> %s",
                                          primPath.c_str(),
                                          (use_gpu_fitting ? "GPU" : "CPU"),
                                          inputMesh.faceCount(),
-                                         prim_names[primType]);
+                                         omo::PrimitiveType::name(primType).data());
             }
 
             ++m_meshReport.fitMeshCount[primType];

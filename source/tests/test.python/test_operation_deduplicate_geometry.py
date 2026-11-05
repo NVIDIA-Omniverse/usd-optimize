@@ -1997,9 +1997,7 @@ class Test_Operation_Deduplicate_Geometry(Test_Operation):
         stage = self._open_stage(file_name)
         success, result = self._execute_command(args)
 
-        # The harness wrapper still returns True; the operation itself should report failure.
-        self.assertTrue(success)
-        self.assertFalse(result[0])
+        self.assertFalse(success)
 
         # The stage must be untouched -- no PointInstancer authored and no original meshes removed.
         self.assertEqual([p for p in stage.Traverse() if p.IsA(UsdGeom.PointInstancer)], [])
@@ -2023,8 +2021,7 @@ class Test_Operation_Deduplicate_Geometry(Test_Operation):
                 stage = self._open_stage(file_name)
                 success, result = self._execute_command(args)
 
-                self.assertTrue(success)
-                self.assertFalse(result[0], f"Expected failure for parent path '{bad_path}'")
+                self.assertFalse(success, f"Expected failure for parent path '{bad_path}'")
 
                 self.assertEqual([p for p in stage.Traverse() if p.IsA(UsdGeom.PointInstancer)], [])
                 for name in ("mesh_0", "mesh_1", "mesh_2", "mesh_3"):

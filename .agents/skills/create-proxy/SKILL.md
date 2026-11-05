@@ -1,6 +1,7 @@
 ---
 name: create-proxy
 description: Create a USD proxy mesh sibling. Use to generate decimated, bbox, or LOD stand-ins, with optional render/proxy purpose variant set.
+license: Apache-2.0
 allowed-tools: Read, Write, Bash
 metadata:
   author: NVIDIA Corporation

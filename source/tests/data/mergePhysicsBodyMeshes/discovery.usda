@@ -1,0 +1,554 @@
+#usda 1.0
+
+def Xform "Robot" (
+    prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+    doc = "An articulation root contains two rigid bodies and a mesh outside both bodies."
+)
+{
+    def Xform "Base" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def "Geometry"
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def Xform "Arm" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def "Geometry"
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def Mesh "Unowned"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(4, 0, 0), (5, 0, 0), (4, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+}
+
+def Xform "Standalone" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "A rigid body outside the articulation contains two meshes."
+)
+{
+    def "Geometry"
+    {
+        def Mesh "A"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Mesh "B"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+}
+
+def Xform "NestedBodies" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "A rigid body contains a nested rigid body, with meshes under both bodies."
+)
+{
+    def Mesh "Outer"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Xform "Nested" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        def Mesh "Inner"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Mesh "AfterNested"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(4, 0, 0), (5, 0, 0), (4, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+}
+
+def Xform "World" (
+    doc = "Left, Right, and Unselected each contain a rigid body with two meshes."
+)
+{
+    def "Left"
+    {
+        def Xform "Body" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def "Right"
+    {
+        def Xform "Body" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def "Unselected"
+    {
+        def Xform "Body" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "A"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+
+            def Mesh "B"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "RigidMeshBoundary" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "A Mesh with PhysicsRigidBodyAPI has a child mesh and a nested rigid body."
+)
+{
+    def Mesh "Boundary" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+
+        def Mesh "Child"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "Nested" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "Inner"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(4, 0, 0), (5, 0, 0), (4, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "ArticulationMeshBoundary" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "A Mesh with PhysicsArticulationRootAPI has a child mesh and a nested rigid body."
+)
+{
+    def Mesh "Boundary" (
+        prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+
+        def Mesh "Child"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "Nested" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "Inner"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(4, 0, 0), (5, 0, 0), (4, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "SelectedDescendants" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "Selected and Unselected each contain a mesh and a nested rigid body beneath a shared rigid body."
+)
+{
+    def "Selected"
+    {
+        def Mesh "Visual"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "Nested" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "Visual"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def "Unselected"
+    {
+        def Mesh "Visual"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "Nested" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "Visual"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+}
+
+def Xform "ArticulationBoundary" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "A rigid body contains an articulation Xform and a fixed joint with PhysicsArticulationRootAPI."
+)
+{
+    def Xform "Articulation" (
+        prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        def Mesh "Visual"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def PhysicsFixedJoint "WorldJoint" (
+        prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        rel physics:body1 = </ArticulationBoundary>
+    }
+
+    def Mesh "Visual"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+}
+
+def Xform "CandidateGeometry" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "A rigid body contains a mesh collider, a double-sided mesh, a subdivision mesh, and a Cube."
+)
+{
+    def Mesh "Collider" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "Visual"
+    {
+        uniform bool doubleSided = 1
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    def Mesh "OtherVisual"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(4, 0, 0), (5, 0, 0), (4, 1, 0)]
+        uniform token subdivisionScheme = "catmullClark"
+    }
+
+    def Cube "Shape"
+    {
+    }
+}
+
+def Xform "HierarchyChildren" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "A rigid body contains a parent Mesh with a child Mesh and a sibling Mesh."
+)
+{
+    def Mesh "Parent"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+
+        def Mesh "Child"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+    }
+
+    def Mesh "Sibling"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(4, 0, 0), (5, 0, 0), (4, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+}
+
+def Xform "ExcludedHierarchies" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+    doc = "A rigid body contains SkelRoot, Camera, Material, PointInstancer, inactive Mesh, and class Mesh prims."
+)
+{
+    def SkelRoot "Skeleton"
+    {
+        def Mesh "Hidden"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "HiddenBody" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "Visual"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def Camera "Camera"
+    {
+        def Mesh "Hidden"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "HiddenBody" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "Visual"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def Material "Material"
+    {
+        def Mesh "Hidden"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "HiddenBody" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "Visual"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def PointInstancer "Instances"
+    {
+        def Mesh "Hidden"
+        {
+            int[] faceVertexCounts = [3]
+            int[] faceVertexIndices = [0, 1, 2]
+            point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+            uniform token subdivisionScheme = "none"
+        }
+
+        def Xform "HiddenBody" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            def Mesh "Visual"
+            {
+                int[] faceVertexCounts = [3]
+                int[] faceVertexIndices = [0, 1, 2]
+                point3f[] points = [(2, 0, 0), (3, 0, 0), (2, 1, 0)]
+                uniform token subdivisionScheme = "none"
+            }
+        }
+    }
+
+    def Mesh "Inactive" (
+        active = false
+    )
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(0, 0, 0), (1, 0, 0), (0, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+
+    class Mesh "Abstract"
+    {
+    }
+
+    def Mesh "Visual"
+    {
+        int[] faceVertexCounts = [3]
+        int[] faceVertexIndices = [0, 1, 2]
+        point3f[] points = [(4, 0, 0), (5, 0, 0), (4, 1, 0)]
+        uniform token subdivisionScheme = "none"
+    }
+}
+
